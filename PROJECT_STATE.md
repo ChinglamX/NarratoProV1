@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 5
+State Version: 6
 Last Updated: 2026-08-10
 State Owner: Project
 
@@ -61,6 +61,7 @@ State Owner: Project
 - Python resolution lock 尚未建立；Web 已生成 `pnpm-lock.yaml`。
 - A03 只通过 Compose 静态解析，真实基础设施验收仍未执行。
 - Docker Desktop 已启动，但 Docker Hub 连续两次返回 EOF；未创建项目容器或 volume。网络恢复后重试 A03，不更换未验证镜像规避失败。
+- 后续诊断确认宿主可访问 Registry，Docker daemon 使用 `http.docker.internal:3128` 代理并在 CloudFront blob 下载时 EOF；不得静默修改全局 Docker 代理。
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
 - Calibration Pack 尚无真实项目 Gold/Baseline。
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
@@ -89,6 +90,7 @@ State Owner: Project
 - Review Web：TypeScript typecheck 与 Vite production build 通过，依赖由 `pnpm-lock.yaml` 锁定。
 - Compose：固定镜像配置通过 `docker compose ... config --quiet`；未启动服务。
 - A03 runtime 尝试：Docker daemon 29.5.3 可用；镜像授权/manifest 请求 EOF，`compose ps -a` 和项目 volume 检查为空。
+- A03 acceptance 已固化为 `make infra-accept`：覆盖启动等待、PostgreSQL/MinIO persistence probe、全服务 restart、再次 health 和最终状态；单元测试验证步骤完整。
 
 ---
 

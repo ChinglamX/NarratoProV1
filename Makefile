@@ -2,7 +2,7 @@ PYTHON ?= .venv/bin/python
 PIP ?= .venv/bin/pip
 PYTHON_BOOTSTRAP ?= pyenv exec python
 
-.PHONY: setup format lint type test security check api worker context-check infra-up infra-down
+.PHONY: setup format lint type test security check api worker context-check infra-up infra-down infra-accept
 
 setup:
 	$(PYTHON_BOOTSTRAP) -m venv .venv
@@ -42,3 +42,6 @@ infra-up:
 
 infra-down:
 	docker compose --env-file deploy/compose/.env.example -f deploy/compose/docker-compose.yml down
+
+infra-accept:
+	$(PYTHON) scripts/accept_local_infra.py
