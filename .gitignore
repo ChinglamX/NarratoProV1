@@ -26,15 +26,18 @@ build/
 
 # JavaScript / frontend
 node_modules/
+.pnpm-store/
 .next/
 coverage/
+apps/review_web/dist/
+*.tsbuildinfo
 
 # Runtime data and generated artifacts
-artifacts/
-storage/
-data/local/
-tmp/
-logs/
+/artifacts/
+/storage/
+/data/local/
+/tmp/
+/logs/
 
 # Local benchmark media; register through benchmark manifests/Object Store
 /youzijuchang_demo.mp4

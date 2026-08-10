@@ -16,3 +16,15 @@ AI 驱动的高质量、生产级短剧营销视频生产系统。
 
 当前项目方向、完成度、下一步和阻断项以 `PROJECT_STATE.md` 为唯一状态入口；架构与规范的权威来源由 `PROJECT_INDEX.md` 路由。
 
+## 工程入口
+
+```bash
+make setup
+make check
+pnpm install --frozen-lockfile
+pnpm --filter @narratopro/review-web build
+docker compose --env-file deploy/compose/.env.example \
+  -f deploy/compose/docker-compose.yml config --quiet
+```
+
+`make context-check` 是 A06 的本地恢复完整性检查，与 CI 使用同一实现。

@@ -96,6 +96,16 @@ Version: 1.0
 
 决策：高标准实现不等于一开始启用 L2/L3。自动化需要真实校准；L1 可承载完整生产质量。
 
+## ADR-017 — Bootstrap Toolchain and Local Infrastructure
+
+决策：Python 锁定 3.11.8，使用 PEP 621/setuptools editable workspace；Web 使用 Node 22、pnpm 11.16 和 React/TypeScript/Vite lockfile。首个本地基础设施由 Compose 管理 PostgreSQL 16、Temporal、S3-compatible Object Store、OpenTelemetry Collector、Prometheus 和 Grafana。
+
+原因：与目标 Mac 环境兼容，工具成熟且保持模块化单体部署；Python 与 Web 依赖均可由 CI 重建。镜像和直接依赖固定版本，不使用 `latest`。
+
+后果：Python 依赖当前以受限范围声明，CI 安装结果受上游范围更新影响；在首个 Release Slice 退出前必须补充可审计的 Python resolution lock。基础设施镜像升级需 Compose 配置验证、迁移/恢复测试和 ADR State impact。
+
+复议：目标运行平台改变、供应链策略要求统一 resolver，或实测服务版本存在不兼容。
+
 ---
 
 ## 2. ADR 变更流程
@@ -113,4 +123,3 @@ Version: 1.0
 - Schema/Workflow breaking change 关联 migration/replay ADR。
 - Review Director 可从 Audit 重建一次例外和回滚决定。
 - ADR Index 与实际代码/部署不存在已知偏离。
-
