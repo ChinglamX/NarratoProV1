@@ -1,0 +1,116 @@
+# Architecture Decisions
+
+Version: 1.0
+
+## 1. 目标
+
+记录首批实施必须冻结的决策和变更条件，避免编码期间反复争论或无说明偏离核心架构。
+
+输入：全局 Architecture Review 与 implementation blueprint。
+
+输出：ADR Index、Decision、Rationale、Consequences、Revisit Trigger。
+
+---
+
+## ADR-001 — Modular Monolith First
+
+决策：单仓库、共享 Contract/数据库/Object Store，多进程 Worker；不先拆微服务。
+
+原因：个人生产环境、跨域事务和快速演进更需要一致性。部署单元已可独立扩展。
+
+复议：明确团队/安全/扩展边界或单域独立容量证明拆分收益。
+
+## ADR-002 — Temporal Owns Durable Execution
+
+决策：Temporal 是唯一生产 Workflow 引擎；LangGraph 只用于 Activity 内 AI 子图。
+
+后果：不维护第二套自研状态机；Workflow code 必须 replay-compatible。
+
+## ADR-003 — PostgreSQL Metadata Truth
+
+决策：Project/Artifact/Review/Policy 等事务元数据在 PostgreSQL；媒体 blob 在 Object Store；Temporal history 不复制进业务表。
+
+复议：只在实测容量/可用性不足时演进，不因“更云原生”更换。
+
+## ADR-004 — Immutable Artifact and Successor Correction
+
+决策：正式 Artifact 不原地修改；Correction/rollback 创建后继版本或 active pointer event。
+
+后果：存储增长需 retention/GC，但 lineage、审计和重放可靠。
+
+## ADR-005 — One Master Timeline Schema
+
+决策：ApprovedTimelineIntent、ConformedTimeline、Preview/Final 均引用同一 MasterTimeline Schema/Compiler 语义。
+
+后果：Stage 5 actual-duration 通过 Patch 更新，不在媒体命令暗调。
+
+## ADR-006 — Internal Timeline + OTIO Interchange
+
+决策：内部 Schema 表达 Evidence/Dependency/Intent；OTIO 作为交换格式并输出 LossReport。
+
+复议：若 OTIO 后续原生覆盖所有必要语义仍保留 adapter compatibility。
+
+## ADR-007 — Provider-Agnostic AI and Media
+
+决策：所有模型/工具通过 Provider Protocol 和项目 Contract；raw response 不进入下游业务。
+
+后果：增加 adapter/benchmark 成本，换来模型、许可和硬件可替换。
+
+## ADR-008 — Three Formal Human Gates
+
+决策：Story、Strategy、Release 是正式 Gate；Timeline/Voice/Mix/Subtitle 是内部 Checkpoint。Release 永远人工。
+
+后果：Review API 统一支持 gate/checkpoint，但权限和阻断规则不同。
+
+## ADR-009 — Confidence Is Scoped and Calibrated
+
+决策：模型自报概率不能自动放行；每个任务/模型/类型独立校准。无数据保持 shadow/unavailable。
+
+## ADR-010 — Feedback Produces Candidates Only
+
+决策：人工/线上反馈只能创建待评测 Candidate；生产配置需审批、canary、监控和回滚。
+
+## ADR-011 — FFmpeg Execution, Typed RenderPlan Truth
+
+决策：FFmpeg 是媒体执行器，RenderPlan/MixPlan/Timeline 是业务真相。命令以安全参数数组编译。
+
+## ADR-012 — API Command/Query Separation
+
+决策：长任务使用异步 Command/operation；查询读 projection，不用同步 HTTP 等待模型/渲染。
+
+## ADR-013 — Transactional Outbox Before Event Broker
+
+决策：PostgreSQL outbox + internal dispatcher/Temporal signal 满足首个生产部署，不先引入 Kafka。
+
+复议：事件吞吐、跨服务解耦或独立消费者基准证明需要。
+
+## ADR-014 — pgvector Before Specialized Vector DB
+
+决策：初期语义检索使用 PostgreSQL/pgvector；只有 recall/latency/scale benchmark 不足才引入专用向量库。
+
+## ADR-015 — Rights Fail Closed at Release
+
+决策：理解流程可保留 rights unknown 素材证据，但任何 Release Candidate 的视频、声音、音乐、字体和图片必须 rights resolved。
+
+## ADR-016 — Production Quality Without Premature Automation
+
+决策：高标准实现不等于一开始启用 L2/L3。自动化需要真实校准；L1 可承载完整生产质量。
+
+---
+
+## 2. ADR 变更流程
+
+变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。
+
+禁止通过代码依赖或临时配置事实性改变 ADR，而不留下决策记录。
+
+---
+
+## 3. 测试与验收
+
+- CI/architecture tests 能验证 ADR-002/005/007/008/012 的关键边界。
+- 任何新基础设施依赖关联 ADR 和 benchmark。
+- Schema/Workflow breaking change 关联 migration/replay ADR。
+- Review Director 可从 Audit 重建一次例外和回滚决定。
+- ADR Index 与实际代码/部署不存在已知偏离。
+

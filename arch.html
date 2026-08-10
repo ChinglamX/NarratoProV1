@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 短剧营销系统架构 v2</title>
+  <style>
+    body { margin: 0; padding: 32px; font: 16px/1.6 system-ui, sans-serif; color: #172033; background: #f5f7fb; }
+    main { max-width: 1080px; margin: auto; }
+    h1 { margin-bottom: 4px; }
+    .sub { color: #5d687a; margin-top: 0; }
+    .flow { display: grid; gap: 16px; margin: 28px 0; }
+    .domain { padding: 18px 20px; border: 1px solid #cbd5e1; border-radius: 12px; background: white; box-shadow: 0 4px 16px #0f172a0d; }
+    .domain h2 { margin: 0 0 8px; font-size: 20px; }
+    .arrow { text-align: center; color: #2563eb; font-size: 24px; line-height: 1; }
+    .shared { border-color: #7c3aed; background: #faf5ff; }
+    code { background: #eef2ff; padding: 2px 5px; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 10px; border: 1px solid #d7deea; text-align: left; vertical-align: top; }
+    th { background: #edf2f7; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>AI 短剧营销生产系统</h1>
+  <p class="sub">Architecture v2.0 — 五域架构与纵向交付闭环</p>
+
+  <section class="flow">
+    <article class="domain shared"><h2>1. Control Plane</h2><p>Project、Run、配置、资源、成本、状态机与三个 Human Review Gate。</p></article>
+    <div class="arrow">↓</div>
+    <article class="domain"><h2>2. Intelligence Plane</h2><p>Media Catalog、Fact、Evidence、Story、跨集身份、全剧时间线与素材质量特征。</p></article>
+    <div class="arrow">↓</div>
+    <article class="domain"><h2>3. Strategy Plane</h2><p>Genre Config、卖点、受众、Strategy、Hook Candidates 与 Variant Plan。</p></article>
+    <div class="arrow">↓</div>
+    <article class="domain"><h2>4. Timeline Production Plane</h2><p><code>Master Timeline / EDL</code> 统一承载 Visual、Rhythm、Narration、TTS、Audio、Subtitle 与 Rendering。</p></article>
+    <div class="arrow">↓</div>
+    <article class="domain"><h2>5. Evaluation Plane</h2><p>离线质量、人工发布审批、实验记录与合法线上指标回流；反馈只产生新版本，不改写 Fact。</p></article>
+  </section>
+
+  <h2>渐进自动化横向机制</h2>
+  <table>
+    <tr><th>机制</th><th>作用</th><th>安全边界</th></tr>
+    <tr><td>Confidence System</td><td>为 AI 输出保存可解释、可校准的 Confidence Record，并辅助审核路由。</td><td>模型自报分数不能单独放行；未校准时只做 Shadow Evaluation。</td></tr>
+    <tr><td>Automation Levels</td><td>L0–L4 按项目、运行和模块渐进提升自动化。</td><td>严重错误自动降级；Release Gate 始终由人决定。</td></tr>
+    <tr><td>Genre Config</td><td>版本化管理 Hook、节奏、解说、音频和字幕偏好。</td><td>区分硬约束与软偏好，不得改写剧情事实。</td></tr>
+    <tr><td>Feedback Loop</td><td>把人工修正和合法线上指标转化为待评测的优化候选。</td><td>候选必须评测、审批、受控发布并支持回滚。</td></tr>
+  </table>
+
+  <h2>生产级能力阶段</h2>
+  <table>
+    <tr><th>阶段</th><th>生产级设计目标</th></tr>
+    <tr><td>Stage 1</td><td>最终数据契约、Master Timeline、可观测性、恢复、回滚与 NarratoPro 适配。</td></tr>
+    <tr><td>Stage 2</td><td>完整单集/多集事实与故事智能、证据和人工纠错。</td></tr>
+    <tr><td>Stage 3</td><td>类型配置、营销策略、多 Hook 与可解释决策。</td></tr>
+    <tr><td>Stage 4</td><td>专业视觉、节奏、解说和可精修 Master Timeline。</td></tr>
+    <tr><td>Stage 5</td><td>生产级 TTS、音频、字幕、渲染和多版本输出。</td></tr>
+    <tr><td>Stage 6</td><td>质量自动化、反馈智能、灰度、监控与回滚。</td></tr>
+  </table>
+</main>
+</body>
+</html>

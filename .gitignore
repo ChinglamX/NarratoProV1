@@ -1,0 +1,41 @@
+# OS and editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# JavaScript / frontend
+node_modules/
+.next/
+coverage/
+
+# Runtime data and generated artifacts
+artifacts/
+storage/
+data/local/
+tmp/
+logs/
+
+# Local benchmark media; register through benchmark manifests/Object Store
+/youzijuchang_demo.mp4
+/demo_frames/
