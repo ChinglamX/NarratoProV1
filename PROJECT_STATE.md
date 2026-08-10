@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 3
+State Version: 4
 Last Updated: 2026-08-10
 State Owner: Project
 
@@ -57,7 +57,7 @@ State Owner: Project
 
 ## 5. 当前阻断与风险
 
-- 目前仓库文件尚未形成已确认的 Git 基线/提交；新 Agent 不得假定可以通过 Git 恢复当前设计。
+- 已建立初始设计 Git 根提交 `7f7591c`；基线 tag 在本次状态提交后建立为 `architecture-baseline-v1.0.0`。
 - Python/TypeScript 工具链具体版本尚未锁定。
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
 - Calibration Pack 尚无真实项目 Gold/Baseline。
@@ -71,7 +71,6 @@ State Owner: Project
 - TypeScript package manager/build/test stack。
 - 本地 Object Store 首实现是严格文件系统适配器还是同时部署 S3-compatible 服务。
 - PostgreSQL、Temporal、FFmpeg、OpenTelemetry 等首批锁定版本。
-- Repository 初始 Git 基线由用户何时确认并提交。
 
 未决决策必须通过证据、兼容性和 ADR 解决，不能由 Agent 默认偏好静默决定。
 
@@ -84,6 +83,7 @@ State Owner: Project
 - 未发现旧 `Product V0.1`、`Python DAG` 或已废弃角色术语。
 - 详细设计与实施/校准文档约 8,000+ 行；数量不是完成依据，权威入口以 `PROJECT_INDEX.md` 为准。
 - Cold-start 静态检查：Index/State/Protocol/Handoff/Backlog 引用存在，active E00/A01 可定位。
+- Git 根提交 `7f7591c` 已保存全部设计/治理文件；本地 demo 视频与抽帧由 `.gitignore` 排除。
 
 ---
 
