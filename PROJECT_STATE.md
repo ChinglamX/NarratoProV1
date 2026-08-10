@@ -1,7 +1,7 @@
 # Project Current State
 
-State Version: 6
-Last Updated: 2026-08-10
+State Version: 7
+Last Updated: 2026-08-11
 State Owner: Project
 
 ## 1. 当前阶段
@@ -62,6 +62,7 @@ State Owner: Project
 - A03 只通过 Compose 静态解析，真实基础设施验收仍未执行。
 - Docker Desktop 已启动，但 Docker Hub 连续两次返回 EOF；未创建项目容器或 volume。网络恢复后重试 A03，不更换未验证镜像规避失败。
 - 后续诊断确认宿主可访问 Registry，Docker daemon 使用 `http.docker.internal:3128` 代理并在 CloudFront blob 下载时 EOF；不得静默修改全局 Docker 代理。
+- 经用户授权临时关闭 containerd image store：Temporal 镜像下载成功，但 Compose 并行拉取随后使 daemon 无响应；已恢复原设置并重启 Docker。不得重复该路径或把部分镜像下载当作 A03 验收。
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
 - Calibration Pack 尚无真实项目 Gold/Baseline。
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
@@ -86,11 +87,12 @@ State Owner: Project
 - 详细设计与实施/校准文档约 8,000+ 行；数量不是完成依据，权威入口以 `PROJECT_INDEX.md` 为准。
 - Cold-start 检查：Index/State/Protocol/Handoff/Backlog 引用存在，active E00/A03 和当前风险可恢复。
 - Git 根提交 `7f7591c` 已保存全部设计/治理文件；本地 demo 视频与抽帧由 `.gitignore` 排除。
-- `make check`：16 tests、92.31% coverage、Ruff、strict mypy、Bandit、Context/Architecture checks 通过。
+- `make check`：17 tests、92.31% coverage、Ruff、strict mypy、Bandit、Context/Architecture checks 通过。
 - Review Web：TypeScript typecheck 与 Vite production build 通过，依赖由 `pnpm-lock.yaml` 锁定。
 - Compose：固定镜像配置通过 `docker compose ... config --quiet`；未启动服务。
 - A03 runtime 尝试：Docker daemon 29.5.3 可用；镜像授权/manifest 请求 EOF，`compose ps -a` 和项目 volume 检查为空。
 - A03 acceptance 已固化为 `make infra-accept`：覆盖启动等待、PostgreSQL/MinIO persistence probe、全服务 restart、再次 health 和最终状态；单元测试验证步骤完整。
+- 2026-08-11 A03 runtime：containerd image store 关闭实验只解决 Temporal 单镜像下载，未完成全栈启动；实验已回滚，Docker 29.5.3/原设置恢复，项目 container/volume 为空。
 
 ---
 
