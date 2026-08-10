@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 7
+State Version: 8
 Last Updated: 2026-08-11
 State Owner: Project
 
@@ -35,7 +35,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- A03 PostgreSQL/Temporal/Object Store/OTel/Prometheus/Grafana 已有固定版本 Compose 配置，但尚未完成镜像拉取、真实启动、health/restart/persistence 验收。
+- A03 PostgreSQL/Temporal/Object Store/OTel/Prometheus/Grafana 已有固定版本 Compose 配置和可恢复的串行镜像拉取，但尚未完成全部镜像拉取、真实启动、health/restart/persistence 验收。
 - B01 起 Canonical Contracts 和数据库 migrations 实现。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
@@ -60,7 +60,7 @@ State Owner: Project
 - 初始设计基线 tag `architecture-baseline-v1.0.0` 指向 `de4e31c`；A01–A06 当前 checkpoint 以本 State 所在 Git revision 为准。
 - Python resolution lock 尚未建立；Web 已生成 `pnpm-lock.yaml`。
 - A03 只通过 Compose 静态解析，真实基础设施验收仍未执行。
-- Docker Desktop 已启动，但 Docker Hub 连续两次返回 EOF；未创建项目容器或 volume。网络恢复后重试 A03，不更换未验证镜像规避失败。
+- Docker Desktop 已启动；PostgreSQL、Temporal、Temporal UI、MinIO、OTel 固定镜像已缓存，Prometheus blob 下载持续 EOF，Grafana 尚未开始。未创建项目容器或 volume。网络恢复后重试 A03，不更换未验证镜像规避失败。
 - 后续诊断确认宿主可访问 Registry，Docker daemon 使用 `http.docker.internal:3128` 代理并在 CloudFront blob 下载时 EOF；不得静默修改全局 Docker 代理。
 - 经用户授权临时关闭 containerd image store：Temporal 镜像下载成功，但 Compose 并行拉取随后使 daemon 无响应；已恢复原设置并重启 Docker。不得重复该路径或把部分镜像下载当作 A03 验收。
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
@@ -93,6 +93,8 @@ State Owner: Project
 - A03 runtime 尝试：Docker daemon 29.5.3 可用；镜像授权/manifest 请求 EOF，`compose ps -a` 和项目 volume 检查为空。
 - A03 acceptance 已固化为 `make infra-accept`：覆盖启动等待、PostgreSQL/MinIO persistence probe、全服务 restart、再次 health 和最终状态；单元测试验证步骤完整。
 - 2026-08-11 A03 runtime：containerd image store 关闭实验只解决 Temporal 单镜像下载，未完成全栈启动；实验已回滚，Docker 29.5.3/原设置恢复，项目 container/volume 为空。
+- 2026-08-11 A03 recovery：验收脚本改为从 Compose 动态读取镜像、去重后串行拉取、每镜像最多 5 次指数退避，并以 `--pull never` 启动；PostgreSQL probe 改用容器有效配置。定向测试 4 项通过。
+- 串行恢复已缓存 `postgres:16.4`、`temporalio/auto-setup:1.25.2`、`temporalio/ui:2.31.2`、`minio/minio:RELEASE.2024-11-07T00-52-20Z`、`otel/opentelemetry-collector-contrib:0.113.0`；`prom/prometheus:v2.55.1` 连续两轮有界重试仍在 Docker Hub/CloudFront blob 请求 EOF，故未进入服务启动。Docker 29.5.3 正常，项目 container/volume 为空。
 
 ---
 
