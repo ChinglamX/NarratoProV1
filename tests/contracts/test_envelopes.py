@@ -1,6 +1,4 @@
-import json
 from datetime import UTC, datetime
-from pathlib import Path
 from uuid import uuid4
 
 import pytest
@@ -13,7 +11,6 @@ from packages.contracts import (
     ErrorEnvelope,
     EventEnvelope,
 )
-from packages.contracts.envelopes import public_contract_shape
 
 TRACE_ID = "0123456789abcdef0123456789abcdef"
 
@@ -121,10 +118,3 @@ def test_public_detail_cannot_carry_unreviewed_structured_data() -> None:
             visibility="public",
             data={"path": "/private/input.json"},
         )
-
-
-def test_public_contract_shape_matches_breaking_change_snapshot() -> None:
-    snapshot = json.loads(
-        Path("tests/contracts/snapshots/b03_public_contract_shape.json").read_text()
-    )
-    assert public_contract_shape() == snapshot

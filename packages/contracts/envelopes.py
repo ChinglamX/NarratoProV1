@@ -168,20 +168,3 @@ class ErrorEnvelope(StrictContract):
             resource=self.resource,
             remediation=self.remediation,
         )
-
-
-def public_contract_shape() -> dict[str, JsonValue]:
-    """Return the bounded B03 compatibility surface; B04 owns full schema generation."""
-
-    models = (CommandEnvelope, EventEnvelope, PublicErrorEnvelope)
-    return {
-        model.__name__: {
-            "fields": list(model.model_fields),
-            "required": [
-                field_name
-                for field_name, field in model.model_fields.items()
-                if field.is_required()
-            ],
-        }
-        for model in models
-    }

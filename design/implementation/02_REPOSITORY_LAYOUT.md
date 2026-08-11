@@ -66,6 +66,7 @@ NarratoProV1/
 │   ├── observability/
 │   └── runbooks/
 ├── scripts/                    # thin operator scripts; no business logic
+├── generated/contracts/        # immutable versioned JSON Schema/OpenAPI/Artifact registries
 └── design/
 ```
 
@@ -108,7 +109,7 @@ Domain 不依赖 FastAPI、Temporal、SQLAlchemy 实现或具体模型 SDK。Com
 ## 5. 配置与生成物
 
 - `configs/` 保存可审阅源文件；批准后注册为 immutable Config Artifact。
-- JSON Schema/OpenAPI 由 `packages/contracts` 生成到 build 目录，不手工维护两份。
+- JSON Schema/OpenAPI 由 `packages/contracts` 生成；审计基线保存到 `generated/contracts/versions/<semver>`，TypeScript 类型生成到 Review Web。版本目录不可覆盖，禁止手工维护第二套 Schema。
 - Prompt 使用 typed input/output schema、version 和 test manifest。
 - 本地媒体、模型权重、数据库文件和 secrets 不进入 Git。
 - demo/benchmark 大媒体通过 Artifact/manifest 引用；当前仓库文件可在迁移时登记。
@@ -144,4 +145,3 @@ Domain 不依赖 FastAPI、Temporal、SQLAlchemy 实现或具体模型 SDK。Com
 - Worker 可按 queue 独立启动。
 - 前端只能通过 OpenAPI/媒体接口访问数据。
 - architecture import test 证明依赖方向无环。
-

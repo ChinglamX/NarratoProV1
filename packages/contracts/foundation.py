@@ -8,15 +8,41 @@ from hashlib import sha256
 from math import gcd
 from typing import Annotated, Self
 
-from pydantic import UUID4, Field, RootModel, field_validator, model_validator
+from pydantic import UUID4, Field, GetJsonSchemaHandler, RootModel, field_validator, model_validator
+from pydantic.json_schema import JsonSchemaValue
+from pydantic_core import CoreSchema, core_schema
 
+from packages.contracts.artifact_catalog import ARTIFACT_TYPES, require_known_artifact_type
 from packages.contracts.base import StrictContract
 
 UUID = UUID4
 Int64 = Annotated[int, Field(ge=-(2**63), le=2**63 - 1)]
 PositiveInt64 = Annotated[int, Field(ge=1, le=2**63 - 1)]
-ArtifactType = Annotated[str, Field(pattern=r"^[A-Z][A-Za-z0-9]{0,127}$")]
 StableName = Annotated[str, Field(min_length=1, max_length=255, pattern=r"^[A-Za-z0-9_.:/@+-]+$")]
+
+
+class ArtifactType(str):
+    """Registered artifact type, represented as a string on every transport."""
+
+    @classmethod
+    def _validate(cls, value: str) -> ArtifactType:
+        return cls(require_known_artifact_type(value))
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, _source_type: object, _handler: object) -> CoreSchema:
+        return core_schema.no_info_after_validator_function(
+            cls._validate,
+            core_schema.str_schema(pattern=r"^[A-Z][A-Za-z0-9]{0,127}$"),
+        )
+
+    @classmethod
+    def __get_pydantic_json_schema__(
+        cls, schema: CoreSchema, handler: GetJsonSchemaHandler
+    ) -> JsonSchemaValue:
+        json_schema = handler(schema)
+        json_schema["enum"] = sorted(ARTIFACT_TYPES)
+        json_schema["title"] = "ArtifactType"
+        return json_schema
 
 
 class Checksum(RootModel[str]):

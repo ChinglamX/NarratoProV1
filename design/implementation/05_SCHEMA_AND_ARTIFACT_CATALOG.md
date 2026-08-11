@@ -113,6 +113,8 @@ Schema 使用 semantic version；兼容新增字段允许 minor，破坏语义 m
 
 Schema Registry 在代码库生成 JSON Schema，并在 CI 检查重复名称、未知 Artifact Type 和 breaking changes。
 
+实施路径：`packages/contracts/registry.py` 是生成逻辑，`packages/contracts/artifact_catalog.py` 是 Artifact Type Registry；审计生成物位于 `generated/contracts/versions/<semver>`，当前版本指针为 `generated/contracts/latest.json`。本表与代码 Registry 必须由 CI 双向核对。
+
 ---
 
 ## 9. 测试与验收
@@ -123,4 +125,3 @@ Schema Registry 在代码库生成 JSON Schema，并在 CI 检查重复名称、
 - 状态转换和非法同义状态测试。
 - Schema forward/backward compatibility 与 canonical checksum。
 - Provider raw response 不能作为下游公共 Contract。
-

@@ -136,6 +136,16 @@ Version: 1.0
 
 复议：Trace Context 标准或跨语言兼容策略变化时通过版本迁移复议；不得把内部诊断重新并入公共 DTO。
 
+## ADR-021 — One Versioned Contract Registry
+
+决策：Pydantic Contract 与代码内 Artifact Catalog 是唯一生成源；JSON Schema Draft 2020-12、OpenAPI 3.1 components、Artifact Type Registry 和 Review Web TypeScript 类型由同一确定性生成器输出。审计版本保存在 `generated/contracts/versions/<semver>`，已存在版本禁止覆盖；兼容新增升级 minor/patch，删除 Schema/字段/enum、增加 required、收紧类型/约束或改变 Artifact owner/domain 必须升级 major。设计 Catalog 与代码 Registry 在 CI 双向核对。
+
+原因：跨 Python/API/Web/Workflow 使用同一数据语言，避免手写 Schema 漂移；保留不可变版本才能比较真实 breaking change，而不是用新快照覆盖旧证据。ArtifactRef 在 Python 和生成 Schema 中都拒绝未知类型。
+
+后果：公共 Contract 变更必须同时更新 Registry version、生成物、兼容测试和必要迁移；`make schema-check` 是 `make check` 的强制步骤。B03 临时 shape snapshot 已删除并由 Registry 版本链取代。生成器只负责 Contract 转换，不承担 B05 领域模型或 B04 之后的 Artifact payload 实现。
+
+复议：只有跨语言 Schema 标准或生成器能力无法表达已批准 Contract 时复议；替换工具必须保持版本历史、输出等价性和回滚能力。
+
 ---
 
 ## 2. ADR 变更流程

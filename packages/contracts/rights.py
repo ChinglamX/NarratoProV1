@@ -13,11 +13,11 @@ from packages.contracts.foundation import ArtifactRef, StableName
 
 
 class RightsGrantRef(ArtifactRef):
-    artifact_type: Literal["RightsGrant"] = "RightsGrant"
+    artifact_type: Literal["RightsGrant"] = "RightsGrant"  # type: ignore[assignment]
 
 
 class RightsManifestRef(ArtifactRef):
-    artifact_type: Literal["RightsManifest"] = "RightsManifest"
+    artifact_type: Literal["RightsManifest"] = "RightsManifest"  # type: ignore[assignment]
 
 
 class RightsStatus(StrEnum):

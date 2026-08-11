@@ -1,0 +1,1544 @@
+{
+  "$defs": {
+    "ActorKind": {
+      "enum": [
+        "human",
+        "model",
+        "system"
+      ],
+      "title": "ActorKind",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "description": "Auditable identity of the human, model, or system issuing an action.",
+      "properties": {
+        "id": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ActorKind"
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "description": "Immutable reference to one exact artifact version.",
+      "properties": {
+        "artifact_id": {
+          "format": "uuid4",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "enum": [
+            "ASSArtifact",
+            "AlignmentArtifact",
+            "ApplicableScope",
+            "AudioAssetSelection",
+            "AudioStem",
+            "AutomationPolicy",
+            "CalibrationArtifact",
+            "CausalGraph",
+            "CharacterStateGraph",
+            "ClipCandidateSet",
+            "ConfigArtifact",
+            "ConflictSet",
+            "CorrectionDataset",
+            "CreativeBrief",
+            "CropPath",
+            "DatasetManifest",
+            "DriftReport",
+            "EffectiveConfigSnapshot",
+            "EpisodeCatalog",
+            "EvaluationRun",
+            "EventSet",
+            "EvidenceBundle",
+            "ExperimentPlan",
+            "ExperimentResult",
+            "FactSet",
+            "FinalCandidate",
+            "FrameSamplePlan",
+            "GraphicsCueSet",
+            "HookCandidateSet",
+            "IdentityConflict",
+            "IdentityGraph",
+            "MasterTimeline",
+            "MediaProbe",
+            "MixPlan",
+            "MixedAudio",
+            "NarrationLineSet",
+            "NarrativeBeatGraph",
+            "OCRObservation",
+            "OTIOExport",
+            "PatchProposal",
+            "PerformanceWindow",
+            "PreviewManifest",
+            "ProxyMedia",
+            "ProxyRender",
+            "QualityEventSet",
+            "QualityReview",
+            "ReleaseRecord",
+            "ReleaseReviewPackage",
+            "RenderExecutionReport",
+            "RenderPlan",
+            "ResourceProfile",
+            "RhythmPlan",
+            "RightsGrant",
+            "RightsManifest",
+            "RoutingDecision",
+            "SceneShotCatalog",
+            "SellingPointSet",
+            "SourceMedia",
+            "SourceQualityFeatureSet",
+            "SpeechObservation",
+            "StoryGraph",
+            "StrategyCandidateSet",
+            "StrategyComparisonPackage",
+            "SubtitleCueSet",
+            "TechnicalQCReport",
+            "Tracklet",
+            "VariantPlan",
+            "VisualObservation",
+            "VoiceAsset",
+            "VoiceTakeSet"
+          ],
+          "pattern": "^[A-Z][A-Za-z0-9]{0,127}$",
+          "title": "ArtifactType",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version",
+        "artifact_type"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "CalibrationPackManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dataset_manifest_ref": {
+          "title": "Dataset Manifest Ref",
+          "type": "string"
+        },
+        "guideline_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Guideline Refs",
+          "type": "array"
+        },
+        "pack_id": {
+          "title": "Pack Id",
+          "type": "string"
+        },
+        "parent_pack_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Pack Ref"
+        },
+        "rights": {
+          "$ref": "#/$defs/RightsAndUsage"
+        },
+        "slice_catalog_ref": {
+          "title": "Slice Catalog Ref",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "registered",
+            "frozen",
+            "deprecated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pack_id",
+        "version",
+        "status",
+        "dataset_manifest_ref",
+        "guideline_refs",
+        "slice_catalog_ref",
+        "rights",
+        "created_at"
+      ],
+      "title": "CalibrationPackManifest",
+      "type": "object"
+    },
+    "Checksum": {
+      "description": "Content checksum encoded as ``algorithm:lowercase-hex-digest``.",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "CommandEnvelope": {
+      "additionalProperties": false,
+      "description": "Persistable intent accepted by the command boundary.",
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorRef"
+        },
+        "command_id": {
+          "format": "uuid4",
+          "title": "Command Id",
+          "type": "string"
+        },
+        "command_type": {
+          "maxLength": 255,
+          "minLength": 3,
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)+$",
+          "title": "Command Type",
+          "type": "string"
+        },
+        "effective_config_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "expected_version": {
+          "anyOf": [
+            {
+              "maximum": 9223372036854775807,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Version"
+        },
+        "idempotency_key": {
+          "maxLength": 255,
+          "minLength": 8,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/@+-]+$",
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "inputs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "payload": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Payload",
+          "type": "object"
+        },
+        "project_id": {
+          "format": "uuid4",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "requested_at": {
+          "format": "date-time",
+          "title": "Requested At",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "schema_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "command_id",
+        "command_type",
+        "schema_version",
+        "project_id",
+        "actor",
+        "idempotency_key",
+        "payload",
+        "requested_at"
+      ],
+      "title": "CommandEnvelope",
+      "type": "object"
+    },
+    "ConfidenceFactor": {
+      "additionalProperties": false,
+      "description": "One explainable factor supporting or opposing a confidence estimate.",
+      "properties": {
+        "code": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JsonValue"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "code",
+        "description"
+      ],
+      "title": "ConfidenceFactor",
+      "type": "object"
+    },
+    "ConfidenceRecord": {
+      "additionalProperties": false,
+      "description": "Scoped confidence estimate; never an authorization to auto-release.",
+      "properties": {
+        "applicable_scope": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Applicable Scope",
+          "type": "string"
+        },
+        "calibration_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Calibration Version"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "method": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "opposing_factors": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConfidenceFactor"
+          },
+          "title": "Opposing Factors",
+          "type": "array"
+        },
+        "risk_class": {
+          "$ref": "#/$defs/RiskClass"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Score"
+        },
+        "status": {
+          "$ref": "#/$defs/ConfidenceStatus"
+        },
+        "supporting_factors": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConfidenceFactor"
+          },
+          "title": "Supporting Factors",
+          "type": "array"
+        }
+      },
+      "required": [
+        "score",
+        "status",
+        "method",
+        "applicable_scope",
+        "risk_class"
+      ],
+      "title": "ConfidenceRecord",
+      "type": "object"
+    },
+    "ConfidenceStatus": {
+      "enum": [
+        "shadow",
+        "calibrated",
+        "unavailable",
+        "drifted"
+      ],
+      "title": "ConfidenceStatus",
+      "type": "string"
+    },
+    "DatasetItem": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "minLength": 1,
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "episode_id": {
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "item_id": {
+          "pattern": "^[a-zA-Z0-9_.-]+$",
+          "title": "Item Id",
+          "type": "string"
+        },
+        "series_id": {
+          "minLength": 1,
+          "title": "Series Id",
+          "type": "string"
+        },
+        "split": {
+          "$ref": "#/$defs/DatasetSplit"
+        }
+      },
+      "required": [
+        "item_id",
+        "series_id",
+        "episode_id",
+        "split",
+        "artifact_ref"
+      ],
+      "title": "DatasetItem",
+      "type": "object"
+    },
+    "DatasetSplit": {
+      "enum": [
+        "train",
+        "validation",
+        "frozen_test"
+      ],
+      "title": "DatasetSplit",
+      "type": "string"
+    },
+    "DatasetSplitManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/DatasetItem"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "manifest_id": {
+          "title": "Manifest Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "manifest_id",
+        "version",
+        "items"
+      ],
+      "title": "DatasetSplitManifest",
+      "type": "object"
+    },
+    "DetailVisibility": {
+      "enum": [
+        "public",
+        "internal"
+      ],
+      "title": "DetailVisibility",
+      "type": "string"
+    },
+    "ErrorCategory": {
+      "enum": [
+        "validation",
+        "conflict_stale",
+        "permission",
+        "rights_policy",
+        "resource_budget",
+        "provider",
+        "workflow",
+        "media",
+        "quality_blocker",
+        "internal"
+      ],
+      "title": "ErrorCategory",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "Typed diagnostic detail with an explicit disclosure boundary.",
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Data",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "visibility": {
+          "$ref": "#/$defs/DetailVisibility",
+          "default": "internal"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "ErrorEnvelope": {
+      "additionalProperties": false,
+      "description": "Internal error record that can be projected to a safe public DTO.",
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/ErrorCategory"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ErrorDetail"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "internal_message": {
+          "anyOf": [
+            {
+              "maxLength": 8192,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Internal Message"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remediation"
+        },
+        "request_id": {
+          "maxLength": 255,
+          "minLength": 8,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/@+-]+$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "resource": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResourceErrorRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/TraceId"
+        }
+      },
+      "required": [
+        "code",
+        "category",
+        "message",
+        "retryable",
+        "request_id",
+        "trace_id"
+      ],
+      "title": "ErrorEnvelope",
+      "type": "object"
+    },
+    "EventEnvelope": {
+      "additionalProperties": false,
+      "description": "Immutable fact emitted through the transactional outbox.",
+      "properties": {
+        "aggregate_id": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Aggregate Id",
+          "type": "string"
+        },
+        "aggregate_version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Aggregate Version",
+          "type": "integer"
+        },
+        "event_id": {
+          "format": "uuid4",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_type": {
+          "maxLength": 255,
+          "minLength": 3,
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)+$",
+          "title": "Event Type",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Payload",
+          "type": "object"
+        },
+        "producer": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Producer",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid4",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "schema_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/TraceId"
+        }
+      },
+      "required": [
+        "event_id",
+        "event_type",
+        "schema_version",
+        "aggregate_id",
+        "aggregate_version",
+        "project_id",
+        "occurred_at",
+        "producer",
+        "trace_id",
+        "payload"
+      ],
+      "title": "EventEnvelope",
+      "type": "object"
+    },
+    "EvidenceLink": {
+      "additionalProperties": false,
+      "description": "Traceable pointer from a conclusion to exact source evidence.",
+      "properties": {
+        "evidence_id": {
+          "format": "uuid4",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "evidence_type": {
+          "$ref": "#/$defs/EvidenceType"
+        },
+        "excerpt": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excerpt"
+        },
+        "frame_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrameRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "source_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "evidence_id",
+        "source",
+        "evidence_type"
+      ],
+      "title": "EvidenceLink",
+      "type": "object"
+    },
+    "EvidenceType": {
+      "enum": [
+        "dialogue",
+        "visual",
+        "ocr",
+        "audio",
+        "metadata",
+        "human_note"
+      ],
+      "title": "EvidenceType",
+      "type": "string"
+    },
+    "FrameRange": {
+      "additionalProperties": false,
+      "description": "Half-open frame interval within the referenced source artifact.",
+      "properties": {
+        "end_frame": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "End Frame",
+          "type": "integer"
+        },
+        "start_frame": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_frame",
+        "end_frame"
+      ],
+      "title": "FrameRange",
+      "type": "object"
+    },
+    "GuidelineManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Checksum Sha256",
+          "type": "string"
+        },
+        "content_ref": {
+          "title": "Content Ref",
+          "type": "string"
+        },
+        "frozen_at": {
+          "format": "date-time",
+          "title": "Frozen At",
+          "type": "string"
+        },
+        "guideline_id": {
+          "title": "Guideline Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "guideline_id",
+        "version",
+        "content_ref",
+        "checksum_sha256",
+        "frozen_at"
+      ],
+      "title": "GuidelineManifest",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "ProviderIdentity": {
+      "additionalProperties": false,
+      "description": "Reproducible identity and licensing snapshot for a provider invocation.",
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "implementation": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Implementation",
+          "type": "string"
+        },
+        "license": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "provider": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Provider",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "implementation",
+        "version",
+        "license"
+      ],
+      "title": "ProviderIdentity",
+      "type": "object"
+    },
+    "PublicErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "PublicErrorDetail",
+      "type": "object"
+    },
+    "PublicErrorEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/ErrorCategory"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PublicErrorDetail"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remediation"
+        },
+        "request_id": {
+          "maxLength": 255,
+          "minLength": 8,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/@+-]+$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "resource": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResourceErrorRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/TraceId"
+        }
+      },
+      "required": [
+        "code",
+        "category",
+        "message",
+        "retryable",
+        "request_id",
+        "trace_id"
+      ],
+      "title": "PublicErrorEnvelope",
+      "type": "object"
+    },
+    "RationalTime": {
+      "additionalProperties": false,
+      "description": "Exact media timestamp expressed as ticks at a rational rate.",
+      "properties": {
+        "rate_den": {
+          "default": 1,
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Rate Den",
+          "type": "integer"
+        },
+        "rate_num": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Rate Num",
+          "type": "integer"
+        },
+        "value": {
+          "maximum": 9223372036854775807,
+          "minimum": -9223372036854775808,
+          "title": "Value",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "value",
+        "rate_num"
+      ],
+      "title": "RationalTime",
+      "type": "object"
+    },
+    "ResourceErrorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "resource_id": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Resource Id",
+          "type": "string"
+        },
+        "resource_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Resource Type",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "maximum": 9223372036854775807,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "resource_type",
+        "resource_id"
+      ],
+      "title": "ResourceErrorRef",
+      "type": "object"
+    },
+    "RightsAndUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_purposes": {
+          "items": {
+            "$ref": "#/$defs/UsagePurpose"
+          },
+          "title": "Allowed Purposes",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "evidence_ref": {
+          "minLength": 1,
+          "title": "Evidence Ref",
+          "type": "string"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expires At"
+        },
+        "rights_status": {
+          "enum": [
+            "approved",
+            "restricted",
+            "unknown"
+          ],
+          "title": "Rights Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rights_status",
+        "allowed_purposes",
+        "evidence_ref"
+      ],
+      "title": "RightsAndUsage",
+      "type": "object"
+    },
+    "RightsGrantRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "format": "uuid4",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "RightsGrant",
+          "default": "RightsGrant",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version"
+      ],
+      "title": "RightsGrantRef",
+      "type": "object"
+    },
+    "RightsManifestRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "format": "uuid4",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "RightsManifest",
+          "default": "RightsManifest",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version"
+      ],
+      "title": "RightsManifestRef",
+      "type": "object"
+    },
+    "RightsMetadata": {
+      "additionalProperties": false,
+      "description": "Immutable rights snapshot evaluated against an explicit release context.",
+      "properties": {
+        "attribution_required": {
+          "default": false,
+          "title": "Attribution Required",
+          "type": "boolean"
+        },
+        "attribution_text": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribution Text"
+        },
+        "checked_at": {
+          "format": "date-time",
+          "title": "Checked At",
+          "type": "string"
+        },
+        "commercial_use": {
+          "default": false,
+          "title": "Commercial Use",
+          "type": "boolean"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "grant_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RightsGrantRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "license": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License"
+        },
+        "modification": {
+          "default": false,
+          "title": "Modification",
+          "type": "boolean"
+        },
+        "platforms": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Platforms",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "restrictions": {
+          "default": [],
+          "items": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Restrictions",
+          "type": "array"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "status": {
+          "$ref": "#/$defs/RightsStatus"
+        },
+        "synchronization": {
+          "default": false,
+          "title": "Synchronization",
+          "type": "boolean"
+        },
+        "territories": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Territories",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid From"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "status",
+        "checked_at"
+      ],
+      "title": "RightsMetadata",
+      "type": "object"
+    },
+    "RightsStatus": {
+      "enum": [
+        "unknown",
+        "cleared",
+        "restricted",
+        "expired",
+        "revoked"
+      ],
+      "title": "RightsStatus",
+      "type": "string"
+    },
+    "RiskClass": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskClass",
+      "type": "string"
+    },
+    "SliceCatalogManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "slices": {
+          "items": {
+            "$ref": "#/$defs/SliceDefinition"
+          },
+          "title": "Slices",
+          "type": "array"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "slices"
+      ],
+      "title": "SliceCatalogManifest",
+      "type": "object"
+    },
+    "SliceDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "selection_rule": {
+          "title": "Selection Rule",
+          "type": "string"
+        },
+        "severity_focus": {
+          "default": [],
+          "items": {
+            "enum": [
+              "S0",
+              "S1",
+              "S2",
+              "S3"
+            ],
+            "type": "string"
+          },
+          "title": "Severity Focus",
+          "type": "array"
+        },
+        "slice_id": {
+          "title": "Slice Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "slice_id",
+        "description",
+        "selection_rule"
+      ],
+      "title": "SliceDefinition",
+      "type": "object"
+    },
+    "TimeRange": {
+      "additionalProperties": false,
+      "description": "Half-open exact media interval ``[start, start + duration)``.",
+      "properties": {
+        "duration": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "start": {
+          "$ref": "#/$defs/RationalTime"
+        }
+      },
+      "required": [
+        "start",
+        "duration"
+      ],
+      "title": "TimeRange",
+      "type": "object"
+    },
+    "TraceId": {
+      "description": "W3C-compatible non-zero lowercase trace identifier.",
+      "pattern": "^[0-9a-f]{32}$",
+      "title": "TraceId",
+      "type": "string"
+    },
+    "UsagePurpose": {
+      "enum": [
+        "evaluation",
+        "tuning",
+        "training"
+      ],
+      "title": "UsagePurpose",
+      "type": "string"
+    }
+  },
+  "$id": "https://schemas.narratopro.local/contracts/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NarratoPro Contract Registry",
+  "x-registry-version": "1.0.0"
+}

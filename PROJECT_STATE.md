@@ -1,7 +1,7 @@
 # Project Current State
 
-State Version: 13
-Last Updated: 2026-08-11
+State Version: 14
+Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00 bootstrap completed, E01 contracts started.
 - Active Release Slice：R1 Foundation。
 - Active Epics：E01 Canonical Contracts。
-- Active Backlog Entry：B04 Schema Registry and Generation。
+- Active Backlog Entry：B05 Evaluation and Correction Contracts。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -32,6 +32,7 @@ State Owner: Project
 - B01 Foundation Value Objects：UUIDv4、ArtifactRef、RationalTime/TimeRange、Checksum、ActorRef、ProviderIdentity 已在 `packages/contracts` 唯一定义；immutable/forbid-extra 边界、canonical JSON 和 Hypothesis property tests 已通过。
 - B02 Evidence, Confidence and Rights：EvidenceLink/FrameRange、ConfidenceRecord/Factor/Status/Risk、RightsMetadata、RightsGrantRef/RightsManifestRef 已实现；shadow/unavailable/calibrated/drifted、score/scope、UTC 期限和 unknown/restricted rights 的 fail-closed 边界已验证。
 - B03 Command/Event/Error Envelopes：CommandEnvelope、EventEnvelope、ErrorEnvelope/PublicErrorEnvelope、稳定类型/版本/idempotency/trace 字段和显式 public/internal disclosure boundary 已实现；canonical JSON round-trip、redaction 与最小 breaking-change shape snapshot 已通过。
+- B04 Schema Registry and Generation：唯一版本化 Registry 已生成 38 个 JSON Schema/OpenAPI/TypeScript 类型和 70 个 Artifact Type；Catalog/owner 唯一性、unknown type、生成物漂移和 SemVer breaking-change 检查已接入 `make check`。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -39,7 +40,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- B04 起 Schema Registry/Generation、Artifact Envelope 和后续 Canonical Contracts；数据库 migrations 尚未开始。
+- B05 Evaluation/Correction Contracts 和后续 Persistence/Artifact 实现；数据库 migrations 尚未开始。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -50,9 +51,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 B04 Schema Registry and Generation。
-2. 输出唯一 JSON Schema、OpenAPI components、TypeScript types 和 Artifact Type Registry。
-3. 实现名称/owner 唯一性、unknown artifact type 和 breaking-change fail checks；吸收 B03 临时 shape snapshot，禁止并存两套 registry。
+1. 开始 B05 Evaluation and Correction Contracts。
+2. 实现 QualityEvent、Correction、DatasetManifest、EvaluationRun、CalibrationArtifact、ApplicableScope 和 RoutingDecision 基础契约。
+3. 完成 S0–S3、unresolved/disagreement、shadow/unavailable 和版本 lineage round-trip；所有新增 Contract 通过 B04 Registry minor 版本生成和兼容检查。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -110,6 +111,10 @@ State Owner: Project
 - B03 full check：Ruff format/lint、strict mypy、Bandit、Context/Architecture checks 全部通过；62 tests、93.86% coverage；`packages/contracts/envelopes.py` 100% coverage。
 - ADR-020 固定 Envelope identity、UTC/SemVer/JSON payload、W3C trace ID 和公共错误显式披露边界；内部诊断不会进入 PublicErrorEnvelope。
 - B03 完成，恢复点切换 B04；B03 仅保存最小 contract-shape snapshot，完整 Schema Registry/生成物尚未实现。
+- B04 full check：73 tests、89.63% coverage；Ruff、strict mypy、Bandit、Context/Architecture、生成物 freshness 全部通过；Registry 定向测试 12 项、Review Web 离线 TypeScript typecheck 通过。
+- Registry v1.0.0 生成 38 个 JSON Schema/OpenAPI components、38 个 TypeScript types、70 个 Artifact Type；设计 Catalog 与真实 package owner 一致。
+- ADR-021 固定单一版本化 Registry、不可覆盖历史、SemVer breaking rules 和跨语言 unknown Artifact Type fail-closed；B03 临时 shape snapshot 已吸收并删除。
+- B04 完成，恢复点切换 B05；ArtifactEnvelope payload、数据库 persistence 和业务 API 尚未实现。
 
 ---
 
