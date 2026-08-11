@@ -172,6 +172,22 @@ Fact 只表达可观察值并强制 Evidence；Story 的关键 Event 和 Edge �
 
 复议：只有真实实现证明 Contract 无法表达必要语义时复议；不得以 ORM、OTIO、FFprobe JSON 或模型输出替代 canonical Contract。
 
+## ADR-024 — PostgreSQL Transactional Artifact Core and Local Object Store
+
+决策：E02 使用 PostgreSQL 16 + SQLAlchemy Core 2 + Alembic 作为 Project/Run、Artifact/Version/Dependency、Command、Review/Correction、Policy/Config/Rights、Audit/Outbox 的事务真相源；`psycopg[binary]` 是首个 Python PostgreSQL 驱动。初始 revision `0001_e02` 绑定不可变 `baseline_v0001` metadata，后续 revision 禁止反向修改该快照。
+
+Artifact version commit 对 artifact identity 行加事务锁并执行 expected-latest CAS；payload/checksum/producer 不更新，active pointer 和 state transition 单独表达状态。Artifact 与 Outbox 在同一事务写入。依赖以 exact-version edge 保存，写入前做有界 cycle check；失效使用 project-scoped PostgreSQL advisory transaction lock、BFS closure 和不可变 InvalidationDecision，不物理删除下游产物。
+
+Object Store 通过 Port 隔离。首个 adapter 是同文件系统 LocalObjectStore：`staging/<run>/<activity>.part` 流式 SHA-256、fsync、content-addressed atomic rename；路径穿越、checksum mismatch 和已提交对象删除 fail closed。数据库 Blob staging/committed row 与对象提交通过可 reconcile 协议关联。扩展到 S3-compatible backend 时必须保持 checksum、commit visibility 和 orphan reconciliation 语义。
+
+Config/AutomationPolicy/ResourceProfile/Rights 使用不可变版本或 snapshot；publication pointer 使用 CAS，unknown rights 继续阻断 Release。Command idempotency 使用唯一 key + request checksum：同 key/同请求返回原记录，同 key/不同请求冲突。
+
+原因：E03–E05 需要可恢复、可并发、可追踪的真实持久化内核，SQLite 或应用层“先查后写”不能证明 PostgreSQL 约束和事务语义。Blob 与元数据职责分离，避免数据库存大媒体，也避免物理路径泄漏到领域 Contract。
+
+后果：E02 migration 必须在真实 PostgreSQL 执行 upgrade/downgrade/upgrade，并做 pg_dump/pg_restore 对账；生产数据库 downgrade/drop 仍需备份和审批。当前 LocalObjectStore 是正式单机 adapter，不代表 MinIO/S3 adapter 已完成。Python resolution lock 仍是供应链未决项。
+
+复议：只有 PostgreSQL/Object Store 实测容量、延迟或可靠性不满足目标时复议；不得牺牲 immutable lineage、CAS、transactional outbox 或 rights fail-closed。
+
 ---
 
 ## 2. ADR 变更流程

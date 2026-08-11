@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 16
+State Version: 17
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00 bootstrap and E01 canonical contracts completed; E02 started.
+- Lifecycle：Implementation active; E00–E02 completed; E03 started.
 - Active Release Slice：R1 Foundation。
-- Active Epics：E02 Artifact and Persistence Core。
-- Active Backlog Entry：C01 Database Baseline。
+- Active Epics：E03 Durable Workflow and Review。
+- Active Backlog Entry：D01 Temporal Bootstrap。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -35,6 +35,7 @@ State Owner: Project
 - B04 Schema Registry and Generation：唯一版本化 Registry 已生成 38 个 JSON Schema/OpenAPI/TypeScript 类型和 70 个 Artifact Type；Catalog/owner 唯一性、unknown type、生成物漂移和 SemVer breaking-change 检查已接入 `make check`。
 - B11 Evaluation and Correction Contracts（历史实现时称 B05）：QualityEvent、Correction、DatasetManifest、EvaluationRun、CalibrationArtifact、ApplicableScope 和 RoutingDecision 已进入唯一 Contract Registry；S0–S3、unresolved/disagreement、shadow/unavailable、版本 lineage 和 fail-closed routing 不变量已验证。Registry 兼容升级为 v1.1.0，保留 v1.0.0 审计版本。
 - E01 Contract 补全：B05 Artifact Envelope、B06 Media Catalog、B07 Fact/Evidence、B08 Story、B09 Strategy、B10 Timeline 已实现；原 Evaluation/Correction B05 在 canonical Backlog 中保留证据并重编号为 B11。Registry v1.2.0 包含 107 个 JSON Schema/OpenAPI/TypeScript components、70 个 Artifact Type，历史 v1.0.0/v1.1.0 不变。
+- E02 Artifact and Persistence Core：PostgreSQL/SQLAlchemy/Alembic baseline、Project/Run/Artifact/Blob/Dependency/Command/Review/Policy/Config/Rights/Audit/Outbox schemas、LocalObjectStore、Artifact/Blob/Command/Publication repositories、CAS、cycle check、失效闭包和备份恢复已实现并用真实 PostgreSQL 验收。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -42,7 +43,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- Persistence/Artifact 实现尚未开始；数据库 migrations 尚未开始。
+- Durable Workflow/Review、Master Timeline application 和媒体 Pipeline 尚未开始。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -53,9 +54,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 C01 Database Baseline。
-2. 固定 PostgreSQL schema、SQLAlchemy metadata 与 Alembic migration 基线，覆盖 Project、Run、Artifact、Dependency、Review、Correction、Policy 和 Outbox 核心表。
-3. 使用真实 PostgreSQL 验证 upgrade/downgrade/upgrade、唯一约束、外键和事务边界；不得让数据库模型复制或改变 canonical Contract 语义。
+1. 开始 E03/D01 Temporal Bootstrap。
+2. 建立 ProjectRunWorkflow、typed Activity envelope、Task Queue/Build ID 和 replay-safe 状态。
+3. 连接 Command/Outbox、Review/Correction Signal、Resource Admission 与 trace，执行 worker restart、retry、idempotency 和 wait-resume 验收。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -124,6 +125,11 @@ State Owner: Project
 - E01 B05–B10 补全 full check：97 tests、88.94% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 和 Review Web TypeScript typecheck 全部通过。
 - ADR-023 固定 Envelope/领域 payload 分离、canonical Artifact lifecycle、Fact→Story→Strategy grounding、唯一 MasterTimeline/Patch CAS 和跨域 Registry 演进边界。
 - E01 重新审计后完成，恢复点仍为 E02/C01；Envelope 无法独立检查的输入状态和版本单调性明确留给 E02 事务 Repository。
+- E02 full check：105 tests、83.96% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 和 Review Web TypeScript typecheck 通过。
+- E02 PostgreSQL acceptance：隔离库完成 Alembic upgrade→downgrade→upgrade；Artifact CAS 并发 1 winner、cycle rejected、2-node invalidation closure、4 ArtifactVersion/4 Outbox、Blob committed、idempotency/publication conflict rejected、EffectiveConfig 创建、unknown rights blocked。
+- E02 backup/restore：`pg_dump -Fc` 恢复到隔离库，对账 4 ArtifactVersion、4 Outbox、1 ConfigSnapshot、1 AssetRights。
+- ADR-024 固定 PostgreSQL transactional artifact core、不可变 migration snapshot、LocalObjectStore atomic commit、CAS/outbox/dependency/invalidation 和 Policy/Rights publication 语义。
+- E02 完成，恢复点切换 E03/D01；测试数据库仅为隔离验收数据，未触碰生产数据。
 
 ---
 

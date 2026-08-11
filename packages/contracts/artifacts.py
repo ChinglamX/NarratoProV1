@@ -75,7 +75,11 @@ class ArtifactEnvelope(StrictContract):
     def require_payload_and_identity_match(self) -> Self:
         if self.payload is None and self.payload_uri is None:
             raise ValueError("artifact requires payload or payload_uri")
-        if len(set(self.inputs)) != len(self.inputs):
+        input_keys = [
+            (item.artifact_id, item.version, item.artifact_type, str(item.checksum))
+            for item in self.inputs
+        ]
+        if len(set(input_keys)) != len(input_keys):
             raise ValueError("artifact inputs must be unique exact-version references")
         if any(
             item.artifact_id == self.artifact_id and item.version >= self.version
