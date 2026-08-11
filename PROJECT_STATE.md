@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 12
+State Version: 13
 Last Updated: 2026-08-11
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00 bootstrap completed, E01 contracts started.
 - Active Release Slice：R1 Foundation。
 - Active Epics：E01 Canonical Contracts。
-- Active Backlog Entry：B03 Command/Event/Error Envelopes。
+- Active Backlog Entry：B04 Schema Registry and Generation。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -31,6 +31,7 @@ State Owner: Project
 - A03 Local Infrastructure：PostgreSQL、Temporal、Temporal UI、MinIO、OTel、Prometheus 和 Grafana 固定版本已完成真实启动、HTTP readiness、全服务 restart 与 PostgreSQL/MinIO volume persistence 验收；支持串行在线拉取和 `--skip-pull` 离线验收。
 - B01 Foundation Value Objects：UUIDv4、ArtifactRef、RationalTime/TimeRange、Checksum、ActorRef、ProviderIdentity 已在 `packages/contracts` 唯一定义；immutable/forbid-extra 边界、canonical JSON 和 Hypothesis property tests 已通过。
 - B02 Evidence, Confidence and Rights：EvidenceLink/FrameRange、ConfidenceRecord/Factor/Status/Risk、RightsMetadata、RightsGrantRef/RightsManifestRef 已实现；shadow/unavailable/calibrated/drifted、score/scope、UTC 期限和 unknown/restricted rights 的 fail-closed 边界已验证。
+- B03 Command/Event/Error Envelopes：CommandEnvelope、EventEnvelope、ErrorEnvelope/PublicErrorEnvelope、稳定类型/版本/idempotency/trace 字段和显式 public/internal disclosure boundary 已实现；canonical JSON round-trip、redaction 与最小 breaking-change shape snapshot 已通过。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -38,7 +39,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- B03 起 Command/Event/Error Envelope、Artifact Envelope 和后续 Canonical Contracts；数据库 migrations 尚未开始。
+- B04 起 Schema Registry/Generation、Artifact Envelope 和后续 Canonical Contracts；数据库 migrations 尚未开始。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -49,9 +50,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 B03 Command/Event/Error Envelopes。
-2. 实现 stable error code、idempotency/trace fields、public redaction 和 JSON round-trip。
-3. 生成 breaking-change snapshot 前确认 B04 Schema Registry 的边界，避免在 B03 建第二套 registry。
+1. 开始 B04 Schema Registry and Generation。
+2. 输出唯一 JSON Schema、OpenAPI components、TypeScript types 和 Artifact Type Registry。
+3. 实现名称/owner 唯一性、unknown artifact type 和 breaking-change fail checks；吸收 B03 临时 shape snapshot，禁止并存两套 registry。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -106,6 +107,9 @@ State Owner: Project
 - B02 full check：Ruff format/lint、strict mypy、Bandit、Context/Architecture checks 全部通过；51 tests、92.43% coverage；定向 contracts tests 32 项通过。
 - ADR-019 固定 Confidence 与 Rights fail-closed 语义：unavailable 无 score、shadow 无生产 calibration、calibrated/drifted 关联版本；Rights 以显式 UTC 时间/平台/地域判断，unknown/restricted/expired/revoked 和未解释限制均阻断发布。
 - B02 完成，恢复点切换 B03；本轮未实现自动路由、RightsManifest payload 或 B05 ApplicableScope。
+- B03 full check：Ruff format/lint、strict mypy、Bandit、Context/Architecture checks 全部通过；62 tests、93.86% coverage；`packages/contracts/envelopes.py` 100% coverage。
+- ADR-020 固定 Envelope identity、UTC/SemVer/JSON payload、W3C trace ID 和公共错误显式披露边界；内部诊断不会进入 PublicErrorEnvelope。
+- B03 完成，恢复点切换 B04；B03 仅保存最小 contract-shape snapshot，完整 Schema Registry/生成物尚未实现。
 
 ---
 

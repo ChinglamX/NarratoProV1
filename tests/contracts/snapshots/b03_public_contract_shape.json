@@ -1,0 +1,76 @@
+{
+  "CommandEnvelope": {
+    "fields": [
+      "command_id",
+      "command_type",
+      "schema_version",
+      "project_id",
+      "run_id",
+      "actor",
+      "idempotency_key",
+      "expected_version",
+      "inputs",
+      "effective_config_ref",
+      "payload",
+      "requested_at"
+    ],
+    "required": [
+      "command_id",
+      "command_type",
+      "schema_version",
+      "project_id",
+      "actor",
+      "idempotency_key",
+      "payload",
+      "requested_at"
+    ]
+  },
+  "EventEnvelope": {
+    "fields": [
+      "event_id",
+      "event_type",
+      "schema_version",
+      "aggregate_id",
+      "aggregate_version",
+      "project_id",
+      "run_id",
+      "occurred_at",
+      "producer",
+      "trace_id",
+      "payload"
+    ],
+    "required": [
+      "event_id",
+      "event_type",
+      "schema_version",
+      "aggregate_id",
+      "aggregate_version",
+      "project_id",
+      "occurred_at",
+      "producer",
+      "trace_id",
+      "payload"
+    ]
+  },
+  "PublicErrorEnvelope": {
+    "fields": [
+      "code",
+      "category",
+      "message",
+      "retryable",
+      "details",
+      "request_id",
+      "trace_id",
+      "resource",
+      "remediation"
+    ],
+    "required": [
+      "code",
+      "category",
+      "message",
+      "retryable",
+      "request_id",
+      "trace_id"
+    ]
+  }
+}

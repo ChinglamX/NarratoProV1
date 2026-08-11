@@ -126,6 +126,16 @@ Version: 1.0
 
 复议：只在 B05 scope Schema 或法务权利模型提供兼容迁移时调整字段；不得放宽 unknown rights 的 Release blocker。
 
+## ADR-020 — Envelope Identity and Public Error Boundary
+
+决策：Command/Event payload 只接受 JSON object；schema_version 使用三段 SemVer；所有 envelope 时间使用 UTC。Command 以 command_id 和 client idempotency_key 标识意图，Event 以 event_id 作为消费者幂等键并携带 W3C 32 位非零 lowercase trace ID。内部 `ErrorEnvelope` 与 `PublicErrorEnvelope` 分离；只有显式标记 public 且不携带任意 data 的 ErrorDetail 可投影到公共响应，internal_message 和内部 data 永不投影。
+
+原因：确定性 JSON、稳定身份和时间语义支持 outbox/replay/跨语言消费；显式 disclosure boundary 比按关键词猜测 secret 更可审计。HTTP status 不替代稳定业务 error code。
+
+后果：provider raw response、stack、文件路径、签名 URL 和 secret 只能作为 internal detail/log artifact；公共 message/remediation 必须由调用方使用审核过的稳定文本。B03 保存最小字段形状快照用于发现破坏性变化；完整 JSON Schema/OpenAPI/TS registry 由 B04 唯一生成。
+
+复议：Trace Context 标准或跨语言兼容策略变化时通过版本迁移复议；不得把内部诊断重新并入公共 DTO。
+
 ---
 
 ## 2. ADR 变更流程
