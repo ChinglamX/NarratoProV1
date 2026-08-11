@@ -6,11 +6,9 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import Field, model_validator
 
-
-class StrictModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+from packages.contracts.base import StrictContract
 
 
 class DatasetSplit(StrEnum):
@@ -25,14 +23,14 @@ class UsagePurpose(StrEnum):
     TRAINING = "training"
 
 
-class RightsAndUsage(StrictModel):
+class RightsAndUsage(StrictContract):
     rights_status: Literal["approved", "restricted", "unknown"]
     allowed_purposes: frozenset[UsagePurpose]
     evidence_ref: str = Field(min_length=1)
     expires_at: datetime | None = None
 
 
-class DatasetItem(StrictModel):
+class DatasetItem(StrictContract):
     item_id: str = Field(pattern=r"^[a-zA-Z0-9_.-]+$")
     series_id: str = Field(min_length=1)
     episode_id: str = Field(min_length=1)
@@ -40,7 +38,7 @@ class DatasetItem(StrictModel):
     artifact_ref: str = Field(min_length=1)
 
 
-class DatasetSplitManifest(StrictModel):
+class DatasetSplitManifest(StrictContract):
     manifest_id: str
     version: str
     items: tuple[DatasetItem, ...]
@@ -66,14 +64,14 @@ class DatasetSplitManifest(StrictModel):
             raise ValueError("frozen_test data is prohibited for tuning")
 
 
-class SliceDefinition(StrictModel):
+class SliceDefinition(StrictContract):
     slice_id: str
     description: str
     selection_rule: str
     severity_focus: tuple[Literal["S0", "S1", "S2", "S3"], ...] = ()
 
 
-class SliceCatalogManifest(StrictModel):
+class SliceCatalogManifest(StrictContract):
     version: str
     slices: tuple[SliceDefinition, ...]
 
@@ -85,7 +83,7 @@ class SliceCatalogManifest(StrictModel):
         return self
 
 
-class GuidelineManifest(StrictModel):
+class GuidelineManifest(StrictContract):
     guideline_id: str
     version: str
     content_ref: str
@@ -93,7 +91,7 @@ class GuidelineManifest(StrictModel):
     frozen_at: datetime
 
 
-class CalibrationPackManifest(StrictModel):
+class CalibrationPackManifest(StrictContract):
     pack_id: str
     version: str
     status: Literal["draft", "registered", "frozen", "deprecated"]

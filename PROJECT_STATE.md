@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 10
+State Version: 11
 Last Updated: 2026-08-11
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00 bootstrap completed, E01 contracts started.
 - Active Release Slice：R1 Foundation。
 - Active Epics：E01 Canonical Contracts。
-- Active Backlog Entry：B01 Foundation Value Objects。
+- Active Backlog Entry：B02 Evidence, Confidence and Rights。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -29,6 +29,7 @@ State Owner: Project
 - A05 Calibration Manifest Bootstrap：Pack/Dataset/Split/Slice/Guideline/Rights contracts 和空 Pack v1 registry 已实现；split leakage 与 Frozen Test 防误用测试通过。
 - A06 Context Integrity Bootstrap：required files、Index links、State↔Epic/Backlog、Handoff、Cold-start Drill 已进入本地和 CI 检查。
 - A03 Local Infrastructure：PostgreSQL、Temporal、Temporal UI、MinIO、OTel、Prometheus 和 Grafana 固定版本已完成真实启动、HTTP readiness、全服务 restart 与 PostgreSQL/MinIO volume persistence 验收；支持串行在线拉取和 `--skip-pull` 离线验收。
+- B01 Foundation Value Objects：UUIDv4、ArtifactRef、RationalTime/TimeRange、Checksum、ActorRef、ProviderIdentity 已在 `packages/contracts` 唯一定义；immutable/forbid-extra 边界、canonical JSON 和 Hypothesis property tests 已通过。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -36,7 +37,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- B01 起 Canonical Contracts 和数据库 migrations 实现；B01 当前仅进入 active，尚未编码。
+- B02 起 Evidence/Confidence/Rights、Artifact Envelope 和后续 Canonical Contracts；数据库 migrations 尚未开始。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -47,9 +48,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 B01 Foundation Value Objects：UUID、ArtifactRef、RationalTime/TimeRange、Checksum、ActorRef、ProviderIdentity。
-2. 完成 canonical serialization、边界和 property tests。
-3. 随后进入 B02 Evidence、Confidence 与 Rights contracts。
+1. 开始 B02 Evidence、Confidence 与 Rights contracts。
+2. 实现 unavailable/shadow、scope、invalid score 与 unknown rights 的 fail-closed 边界测试。
+3. 保持 B01 canonical value objects 为唯一引用，不在 B02 重复定义基础类型。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -98,6 +99,9 @@ State Owner: Project
 - 代理隔离实验：Docker Desktop API 确认原模式为 `system`，macOS 系统代理为 `127.0.0.1:7890`；临时 `disabled` 后 registry manifest HEAD 超时，未改善拉取。已中止重试、恢复原设置并重启 Docker；最终 API=`system`、settings-store backup cmp=0、daemon 正常、项目 container/volume 为空。A03 仍未通过。
 - A03 final acceptance：使用 checksum 验证的 `crane v0.20.3` 经宿主代理导入 Prometheus/Grafana arm64 固定镜像；Prometheus 来自官方 Quay 渠道并保留 digest。`scripts/accept_local_infra.py --skip-pull` 两次通过，第二次自动验证启动/重启后的 Temporal UI、OTel、Prometheus、Grafana HTTP readiness 及 PostgreSQL/MinIO persistence。
 - 最终运行态：七个 Compose 服务运行；PostgreSQL、MinIO、Prometheus、Grafana 四个 named volume 存在；Prometheus host port 因 ClashX 9090 冲突改为配置驱动的默认 `19090`。本地 `.env` 未被 Git 跟踪。
+- B01 full check：Ruff format/lint、strict mypy、Bandit、Context/Architecture checks 全部通过；32 tests、93.26% coverage；Hypothesis 对 checksum 任意 bytes、rational rate 约分和 exact rescale 执行 property tests。
+- B01 runtime regression：Compose 七项服务仍运行，PostgreSQL/Temporal/MinIO health 正常；本次未修改 runtime 数据或配置。
+- ADR-018 固定 UUIDv4、rational time、`sha256:<digest>` 和 canonical JSON 表示；B01 完成，恢复点切换 B02。
 
 ---
 

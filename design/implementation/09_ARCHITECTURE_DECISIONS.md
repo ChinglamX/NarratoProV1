@@ -106,6 +106,16 @@ Version: 1.0
 
 复议：目标运行平台改变、供应链策略要求统一 resolver，或实测服务版本存在不兼容。
 
+## ADR-018 — Canonical Foundation Value Representation
+
+决策：项目内部 ID 统一使用 UUIDv4 并由 Contract 边界拒绝其他 UUID 版本；媒体时间持久化为 `value:int64 + rate_num/rate_den`，rate 必须为正且约分为唯一形式；checksum 使用 `sha256:<64 lowercase hex>` 字符串。公共 Pydantic Contract 为 immutable、forbid-extra，并使用 UTF-8、sorted-key、无空白、禁止 NaN 的 canonical JSON。
+
+原因：Python 3.11 原生稳定支持 UUIDv4，无需为 UUIDv7 引入运行依赖；精确 rational time 避免浮点漂移；字符串 checksum 与既有 Artifact/API 契约兼容；唯一序列化可作为内容寻址、幂等和 replay 的稳定输入。
+
+后果：需要可排序 ID 的存储查询必须使用显式时间/序列列，不能依赖 UUID 顺序；外部历史 ID 进入系统前必须迁移为 UUIDv4；非整 tick 的 rate 转换 fail closed，不做隐式舍入。未来支持其他 checksum 算法或 UUIDv7 属 Contract 变更，必须带兼容迁移。
+
+复议：数据库实测证明 UUIDv4 索引局部性成为瓶颈，或跨系统标准强制 UUIDv7/其他 digest；复议不得改变已有 ArtifactRef 的解释。
+
 ---
 
 ## 2. ADR 变更流程
