@@ -206,6 +206,20 @@ Confidence 和人工 Correction 在 E03 只记录 Shadow calibration example。�
 
 复议：只有真实吞吐/可用性证据证明 Temporal/PostgreSQL outbox 或 lease controller 不满足目标时复议；不得取消 DB-first、Release human、immutable correction 或 replay guarantee。
 
+## ADR-026 — Canonical Timeline, OTIO Loss Boundary and Preview Toolchain
+
+决策：`MasterTimeline` 是内部唯一剪辑真相，精确时间继续使用整数 tick + rational rate；Validator、semantic Patch、Diff、rebase 和 RenderPlan compiler 为无状态纯逻辑。同一 Timeline 以 Artifact active pointer CAS 提交不可变后继版本；旧 base 修改不同 Item 可在 expected item version 未变时语义 rebase，触及相同 Item 必须返回 Conflict，禁止 last-write-wins。
+
+OpenTimelineIO 固定 `0.18.1`，仅作为交换边界，不替代内部 Schema。标准 Clip/Track/Range/Transition 映射到 OTIO，NarratoPro identity/evidence/dependency/rights 字段保存在 `com.narratopro.v1` metadata；导入缺失或无效 metadata 必须输出 `LossReport`，不得覆盖 canonical/approved Timeline。
+
+首个 Timeline Preview toolchain 固定宿主 FFmpeg/FFprobe `8.1.2`。同一 TimelineRef、ProfileRef、toolchain version 生成确定性 RenderPlan checksum。Foundation Preview 使用固定色画面、测试音、ASS sidecar，输出 H.264/AAC 720×1280；Temporal Activity 只接收 exact pointer，从 PostgreSQL 加载 Timeline，渲染后持久化独立 PreviewVideo Artifact、generation dependency 和 outbox，再等待人工 Timeline Checkpoint。
+
+原因：剪辑语义不能由 FFmpeg 命令、OTIO 文件或 UI 本地状态反向定义；精确时间、Item identity、并发冲突和 loss accounting 是后续节奏、解说、音频、字幕与最终渲染一致性的地基。
+
+后果：OTIO/FFmpeg 升级必须做 golden round-trip、history replay、RenderPlan checksum migration 和真实 QC。当前 Homebrew FFmpeg 未包含 libass filter，因此 Foundation Preview 保留 ASS sidecar而不伪称已 burn-in；Stage 5 字幕生产必须使用经许可且具备 libass/字体控制的锁定构建。Fake Preview 证明接口和恢复性，不代表成片质量能力。
+
+复议：只有实际编辑器互操作或媒体兼容基准证明当前版本不足时复议；不得引入第二套 Timeline 真相或静默丢失 metadata。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

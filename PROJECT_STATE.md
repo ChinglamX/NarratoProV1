@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 18
+State Version: 19
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E03 completed; E04 started.
-- Active Release Slice：R1 Foundation。
-- Active Epics：E04 Master Timeline Core。
-- Active Backlog Entry：E01 Master Timeline Domain。
+- Lifecycle：Implementation active; E00–E04 completed; E05 started.
+- Active Release Slice：R2 Story Intelligence（当前仅 Media Ingest 子切片）。
+- Active Epics：E05 Media Ingest Vertical Slice。
+- Active Backlog Entry：F01 Ingest Registration and Rights Snapshot。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -37,6 +37,7 @@ State Owner: Project
 - E01 Contract 补全：B05 Artifact Envelope、B06 Media Catalog、B07 Fact/Evidence、B08 Story、B09 Strategy、B10 Timeline 已实现；原 Evaluation/Correction B05 在 canonical Backlog 中保留证据并重编号为 B11。Registry v1.2.0 包含 107 个 JSON Schema/OpenAPI/TypeScript components、70 个 Artifact Type，历史 v1.0.0/v1.1.0 不变。
 - E02 Artifact and Persistence Core：PostgreSQL/SQLAlchemy/Alembic baseline、Project/Run/Artifact/Blob/Dependency/Command/Review/Policy/Config/Rights/Audit/Outbox schemas、LocalObjectStore、Artifact/Blob/Command/Publication repositories、CAS、cycle check、失效闭包和备份恢复已实现并用真实 PostgreSQL 验收。
 - E03 Durable Workflow and Review：Temporal ProjectRunWorkflow、typed Activity envelope、retry/heartbeat/non-retryable mapping、worker wait/restart/replay、Command/Run outbox、Review/Correction API、first-wins/RBAC/CAS、Resource Admission leases、trace/redaction/metric label policy 和 Confidence Shadow correction example 已实现；真实 Temporal 与 PostgreSQL/API 验收通过。
+- E04 Master Timeline Core：唯一 MasterTimeline domain validator、semantic Patch/Diff/rebase、PostgreSQL successor/CAS、OTIO 0.18.1 adapter/LossReport、deterministic RenderPlan、FFmpeg 8.1.2 fake Preview、ASS sidecar、Temporal Preview Workflow、Preview Artifact lineage/QC 和人工 Checkpoint 已实现并真实验收。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -44,7 +45,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- Master Timeline application 和媒体 Pipeline 尚未开始。
+- 媒体 Ingest、Speech、Visual、Identity、Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -55,9 +56,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 E04/E01 Master Timeline Domain。
-2. 实现内部 Timeline domain、RationalTime invariants、canonical serialization 和 golden fixtures。
-3. 继续 E02 Patch/Validator/Diff、E03 OTIO adapter、E04 fake preview workflow 与 E05 foundation acceptance harness。
+1. 开始 E05/F01 Ingest Registration and Rights Snapshot。
+2. 建立 streaming source identity、rights snapshot、duplicate/import policy 和可恢复 ingest command。
+3. 继续 F02 probe/time mapping、F03 derivatives、F04 Scene/Shot baseline、F05 Catalog API/Review/demo acceptance。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -80,8 +81,8 @@ State Owner: Project
 ## 6. 未决决策
 
 - Python resolution lock 工具选择（要求不改变 PEP 621 package source）。
-- A03 同时提供本地文件系统路径和 MinIO；E02 必须决定首个正式 Object Store adapter 的默认实现。
-- FFmpeg 首个生产锁定版本仍需在 E04/E05 media acceptance 中确定。
+- MinIO/S3 adapter 及共享多机 Object Store 切换条件；单机默认已由 ADR-024 固定为 LocalObjectStore。
+- FFmpeg 8.1.2 已作为首个 Timeline/Preview 验收 toolchain；E05 需验证真实 ingest/probe 的编解码覆盖，不得静默漂移版本。
 
 未决决策必须通过证据、兼容性和 ADR 解决，不能由 Agent 默认偏好静默决定。
 
@@ -136,6 +137,11 @@ State Owner: Project
 - E03 PostgreSQL/API acceptance：Command idempotency、Run start outbox、Correction preview/apply CAS、Review first-wins、Release human RBAC 全部通过；使用隔离 `narratopro_e02_acceptance` 数据库，未触碰主数据库。
 - ADR-025 固定 replay-safe Workflow、DB-first outbox reconciliation、human Release、lease admission、low-cardinality telemetry 和 Shadow-only confidence/correction semantics。
 - E03 完成，恢复点切换 E04/E01 Master Timeline Domain。
+- E04 full check：143 tests，80.06% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 和 Review Web TypeScript 全通过。
+- E04 real acceptance：PostgreSQL semantic Patch version 1→2、disjoint old-base Patch 自动 rebase 至 version 3、same-item old-base Patch 409；OTIO round-trip lossless。
+- E04 Preview acceptance：Temporal Activity 从 exact Timeline Artifact v3 加载，FFmpeg 8.1.2 输出 720×1280 H.264/AAC 与 ASS sidecar，Preview Artifact/Dependency/Outbox 持久化，人工 Timeline Checkpoint 后 Workflow succeeded。
+- ADR-026 固定唯一内部 MasterTimeline、semantic optimistic concurrency、OTIO loss boundary、deterministic RenderPlan、FFmpeg 8.1.2 和 Preview Artifact lineage。
+- E04 完成，R1 Foundation 退出；恢复点切换 E05/F01。E05 只代表 Media Ingest，不得报告 Story Intelligence 已完成。
 
 ---
 

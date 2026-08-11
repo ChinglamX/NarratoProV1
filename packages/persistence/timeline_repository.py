@@ -1,0 +1,143 @@
+"""Persistence primitives for optimistic Master Timeline successor commits."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any
+from uuid import UUID, uuid4
+
+from sqlalchemy import Connection, and_, insert, select, update
+from sqlalchemy.exc import IntegrityError
+
+import packages.persistence.schema as schema
+
+
+class TimelineStorageConflict(RuntimeError):
+    pass
+
+
+@dataclass(frozen=True, slots=True)
+class TimelineSnapshot:
+    version: int
+    payload: dict[str, Any]
+    schema_version: str
+    run_id: UUID
+    variant_id: UUID | None
+    producer: dict[str, Any]
+    rights_class: str
+
+
+class TimelineRepository:
+    def lock_and_load(
+        self,
+        connection: Connection,
+        *,
+        artifact_id: UUID,
+        base_version: int,
+    ) -> tuple[TimelineSnapshot, TimelineSnapshot]:
+        pointer = connection.execute(
+            select(schema.active_pointer)
+            .where(schema.active_pointer.c.artifact_id == artifact_id)
+            .with_for_update()
+        ).first()
+        if pointer is None:
+            raise TimelineStorageConflict("timeline does not exist")
+        current_version = int(pointer.version)
+        rows = {
+            int(row["version"]): row
+            for row in connection.execute(
+                select(schema.artifact_version).where(
+                    and_(
+                        schema.artifact_version.c.artifact_id == artifact_id,
+                        schema.artifact_version.c.version.in_({base_version, current_version}),
+                    )
+                )
+            )
+            .mappings()
+            .all()
+        }
+        if base_version not in rows or current_version not in rows:
+            raise TimelineStorageConflict("timeline base/current version is unavailable")
+
+        def snapshot(version: int) -> TimelineSnapshot:
+            row = rows[version]
+            payload = row["payload_json"]
+            if not isinstance(payload, dict):
+                raise TimelineStorageConflict("timeline JSON payload is unavailable")
+            return TimelineSnapshot(
+                version,
+                dict(payload),
+                str(row["schema_version"]),
+                row["run_id"],
+                row["variant_id"],
+                dict(row["producer_json"]),
+                str(row["rights_class"]),
+            )
+
+        return snapshot(base_version), snapshot(current_version)
+
+    def commit(
+        self,
+        connection: Connection,
+        *,
+        artifact_id: UUID,
+        current: TimelineSnapshot,
+        payload: dict[str, Any],
+        checksum: str,
+        patch_id: UUID,
+        rebased: bool,
+        trace_id: str,
+    ) -> int:
+        next_version = current.version + 1
+        try:
+            connection.execute(
+                insert(schema.artifact_version).values(
+                    artifact_id=artifact_id,
+                    version=next_version,
+                    schema_version=current.schema_version,
+                    run_id=current.run_id,
+                    variant_id=current.variant_id,
+                    state="committed",
+                    payload_json=payload,
+                    checksum=checksum,
+                    producer_json={
+                        "kind": "timeline_patch",
+                        "patch_id": str(patch_id),
+                        "source_producer": current.producer,
+                    },
+                    rights_class=current.rights_class,
+                    trace_id=trace_id,
+                )
+            )
+            updated = connection.execute(
+                update(schema.active_pointer)
+                .where(
+                    and_(
+                        schema.active_pointer.c.artifact_id == artifact_id,
+                        schema.active_pointer.c.version == current.version,
+                    )
+                )
+                .values(
+                    version=next_version,
+                    row_version=schema.active_pointer.c.row_version + 1,
+                )
+            )
+            if updated.rowcount != 1:
+                raise TimelineStorageConflict("timeline active pointer CAS failed")
+            connection.execute(
+                insert(schema.outbox_event).values(
+                    id=uuid4(),
+                    aggregate_id=str(artifact_id),
+                    event_type="timeline.patched",
+                    payload_json={
+                        "artifact_id": str(artifact_id),
+                        "version": next_version,
+                        "patch_id": str(patch_id),
+                        "rebased": rebased,
+                    },
+                    trace_id=trace_id,
+                )
+            )
+        except IntegrityError as error:
+            raise TimelineStorageConflict("timeline version commit conflicted") from error
+        return next_version

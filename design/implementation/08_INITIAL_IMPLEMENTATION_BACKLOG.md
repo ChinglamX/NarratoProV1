@@ -238,6 +238,40 @@ Version: 1.0
 
 自动执行 crash、retry、duplicate、stale、migration/restore、disk watermark 和 replay。
 
+---
+
+## 7. Sprint Group F — Media Ingest Vertical Slice
+
+### F01 Ingest Registration and Rights Snapshot
+
+实现 source registration、streaming checksum、content identity、rights snapshot、duplicate policy 和 upload/import command。
+
+验收：同内容幂等、同名不同内容不混淆、unknown/restricted rights fail closed、导入中断可恢复。
+
+### F02 Technical Probe and Source Time Mapping
+
+实现固定 FFprobe adapter、stream/timebase/VFR/rotation/color/audio metadata 和 source clock mapping。
+
+验收：正常、VFR、旋转、多音轨、无音频、截断/损坏输入；probe raw response 可追踪且不泄漏到领域 Contract。
+
+### F03 Proxy Audio and Frame Derivatives
+
+实现 proxy、audio extraction、frame sample plan/execution、checksum、source↔derived exact mapping 和 cache/retry。
+
+验收：派生物可重建、时间映射误差有界、重复 Activity 幂等、部分输出不会被发布。
+
+### F04 Scene Shot Baseline
+
+实现 PySceneDetect baseline、Shot/Scene catalog、source-quality features 和人工 split/merge correction。
+
+验收：cut/fade/静态/快速运动 fixture、边界证据、Correction successor 和精准失效。
+
+### F05 Media Catalog API Review and Demo Acceptance
+
+实现 Media Catalog query/review API、Temporal ingest workflow、资源准入、trace/QC 和 demo/合法 fixture 验收。
+
+验收：真实资产 ingest、source↔proxy/frame/audio mapping、Worker restart、并发项目公平、损坏媒体 fail closed；不宣称 Speech/Visual/Story 已实现。
+
 验收：Stage 1 Acceptance Report 自动生成并由人签收。
 
 ---
