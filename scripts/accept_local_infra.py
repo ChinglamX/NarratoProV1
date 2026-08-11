@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import http.client
 import subprocess  # nosec B404
 import time
 from collections.abc import Sequence
@@ -19,6 +20,12 @@ SERVICES = (
     "grafana",
 )
 IMAGE_PULL_ATTEMPTS = 5
+HTTP_READINESS = (
+    ("temporal-ui", 8080, "/"),
+    ("otel-collector", 8889, "/metrics"),
+    ("prometheus", 9090, "/-/ready"),
+    ("grafana", 3000, "/api/health"),
+)
 
 
 def execute(command: Sequence[str]) -> None:
@@ -62,7 +69,24 @@ def pull_image(image: str) -> None:
             time.sleep(delay_seconds)
 
 
-def accept(root: Path, env_file: Path) -> None:
+def probe_http_readiness(compose: Sequence[str]) -> None:
+    for service, container_port, path in HTTP_READINESS:
+        address = capture([*compose, "port", service, str(container_port)]).strip()
+        host, separator, port = address.rpartition(":")
+        if not separator or not host or not port.isdigit():
+            raise RuntimeError(f"Invalid published address for {service}: {address!r}")
+        connection = http.client.HTTPConnection(host, int(port), timeout=10)
+        try:
+            connection.request("GET", path)
+            response = connection.getresponse()
+            response.read()
+        finally:
+            connection.close()
+        if not 200 <= response.status < 300:
+            raise RuntimeError(f"Readiness probe failed for {service}: HTTP {response.status}")
+
+
+def accept(root: Path, env_file: Path, *, pull: bool = True) -> None:
     compose = compose_command(root, env_file)
     execute([*compose, "config", "--quiet"])
     images = tuple(
@@ -73,8 +97,12 @@ def accept(root: Path, env_file: Path) -> None:
     if not images:
         raise RuntimeError("Compose config resolved no infrastructure images")
     for image in images:
-        pull_image(image)
+        if pull:
+            pull_image(image)
+        else:
+            execute(["docker", "image", "inspect", "--format={{.Id}}", image])
     execute([*compose, "up", "-d", "--wait", "--pull", "never"])
+    probe_http_readiness(compose)
     execute(
         [
             *compose,
@@ -103,6 +131,7 @@ def accept(root: Path, env_file: Path) -> None:
     )
     execute([*compose, "restart", *SERVICES])
     execute([*compose, "up", "-d", "--wait", "--pull", "never"])
+    probe_http_readiness(compose)
     execute(
         [
             *compose,
@@ -139,8 +168,13 @@ def main() -> int:
         default=Path("deploy/compose/.env.example"),
         help="local-only Compose env file",
     )
+    parser.add_argument(
+        "--skip-pull",
+        action="store_true",
+        help="require locally cached images and never contact a registry",
+    )
     args = parser.parse_args()
-    accept(args.root.resolve(), args.env_file.resolve())
+    accept(args.root.resolve(), args.env_file.resolve(), pull=not args.skip_pull)
     print("A03 local infrastructure acceptance: passed")
     return 0
 

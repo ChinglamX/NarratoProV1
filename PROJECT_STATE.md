@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 9
+State Version: 10
 Last Updated: 2026-08-11
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation started; E00 bootstrap in runtime acceptance.
+- Lifecycle：Implementation active; E00 bootstrap completed, E01 contracts started.
 - Active Release Slice：R1 Foundation。
-- Active Epics：E00 Engineering Bootstrap。
-- Active Backlog Entry：A03 Local Infrastructure runtime acceptance。
+- Active Epics：E01 Canonical Contracts。
+- Active Backlog Entry：B01 Foundation Value Objects。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -28,6 +28,7 @@ State Owner: Project
 - A04 Configuration Bootstrap：typed settings、secret-safe summary、PostgreSQL/fail-fast production 校验已实现。
 - A05 Calibration Manifest Bootstrap：Pack/Dataset/Split/Slice/Guideline/Rights contracts 和空 Pack v1 registry 已实现；split leakage 与 Frozen Test 防误用测试通过。
 - A06 Context Integrity Bootstrap：required files、Index links、State↔Epic/Backlog、Handoff、Cold-start Drill 已进入本地和 CI 检查。
+- A03 Local Infrastructure：PostgreSQL、Temporal、Temporal UI、MinIO、OTel、Prometheus 和 Grafana 固定版本已完成真实启动、HTTP readiness、全服务 restart 与 PostgreSQL/MinIO volume persistence 验收；支持串行在线拉取和 `--skip-pull` 离线验收。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -35,8 +36,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- A03 PostgreSQL/Temporal/Object Store/OTel/Prometheus/Grafana 已有固定版本 Compose 配置和可恢复的串行镜像拉取，但尚未完成全部镜像拉取、真实启动、health/restart/persistence 验收。
-- B01 起 Canonical Contracts 和数据库 migrations 实现。
+- B01 起 Canonical Contracts 和数据库 migrations 实现；B01 当前仅进入 active，尚未编码。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -47,9 +47,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 完成 A03 Local Infrastructure runtime acceptance：真实启动、health/readiness、restart 和 volume persistence。
-2. 保存 A01–A06 实施 checkpoint 与 Handoff。
-3. 开始 B01 Foundation Value Objects，随后 B02–B05。
+1. 开始 B01 Foundation Value Objects：UUID、ArtifactRef、RationalTime/TimeRange、Checksum、ActorRef、ProviderIdentity。
+2. 完成 canonical serialization、边界和 property tests。
+3. 随后进入 B02 Evidence、Confidence 与 Rights contracts。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -59,8 +59,7 @@ State Owner: Project
 
 - 初始设计基线 tag `architecture-baseline-v1.0.0` 指向 `de4e31c`；A01–A06 当前 checkpoint 以本 State 所在 Git revision 为准。
 - Python resolution lock 尚未建立；Web 已生成 `pnpm-lock.yaml`。
-- A03 只通过 Compose 静态解析，真实基础设施验收仍未执行。
-- Docker Desktop 已启动；PostgreSQL、Temporal、Temporal UI、MinIO、OTel 固定镜像已缓存，Prometheus blob 下载持续 EOF，Grafana 尚未开始。未创建项目容器或 volume。网络恢复后重试 A03，不更换未验证镜像规避失败。
+- Docker daemon 直接拉取大型镜像仍可能受 system proxy EOF 影响；A03 已通过宿主代理 + 校验后的 `crane` 离线导入完成。正式自动化环境应使用稳定 registry mirror 或预置镜像，而不是依赖临时 `/tmp` 工具。
 - 后续诊断确认宿主可访问 Registry，Docker daemon 使用 `http.docker.internal:3128` 代理并在 CloudFront blob 下载时 EOF；不得静默修改全局 Docker 代理。
 - 2026-08-11 经用户授权临时将 Docker Desktop `vm.proxy.mode` 从 `system` 切换为 `disabled`：daemon 直连 `registry-1.docker.io` 持续 `context deadline exceeded`，证明当前环境不能依靠直连绕过代理。实验后已恢复 `system`，settings-store 与实验前备份逐字一致。
 - 经用户授权临时关闭 containerd image store：Temporal 镜像下载成功，但 Compose 并行拉取随后使 daemon 无响应；已恢复原设置并重启 Docker。不得重复该路径或把部分镜像下载当作 A03 验收。
@@ -97,6 +96,8 @@ State Owner: Project
 - 2026-08-11 A03 recovery：验收脚本改为从 Compose 动态读取镜像、去重后串行拉取、每镜像最多 5 次指数退避，并以 `--pull never` 启动；PostgreSQL probe 改用容器有效配置。定向测试 4 项通过。
 - 串行恢复已缓存 `postgres:16.4`、`temporalio/auto-setup:1.25.2`、`temporalio/ui:2.31.2`、`minio/minio:RELEASE.2024-11-07T00-52-20Z`、`otel/opentelemetry-collector-contrib:0.113.0`；`prom/prometheus:v2.55.1` 连续两轮有界重试仍在 Docker Hub/CloudFront blob 请求 EOF，故未进入服务启动。Docker 29.5.3 正常，项目 container/volume 为空。
 - 代理隔离实验：Docker Desktop API 确认原模式为 `system`，macOS 系统代理为 `127.0.0.1:7890`；临时 `disabled` 后 registry manifest HEAD 超时，未改善拉取。已中止重试、恢复原设置并重启 Docker；最终 API=`system`、settings-store backup cmp=0、daemon 正常、项目 container/volume 为空。A03 仍未通过。
+- A03 final acceptance：使用 checksum 验证的 `crane v0.20.3` 经宿主代理导入 Prometheus/Grafana arm64 固定镜像；Prometheus 来自官方 Quay 渠道并保留 digest。`scripts/accept_local_infra.py --skip-pull` 两次通过，第二次自动验证启动/重启后的 Temporal UI、OTel、Prometheus、Grafana HTTP readiness 及 PostgreSQL/MinIO persistence。
+- 最终运行态：七个 Compose 服务运行；PostgreSQL、MinIO、Prometheus、Grafana 四个 named volume 存在；Prometheus host port 因 ClashX 9090 冲突改为配置驱动的默认 `19090`。本地 `.env` 未被 Git 跟踪。
 
 ---
 

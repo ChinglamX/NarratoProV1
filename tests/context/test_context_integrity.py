@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from shutil import copytree
 
@@ -43,11 +44,14 @@ def test_missing_required_file_fails_closed(tmp_path: Path) -> None:
 def test_unknown_active_task_fails_closed(tmp_path: Path) -> None:
     root = context_copy(tmp_path)
     state = root / "PROJECT_STATE.md"
-    state.write_text(
-        state.read_text().replace(
-            "A03 Local Infrastructure runtime acceptance", "A99 Imaginary Task"
-        )
+    changed, replacements = re.subn(
+        r"(?m)^- Active Backlog Entry\uff1a.+\u3002$",
+        "- Active Backlog Entry\uff1aA99 Imaginary Task\u3002",
+        state.read_text(),
+        count=1,
     )
+    assert replacements == 1
+    state.write_text(changed)
     errors, _ = check(root)
     assert "active Task not found in backlog: A99" in errors
 
