@@ -7,6 +7,15 @@ from packages.contracts.calibration import (
     SliceCatalogManifest,
     SliceDefinition,
 )
+from packages.contracts.evidence import (
+    ConfidenceFactor,
+    ConfidenceRecord,
+    ConfidenceStatus,
+    EvidenceLink,
+    EvidenceType,
+    FrameRange,
+    RiskClass,
+)
 from packages.contracts.foundation import (
     UUID,
     ActorKind,
@@ -17,6 +26,12 @@ from packages.contracts.foundation import (
     RationalTime,
     TimeRange,
 )
+from packages.contracts.rights import (
+    RightsGrantRef,
+    RightsManifestRef,
+    RightsMetadata,
+    RightsStatus,
+)
 
 __all__ = [
     "UUID",
@@ -25,10 +40,21 @@ __all__ = [
     "ArtifactRef",
     "CalibrationPackManifest",
     "Checksum",
+    "ConfidenceFactor",
+    "ConfidenceRecord",
+    "ConfidenceStatus",
     "DatasetSplitManifest",
+    "EvidenceLink",
+    "EvidenceType",
+    "FrameRange",
     "GuidelineManifest",
     "ProviderIdentity",
     "RationalTime",
+    "RightsGrantRef",
+    "RightsManifestRef",
+    "RightsMetadata",
+    "RightsStatus",
+    "RiskClass",
     "SliceCatalogManifest",
     "SliceDefinition",
     "TimeRange",

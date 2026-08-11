@@ -116,6 +116,16 @@ Version: 1.0
 
 复议：数据库实测证明 UUIDv4 索引局部性成为瓶颈，或跨系统标准强制 UUIDv7/其他 digest；复议不得改变已有 ArtifactRef 的解释。
 
+## ADR-019 — Confidence and Rights Fail-Closed Semantics
+
+决策：`ConfidenceRecord` 的 score 仅允许 0–1 有限值；unavailable 不携带 score/calibration，shadow 不得声明生产 calibration，calibrated 必须引用 calibration version，所有状态必须声明 method 和 applicable scope。`RightsMetadata` 是不可变授权快照；cleared 必须包含来源、license、typed RightsGrantRef、地域和平台范围。发布资格必须由调用者提供显式 UTC 时间、平台和地域进行确定性判断，unknown/restricted/expired/revoked 一律产生 blocker。
+
+原因：Confidence 是可解释评估而非授权；权利检查优先于分数并必须可审计、可重放。禁止读取系统当前时间可保证 Workflow replay 和历史 Release Review 一致。
+
+后果：B02 不实现自动路由，也不把 shadow score 当通过条件；完整 `ApplicableScope` 留给 B05，当前使用非空稳定 scope 描述。Rights scope 缺失不解释为全球授权，必须显式登记。后续 RightsGrant/RightsManifest payload Schema 在保留 typed ref 兼容性的前提下扩展。
+
+复议：只在 B05 scope Schema 或法务权利模型提供兼容迁移时调整字段；不得放宽 unknown rights 的 Release blocker。
+
 ---
 
 ## 2. ADR 变更流程
