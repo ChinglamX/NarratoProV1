@@ -6,6 +6,10 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from packages.foundation.settings import get_settings
+from workflows.project import ProjectRunWorkflow, execute_conformance_activity
+
+CONTROL_TASK_QUEUE = "control"
+WORKER_BUILD_ID = "narratopro-e03-v1"
 
 
 async def serve() -> None:
@@ -14,7 +18,14 @@ async def serve() -> None:
         settings.temporal_target,
         namespace=settings.temporal_namespace,
     )
-    worker = Worker(client, task_queue="control", workflows=[], activities=[])
+    worker = Worker(
+        client,
+        task_queue=CONTROL_TASK_QUEUE,
+        workflows=[ProjectRunWorkflow],
+        activities=[execute_conformance_activity],
+        build_id=WORKER_BUILD_ID,
+        use_worker_versioning=False,
+    )
     await worker.run()
 
 

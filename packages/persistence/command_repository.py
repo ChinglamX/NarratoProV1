@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 from uuid import UUID
 
-from sqlalchemy import Connection, insert, select
+from sqlalchemy import Connection, insert, select, update
 from sqlalchemy.exc import IntegrityError
 
 import packages.persistence.schema as schema
@@ -78,3 +78,21 @@ class CommandRepository:
                 state=existing["state"],
                 response=existing["response_json"],
             )
+
+    def complete(
+        self,
+        connection: Connection,
+        *,
+        command_id: UUID,
+        workflow_id: str | None,
+        response: dict[str, Any],
+    ) -> None:
+        connection.execute(
+            update(schema.command)
+            .where(schema.command.c.id == command_id)
+            .values(
+                state="accepted",
+                workflow_id=workflow_id,
+                response_json=response,
+            )
+        )

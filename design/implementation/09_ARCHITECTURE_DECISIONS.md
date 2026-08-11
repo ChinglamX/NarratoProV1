@@ -190,6 +190,22 @@ Config/AutomationPolicy/ResourceProfile/Rights 使用不可变版本或 snapshot
 
 ---
 
+## ADR-025 — Durable Workflow, DB-first Review and Shadow Automation
+
+决策：E03 使用 Temporal `ProjectRunWorkflow` 保存可重放的小状态与 exact Artifact pointer；所有外部 I/O 仅在 Activity 执行。Activity 使用稳定 execution key、显式 timeout/heartbeat/retry 和 non-retryable error type。Worker restart 后由 Temporal history 恢复，Workflow signal 按 `review_id` first-wins 去重；breaking Workflow 修改必须先做 history replay。
+
+Command、Run、Review Decision、Correction 和其 outbox event 先在 PostgreSQL 同事务提交，再由 reconciler 启动 Workflow 或发送 Signal。Temporal 暂时不可用时 API 返回 accepted/delivery_pending，禁止“先 Signal 后落库”。Review target 使用 expected version；Correction 只创建不可变后继版本并用 active pointer CAS，不接受整份 payload 覆盖。Release 仅允许 human `release_approver`，service account 永远不能批准发布。
+
+资源准入使用 queue capacity + project in-flight + CPU/GPU/memory/disk/cost 水位和有界 lease；未知 queue 或超预算 fail closed，过期 lease 可恢复。日志透传 trace context 并递归脱敏；metrics labels 使用固定低基数 allowlist，Project/Run/Artifact/Workflow/Trace ID 禁止作为 label。
+
+Confidence 和人工 Correction 在 E03 只记录 Shadow calibration example。缺少 model/prompt/config version 时明确 `incomplete`，不得猜测补齐；任何 shadow example 均无 routing authority。Automation 保持 L1，Release 保持人工。
+
+原因：durable orchestration、审计事务和人工 Gate 是后续 Timeline/Media/AI pipeline 可恢复、可校准的共同底座；将业务 payload 塞入 history、先发送 Signal 或用未校准 confidence 路由会产生不可重建状态与质量风险。
+
+后果：outbox dispatcher 的生产常驻进程和 dashboards 会随部署切片继续增强，但持久语义不得改变。Workflow 演进需保留 replay fixture；资源容量需按真实 workload 校准；L2/L3 仍需 E12 的数据和审批。
+
+复议：只有真实吞吐/可用性证据证明 Temporal/PostgreSQL outbox 或 lease controller 不满足目标时复议；不得取消 DB-first、Release human、immutable correction 或 replay guarantee。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。
