@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from pydantic.json_schema import models_json_schema
 
 from packages.contracts.artifact_catalog import ARTIFACT_TYPE_SPECS, validate_artifact_catalog
+from packages.contracts.artifacts import ArtifactDependency, ArtifactEnvelope, ProducerRecord
 from packages.contracts.calibration import (
     CalibrationPackManifest,
     DatasetSplitManifest,
@@ -44,6 +45,7 @@ from packages.contracts.evidence import (
     EvidenceLink,
     FrameRange,
 )
+from packages.contracts.facts import EvidenceBundle, Fact, FactSet, SourceQualityFeatureSet
 from packages.contracts.foundation import (
     ActorRef,
     ArtifactRef,
@@ -52,16 +54,41 @@ from packages.contracts.foundation import (
     RationalTime,
     TimeRange,
 )
+from packages.contracts.media import (
+    EpisodeCatalog,
+    FrameSamplePlan,
+    MediaAsset,
+    MediaTechnicalMetadata,
+    SceneShotCatalog,
+)
 from packages.contracts.rights import (
     RightsGrantRef,
     RightsManifestRef,
     RightsMetadata,
 )
+from packages.contracts.story import Character, Event, StoryArc, StoryEdge, StoryGraph
+from packages.contracts.strategy import (
+    CreativeBrief,
+    HookCandidate,
+    SellingPoint,
+    SellingPointSet,
+    StrategyCandidateSet,
+    StrategyDirection,
+)
+from packages.contracts.timeline import (
+    MasterTimeline,
+    TimelineConflict,
+    TimelineItem,
+    TimelinePatch,
+    TimelineTrack,
+)
 
-REGISTRY_VERSION = "1.1.0"
+REGISTRY_VERSION = "1.2.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApplicableScope,
+    ArtifactDependency,
+    ArtifactEnvelope,
     ArtifactRef,
     CalibrationArtifact,
     CalibrationPackManifest,
@@ -70,18 +97,30 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ConfidenceFactor,
     ConfidenceRecord,
     Correction,
+    CreativeBrief,
     DatasetManifest,
     DatasetSplitManifest,
     ErrorDetail,
     ErrorEnvelope,
+    EpisodeCatalog,
     EventEnvelope,
+    Event,
     EvaluationRun,
+    EvidenceBundle,
     EvidenceLink,
     FrameRange,
+    FrameSamplePlan,
+    Fact,
+    FactSet,
     GuidelineManifest,
+    HookCandidate,
+    MasterTimeline,
+    MediaAsset,
+    MediaTechnicalMetadata,
     ProviderIdentity,
     PublicErrorDetail,
     PublicErrorEnvelope,
+    ProducerRecord,
     QualityEvent,
     RationalTime,
     ResourceErrorRef,
@@ -89,8 +128,22 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     RightsManifestRef,
     RightsMetadata,
     RoutingDecision,
+    SceneShotCatalog,
+    SellingPoint,
+    SellingPointSet,
     SliceCatalogManifest,
     SliceDefinition,
+    SourceQualityFeatureSet,
+    StoryArc,
+    StoryEdge,
+    StoryGraph,
+    StrategyCandidateSet,
+    StrategyDirection,
+    Character,
+    TimelineConflict,
+    TimelineItem,
+    TimelinePatch,
+    TimelineTrack,
     TimeRange,
     TraceId,
 )

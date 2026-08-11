@@ -84,7 +84,43 @@ Version: 1.0
 
 验收：名称唯一、owner 存在、未知 type 和 breaking change 失败。
 
-### B05 Evaluation and Correction Contracts
+### B05 Artifact Envelope
+
+实现 ArtifactEnvelope、ProducerRecord、ArtifactDependency、canonical lifecycle 和 exact-version refs。
+
+验收：payload/URI、UTC、checksum、self/future dependency、canonical round-trip。
+
+### B06 Media Catalog Contracts
+
+实现 MediaAsset/Technical Metadata、EpisodeCatalog、SceneShotCatalog 和 FrameSamplePlan。
+
+验收：source/derived lineage、stream/timebase、episode/segment identity、采样计划 round-trip。
+
+### B07 Fact/Evidence Contracts
+
+实现 Fact/FactSet、EvidenceBundle 和 SourceQualityFeatureSet。
+
+验收：观察事实必须有 Evidence、unavailable/incomplete 显式、ID/source 一致性。
+
+### B08 Story Contracts
+
+实现 Character、Event、StoryEdge/Arc、UnresolvedQuestion 和 StoryGraph。
+
+验收：关键事件/边必须有 Evidence，人物/事件/Arc 引用闭合，未知引用 fail closed。
+
+### B09 Strategy Contracts
+
+实现 SellingPoint/Set、NarrativeBeatIntent、HookCandidate、StrategyDirection/Set 和 CreativeBrief。
+
+验收：Story/Evidence grounding、Hook continuation、时长与结构、候选非伪多样性。
+
+### B10 Timeline Contracts
+
+实现 MasterTimeline、Track/Item/Marker、TimelinePatch/Operation 和 TimelineConflict。
+
+验收：唯一 Master Timeline 边界、全局 item identity、source pairing、Patch CAS 和 round-trip。
+
+### B11 Evaluation and Correction Contracts
 
 实现 QualityEvent、Correction、DatasetManifest、EvaluationRun、CalibrationArtifact、ApplicableScope 和 RoutingDecision 基础契约。
 

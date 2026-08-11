@@ -1,0 +1,5097 @@
+{
+  "$defs": {
+    "ActorKind": {
+      "enum": [
+        "human",
+        "model",
+        "system"
+      ],
+      "title": "ActorKind",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "description": "Auditable identity of the human, model, or system issuing an action.",
+      "properties": {
+        "id": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ActorKind"
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ApplicableScope": {
+      "additionalProperties": false,
+      "description": "Exact domain in which calibration and routing claims are valid.",
+      "properties": {
+        "config_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Config Version",
+          "type": "string"
+        },
+        "genres": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Genres",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "languages": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Languages",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "model_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model Version",
+          "type": "string"
+        },
+        "module": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Module",
+          "type": "string"
+        },
+        "output_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Output Type",
+          "type": "string"
+        },
+        "platforms": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Platforms",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "prompt_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt Version"
+        },
+        "provider": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Provider",
+          "type": "string"
+        },
+        "risk_classes": {
+          "items": {
+            "$ref": "#/$defs/RiskClass"
+          },
+          "title": "Risk Classes",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "schema_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "task": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Task",
+          "type": "string"
+        }
+      },
+      "required": [
+        "module",
+        "task",
+        "output_type",
+        "provider",
+        "model_version",
+        "config_version",
+        "schema_version",
+        "genres",
+        "languages",
+        "platforms",
+        "risk_classes"
+      ],
+      "title": "ApplicableScope",
+      "type": "object"
+    },
+    "ArtifactDependency": {
+      "additionalProperties": false,
+      "properties": {
+        "dependency_type": {
+          "$ref": "#/$defs/DependencyType"
+        },
+        "downstream": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "invalidation_rule": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Invalidation Rule",
+          "type": "string"
+        },
+        "upstream": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "upstream",
+        "downstream",
+        "dependency_type",
+        "invalidation_rule"
+      ],
+      "title": "ArtifactDependency",
+      "type": "object"
+    },
+    "ArtifactEnvelope": {
+      "additionalProperties": false,
+      "description": "Metadata shared by every persisted immutable business artifact.",
+      "properties": {
+        "artifact_id": {
+          "format": "uuid4",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "enum": [
+            "ASSArtifact",
+            "AlignmentArtifact",
+            "ApplicableScope",
+            "AudioAssetSelection",
+            "AudioStem",
+            "AutomationPolicy",
+            "CalibrationArtifact",
+            "CausalGraph",
+            "CharacterStateGraph",
+            "ClipCandidateSet",
+            "ConfigArtifact",
+            "ConflictSet",
+            "CorrectionDataset",
+            "CreativeBrief",
+            "CropPath",
+            "DatasetManifest",
+            "DriftReport",
+            "EffectiveConfigSnapshot",
+            "EpisodeCatalog",
+            "EvaluationRun",
+            "EventSet",
+            "EvidenceBundle",
+            "ExperimentPlan",
+            "ExperimentResult",
+            "FactSet",
+            "FinalCandidate",
+            "FrameSamplePlan",
+            "GraphicsCueSet",
+            "HookCandidateSet",
+            "IdentityConflict",
+            "IdentityGraph",
+            "MasterTimeline",
+            "MediaProbe",
+            "MixPlan",
+            "MixedAudio",
+            "NarrationLineSet",
+            "NarrativeBeatGraph",
+            "OCRObservation",
+            "OTIOExport",
+            "PatchProposal",
+            "PerformanceWindow",
+            "PreviewManifest",
+            "ProxyMedia",
+            "ProxyRender",
+            "QualityEventSet",
+            "QualityReview",
+            "ReleaseRecord",
+            "ReleaseReviewPackage",
+            "RenderExecutionReport",
+            "RenderPlan",
+            "ResourceProfile",
+            "RhythmPlan",
+            "RightsGrant",
+            "RightsManifest",
+            "RoutingDecision",
+            "SceneShotCatalog",
+            "SellingPointSet",
+            "SourceMedia",
+            "SourceQualityFeatureSet",
+            "SpeechObservation",
+            "StoryGraph",
+            "StrategyCandidateSet",
+            "StrategyComparisonPackage",
+            "SubtitleCueSet",
+            "TechnicalQCReport",
+            "Tracklet",
+            "VariantPlan",
+            "VisualObservation",
+            "VoiceAsset",
+            "VoiceTakeSet"
+          ],
+          "pattern": "^[A-Z][A-Za-z0-9]{0,127}$",
+          "title": "ArtifactType",
+          "type": "string"
+        },
+        "checksum": {
+          "$ref": "#/$defs/Checksum"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "created_by": {
+          "$ref": "#/$defs/ActorRef"
+        },
+        "inputs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "payload": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Payload"
+        },
+        "payload_uri": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Payload Uri"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRecord"
+        },
+        "project_id": {
+          "format": "uuid4",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "rights_class": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Rights Class",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid4",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ArtifactState"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/TraceId"
+        },
+        "variant_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variant Id"
+        },
+        "version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "artifact_type",
+        "schema_version",
+        "version",
+        "project_id",
+        "run_id",
+        "state",
+        "created_at",
+        "created_by",
+        "producer",
+        "checksum",
+        "rights_class",
+        "trace_id"
+      ],
+      "title": "ArtifactEnvelope",
+      "type": "object"
+    },
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "description": "Immutable reference to one exact artifact version.",
+      "properties": {
+        "artifact_id": {
+          "format": "uuid4",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "enum": [
+            "ASSArtifact",
+            "AlignmentArtifact",
+            "ApplicableScope",
+            "AudioAssetSelection",
+            "AudioStem",
+            "AutomationPolicy",
+            "CalibrationArtifact",
+            "CausalGraph",
+            "CharacterStateGraph",
+            "ClipCandidateSet",
+            "ConfigArtifact",
+            "ConflictSet",
+            "CorrectionDataset",
+            "CreativeBrief",
+            "CropPath",
+            "DatasetManifest",
+            "DriftReport",
+            "EffectiveConfigSnapshot",
+            "EpisodeCatalog",
+            "EvaluationRun",
+            "EventSet",
+            "EvidenceBundle",
+            "ExperimentPlan",
+            "ExperimentResult",
+            "FactSet",
+            "FinalCandidate",
+            "FrameSamplePlan",
+            "GraphicsCueSet",
+            "HookCandidateSet",
+            "IdentityConflict",
+            "IdentityGraph",
+            "MasterTimeline",
+            "MediaProbe",
+            "MixPlan",
+            "MixedAudio",
+            "NarrationLineSet",
+            "NarrativeBeatGraph",
+            "OCRObservation",
+            "OTIOExport",
+            "PatchProposal",
+            "PerformanceWindow",
+            "PreviewManifest",
+            "ProxyMedia",
+            "ProxyRender",
+            "QualityEventSet",
+            "QualityReview",
+            "ReleaseRecord",
+            "ReleaseReviewPackage",
+            "RenderExecutionReport",
+            "RenderPlan",
+            "ResourceProfile",
+            "RhythmPlan",
+            "RightsGrant",
+            "RightsManifest",
+            "RoutingDecision",
+            "SceneShotCatalog",
+            "SellingPointSet",
+            "SourceMedia",
+            "SourceQualityFeatureSet",
+            "SpeechObservation",
+            "StoryGraph",
+            "StrategyCandidateSet",
+            "StrategyComparisonPackage",
+            "SubtitleCueSet",
+            "TechnicalQCReport",
+            "Tracklet",
+            "VariantPlan",
+            "VisualObservation",
+            "VoiceAsset",
+            "VoiceTakeSet"
+          ],
+          "pattern": "^[A-Z][A-Za-z0-9]{0,127}$",
+          "title": "ArtifactType",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version",
+        "artifact_type"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "ArtifactState": {
+      "enum": [
+        "staging",
+        "committed",
+        "approved",
+        "stale",
+        "superseded",
+        "blocked",
+        "deleted_logically"
+      ],
+      "title": "ArtifactState",
+      "type": "string"
+    },
+    "AudioStream": {
+      "additionalProperties": false,
+      "properties": {
+        "channel_layout": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Channel Layout"
+        },
+        "channels": {
+          "exclusiveMinimum": 0,
+          "title": "Channels",
+          "type": "integer"
+        },
+        "codec": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Codec",
+          "type": "string"
+        },
+        "sample_rate": {
+          "exclusiveMinimum": 0,
+          "title": "Sample Rate",
+          "type": "integer"
+        },
+        "stream_index": {
+          "minimum": 0,
+          "title": "Stream Index",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "stream_index",
+        "codec",
+        "sample_rate",
+        "channels"
+      ],
+      "title": "AudioStream",
+      "type": "object"
+    },
+    "CalibrationArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "approved_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved At"
+        },
+        "approved_by": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActorRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "calibration": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "code_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Code Version",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dataset_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "evaluation_run_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "feature_schema_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Feature Schema Version",
+          "type": "string"
+        },
+        "method": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Method",
+          "type": "string"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Metrics",
+          "type": "object"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "scope": {
+          "$ref": "#/$defs/ApplicableScope"
+        },
+        "status": {
+          "$ref": "#/$defs/CalibrationLifecycle"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "calibration",
+        "version",
+        "status",
+        "method",
+        "scope",
+        "dataset_ref",
+        "evaluation_run_ref",
+        "feature_schema_version",
+        "code_version",
+        "metrics",
+        "created_at"
+      ],
+      "title": "CalibrationArtifact",
+      "type": "object"
+    },
+    "CalibrationLifecycle": {
+      "enum": [
+        "shadow",
+        "candidate",
+        "approved",
+        "drifted",
+        "deprecated",
+        "revoked"
+      ],
+      "title": "CalibrationLifecycle",
+      "type": "string"
+    },
+    "CalibrationPackManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dataset_manifest_ref": {
+          "title": "Dataset Manifest Ref",
+          "type": "string"
+        },
+        "guideline_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Guideline Refs",
+          "type": "array"
+        },
+        "pack_id": {
+          "title": "Pack Id",
+          "type": "string"
+        },
+        "parent_pack_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Pack Ref"
+        },
+        "rights": {
+          "$ref": "#/$defs/RightsAndUsage"
+        },
+        "slice_catalog_ref": {
+          "title": "Slice Catalog Ref",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "registered",
+            "frozen",
+            "deprecated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pack_id",
+        "version",
+        "status",
+        "dataset_manifest_ref",
+        "guideline_refs",
+        "slice_catalog_ref",
+        "rights",
+        "created_at"
+      ],
+      "title": "CalibrationPackManifest",
+      "type": "object"
+    },
+    "Character": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "default": [],
+          "items": {
+            "maxLength": 512,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        },
+        "character_id": {
+          "format": "uuid4",
+          "title": "Character Id",
+          "type": "string"
+        },
+        "display_name": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Display Name",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "identity_links": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/IdentityLink"
+          },
+          "title": "Identity Links",
+          "type": "array"
+        }
+      },
+      "required": [
+        "character_id",
+        "display_name",
+        "evidence"
+      ],
+      "title": "Character",
+      "type": "object"
+    },
+    "Checksum": {
+      "description": "Content checksum encoded as ``algorithm:lowercase-hex-digest``.",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "CommandEnvelope": {
+      "additionalProperties": false,
+      "description": "Persistable intent accepted by the command boundary.",
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorRef"
+        },
+        "command_id": {
+          "format": "uuid4",
+          "title": "Command Id",
+          "type": "string"
+        },
+        "command_type": {
+          "maxLength": 255,
+          "minLength": 3,
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)+$",
+          "title": "Command Type",
+          "type": "string"
+        },
+        "effective_config_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "expected_version": {
+          "anyOf": [
+            {
+              "maximum": 9223372036854775807,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Version"
+        },
+        "idempotency_key": {
+          "maxLength": 255,
+          "minLength": 8,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/@+-]+$",
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "inputs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "payload": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Payload",
+          "type": "object"
+        },
+        "project_id": {
+          "format": "uuid4",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "requested_at": {
+          "format": "date-time",
+          "title": "Requested At",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "schema_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "command_id",
+        "command_type",
+        "schema_version",
+        "project_id",
+        "actor",
+        "idempotency_key",
+        "payload",
+        "requested_at"
+      ],
+      "title": "CommandEnvelope",
+      "type": "object"
+    },
+    "ConfidenceFactor": {
+      "additionalProperties": false,
+      "description": "One explainable factor supporting or opposing a confidence estimate.",
+      "properties": {
+        "code": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JsonValue"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "code",
+        "description"
+      ],
+      "title": "ConfidenceFactor",
+      "type": "object"
+    },
+    "ConfidenceRecord": {
+      "additionalProperties": false,
+      "description": "Scoped confidence estimate; never an authorization to auto-release.",
+      "properties": {
+        "applicable_scope": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Applicable Scope",
+          "type": "string"
+        },
+        "calibration_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Calibration Version"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "method": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "opposing_factors": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConfidenceFactor"
+          },
+          "title": "Opposing Factors",
+          "type": "array"
+        },
+        "risk_class": {
+          "$ref": "#/$defs/RiskClass"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Score"
+        },
+        "status": {
+          "$ref": "#/$defs/ConfidenceStatus"
+        },
+        "supporting_factors": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConfidenceFactor"
+          },
+          "title": "Supporting Factors",
+          "type": "array"
+        }
+      },
+      "required": [
+        "score",
+        "status",
+        "method",
+        "applicable_scope",
+        "risk_class"
+      ],
+      "title": "ConfidenceRecord",
+      "type": "object"
+    },
+    "ConfidenceStatus": {
+      "enum": [
+        "shadow",
+        "calibrated",
+        "unavailable",
+        "drifted"
+      ],
+      "title": "ConfidenceStatus",
+      "type": "string"
+    },
+    "Correction": {
+      "additionalProperties": false,
+      "description": "Immutable semantic change between two exact artifact versions.",
+      "properties": {
+        "after": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "before": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "blocker": {
+          "title": "Blocker",
+          "type": "boolean"
+        },
+        "config_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Config Version",
+          "type": "string"
+        },
+        "consent_recorded": {
+          "title": "Consent Recorded",
+          "type": "boolean"
+        },
+        "correction_id": {
+          "format": "uuid4",
+          "title": "Correction Id",
+          "type": "string"
+        },
+        "correction_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Correction Type",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dependency_impact": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Dependency Impact",
+          "type": "array"
+        },
+        "dimension": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Dimension",
+          "type": "string"
+        },
+        "eligibility": {
+          "$ref": "#/$defs/CorrectionEligibility"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Version"
+        },
+        "module": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Module",
+          "type": "string"
+        },
+        "policy_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "profile_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Profile Version",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid4",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "prompt_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt Version"
+        },
+        "reason": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "reason_taxonomy": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Reason Taxonomy",
+          "type": "array"
+        },
+        "reviewer": {
+          "$ref": "#/$defs/ActorRef"
+        },
+        "run_id": {
+          "format": "uuid4",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantic_operation": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Semantic Operation",
+          "type": "object"
+        },
+        "severity": {
+          "$ref": "#/$defs/QualitySeverity"
+        },
+        "source_correction_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Correction Id"
+        },
+        "target_after": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "target_before": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "target_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "variant_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variant Id"
+        }
+      },
+      "required": [
+        "correction_id",
+        "project_id",
+        "run_id",
+        "module",
+        "dimension",
+        "correction_type",
+        "target_before",
+        "target_after",
+        "semantic_operation",
+        "before",
+        "after",
+        "reason_taxonomy",
+        "reason",
+        "severity",
+        "blocker",
+        "config_version",
+        "profile_version",
+        "policy_version",
+        "reviewer",
+        "created_at",
+        "eligibility",
+        "consent_recorded"
+      ],
+      "title": "Correction",
+      "type": "object"
+    },
+    "CorrectionEligibility": {
+      "enum": [
+        "training",
+        "evaluation_only",
+        "prohibited",
+        "unresolved"
+      ],
+      "title": "CorrectionEligibility",
+      "type": "string"
+    },
+    "CreativeBrief": {
+      "additionalProperties": false,
+      "properties": {
+        "approved_by_ref": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Approved By Ref",
+          "type": "string"
+        },
+        "hard_constraints": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Hard Constraints",
+          "type": "object"
+        },
+        "narrative_spine": {
+          "items": {
+            "$ref": "#/$defs/NarrativeBeatIntent"
+          },
+          "title": "Narrative Spine",
+          "type": "array"
+        },
+        "selected_hook_id": {
+          "format": "uuid4",
+          "title": "Selected Hook Id",
+          "type": "string"
+        },
+        "selected_strategy_id": {
+          "format": "uuid4",
+          "title": "Selected Strategy Id",
+          "type": "string"
+        },
+        "soft_preferences": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Soft Preferences",
+          "type": "object"
+        },
+        "strategy_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "target_duration": {
+          "$ref": "#/$defs/RationalTime"
+        }
+      },
+      "required": [
+        "strategy_ref",
+        "selected_strategy_id",
+        "selected_hook_id",
+        "target_duration",
+        "narrative_spine",
+        "hard_constraints",
+        "soft_preferences",
+        "approved_by_ref"
+      ],
+      "title": "CreativeBrief",
+      "type": "object"
+    },
+    "DatasetItem": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "minLength": 1,
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "episode_id": {
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "item_id": {
+          "pattern": "^[a-zA-Z0-9_.-]+$",
+          "title": "Item Id",
+          "type": "string"
+        },
+        "series_id": {
+          "minLength": 1,
+          "title": "Series Id",
+          "type": "string"
+        },
+        "split": {
+          "$ref": "#/$defs/DatasetSplit"
+        }
+      },
+      "required": [
+        "item_id",
+        "series_id",
+        "episode_id",
+        "split",
+        "artifact_ref"
+      ],
+      "title": "DatasetItem",
+      "type": "object"
+    },
+    "DatasetManifest": {
+      "additionalProperties": false,
+      "description": "Immutable feedback dataset snapshot with complete source lineage.",
+      "properties": {
+        "content_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Content Checksum",
+          "type": "string"
+        },
+        "correction_refs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Correction Refs",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dataset": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "generated_by_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Generated By Version",
+          "type": "string"
+        },
+        "guideline_refs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Guideline Refs",
+          "type": "array"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_schema_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Schema Version",
+          "type": "string"
+        },
+        "split_manifest": {
+          "$ref": "#/$defs/DatasetSplitManifest"
+        },
+        "taxonomy_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Taxonomy Version",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset",
+        "version",
+        "split_manifest",
+        "correction_refs",
+        "guideline_refs",
+        "taxonomy_version",
+        "source_schema_version",
+        "generated_by_version",
+        "content_checksum",
+        "created_at"
+      ],
+      "title": "DatasetManifest",
+      "type": "object"
+    },
+    "DatasetSplit": {
+      "enum": [
+        "train",
+        "validation",
+        "frozen_test"
+      ],
+      "title": "DatasetSplit",
+      "type": "string"
+    },
+    "DatasetSplitManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/DatasetItem"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "manifest_id": {
+          "title": "Manifest Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "manifest_id",
+        "version",
+        "items"
+      ],
+      "title": "DatasetSplitManifest",
+      "type": "object"
+    },
+    "DependencyType": {
+      "enum": [
+        "semantic",
+        "timing",
+        "media",
+        "config",
+        "rights"
+      ],
+      "title": "DependencyType",
+      "type": "string"
+    },
+    "DetailVisibility": {
+      "enum": [
+        "public",
+        "internal"
+      ],
+      "title": "DetailVisibility",
+      "type": "string"
+    },
+    "DetectionStatus": {
+      "enum": [
+        "detected",
+        "corrected",
+        "approved"
+      ],
+      "title": "DetectionStatus",
+      "type": "string"
+    },
+    "Episode": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "format": "uuid4",
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "sequence": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "series_id": {
+          "format": "uuid4",
+          "title": "Series Id",
+          "type": "string"
+        },
+        "source_media_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "title": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "episode_id",
+        "series_id",
+        "sequence",
+        "title",
+        "source_media_ref"
+      ],
+      "title": "Episode",
+      "type": "object"
+    },
+    "EpisodeCatalog": {
+      "additionalProperties": false,
+      "properties": {
+        "episodes": {
+          "items": {
+            "$ref": "#/$defs/Episode"
+          },
+          "title": "Episodes",
+          "type": "array"
+        },
+        "series_id": {
+          "format": "uuid4",
+          "title": "Series Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "series_id",
+        "episodes"
+      ],
+      "title": "EpisodeCatalog",
+      "type": "object"
+    },
+    "ErrorCategory": {
+      "enum": [
+        "validation",
+        "conflict_stale",
+        "permission",
+        "rights_policy",
+        "resource_budget",
+        "provider",
+        "workflow",
+        "media",
+        "quality_blocker",
+        "internal"
+      ],
+      "title": "ErrorCategory",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "Typed diagnostic detail with an explicit disclosure boundary.",
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Data",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "visibility": {
+          "$ref": "#/$defs/DetailVisibility",
+          "default": "internal"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "ErrorEnvelope": {
+      "additionalProperties": false,
+      "description": "Internal error record that can be projected to a safe public DTO.",
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/ErrorCategory"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ErrorDetail"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "internal_message": {
+          "anyOf": [
+            {
+              "maxLength": 8192,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Internal Message"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remediation"
+        },
+        "request_id": {
+          "maxLength": 255,
+          "minLength": 8,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/@+-]+$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "resource": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResourceErrorRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/TraceId"
+        }
+      },
+      "required": [
+        "code",
+        "category",
+        "message",
+        "retryable",
+        "request_id",
+        "trace_id"
+      ],
+      "title": "ErrorEnvelope",
+      "type": "object"
+    },
+    "EvaluationRun": {
+      "additionalProperties": false,
+      "properties": {
+        "applicable_slices": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Applicable Slices",
+          "type": "array"
+        },
+        "blocker_gates": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Blocker Gates",
+          "type": "array"
+        },
+        "candidate_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "champion_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "code_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Code Version",
+          "type": "string"
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completed At"
+        },
+        "dataset_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "dependency_lock_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Dependency Lock Checksum",
+          "type": "string"
+        },
+        "evaluation": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "metric_versions": {
+          "patternProperties": {
+            "^[A-Za-z0-9_.:/@+-]+$": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "title": "Metric Versions",
+          "type": "object"
+        },
+        "missing_shards": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Missing Shards",
+          "type": "array"
+        },
+        "plan_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "result_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Result Refs",
+          "type": "array"
+        },
+        "seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/EvaluationStatus"
+        }
+      },
+      "required": [
+        "evaluation",
+        "plan_ref",
+        "candidate_ref",
+        "champion_ref",
+        "dataset_ref",
+        "applicable_slices",
+        "metric_versions",
+        "blocker_gates",
+        "code_version",
+        "dependency_lock_checksum",
+        "seed",
+        "status",
+        "started_at"
+      ],
+      "title": "EvaluationRun",
+      "type": "object"
+    },
+    "EvaluationStatus": {
+      "enum": [
+        "planned",
+        "running",
+        "completed",
+        "failed",
+        "incomplete"
+      ],
+      "title": "EvaluationStatus",
+      "type": "string"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "description": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "event_id": {
+          "format": "uuid4",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "importance": {
+          "$ref": "#/$defs/StoryImportance"
+        },
+        "order_key": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Order Key",
+          "type": "string"
+        },
+        "participants": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Participants",
+          "type": "array"
+        },
+        "source_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "event_id",
+        "order_key",
+        "description",
+        "participants",
+        "evidence",
+        "confidence",
+        "importance"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "EventEnvelope": {
+      "additionalProperties": false,
+      "description": "Immutable fact emitted through the transactional outbox.",
+      "properties": {
+        "aggregate_id": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Aggregate Id",
+          "type": "string"
+        },
+        "aggregate_version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Aggregate Version",
+          "type": "integer"
+        },
+        "event_id": {
+          "format": "uuid4",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_type": {
+          "maxLength": 255,
+          "minLength": 3,
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)+$",
+          "title": "Event Type",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Payload",
+          "type": "object"
+        },
+        "producer": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Producer",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid4",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "schema_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/TraceId"
+        }
+      },
+      "required": [
+        "event_id",
+        "event_type",
+        "schema_version",
+        "aggregate_id",
+        "aggregate_version",
+        "project_id",
+        "occurred_at",
+        "producer",
+        "trace_id",
+        "payload"
+      ],
+      "title": "EventEnvelope",
+      "type": "object"
+    },
+    "EvidenceBundle": {
+      "additionalProperties": false,
+      "properties": {
+        "links": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Links",
+          "type": "array"
+        },
+        "target_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "target_ref",
+        "links"
+      ],
+      "title": "EvidenceBundle",
+      "type": "object"
+    },
+    "EvidenceLink": {
+      "additionalProperties": false,
+      "description": "Traceable pointer from a conclusion to exact source evidence.",
+      "properties": {
+        "evidence_id": {
+          "format": "uuid4",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "evidence_type": {
+          "$ref": "#/$defs/EvidenceType"
+        },
+        "excerpt": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excerpt"
+        },
+        "frame_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrameRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "source_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "evidence_id",
+        "source",
+        "evidence_type"
+      ],
+      "title": "EvidenceLink",
+      "type": "object"
+    },
+    "EvidenceType": {
+      "enum": [
+        "dialogue",
+        "visual",
+        "ocr",
+        "audio",
+        "metadata",
+        "human_note"
+      ],
+      "title": "EvidenceType",
+      "type": "string"
+    },
+    "Fact": {
+      "additionalProperties": false,
+      "description": "Observable claim only; motivation, causality, and semantic emotion are Story.",
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "fact_id": {
+          "format": "uuid4",
+          "title": "Fact Id",
+          "type": "string"
+        },
+        "fact_type": {
+          "$ref": "#/$defs/FactType"
+        },
+        "provider": {
+          "$ref": "#/$defs/ProviderIdentity"
+        },
+        "source_range": {
+          "$ref": "#/$defs/TimeRange"
+        },
+        "status": {
+          "$ref": "#/$defs/FactStatus"
+        },
+        "subject_ref": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Subject Ref"
+        },
+        "value": {
+          "$ref": "#/$defs/JsonValue"
+        }
+      },
+      "required": [
+        "fact_id",
+        "fact_type",
+        "value",
+        "source_range",
+        "evidence",
+        "provider",
+        "confidence",
+        "status"
+      ],
+      "title": "Fact",
+      "type": "object"
+    },
+    "FactSet": {
+      "additionalProperties": false,
+      "properties": {
+        "facts": {
+          "items": {
+            "$ref": "#/$defs/Fact"
+          },
+          "title": "Facts",
+          "type": "array"
+        },
+        "incomplete": {
+          "default": false,
+          "title": "Incomplete",
+          "type": "boolean"
+        },
+        "source_refs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "unavailable_partitions": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Unavailable Partitions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_refs",
+        "facts"
+      ],
+      "title": "FactSet",
+      "type": "object"
+    },
+    "FactStatus": {
+      "enum": [
+        "observed",
+        "disputed",
+        "corrected",
+        "superseded"
+      ],
+      "title": "FactStatus",
+      "type": "string"
+    },
+    "FactType": {
+      "enum": [
+        "dialogue",
+        "speaker",
+        "person",
+        "entity",
+        "ocr",
+        "action",
+        "visual_signal",
+        "audio_signal"
+      ],
+      "title": "FactType",
+      "type": "string"
+    },
+    "FrameRange": {
+      "additionalProperties": false,
+      "description": "Half-open frame interval within the referenced source artifact.",
+      "properties": {
+        "end_frame": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "End Frame",
+          "type": "integer"
+        },
+        "start_frame": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_frame",
+        "end_frame"
+      ],
+      "title": "FrameRange",
+      "type": "object"
+    },
+    "FrameSample": {
+      "additionalProperties": false,
+      "properties": {
+        "frame_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame Index"
+        },
+        "reason": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "sample_id": {
+          "format": "uuid4",
+          "title": "Sample Id",
+          "type": "string"
+        },
+        "source_time": {
+          "$ref": "#/$defs/RationalTime"
+        }
+      },
+      "required": [
+        "sample_id",
+        "source_time",
+        "reason"
+      ],
+      "title": "FrameSample",
+      "type": "object"
+    },
+    "FrameSamplePlan": {
+      "additionalProperties": false,
+      "properties": {
+        "parameters": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Parameters",
+          "type": "object"
+        },
+        "profile_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "purpose": {
+          "$ref": "#/$defs/SamplingPurpose"
+        },
+        "samples": {
+          "items": {
+            "$ref": "#/$defs/FrameSample"
+          },
+          "title": "Samples",
+          "type": "array"
+        },
+        "source": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "source",
+        "purpose",
+        "profile_ref",
+        "samples"
+      ],
+      "title": "FrameSamplePlan",
+      "type": "object"
+    },
+    "GuidelineManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Checksum Sha256",
+          "type": "string"
+        },
+        "content_ref": {
+          "title": "Content Ref",
+          "type": "string"
+        },
+        "frozen_at": {
+          "format": "date-time",
+          "title": "Frozen At",
+          "type": "string"
+        },
+        "guideline_id": {
+          "title": "Guideline Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "guideline_id",
+        "version",
+        "content_ref",
+        "checksum_sha256",
+        "frozen_at"
+      ],
+      "title": "GuidelineManifest",
+      "type": "object"
+    },
+    "HookCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "assumptions": {
+          "default": [],
+          "items": {
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "audience_question": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Audience Question",
+          "type": "string"
+        },
+        "audio_intent": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Audio Intent",
+          "type": "object"
+        },
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "continuation_beats": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Continuation Beats",
+          "type": "array"
+        },
+        "disclosed_information": {
+          "default": [],
+          "items": {
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Disclosed Information",
+          "type": "array"
+        },
+        "duration_budget": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "heuristic_scores": {
+          "patternProperties": {
+            "^[A-Za-z0-9_.:/@+-]+$": {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "title": "Heuristic Scores",
+          "type": "object"
+        },
+        "hook_id": {
+          "format": "uuid4",
+          "title": "Hook Id",
+          "type": "string"
+        },
+        "hook_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Hook Type",
+          "type": "string"
+        },
+        "narration_or_dialogue": {
+          "anyOf": [
+            {
+              "maxLength": 8192,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Narration Or Dialogue"
+        },
+        "opening_promise": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Opening Promise",
+          "type": "string"
+        },
+        "risks": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Risks",
+          "type": "array"
+        },
+        "source_moment_refs": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Source Moment Refs",
+          "type": "array"
+        },
+        "visual_intent": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Visual Intent",
+          "type": "object"
+        },
+        "withheld_information": {
+          "default": [],
+          "items": {
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Withheld Information",
+          "type": "array"
+        }
+      },
+      "required": [
+        "hook_id",
+        "hook_type",
+        "opening_promise",
+        "source_moment_refs",
+        "visual_intent",
+        "audience_question",
+        "duration_budget",
+        "continuation_beats",
+        "evidence",
+        "heuristic_scores",
+        "confidence"
+      ],
+      "title": "HookCandidate",
+      "type": "object"
+    },
+    "IdentityLink": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "identity_ref": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Identity Ref",
+          "type": "string"
+        },
+        "relation": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identity_ref",
+        "relation",
+        "evidence"
+      ],
+      "title": "IdentityLink",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "MasterTimeline": {
+      "additionalProperties": false,
+      "properties": {
+        "dependencies": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "duration": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "global_start": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/TimelineLifecycle"
+        },
+        "markers": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/TimelineMarker"
+          },
+          "title": "Markers",
+          "type": "array"
+        },
+        "metadata_namespace_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Metadata Namespace Version",
+          "type": "string"
+        },
+        "rate_den": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Rate Den",
+          "type": "integer"
+        },
+        "rate_num": {
+          "exclusiveMinimum": 0,
+          "title": "Rate Num",
+          "type": "integer"
+        },
+        "timeline_id": {
+          "format": "uuid4",
+          "title": "Timeline Id",
+          "type": "string"
+        },
+        "tracks": {
+          "items": {
+            "$ref": "#/$defs/TimelineTrack"
+          },
+          "title": "Tracks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "timeline_id",
+        "lifecycle",
+        "rate_num",
+        "global_start",
+        "duration",
+        "tracks",
+        "metadata_namespace_version"
+      ],
+      "title": "MasterTimeline",
+      "type": "object"
+    },
+    "MediaAsset": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "format": "uuid4",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "checksum": {
+          "$ref": "#/$defs/Checksum"
+        },
+        "derivation_profile_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "episode_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Id"
+        },
+        "rights": {
+          "$ref": "#/$defs/RightsMetadata"
+        },
+        "role": {
+          "$ref": "#/$defs/MediaRole"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_to_proxy_map_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "technical": {
+          "$ref": "#/$defs/MediaTechnicalMetadata"
+        },
+        "uri": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id",
+        "role",
+        "uri",
+        "checksum",
+        "technical",
+        "rights"
+      ],
+      "title": "MediaAsset",
+      "type": "object"
+    },
+    "MediaRole": {
+      "enum": [
+        "source",
+        "proxy",
+        "frame",
+        "original_audio",
+        "voice",
+        "bgm",
+        "sfx",
+        "render"
+      ],
+      "title": "MediaRole",
+      "type": "string"
+    },
+    "MediaTechnicalMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_streams": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/AudioStream"
+          },
+          "title": "Audio Streams",
+          "type": "array"
+        },
+        "byte_size": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "duration": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "format_name": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Format Name",
+          "type": "string"
+        },
+        "mime_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "start_time": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "video_streams": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VideoStream"
+          },
+          "title": "Video Streams",
+          "type": "array"
+        }
+      },
+      "required": [
+        "duration",
+        "start_time",
+        "format_name",
+        "mime_type",
+        "byte_size"
+      ],
+      "title": "MediaTechnicalMetadata",
+      "type": "object"
+    },
+    "NarrativeBeatIntent": {
+      "additionalProperties": false,
+      "properties": {
+        "beat_id": {
+          "format": "uuid4",
+          "title": "Beat Id",
+          "type": "string"
+        },
+        "function": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Function",
+          "type": "string"
+        },
+        "information_owner": {
+          "pattern": "^(visual|dialogue|narration|mixed)$",
+          "title": "Information Owner",
+          "type": "string"
+        },
+        "priority": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Priority",
+          "type": "integer"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "story_refs": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Story Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "beat_id",
+        "function",
+        "story_refs",
+        "priority",
+        "information_owner",
+        "required"
+      ],
+      "title": "NarrativeBeatIntent",
+      "type": "object"
+    },
+    "NarrativeRole": {
+      "enum": [
+        "hook",
+        "core",
+        "payoff",
+        "context"
+      ],
+      "title": "NarrativeRole",
+      "type": "string"
+    },
+    "PatchOperationType": {
+      "enum": [
+        "insert",
+        "remove",
+        "move",
+        "trim",
+        "split",
+        "replace",
+        "retime",
+        "set_parameter"
+      ],
+      "title": "PatchOperationType",
+      "type": "string"
+    },
+    "ProducerRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "config_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Config Refs",
+          "type": "array"
+        },
+        "module": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Module",
+          "type": "string"
+        },
+        "module_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Module Version",
+          "type": "string"
+        },
+        "prompt_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt Version"
+        },
+        "provider": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProviderIdentity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "resource_profile_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "tool_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Tool Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "module",
+        "module_version",
+        "resource_profile_ref"
+      ],
+      "title": "ProducerRecord",
+      "type": "object"
+    },
+    "ProviderIdentity": {
+      "additionalProperties": false,
+      "description": "Reproducible identity and licensing snapshot for a provider invocation.",
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "implementation": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Implementation",
+          "type": "string"
+        },
+        "license": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "provider": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Provider",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "implementation",
+        "version",
+        "license"
+      ],
+      "title": "ProviderIdentity",
+      "type": "object"
+    },
+    "PublicErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "PublicErrorDetail",
+      "type": "object"
+    },
+    "PublicErrorEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/ErrorCategory"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PublicErrorDetail"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "message": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remediation"
+        },
+        "request_id": {
+          "maxLength": 255,
+          "minLength": 8,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/@+-]+$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "resource": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResourceErrorRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/TraceId"
+        }
+      },
+      "required": [
+        "code",
+        "category",
+        "message",
+        "retryable",
+        "request_id",
+        "trace_id"
+      ],
+      "title": "PublicErrorEnvelope",
+      "type": "object"
+    },
+    "QualityEvent": {
+      "additionalProperties": false,
+      "description": "One traceable issue without granting authority to mutate its target.",
+      "properties": {
+        "blocker": {
+          "title": "Blocker",
+          "type": "boolean"
+        },
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "detector": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Detector",
+          "type": "string"
+        },
+        "detector_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Detector Version",
+          "type": "string"
+        },
+        "dimension": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Dimension",
+          "type": "string"
+        },
+        "disagreement": {
+          "default": false,
+          "title": "Disagreement",
+          "type": "boolean"
+        },
+        "event_id": {
+          "format": "uuid4",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "issue_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Issue Type",
+          "type": "string"
+        },
+        "module": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Module",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "profile_rule": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Profile Rule"
+        },
+        "raw_metrics": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Raw Metrics",
+          "type": "object"
+        },
+        "reviewer_label": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QualityLabel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "severity": {
+          "$ref": "#/$defs/QualitySeverity"
+        },
+        "status": {
+          "$ref": "#/$defs/QualityEventStatus"
+        },
+        "suggested_fix": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suggested Fix"
+        },
+        "target": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "target_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "event_id",
+        "module",
+        "dimension",
+        "issue_type",
+        "severity",
+        "blocker",
+        "target",
+        "detector",
+        "detector_version",
+        "confidence",
+        "status",
+        "occurred_at"
+      ],
+      "title": "QualityEvent",
+      "type": "object"
+    },
+    "QualityEventStatus": {
+      "enum": [
+        "detected",
+        "confirmed",
+        "dismissed",
+        "corrected",
+        "superseded",
+        "unresolved"
+      ],
+      "title": "QualityEventStatus",
+      "type": "string"
+    },
+    "QualityFeatureStatus": {
+      "enum": [
+        "measured",
+        "unavailable"
+      ],
+      "title": "QualityFeatureStatus",
+      "type": "string"
+    },
+    "QualityLabel": {
+      "enum": [
+        "correct",
+        "incorrect",
+        "insufficient",
+        "disputed"
+      ],
+      "title": "QualityLabel",
+      "type": "string"
+    },
+    "QualitySeverity": {
+      "enum": [
+        "S0",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "title": "QualitySeverity",
+      "type": "string"
+    },
+    "RationalTime": {
+      "additionalProperties": false,
+      "description": "Exact media timestamp expressed as ticks at a rational rate.",
+      "properties": {
+        "rate_den": {
+          "default": 1,
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Rate Den",
+          "type": "integer"
+        },
+        "rate_num": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Rate Num",
+          "type": "integer"
+        },
+        "value": {
+          "maximum": 9223372036854775807,
+          "minimum": -9223372036854775808,
+          "title": "Value",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "value",
+        "rate_num"
+      ],
+      "title": "RationalTime",
+      "type": "object"
+    },
+    "ResourceErrorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "resource_id": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Resource Id",
+          "type": "string"
+        },
+        "resource_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Resource Type",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "maximum": 9223372036854775807,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "resource_type",
+        "resource_id"
+      ],
+      "title": "ResourceErrorRef",
+      "type": "object"
+    },
+    "RightsAndUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_purposes": {
+          "items": {
+            "$ref": "#/$defs/UsagePurpose"
+          },
+          "title": "Allowed Purposes",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "evidence_ref": {
+          "minLength": 1,
+          "title": "Evidence Ref",
+          "type": "string"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expires At"
+        },
+        "rights_status": {
+          "enum": [
+            "approved",
+            "restricted",
+            "unknown"
+          ],
+          "title": "Rights Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rights_status",
+        "allowed_purposes",
+        "evidence_ref"
+      ],
+      "title": "RightsAndUsage",
+      "type": "object"
+    },
+    "RightsGrantRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "format": "uuid4",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "RightsGrant",
+          "default": "RightsGrant",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version"
+      ],
+      "title": "RightsGrantRef",
+      "type": "object"
+    },
+    "RightsManifestRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "format": "uuid4",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "RightsManifest",
+          "default": "RightsManifest",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Checksum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version"
+      ],
+      "title": "RightsManifestRef",
+      "type": "object"
+    },
+    "RightsMetadata": {
+      "additionalProperties": false,
+      "description": "Immutable rights snapshot evaluated against an explicit release context.",
+      "properties": {
+        "attribution_required": {
+          "default": false,
+          "title": "Attribution Required",
+          "type": "boolean"
+        },
+        "attribution_text": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribution Text"
+        },
+        "checked_at": {
+          "format": "date-time",
+          "title": "Checked At",
+          "type": "string"
+        },
+        "commercial_use": {
+          "default": false,
+          "title": "Commercial Use",
+          "type": "boolean"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "grant_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RightsGrantRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "license": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License"
+        },
+        "modification": {
+          "default": false,
+          "title": "Modification",
+          "type": "boolean"
+        },
+        "platforms": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Platforms",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "restrictions": {
+          "default": [],
+          "items": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Restrictions",
+          "type": "array"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "status": {
+          "$ref": "#/$defs/RightsStatus"
+        },
+        "synchronization": {
+          "default": false,
+          "title": "Synchronization",
+          "type": "boolean"
+        },
+        "territories": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Territories",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid From"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "status",
+        "checked_at"
+      ],
+      "title": "RightsMetadata",
+      "type": "object"
+    },
+    "RightsStatus": {
+      "enum": [
+        "unknown",
+        "cleared",
+        "restricted",
+        "expired",
+        "revoked"
+      ],
+      "title": "RightsStatus",
+      "type": "string"
+    },
+    "RiskClass": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskClass",
+      "type": "string"
+    },
+    "RoutingDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "automation_level": {
+          "pattern": "^L[0-4]$",
+          "title": "Automation Level",
+          "type": "string"
+        },
+        "calibration_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        },
+        "decision": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "effective_policy_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "gate": {
+          "pattern": "^(story|strategy|timeline|release)$",
+          "title": "Gate",
+          "type": "string"
+        },
+        "has_blocker": {
+          "title": "Has Blocker",
+          "type": "boolean"
+        },
+        "has_conflict": {
+          "title": "Has Conflict",
+          "type": "boolean"
+        },
+        "has_disagreement": {
+          "title": "Has Disagreement",
+          "type": "boolean"
+        },
+        "has_rights_risk": {
+          "title": "Has Rights Risk",
+          "type": "boolean"
+        },
+        "has_unresolved": {
+          "title": "Has Unresolved",
+          "type": "boolean"
+        },
+        "outcome": {
+          "$ref": "#/$defs/RoutingOutcome"
+        },
+        "quality_events": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Quality Events",
+          "type": "array"
+        },
+        "reasons": {
+          "items": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "required_checks_complete": {
+          "title": "Required Checks Complete",
+          "type": "boolean"
+        },
+        "scope": {
+          "$ref": "#/$defs/ApplicableScope"
+        },
+        "target": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "decision",
+        "target",
+        "gate",
+        "automation_level",
+        "effective_policy_ref",
+        "scope",
+        "confidence",
+        "required_checks_complete",
+        "has_blocker",
+        "has_rights_risk",
+        "has_conflict",
+        "has_unresolved",
+        "has_disagreement",
+        "outcome",
+        "reasons",
+        "decided_at"
+      ],
+      "title": "RoutingDecision",
+      "type": "object"
+    },
+    "RoutingOutcome": {
+      "enum": [
+        "auto_flow",
+        "suggest_review",
+        "required_review"
+      ],
+      "title": "RoutingOutcome",
+      "type": "string"
+    },
+    "SamplingPurpose": {
+      "enum": [
+        "ocr",
+        "identity",
+        "vlm",
+        "quality"
+      ],
+      "title": "SamplingPurpose",
+      "type": "string"
+    },
+    "SceneShot": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "detector": {
+          "$ref": "#/$defs/ProviderIdentity"
+        },
+        "kind": {
+          "$ref": "#/$defs/SegmentKind"
+        },
+        "parent_scene_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Scene Id"
+        },
+        "segment_id": {
+          "format": "uuid4",
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "source_range": {
+          "$ref": "#/$defs/TimeRange"
+        },
+        "status": {
+          "$ref": "#/$defs/DetectionStatus"
+        }
+      },
+      "required": [
+        "segment_id",
+        "kind",
+        "source",
+        "source_range",
+        "detector",
+        "confidence",
+        "status"
+      ],
+      "title": "SceneShot",
+      "type": "object"
+    },
+    "SceneShotCatalog": {
+      "additionalProperties": false,
+      "properties": {
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/SceneShot"
+          },
+          "title": "Segments",
+          "type": "array"
+        },
+        "source": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "source",
+        "segments"
+      ],
+      "title": "SceneShotCatalog",
+      "type": "object"
+    },
+    "SegmentKind": {
+      "enum": [
+        "scene",
+        "shot"
+      ],
+      "title": "SegmentKind",
+      "type": "string"
+    },
+    "SellingPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "assumptions": {
+          "default": [],
+          "items": {
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "audience_rationale": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Audience Rationale",
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "description": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "heuristic_components": {
+          "patternProperties": {
+            "^[A-Za-z0-9_.:/@+-]+$": {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "title": "Heuristic Components",
+          "type": "object"
+        },
+        "narrative_role": {
+          "$ref": "#/$defs/NarrativeRole"
+        },
+        "platform_fit": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Platform Fit",
+          "type": "array"
+        },
+        "required_context_refs": {
+          "default": [],
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Required Context Refs",
+          "type": "array"
+        },
+        "risk_class": {
+          "$ref": "#/$defs/RiskClass"
+        },
+        "selling_point_id": {
+          "format": "uuid4",
+          "title": "Selling Point Id",
+          "type": "string"
+        },
+        "source_coverage": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Source Coverage",
+          "type": "object"
+        },
+        "spoiler_level": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Spoiler Level",
+          "type": "integer"
+        },
+        "story_refs": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Story Refs",
+          "type": "array"
+        },
+        "taxonomy_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Taxonomy Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "selling_point_id",
+        "taxonomy_type",
+        "description",
+        "story_refs",
+        "evidence",
+        "audience_rationale",
+        "platform_fit",
+        "narrative_role",
+        "spoiler_level",
+        "source_coverage",
+        "risk_class",
+        "heuristic_components",
+        "confidence"
+      ],
+      "title": "SellingPoint",
+      "type": "object"
+    },
+    "SellingPointSet": {
+      "additionalProperties": false,
+      "properties": {
+        "approved_story_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "incomplete": {
+          "default": false,
+          "title": "Incomplete",
+          "type": "boolean"
+        },
+        "selling_points": {
+          "items": {
+            "$ref": "#/$defs/SellingPoint"
+          },
+          "title": "Selling Points",
+          "type": "array"
+        },
+        "taxonomy_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Taxonomy Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "approved_story_ref",
+        "taxonomy_version",
+        "selling_points"
+      ],
+      "title": "SellingPointSet",
+      "type": "object"
+    },
+    "SliceCatalogManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "slices": {
+          "items": {
+            "$ref": "#/$defs/SliceDefinition"
+          },
+          "title": "Slices",
+          "type": "array"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "slices"
+      ],
+      "title": "SliceCatalogManifest",
+      "type": "object"
+    },
+    "SliceDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "selection_rule": {
+          "title": "Selection Rule",
+          "type": "string"
+        },
+        "severity_focus": {
+          "default": [],
+          "items": {
+            "enum": [
+              "S0",
+              "S1",
+              "S2",
+              "S3"
+            ],
+            "type": "string"
+          },
+          "title": "Severity Focus",
+          "type": "array"
+        },
+        "slice_id": {
+          "title": "Slice Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "slice_id",
+        "description",
+        "selection_rule"
+      ],
+      "title": "SliceDefinition",
+      "type": "object"
+    },
+    "SourceQualityFeature": {
+      "additionalProperties": false,
+      "properties": {
+        "feature_id": {
+          "format": "uuid4",
+          "title": "Feature Id",
+          "type": "string"
+        },
+        "method": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Method",
+          "type": "string"
+        },
+        "metric": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Metric",
+          "type": "string"
+        },
+        "profile_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "source": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "source_range": {
+          "$ref": "#/$defs/TimeRange"
+        },
+        "status": {
+          "$ref": "#/$defs/QualityFeatureStatus"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JsonValue"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "feature_id",
+        "source",
+        "source_range",
+        "metric",
+        "method",
+        "profile_ref",
+        "status"
+      ],
+      "title": "SourceQualityFeature",
+      "type": "object"
+    },
+    "SourceQualityFeatureSet": {
+      "additionalProperties": false,
+      "properties": {
+        "features": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SourceQualityFeature"
+          },
+          "title": "Features",
+          "type": "array"
+        },
+        "source": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "title": "SourceQualityFeatureSet",
+      "type": "object"
+    },
+    "StoryArc": {
+      "additionalProperties": false,
+      "properties": {
+        "arc_id": {
+          "format": "uuid4",
+          "title": "Arc Id",
+          "type": "string"
+        },
+        "arc_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Arc Type",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "event_refs": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Event Refs",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "protagonist_refs": {
+          "default": [],
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Protagonist Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "arc_id",
+        "arc_type",
+        "description",
+        "event_refs",
+        "evidence"
+      ],
+      "title": "StoryArc",
+      "type": "object"
+    },
+    "StoryEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceRecord"
+        },
+        "edge_id": {
+          "format": "uuid4",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "edge_type": {
+          "$ref": "#/$defs/StoryEdgeType"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "from_ref": {
+          "format": "uuid4",
+          "title": "From Ref",
+          "type": "string"
+        },
+        "to_ref": {
+          "format": "uuid4",
+          "title": "To Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "edge_type",
+        "from_ref",
+        "to_ref",
+        "evidence",
+        "confidence"
+      ],
+      "title": "StoryEdge",
+      "type": "object"
+    },
+    "StoryEdgeType": {
+      "enum": [
+        "causes",
+        "enables",
+        "reveals",
+        "contradicts",
+        "changes_relationship",
+        "changes_state"
+      ],
+      "title": "StoryEdgeType",
+      "type": "string"
+    },
+    "StoryGraph": {
+      "additionalProperties": false,
+      "properties": {
+        "arcs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/StoryArc"
+          },
+          "title": "Arcs",
+          "type": "array"
+        },
+        "characters": {
+          "items": {
+            "$ref": "#/$defs/Character"
+          },
+          "title": "Characters",
+          "type": "array"
+        },
+        "edges": {
+          "items": {
+            "$ref": "#/$defs/StoryEdge"
+          },
+          "title": "Edges",
+          "type": "array"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/Event"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "source_fact_refs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Source Fact Refs",
+          "type": "array"
+        },
+        "unresolved_questions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/UnresolvedQuestion"
+          },
+          "title": "Unresolved Questions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_fact_refs",
+        "characters",
+        "events",
+        "edges"
+      ],
+      "title": "StoryGraph",
+      "type": "object"
+    },
+    "StoryImportance": {
+      "enum": [
+        "key",
+        "supporting",
+        "context"
+      ],
+      "title": "StoryImportance",
+      "type": "string"
+    },
+    "StrategyCandidateSet": {
+      "additionalProperties": false,
+      "properties": {
+        "approved_story_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/StrategyDirection"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "effective_config_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "rejected_candidate_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Rejected Candidate Refs",
+          "type": "array"
+        },
+        "selling_point_set_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "approved_story_ref",
+        "selling_point_set_ref",
+        "effective_config_ref",
+        "candidates"
+      ],
+      "title": "StrategyCandidateSet",
+      "type": "object"
+    },
+    "StrategyDirection": {
+      "additionalProperties": false,
+      "properties": {
+        "assumptions": {
+          "default": [],
+          "items": {
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "audience_hypothesis": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Audience Hypothesis",
+          "type": "string"
+        },
+        "emotional_curve_intent": {
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Emotional Curve Intent",
+          "type": "array"
+        },
+        "ending_payoff": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Ending Payoff",
+          "type": "string"
+        },
+        "excluded_arc_refs": {
+          "default": [],
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Excluded Arc Refs",
+          "type": "array"
+        },
+        "feasible": {
+          "title": "Feasible",
+          "type": "boolean"
+        },
+        "genre_config_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "narrative_spine": {
+          "items": {
+            "$ref": "#/$defs/NarrativeBeatIntent"
+          },
+          "title": "Narrative Spine",
+          "type": "array"
+        },
+        "objective": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "opening_promise": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Opening Promise",
+          "type": "string"
+        },
+        "platform_profile_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "primary_selling_point_refs": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Primary Selling Point Refs",
+          "type": "array"
+        },
+        "production_estimate": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Production Estimate",
+          "type": "object"
+        },
+        "protagonist_ref": {
+          "format": "uuid4",
+          "title": "Protagonist Ref",
+          "type": "string"
+        },
+        "reveal_policy": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Reveal Policy",
+          "type": "object"
+        },
+        "risks": {
+          "default": [],
+          "items": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+            "type": "string"
+          },
+          "title": "Risks",
+          "type": "array"
+        },
+        "secondary_selling_point_refs": {
+          "default": [],
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Secondary Selling Point Refs",
+          "type": "array"
+        },
+        "strategy_id": {
+          "format": "uuid4",
+          "title": "Strategy Id",
+          "type": "string"
+        },
+        "target_duration": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "viewpoint": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Viewpoint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "strategy_id",
+        "objective",
+        "audience_hypothesis",
+        "platform_profile_ref",
+        "genre_config_ref",
+        "primary_selling_point_refs",
+        "protagonist_ref",
+        "viewpoint",
+        "opening_promise",
+        "ending_payoff",
+        "narrative_spine",
+        "reveal_policy",
+        "emotional_curve_intent",
+        "target_duration",
+        "production_estimate",
+        "feasible"
+      ],
+      "title": "StrategyDirection",
+      "type": "object"
+    },
+    "TimeRange": {
+      "additionalProperties": false,
+      "description": "Half-open exact media interval ``[start, start + duration)``.",
+      "properties": {
+        "duration": {
+          "$ref": "#/$defs/RationalTime"
+        },
+        "start": {
+          "$ref": "#/$defs/RationalTime"
+        }
+      },
+      "required": [
+        "start",
+        "duration"
+      ],
+      "title": "TimeRange",
+      "type": "object"
+    },
+    "TimelineConflict": {
+      "additionalProperties": false,
+      "properties": {
+        "actual_item_version": {
+          "anyOf": [
+            {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actual Item Version"
+        },
+        "base_timeline_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "conflict_id": {
+          "format": "uuid4",
+          "title": "Conflict Id",
+          "type": "string"
+        },
+        "conflict_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Conflict Type",
+          "type": "string"
+        },
+        "current_timeline_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "expected_item_version": {
+          "anyOf": [
+            {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Item Version"
+        },
+        "operation_id": {
+          "format": "uuid4",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "patch_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "resolution_required": {
+          "default": true,
+          "title": "Resolution Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "conflict_id",
+        "patch_ref",
+        "base_timeline_ref",
+        "current_timeline_ref",
+        "operation_id",
+        "conflict_type"
+      ],
+      "title": "TimelineConflict",
+      "type": "object"
+    },
+    "TimelineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "content_ref": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content Ref"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "generation_dependencies": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Generation Dependencies",
+          "type": "array"
+        },
+        "item_id": {
+          "format": "uuid4",
+          "title": "Item Id",
+          "type": "string"
+        },
+        "item_type": {
+          "$ref": "#/$defs/TimelineItemType"
+        },
+        "item_version": {
+          "maximum": 9223372036854775807,
+          "minimum": 1,
+          "title": "Item Version",
+          "type": "integer"
+        },
+        "locked": {
+          "default": false,
+          "title": "Locked",
+          "type": "boolean"
+        },
+        "parameters": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Parameters",
+          "type": "object"
+        },
+        "source_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "timeline_range": {
+          "$ref": "#/$defs/TimeRange"
+        }
+      },
+      "required": [
+        "item_id",
+        "item_version",
+        "item_type",
+        "timeline_range"
+      ],
+      "title": "TimelineItem",
+      "type": "object"
+    },
+    "TimelineItemType": {
+      "enum": [
+        "clip",
+        "gap",
+        "transition",
+        "text",
+        "effect"
+      ],
+      "title": "TimelineItemType",
+      "type": "string"
+    },
+    "TimelineLifecycle": {
+      "enum": [
+        "draft",
+        "approved_intent",
+        "conformed"
+      ],
+      "title": "TimelineLifecycle",
+      "type": "string"
+    },
+    "TimelineMarker": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "marker_id": {
+          "format": "uuid4",
+          "title": "Marker Id",
+          "type": "string"
+        },
+        "marker_type": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Marker Type",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "position": {
+          "$ref": "#/$defs/RationalTime"
+        }
+      },
+      "required": [
+        "marker_id",
+        "position",
+        "marker_type",
+        "label"
+      ],
+      "title": "TimelineMarker",
+      "type": "object"
+    },
+    "TimelinePatch": {
+      "additionalProperties": false,
+      "properties": {
+        "author": {
+          "$ref": "#/$defs/ActorRef"
+        },
+        "base_timeline": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "operations": {
+          "items": {
+            "$ref": "#/$defs/TimelinePatchOperation"
+          },
+          "title": "Operations",
+          "type": "array"
+        },
+        "patch_id": {
+          "format": "uuid4",
+          "title": "Patch Id",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "patch_id",
+        "base_timeline",
+        "operations",
+        "author",
+        "reason"
+      ],
+      "title": "TimelinePatch",
+      "type": "object"
+    },
+    "TimelinePatchOperation": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_item_version": {
+          "anyOf": [
+            {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Item Version"
+        },
+        "op": {
+          "$ref": "#/$defs/PatchOperationType"
+        },
+        "operation_id": {
+          "format": "uuid4",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Payload",
+          "type": "object"
+        },
+        "target_item_id": {
+          "anyOf": [
+            {
+              "format": "uuid4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Item Id"
+        }
+      },
+      "required": [
+        "operation_id",
+        "op",
+        "payload"
+      ],
+      "title": "TimelinePatchOperation",
+      "type": "object"
+    },
+    "TimelineTrack": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/TimelineItem"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "kind": {
+          "$ref": "#/$defs/TimelineTrackKind"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "track_id": {
+          "format": "uuid4",
+          "title": "Track Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "track_id",
+        "kind",
+        "order",
+        "items"
+      ],
+      "title": "TimelineTrack",
+      "type": "object"
+    },
+    "TimelineTrackKind": {
+      "enum": [
+        "video",
+        "original_audio",
+        "narration",
+        "bgm",
+        "sfx",
+        "subtitle",
+        "overlay"
+      ],
+      "title": "TimelineTrackKind",
+      "type": "string"
+    },
+    "TraceId": {
+      "description": "W3C-compatible non-zero lowercase trace identifier.",
+      "pattern": "^[0-9a-f]{32}$",
+      "title": "TraceId",
+      "type": "string"
+    },
+    "UnresolvedQuestion": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceLink"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "question": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "question_id": {
+          "format": "uuid4",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "related_refs": {
+          "items": {
+            "format": "uuid4",
+            "type": "string"
+          },
+          "title": "Related Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_id",
+        "question",
+        "related_refs"
+      ],
+      "title": "UnresolvedQuestion",
+      "type": "object"
+    },
+    "UsagePurpose": {
+      "enum": [
+        "evaluation",
+        "tuning",
+        "training"
+      ],
+      "title": "UsagePurpose",
+      "type": "string"
+    },
+    "VideoStream": {
+      "additionalProperties": false,
+      "properties": {
+        "codec": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Codec",
+          "type": "string"
+        },
+        "frame_rate_den": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame Rate Den"
+        },
+        "frame_rate_num": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame Rate Num"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "pixel_format": {
+          "maxLength": 255,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:/@+-]+$",
+          "title": "Pixel Format",
+          "type": "string"
+        },
+        "rotation_degrees": {
+          "default": 0,
+          "maximum": 359,
+          "minimum": -359,
+          "title": "Rotation Degrees",
+          "type": "integer"
+        },
+        "stream_index": {
+          "minimum": 0,
+          "title": "Stream Index",
+          "type": "integer"
+        },
+        "time_base_den": {
+          "exclusiveMinimum": 0,
+          "title": "Time Base Den",
+          "type": "integer"
+        },
+        "time_base_num": {
+          "exclusiveMinimum": 0,
+          "title": "Time Base Num",
+          "type": "integer"
+        },
+        "variable_frame_rate": {
+          "default": false,
+          "title": "Variable Frame Rate",
+          "type": "boolean"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "stream_index",
+        "codec",
+        "width",
+        "height",
+        "pixel_format",
+        "time_base_num",
+        "time_base_den"
+      ],
+      "title": "VideoStream",
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.narratopro.local/contracts/1.2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NarratoPro Contract Registry",
+  "x-registry-version": "1.2.0"
+}

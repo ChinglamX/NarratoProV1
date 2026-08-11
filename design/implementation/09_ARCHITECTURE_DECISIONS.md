@@ -158,6 +158,20 @@ RoutingDecision 只记录已经解析的决策，不替代 Automation Policy 引
 
 复议：只在真实 Calibration Pack、Policy engine 和数据库迁移证明需要调整时复议；不得放松 Release 人工确认、blocker precedence 或 unresolved/disagreement fail-closed。
 
+## ADR-023 — Canonical Cross-domain Payload Contracts
+
+决策：E01 在进入持久化前冻结 Artifact Envelope，以及 Media、Fact/Evidence、Story、Strategy 和 Timeline 的跨域 payload Contract。Envelope 只承载身份、版本、producer、lineage、checksum、rights class、trace 和 payload location；领域 payload 保持独立，禁止把整个业务对象塞入无类型 metadata。Registry v1.2.0 以兼容新增发布并保留 v1.0.0/v1.1.0。
+
+Catalog 第 6 节的 canonical Artifact lifecycle（staging、committed、approved、stale、superseded、blocked、deleted_logically）高于 Core Data Contracts 中早期示例状态；Review/Run 状态不混入 Artifact。Artifact Contract 能拒绝 payload 缺失、重复输入和当前/未来版本自依赖；“approved 不引用 rejected input”和版本单调性需要 E02 Repository 在事务快照中校验，不能由孤立 Envelope 伪装完成。
+
+Fact 只表达可观察值并强制 Evidence；Story 的关键 Event 和 Edge 强制 Evidence 且 Graph 引用闭合；Strategy 强制 Story/Evidence grounding、Hook continuation 和结构差异；MasterTimeline 是唯一成片时间真相源，Item 全局稳定 ID、边界和 Patch optimistic CAS 在 Contract 层 fail closed。Provider raw response 不进入这些公共 payload。
+
+原因：E02 数据库、E04 Timeline、E05–E09 业务实现都依赖稳定跨域语言。先冻结最终 payload 可避免各模块以私有 JSON 建立第二真相源，同时仍把需要数据库快照或业务查询的约束留给正确层级。
+
+后果：原实施 Backlog 的 Evaluation/Correction B05 保留实现证据并规范重编号为 B11；用户指定的 B05–B10 成为 E01 补全序列。历史 commit/Handoff 不重写。后续领域演进必须通过 Registry SemVer；新增可 optional/minor，收紧或改变既有输入语义必须 major + migration。
+
+复议：只有真实实现证明 Contract 无法表达必要语义时复议；不得以 ORM、OTIO、FFprobe JSON 或模型输出替代 canonical Contract。
+
 ---
 
 ## 2. ADR 变更流程

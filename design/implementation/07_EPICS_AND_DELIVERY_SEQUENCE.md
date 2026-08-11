@@ -32,11 +32,11 @@ Repository、Python/TypeScript toolchain、CI、lint/type/test、Compose、secre
 
 ### E01 — Canonical Contracts
 
-IDs、ArtifactRef、RationalTime、Evidence、Confidence、Error、Command/Event、Schema registry/generation/compatibility。
+IDs、ArtifactRef/Envelope、RationalTime、Evidence、Confidence、Error、Command/Event，以及 Media、Fact、Story、Strategy、Timeline、Evaluation 基础 Contract 和 Schema registry/generation/compatibility。
 
 依赖：E00。
 
-退出：JSON Schema/OpenAPI 生成、breaking-change 检测、Python/TS 客户端类型。
+退出：所有跨域 payload 有唯一强类型 Contract；JSON Schema/OpenAPI 生成、breaking-change 检测、Python/TS 客户端类型通过。
 
 ### E02 — Artifact and Persistence Core
 

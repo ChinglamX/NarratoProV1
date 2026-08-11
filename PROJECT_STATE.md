@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 15
+State Version: 16
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -33,7 +33,8 @@ State Owner: Project
 - B02 Evidence, Confidence and Rights：EvidenceLink/FrameRange、ConfidenceRecord/Factor/Status/Risk、RightsMetadata、RightsGrantRef/RightsManifestRef 已实现；shadow/unavailable/calibrated/drifted、score/scope、UTC 期限和 unknown/restricted rights 的 fail-closed 边界已验证。
 - B03 Command/Event/Error Envelopes：CommandEnvelope、EventEnvelope、ErrorEnvelope/PublicErrorEnvelope、稳定类型/版本/idempotency/trace 字段和显式 public/internal disclosure boundary 已实现；canonical JSON round-trip、redaction 与最小 breaking-change shape snapshot 已通过。
 - B04 Schema Registry and Generation：唯一版本化 Registry 已生成 38 个 JSON Schema/OpenAPI/TypeScript 类型和 70 个 Artifact Type；Catalog/owner 唯一性、unknown type、生成物漂移和 SemVer breaking-change 检查已接入 `make check`。
-- B05 Evaluation and Correction Contracts：QualityEvent、Correction、DatasetManifest、EvaluationRun、CalibrationArtifact、ApplicableScope 和 RoutingDecision 已进入唯一 Contract Registry；S0–S3、unresolved/disagreement、shadow/unavailable、版本 lineage 和 fail-closed routing 不变量已验证。Registry 兼容升级为 v1.1.0，保留 v1.0.0 审计版本。
+- B11 Evaluation and Correction Contracts（历史实现时称 B05）：QualityEvent、Correction、DatasetManifest、EvaluationRun、CalibrationArtifact、ApplicableScope 和 RoutingDecision 已进入唯一 Contract Registry；S0–S3、unresolved/disagreement、shadow/unavailable、版本 lineage 和 fail-closed routing 不变量已验证。Registry 兼容升级为 v1.1.0，保留 v1.0.0 审计版本。
+- E01 Contract 补全：B05 Artifact Envelope、B06 Media Catalog、B07 Fact/Evidence、B08 Story、B09 Strategy、B10 Timeline 已实现；原 Evaluation/Correction B05 在 canonical Backlog 中保留证据并重编号为 B11。Registry v1.2.0 包含 107 个 JSON Schema/OpenAPI/TypeScript components、70 个 Artifact Type，历史 v1.0.0/v1.1.0 不变。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -120,6 +121,9 @@ State Owner: Project
 - Registry v1.1.0 生成 52 个 JSON Schema/OpenAPI components 和 TypeScript types、70 个 Artifact Type；v1.0.0 保持不可变且 SemVer history 检查通过。
 - ADR-022 固定 S0/S3、unresolved/disagreement、Correction successor lineage、结构化 ApplicableScope 和 Routing fail-closed 语义；B02 字符串 scope 为兼容性保留，未来替换需要 major migration。
 - B05 完成，E01 关闭，恢复点切换 E02/C01 Database Baseline；当前仍为 L1/Confidence Shadow，未启用自动放行。
+- E01 B05–B10 补全 full check：97 tests、88.94% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 和 Review Web TypeScript typecheck 全部通过。
+- ADR-023 固定 Envelope/领域 payload 分离、canonical Artifact lifecycle、Fact→Story→Strategy grounding、唯一 MasterTimeline/Patch CAS 和跨域 Registry 演进边界。
+- E01 重新审计后完成，恢复点仍为 E02/C01；Envelope 无法独立检查的输入状态和版本单调性明确留给 E02 事务 Repository。
 
 ---
 
