@@ -146,6 +146,18 @@ Version: 1.0
 
 复议：只有跨语言 Schema 标准或生成器能力无法表达已批准 Contract 时复议；替换工具必须保持版本历史、输出等价性和回滚能力。
 
+## ADR-022 — Evaluation Truth and Fail-closed Routing
+
+决策：Quality、Correction、Dataset、Evaluation、Calibration、Scope 和 Routing 使用不可变公共 Contract。S0 必须是 blocker，S3 只能表示创意偏好且不能成为 blocker；`unresolved` 与 detector/reviewer `disagreement` 保留为一等状态，禁止平均或强行改写为二元标签。Correction 只描述同一 Artifact lineage 的后继版本并保存结构化 semantic operation。Dataset、Evaluation 和 Calibration 必须保存精确输入版本与父版本 lineage。
+
+RoutingDecision 只记录已经解析的决策，不替代 Automation Policy 引擎。Release Gate、L0/L1、required check 缺失、blocker、rights risk、conflict、unresolved、disagreement、shadow/unavailable/drifted Confidence 或 Calibration 缺失一律 fail closed 到 required review；auto-flow 只允许 calibrated Confidence。`ApplicableScope` 必须显式绑定 module/task/output/provider/model/config/schema、类型、语言、平台和 risk class，不允许空维度代表“全局适用”。
+
+原因：自动化安全依赖可重放的真实问题、人工差异和适用范围，而不是模型自评分或模糊总分。把安全不变量放入 Schema validation，可在持久化、API、Workflow 和 Web 接入之前阻断不合法状态。
+
+后果：Registry 以兼容新增升级到 v1.1.0；B02 的字符串 `ConfidenceRecord.applicable_scope` 为保持 v1 输入兼容暂不替换，B05 结构化 `ApplicableScope` 用于 Calibration/Routing，未来统一字段需 major migration。当前仍为 L1/Shadow；这些 Contract 不授权任何 L2/L3 自动流转。
+
+复议：只在真实 Calibration Pack、Policy engine 和数据库迁移证明需要调整时复议；不得放松 Release 人工确认、blocker precedence 或 unresolved/disagreement fail-closed。
+
 ---
 
 ## 2. ADR 变更流程

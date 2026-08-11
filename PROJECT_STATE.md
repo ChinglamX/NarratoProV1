@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 14
+State Version: 15
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00 bootstrap completed, E01 contracts started.
+- Lifecycle：Implementation active; E00 bootstrap and E01 canonical contracts completed; E02 started.
 - Active Release Slice：R1 Foundation。
-- Active Epics：E01 Canonical Contracts。
-- Active Backlog Entry：B05 Evaluation and Correction Contracts。
+- Active Epics：E02 Artifact and Persistence Core。
+- Active Backlog Entry：C01 Database Baseline。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -33,6 +33,7 @@ State Owner: Project
 - B02 Evidence, Confidence and Rights：EvidenceLink/FrameRange、ConfidenceRecord/Factor/Status/Risk、RightsMetadata、RightsGrantRef/RightsManifestRef 已实现；shadow/unavailable/calibrated/drifted、score/scope、UTC 期限和 unknown/restricted rights 的 fail-closed 边界已验证。
 - B03 Command/Event/Error Envelopes：CommandEnvelope、EventEnvelope、ErrorEnvelope/PublicErrorEnvelope、稳定类型/版本/idempotency/trace 字段和显式 public/internal disclosure boundary 已实现；canonical JSON round-trip、redaction 与最小 breaking-change shape snapshot 已通过。
 - B04 Schema Registry and Generation：唯一版本化 Registry 已生成 38 个 JSON Schema/OpenAPI/TypeScript 类型和 70 个 Artifact Type；Catalog/owner 唯一性、unknown type、生成物漂移和 SemVer breaking-change 检查已接入 `make check`。
+- B05 Evaluation and Correction Contracts：QualityEvent、Correction、DatasetManifest、EvaluationRun、CalibrationArtifact、ApplicableScope 和 RoutingDecision 已进入唯一 Contract Registry；S0–S3、unresolved/disagreement、shadow/unavailable、版本 lineage 和 fail-closed routing 不变量已验证。Registry 兼容升级为 v1.1.0，保留 v1.0.0 审计版本。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -40,7 +41,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- B05 Evaluation/Correction Contracts 和后续 Persistence/Artifact 实现；数据库 migrations 尚未开始。
+- Persistence/Artifact 实现尚未开始；数据库 migrations 尚未开始。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -51,9 +52,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 B05 Evaluation and Correction Contracts。
-2. 实现 QualityEvent、Correction、DatasetManifest、EvaluationRun、CalibrationArtifact、ApplicableScope 和 RoutingDecision 基础契约。
-3. 完成 S0–S3、unresolved/disagreement、shadow/unavailable 和版本 lineage round-trip；所有新增 Contract 通过 B04 Registry minor 版本生成和兼容检查。
+1. 开始 C01 Database Baseline。
+2. 固定 PostgreSQL schema、SQLAlchemy metadata 与 Alembic migration 基线，覆盖 Project、Run、Artifact、Dependency、Review、Correction、Policy 和 Outbox 核心表。
+3. 使用真实 PostgreSQL 验证 upgrade/downgrade/upgrade、唯一约束、外键和事务边界；不得让数据库模型复制或改变 canonical Contract 语义。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -115,6 +116,10 @@ State Owner: Project
 - Registry v1.0.0 生成 38 个 JSON Schema/OpenAPI components、38 个 TypeScript types、70 个 Artifact Type；设计 Catalog 与真实 package owner 一致。
 - ADR-021 固定单一版本化 Registry、不可覆盖历史、SemVer breaking rules 和跨语言 unknown Artifact Type fail-closed；B03 临时 shape snapshot 已吸收并删除。
 - B04 完成，恢复点切换 B05；ArtifactEnvelope payload、数据库 persistence 和业务 API 尚未实现。
+- B05 full check：83 tests、87.68% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 全部通过；Review Web 离线 TypeScript typecheck 通过。
+- Registry v1.1.0 生成 52 个 JSON Schema/OpenAPI components 和 TypeScript types、70 个 Artifact Type；v1.0.0 保持不可变且 SemVer history 检查通过。
+- ADR-022 固定 S0/S3、unresolved/disagreement、Correction successor lineage、结构化 ApplicableScope 和 Routing fail-closed 语义；B02 字符串 scope 为兼容性保留，未来替换需要 major migration。
+- B05 完成，E01 关闭，恢复点切换 E02/C01 Database Baseline；当前仍为 L1/Confidence Shadow，未启用自动放行。
 
 ---
 

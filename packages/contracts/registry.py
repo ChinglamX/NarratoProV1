@@ -29,6 +29,15 @@ from packages.contracts.envelopes import (
     ResourceErrorRef,
     TraceId,
 )
+from packages.contracts.evaluation import (
+    ApplicableScope,
+    CalibrationArtifact,
+    Correction,
+    DatasetManifest,
+    EvaluationRun,
+    QualityEvent,
+    RoutingDecision,
+)
 from packages.contracts.evidence import (
     ConfidenceFactor,
     ConfidenceRecord,
@@ -49,30 +58,37 @@ from packages.contracts.rights import (
     RightsMetadata,
 )
 
-REGISTRY_VERSION = "1.0.0"
+REGISTRY_VERSION = "1.1.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
+    ApplicableScope,
     ArtifactRef,
+    CalibrationArtifact,
     CalibrationPackManifest,
     Checksum,
     CommandEnvelope,
     ConfidenceFactor,
     ConfidenceRecord,
+    Correction,
+    DatasetManifest,
     DatasetSplitManifest,
     ErrorDetail,
     ErrorEnvelope,
     EventEnvelope,
+    EvaluationRun,
     EvidenceLink,
     FrameRange,
     GuidelineManifest,
     ProviderIdentity,
     PublicErrorDetail,
     PublicErrorEnvelope,
+    QualityEvent,
     RationalTime,
     ResourceErrorRef,
     RightsGrantRef,
     RightsManifestRef,
     RightsMetadata,
+    RoutingDecision,
     SliceCatalogManifest,
     SliceDefinition,
     TimeRange,
