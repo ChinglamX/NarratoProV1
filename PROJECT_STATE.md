@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 19
+State Version: 20
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E04 completed; E05 started.
+- Lifecycle：Implementation active; E00–E04 completed; E05 engineering complete, Stage 1 human sign-off pending.
 - Active Release Slice：R2 Story Intelligence（当前仅 Media Ingest 子切片）。
 - Active Epics：E05 Media Ingest Vertical Slice。
-- Active Backlog Entry：F01 Ingest Registration and Rights Snapshot。
+- Active Backlog Entry：F05 Stage 1 Acceptance human sign-off。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -38,6 +38,7 @@ State Owner: Project
 - E02 Artifact and Persistence Core：PostgreSQL/SQLAlchemy/Alembic baseline、Project/Run/Artifact/Blob/Dependency/Command/Review/Policy/Config/Rights/Audit/Outbox schemas、LocalObjectStore、Artifact/Blob/Command/Publication repositories、CAS、cycle check、失效闭包和备份恢复已实现并用真实 PostgreSQL 验收。
 - E03 Durable Workflow and Review：Temporal ProjectRunWorkflow、typed Activity envelope、retry/heartbeat/non-retryable mapping、worker wait/restart/replay、Command/Run outbox、Review/Correction API、first-wins/RBAC/CAS、Resource Admission leases、trace/redaction/metric label policy 和 Confidence Shadow correction example 已实现；真实 Temporal 与 PostgreSQL/API 验收通过。
 - E04 Master Timeline Core：唯一 MasterTimeline domain validator、semantic Patch/Diff/rebase、PostgreSQL successor/CAS、OTIO 0.18.1 adapter/LossReport、deterministic RenderPlan、FFmpeg 8.1.2 fake Preview、ASS sidecar、Temporal Preview Workflow、Preview Artifact lineage/QC 和人工 Checkpoint 已实现并真实验收。
+- E05 Media Ingest 工程实现：UUIDv4/PostgreSQL ingest identity、FFprobe/FFmpeg provider、source/proxy/audio/frame、rational source map、PySceneDetect Shadow Catalog、Catalog API、Temporal Workflow、资源准入、L1 Review 和 rights fail-closed 已实现；Stage 1 报告等待项目负责人签收。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -45,7 +46,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- 媒体 Ingest、Speech、Visual、Identity、Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
+- Speech、Visual、Identity、Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
 - Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -56,9 +57,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 E05/F01 Ingest Registration and Rights Snapshot。
-2. 建立 streaming source identity、rights snapshot、duplicate/import policy 和可恢复 ingest command。
-3. 继续 F02 probe/time mapping、F03 derivatives、F04 Scene/Shot baseline、F05 Catalog API/Review/demo acceptance。
+1. 项目负责人审阅并签收 `quality/STAGE1_ACCEPTANCE_REPORT.md`。
+2. 签收通过后更新 State Version 21，关闭 E05 并进入 E06 Speech and Visual Observation。
+3. E06 首步冻结 Provider Gateway/raw response/cost/resource contract；不得从镜头 Catalog 推断剧情。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -75,6 +76,7 @@ State Owner: Project
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
 - Calibration Pack 尚无真实项目 Gold/Baseline。
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
+- Stage 1 自动验收已通过，但 Human Sign-off 尚未完成；Agent 不得代签或将 E05 报告为正式关闭。
 
 ---
 
@@ -142,6 +144,9 @@ State Owner: Project
 - E04 Preview acceptance：Temporal Activity 从 exact Timeline Artifact v3 加载，FFmpeg 8.1.2 输出 720×1280 H.264/AAC 与 ASS sidecar，Preview Artifact/Dependency/Outbox 持久化，人工 Timeline Checkpoint 后 Workflow succeeded。
 - ADR-026 固定唯一内部 MasterTimeline、semantic optimistic concurrency、OTIO loss boundary、deterministic RenderPlan、FFmpeg 8.1.2 和 Preview Artifact lineage。
 - E04 完成，R1 Foundation 退出；恢复点切换 E05/F01。E05 只代表 Media Ingest，不得报告 Story Intelligence 已完成。
+- E05 full check：157 tests、80.05% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 全通过。
+- E05 real demo acceptance：12,747,283 bytes；6 core Artifacts、9 frame samples、220 PySceneDetect Shadow shots；audio present、duplicate idempotent、unknown rights blocked。
+- ADR-027 固定 UUIDv4 + PostgreSQL ingest identity、FFprobe raw boundary、FFmpeg derivatives、PySceneDetect Shadow、Temporal/L1 Catalog Review；Stage 1 人工签收待完成。
 
 ---
 

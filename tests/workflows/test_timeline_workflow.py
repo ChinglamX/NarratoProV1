@@ -6,7 +6,7 @@ from workflows.timeline.workflow import TimelinePreviewWorkflow
 def test_preview_workflow_signal_is_first_wins_and_status_queryable() -> None:
     workflow = TimelinePreviewWorkflow()
     workflow._status = PreviewWorkflowStatus(
-        "run", "awaiting_review", ArtifactPointer("preview", 1, "PreviewVideo"), "review"
+        "run", "awaiting_review", ArtifactPointer("preview", 1, "ProxyRender"), "review"
     )
     first = ReviewSignal("review", 1, "approve")
     workflow.submit_review(first)

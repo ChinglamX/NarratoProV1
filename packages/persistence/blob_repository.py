@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from uuid import UUID, uuid4
 
 from sqlalchemy import Connection, and_, insert, select, update
+from sqlalchemy.exc import IntegrityError
 
 import packages.persistence.schema as schema
 from packages.artifacts import BlobMetadata, ObjectStore
@@ -44,6 +45,41 @@ class BlobRepository:
             )
         )
         return RegisteredBlob(blob_id=blob_id, metadata=metadata, state="staging")
+
+    def register_or_get_staged(
+        self,
+        connection: Connection,
+        metadata: BlobMetadata,
+        *,
+        content_type: str,
+        storage_class: str = "standard",
+    ) -> RegisteredBlob:
+        try:
+            with connection.begin_nested():
+                return self.register_staged(
+                    connection,
+                    metadata,
+                    content_type=content_type,
+                    storage_class=storage_class,
+                )
+        except IntegrityError:
+            row = (
+                connection.execute(
+                    select(schema.blob).where(
+                        and_(
+                            schema.blob.c.checksum == metadata.checksum,
+                            schema.blob.c.size_bytes == metadata.size_bytes,
+                        )
+                    )
+                )
+                .mappings()
+                .one()
+            )
+            return RegisteredBlob(
+                blob_id=row["id"],
+                metadata=BlobMetadata(row["uri"], row["checksum"], row["size_bytes"]),
+                state=row["state"],
+            )
 
     def commit(
         self,

@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 from hashlib import sha256
 from pathlib import Path
-from uuid import NAMESPACE_URL, UUID, uuid4, uuid5
+from uuid import UUID, uuid4
 
 from sqlalchemy import and_, insert, select
 from temporalio import activity
@@ -60,10 +60,28 @@ def _render_preview_sync(request: PreviewWorkflowInput) -> PreviewActivityResult
     )
     result = render_fake_preview(timeline, Path(request.output_path))
     digest = "sha256:" + sha256(result.output_path.read_bytes()).hexdigest()
-    preview_id = uuid5(NAMESPACE_URL, f"narratopro:{request.run_id}:{request.timeline.artifact_id}")
     engine = create_database_engine(get_settings().database_url)
     try:
         with engine.begin() as connection:
+            preview_id = (
+                connection.scalar(
+                    select(schema.artifact.c.id)
+                    .join(
+                        schema.dependency,
+                        schema.dependency.c.downstream_artifact_id == schema.artifact.c.id,
+                    )
+                    .where(
+                        and_(
+                            schema.dependency.c.upstream_artifact_id
+                            == UUID(request.timeline.artifact_id),
+                            schema.dependency.c.upstream_version == request.timeline.version,
+                            schema.artifact.c.artifact_type == "ProxyRender",
+                        )
+                    )
+                    .limit(1)
+                )
+                or uuid4()
+            )
             existing = connection.scalar(
                 select(schema.artifact_version.c.checksum).where(
                     and_(
@@ -79,7 +97,7 @@ def _render_preview_sync(request: PreviewWorkflowInput) -> PreviewActivityResult
                     insert(schema.artifact).values(
                         id=preview_id,
                         project_id=UUID(request.project_id),
-                        artifact_type="PreviewVideo",
+                        artifact_type="ProxyRender",
                     )
                 )
                 connection.execute(
@@ -133,7 +151,7 @@ def _render_preview_sync(request: PreviewWorkflowInput) -> PreviewActivityResult
         preview=type(request.timeline)(
             artifact_id=str(preview_id),
             version=1,
-            artifact_type="PreviewVideo",
+            artifact_type="ProxyRender",
             checksum=digest,
         ),
         subtitle_path=str(result.subtitle_path),

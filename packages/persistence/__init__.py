@@ -19,6 +19,7 @@ from packages.persistence.command_repository import (
     IdempotencyConflict,
 )
 from packages.persistence.database import create_database_engine, transaction
+from packages.persistence.media_repository import MediaIdentityRepository
 from packages.persistence.policy_repository import (
     PublicationConflict,
     PublicationRef,
@@ -36,6 +37,7 @@ __all__ = [
     "CommandRepository",
     "DependencyCycle",
     "IdempotencyConflict",
+    "MediaIdentityRepository",
     "PublicationConflict",
     "PublicationRef",
     "PublicationRepository",

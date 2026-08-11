@@ -6,6 +6,7 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from packages.foundation.settings import get_settings
+from workflows.media import MediaIngestWorkflow, ingest_media_activity
 from workflows.project import ProjectRunWorkflow, execute_conformance_activity
 from workflows.timeline import TimelinePreviewWorkflow, render_preview_activity
 
@@ -22,8 +23,8 @@ async def serve() -> None:
     worker = Worker(
         client,
         task_queue=CONTROL_TASK_QUEUE,
-        workflows=[ProjectRunWorkflow, TimelinePreviewWorkflow],
-        activities=[execute_conformance_activity, render_preview_activity],
+        workflows=[ProjectRunWorkflow, TimelinePreviewWorkflow, MediaIngestWorkflow],
+        activities=[execute_conformance_activity, render_preview_activity, ingest_media_activity],
         build_id=WORKER_BUILD_ID,
         use_worker_versioning=False,
     )

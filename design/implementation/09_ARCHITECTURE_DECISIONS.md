@@ -212,13 +212,27 @@ Confidence 和人工 Correction 在 E03 只记录 Shadow calibration example。�
 
 OpenTimelineIO 固定 `0.18.1`，仅作为交换边界，不替代内部 Schema。标准 Clip/Track/Range/Transition 映射到 OTIO，NarratoPro identity/evidence/dependency/rights 字段保存在 `com.narratopro.v1` metadata；导入缺失或无效 metadata 必须输出 `LossReport`，不得覆盖 canonical/approved Timeline。
 
-首个 Timeline Preview toolchain 固定宿主 FFmpeg/FFprobe `8.1.2`。同一 TimelineRef、ProfileRef、toolchain version 生成确定性 RenderPlan checksum。Foundation Preview 使用固定色画面、测试音、ASS sidecar，输出 H.264/AAC 720×1280；Temporal Activity 只接收 exact pointer，从 PostgreSQL 加载 Timeline，渲染后持久化独立 PreviewVideo Artifact、generation dependency 和 outbox，再等待人工 Timeline Checkpoint。
+首个 Timeline Preview toolchain 固定宿主 FFmpeg/FFprobe `8.1.2`。同一 TimelineRef、ProfileRef、toolchain version 生成确定性 RenderPlan checksum。Foundation Preview 使用固定色画面、测试音、ASS sidecar，输出 H.264/AAC 720×1280；Temporal Activity 只接收 exact pointer，从 PostgreSQL 加载 Timeline，渲染后持久化独立 ProxyRender Artifact、generation dependency 和 outbox，再等待人工 Timeline Checkpoint。Artifact identity 使用 UUIDv4；重复执行按 exact Timeline dependency 查询已提交产物。
 
 原因：剪辑语义不能由 FFmpeg 命令、OTIO 文件或 UI 本地状态反向定义；精确时间、Item identity、并发冲突和 loss accounting 是后续节奏、解说、音频、字幕与最终渲染一致性的地基。
 
 后果：OTIO/FFmpeg 升级必须做 golden round-trip、history replay、RenderPlan checksum migration 和真实 QC。当前 Homebrew FFmpeg 未包含 libass filter，因此 Foundation Preview 保留 ASS sidecar而不伪称已 burn-in；Stage 5 字幕生产必须使用经许可且具备 libass/字体控制的锁定构建。Fake Preview 证明接口和恢复性，不代表成片质量能力。
 
 复议：只有实际编辑器互操作或媒体兼容基准证明当前版本不足时复议；不得引入第二套 Timeline 真相或静默丢失 metadata。
+
+## ADR-027 — Media Identity, Probe Boundary and Catalog Review
+
+决策：E05 的 Artifact identity 继续严格使用 UUIDv4。重复/并发导入不使用 UUIDv5 或伪造 version bits，而由 PostgreSQL `media.ingest_identity` 以 `(project_id, source_checksum, profile_version, role)` 唯一键分配并复用 identity；配置版本变化产生独立派生身份。Blob 继续按流式 SHA-256 + size 去重，Artifact、Blob 和 dependency 保持分离。
+
+FFprobe/FFmpeg 固定使用验收宿主 8.1.2；FFprobe raw response 仅保存在 MediaProbe Artifact，公共 Media Contract 只接收规范化的 stream/timebase/VFR/rotation/audio 元数据。代理、单声道 16k PCM 音轨和抽帧以临时 `.part` 完成后原子发布；SourceTimeMap 使用 rational time。PySceneDetect 固定 0.7.1 AdaptiveDetector，输出 Confidence=`shadow`，镜头边界不是剧情事实，人工 split/merge 通过 canonical Correction 后继版本处理。
+
+MediaIngestWorkflow 只在 Activity 中执行文件、数据库和媒体 I/O，具备 heartbeat、retry 和媒体队列资源准入；完成后在 L1 等待人工 Catalog Review。unknown/restricted rights 允许隔离导入和分析，但始终阻断 Release。真实 `youzijuchang_demo.mp4` 只证明技术 ingest/categorization，不证明 Speech、Visual、Fact、Story 或成片质量。
+
+原因：Canonical UUID、并发幂等、provider raw boundary、精确时间与权利阻断是后续 E06–E09 可重建的地基。依赖文件名、JSON 扫描或模型置信度自动批准会制造身份冲突和错误能力声明。
+
+后果：migration `0002_e05_media_identity` 必须先于 E05 Worker 部署；profile/toolchain 升级需重新生成派生物并做兼容基准。当前本地路径只作为受信 Worker 输入，面向外部的 resumable upload/session adapter 尚需部署切片完成。Automation 保持 L1，Confidence 保持 Shadow。
+
+复议：只有真实并发、容量或媒体兼容 benchmark 证明 identity registry/FFmpeg/PySceneDetect 不满足目标时复议；不得放松 UUIDv4、rights fail-closed、raw/normalized 边界或人工 Release。
 
 ## 2. ADR 变更流程
 

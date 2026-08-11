@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from apps.api.commands import router as command_router
 from apps.api.corrections import router as correction_router
+from apps.api.media import router as media_router
 from apps.api.reviews import router as review_router
 from apps.api.timelines import router as timeline_router
 from packages.foundation.settings import get_settings
@@ -26,6 +27,7 @@ def create_app() -> FastAPI:
     app.state.timeline_repository = TimelineRepository()
     app.include_router(command_router)
     app.include_router(correction_router)
+    app.include_router(media_router)
     app.include_router(review_router)
     app.include_router(timeline_router)
 

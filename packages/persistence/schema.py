@@ -26,6 +26,7 @@ from packages.persistence.baseline_v0001 import (
     stage_execution,
     variant,
 )
+from packages.persistence.media_schema import media_ingest_identity
 
 __all__ = [
     "active_pointer",
@@ -41,6 +42,7 @@ __all__ = [
     "correction",
     "dependency",
     "invalidation_decision",
+    "media_ingest_identity",
     "metadata",
     "outbox_event",
     "project",
