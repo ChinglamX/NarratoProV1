@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 28
+State Version: 29
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 engineering built but production qualification debt retained; E07 engineering started.
 - Active Release Slice：R2 Story Intelligence（当前为 Identity, Fact and Story 工程子切片）。
 - Active Epics：E07 Identity, Fact and Story；bounded debt track E06/G05 qualification。
-- Active Backlog Entry：H02 Identity Persistence, Review and Invalidation。
+- Active Backlog Entry：H03 Fact and Evidence Fusion。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -45,6 +45,7 @@ State Owner: Project
 - E06/G04 Visual Observation：typed OCR/TextTrack/Detection/Tracklet/Face/Embedding/VLM/Quality/Supplementary contracts、typed HTTP 与 OpenCV research adapters、raw→normalized Artifact service、Temporal Workflow、资源保护与分能力 metrics 已实现；Registry 1.6.0。真实 demo frame OpenCV baseline 只证明 decode/quality/transport，不代表语义视觉模型准入。
 - E06/G05 Production Qualification engineering review：versioned Qualification Contract/matrix、canary/rollback、dashboard、runbook、bounded concurrency probe 与 E06 Acceptance Report 已实现；Registry 1.7.0。结论为 6 passed / 4 blocked / 2 not evaluated，engineering recommendation=rejected，human decision=pending；因此 E06 未正式关闭。
 - E07/H01 Identity Graph Domain：Face/tracklet/speaker/name/seed typed nodes、candidate/cannot-link/human correction edges、temporary CharacterIdentity、IdentityConflict 和 IdentityProposal 已实现；保守 assembly 仅接受人工 `corrected_same`，cannot-link 优先并产生 blocker，相似度只形成审核候选。Registry 1.8.0。
+- E07/H02 Identity Persistence/Review/Invalidation：typed merge/split/name preview、immutable successor、applied proposal lineage、Project advisory lock、active-pointer CAS、Correction/outbox、exact dependency invalidation 和 Review API/RBAC 已实现；Registry 1.9.0。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -52,7 +53,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- Identity 持久化/Review/失效、Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
+- Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -63,7 +64,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E07/H02 实现 Identity Graph 持久化、Review 和精准失效；只依赖冻结 Observation/Identity Contract 和 synthetic fixtures。
+1. 按 E07/H03 实现 Fact/Evidence Fusion；只允许可观察命题并显式保留 supporting/opposing evidence 与 incomplete partition。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 
@@ -165,6 +166,7 @@ State Owner: Project
 - G04 targeted check：9 tests；Ruff、strict mypy、Registry generation 和 Review Web TypeScript 通过。真实 demo frame 经 OpenCV research adapter 24 ms，8 个 generic foreground candidates，质量特征可追踪且 identity usability=false；未声明 OCR/detection/tracking/embedding/VLM 生产质量。ADR-031 固定 source-frame/Shot-local/typed VLM/license-first 边界。恢复点切换 G05。
 - G05 deterministic qualification：12 checks=6 passed/4 blocked/2 not evaluated；engineering recommendation=rejected、human decision=pending、production_qualified=false。最近 bounded probe 为 4 threads/16 requests、16 successes、P50 8 ms/P95 17 ms（非准入指标），仅证明 research adapter 线程执行。ADR-032 禁止 Agent 合成生产批准；E06 保持 active，等待人工审核与 blocker closure。
 - H01 targeted checks：Identity Contract/assembly 5 tests 通过；Registry 1.8.0 生成并通过 freshness；Ruff 和 strict mypy 通过。ADR-033 固定 similarity≠identity、human-only merge、cannot-link precedence、temporary unknown 和 replay ID injection；恢复点切换 H02。
+- H02 targeted checks：Identity correction/persistence/API 9 tests 通过；Ruff、strict mypy、Registry 1.9.0 generation 通过。ADR-034 固定 preview→human commit、Project serialization、CAS、successor lineage 和 exact dependency invalidation；恢复点切换 H03。
 
 ---
 

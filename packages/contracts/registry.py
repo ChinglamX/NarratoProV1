@@ -65,10 +65,12 @@ from packages.contracts.foundation import (
 from packages.contracts.identity import (
     CharacterIdentity,
     IdentityConflict,
+    IdentityCorrectionResult,
     IdentityEdge,
     IdentityGraph,
     IdentityNode,
     IdentityProposal,
+    IdentityReviewPackage,
 )
 from packages.contracts.media import (
     EpisodeCatalog,
@@ -132,7 +134,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "1.8.0"
+REGISTRY_VERSION = "1.9.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     AlignedToken,
@@ -173,10 +175,12 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     GuidelineManifest,
     HookCandidate,
     IdentityConflict,
+    IdentityCorrectionResult,
     IdentityEdge,
     IdentityGraph,
     IdentityNode,
     IdentityProposal,
+    IdentityReviewPackage,
     MasterTimeline,
     MediaAsset,
     MediaTechnicalMetadata,

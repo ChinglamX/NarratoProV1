@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from apps.api.commands import router as command_router
 from apps.api.corrections import router as correction_router
+from apps.api.identities import router as identity_router
 from apps.api.media import router as media_router
 from apps.api.reviews import router as review_router
 from apps.api.timelines import router as timeline_router
@@ -11,6 +12,7 @@ from packages.foundation.settings import get_settings
 from packages.persistence.command_repository import CommandRepository
 from packages.persistence.correction_repository import CorrectionRepository
 from packages.persistence.database import create_database_engine
+from packages.persistence.identity_repository import IdentityRepository
 from packages.persistence.project_repository import ProjectRepository
 from packages.persistence.review_repository import ReviewRepository
 from packages.persistence.timeline_repository import TimelineRepository
@@ -22,11 +24,13 @@ def create_app() -> FastAPI:
     app.state.database_engine = create_database_engine(settings.database_url)
     app.state.command_repository = CommandRepository()
     app.state.correction_repository = CorrectionRepository()
+    app.state.identity_repository = IdentityRepository()
     app.state.project_repository = ProjectRepository()
     app.state.review_repository = ReviewRepository()
     app.state.timeline_repository = TimelineRepository()
     app.include_router(command_router)
     app.include_router(correction_router)
+    app.include_router(identity_router)
     app.include_router(media_router)
     app.include_router(review_router)
     app.include_router(timeline_router)

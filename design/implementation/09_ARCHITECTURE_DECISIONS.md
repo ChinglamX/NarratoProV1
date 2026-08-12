@@ -373,6 +373,18 @@ Review API、跨版本失效或真实人物识别质量；这些分别由 H02 �
 复议：只有真实短剧 benchmark 和人工修正数据证明某个适用范围已校准，才能讨论受 policy 约束的
 候选自动化；不得取消 Evidence、cannot-link、Conflict、人工纠正来源或 Story Gate。
 
+## ADR-034 — Identity Corrections Are Immutable, Serialized and Precisely Invalidating
+
+决策：Identity merge/split/name 统一使用 typed `IdentityProposal`，先 preview 后由
+`story_reviewer`/`editor` 提交。Project advisory transaction lock 串行化全局 graph commit，active
+pointer CAS 拒绝 stale reviewer；Correction 创建同一 Artifact ID 的不可变后继版本，并保存 applied
+proposal ID、before/after、actor 和 outbox。旧 IdentityGraph 的 exact dependency closure 生成
+InvalidationDecision，只影响显式依赖的 Fact/Story，不扫描或删除其他产物。Review API 只能调用
+application/repository，不直接写内部表。
+
+后果：Registry 兼容升级到 1.9.0。H02 工程闭环支持 reversible successor lineage；真实 reviewer
+体验、跨集规模和 PostgreSQL 并发压力在 H06/真实数据验收，不得由单元 fixture 推断。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

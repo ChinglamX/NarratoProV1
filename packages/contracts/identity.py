@@ -119,6 +119,7 @@ class IdentityGraph(StrictContract):
     edges: tuple[IdentityEdge, ...]
     characters: tuple[CharacterIdentity, ...]
     conflicts: tuple[IdentityConflict, ...] = ()
+    applied_proposal_ids: tuple[UUID, ...] = ()
     incomplete: bool = False
 
     @model_validator(mode="after")
@@ -143,6 +144,8 @@ class IdentityGraph(StrictContract):
             raise ValueError("character references unknown identity node")
         if any(not set(conflict.node_ids) <= known for conflict in self.conflicts):
             raise ValueError("identity conflict references unknown node")
+        if len(self.applied_proposal_ids) != len(set(self.applied_proposal_ids)):
+            raise ValueError("applied identity proposal ids must be unique")
         return self
 
 
@@ -177,3 +180,27 @@ class IdentityProposal(StrictContract):
         if self.operation is IdentityProposalOperation.SPLIT and len(self.node_ids) < 1:
             raise ValueError("split proposal requires node ids")
         return self
+
+
+class IdentityReviewPackage(StrictContract):
+    graph_ref: ArtifactRef
+    graph: IdentityGraph
+    candidate_pairs: tuple[tuple[UUID, UUID], ...]
+    conflicts: tuple[IdentityConflict, ...]
+    downstream_refs: tuple[ArtifactRef, ...] = ()
+
+    @model_validator(mode="after")
+    def require_exact_graph_type(self) -> Self:
+        if self.graph_ref.artifact_type != "IdentityGraph":
+            raise ValueError("identity review requires IdentityGraph ref")
+        return self
+
+
+class IdentityCorrectionResult(StrictContract):
+    before_ref: ArtifactRef
+    after_ref: ArtifactRef | None = None
+    proposal: IdentityProposal
+    resulting_graph: IdentityGraph
+    affected_refs: tuple[ArtifactRef, ...] = ()
+    changed_character_ids: tuple[UUID, ...]
+    committed: bool = False

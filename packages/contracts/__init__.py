@@ -85,6 +85,7 @@ from packages.contracts.identity import (
     CharacterIdentity,
     IdentityConflict,
     IdentityConflictSeverity,
+    IdentityCorrectionResult,
     IdentityEdge,
     IdentityGraph,
     IdentityNode,
@@ -92,6 +93,7 @@ from packages.contracts.identity import (
     IdentityProposal,
     IdentityProposalOperation,
     IdentityRelation,
+    IdentityReviewPackage,
 )
 from packages.contracts.media import (
     AudioStream,
@@ -261,6 +263,7 @@ __all__ = [
     "HookCandidate",
     "IdentityConflict",
     "IdentityConflictSeverity",
+    "IdentityCorrectionResult",
     "IdentityEdge",
     "IdentityGraph",
     "IdentityLink",
@@ -269,6 +272,7 @@ __all__ = [
     "IdentityProposal",
     "IdentityProposalOperation",
     "IdentityRelation",
+    "IdentityReviewPackage",
     "MasterTimeline",
     "MediaAsset",
     "MediaRole",
