@@ -111,12 +111,14 @@ from packages.contracts.speech import (
 )
 from packages.contracts.story import Character, Event, StoryArc, StoryEdge, StoryGraph
 from packages.contracts.story_reasoning import (
+    ApprovedStorySnapshot,
     CausalGraph,
     CharacterState,
     CharacterStateGraph,
     EventCandidate,
     EventSet,
     StoryReasoningReport,
+    StoryReviewPackage,
 )
 from packages.contracts.strategy import (
     CreativeBrief,
@@ -149,9 +151,10 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.0.0"
+REGISTRY_VERSION = "2.1.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
+    ApprovedStorySnapshot,
     AlignedToken,
     ApplicableScope,
     ArtifactDependency,
@@ -243,6 +246,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     StoryEdge,
     StoryGraph,
     StoryReasoningReport,
+    StoryReviewPackage,
     SupplementarySampleRequest,
     TextTrack,
     StrategyCandidateSet,

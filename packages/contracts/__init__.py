@@ -160,6 +160,7 @@ from packages.contracts.story import (
     UnresolvedQuestion,
 )
 from packages.contracts.story_reasoning import (
+    ApprovedStorySnapshot,
     CausalGraph,
     CharacterState,
     CharacterStateGraph,
@@ -167,6 +168,7 @@ from packages.contracts.story_reasoning import (
     EventCandidate,
     EventSet,
     StoryReasoningReport,
+    StoryReviewPackage,
 )
 from packages.contracts.strategy import (
     CreativeBrief,
@@ -217,6 +219,7 @@ __all__ = [
     "AlignedToken",
     "AlignmentGranularity",
     "ApplicableScope",
+    "ApprovedStorySnapshot",
     "ArtifactDependency",
     "ArtifactEnvelope",
     "ArtifactRef",
@@ -354,6 +357,7 @@ __all__ = [
     "StoryGraph",
     "StoryImportance",
     "StoryReasoningReport",
+    "StoryReviewPackage",
     "StrategyCandidateSet",
     "StrategyDirection",
     "SupplementarySampleRequest",

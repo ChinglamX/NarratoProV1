@@ -88,3 +88,47 @@ class StoryReasoningReport(StrictContract):
     contradiction_count: Annotated[int, Field(ge=0)]
     unresolved_count: Annotated[int, Field(ge=0)]
     incomplete: bool
+
+
+class StoryReviewPackage(StrictContract):
+    fact_ref: ArtifactRef
+    identity_ref: ArtifactRef
+    event_set_ref: ArtifactRef
+    character_state_ref: ArtifactRef
+    causal_graph_ref: ArtifactRef
+    story_graph_ref: ArtifactRef
+    config_refs: tuple[ArtifactRef, ...]
+    model_refs: tuple[ArtifactRef, ...] = ()
+    blocker_codes: tuple[StableName, ...] = ()
+    unresolved_count: Annotated[int, Field(ge=0)] = 0
+    incomplete: bool = False
+
+    @model_validator(mode="after")
+    def require_exact_types_and_config(self) -> Self:
+        expected = {
+            "fact_ref": "FactSet",
+            "identity_ref": "IdentityGraph",
+            "event_set_ref": "EventSet",
+            "character_state_ref": "CharacterStateGraph",
+            "causal_graph_ref": "CausalGraph",
+            "story_graph_ref": "StoryGraph",
+        }
+        for field_name, artifact_type in expected.items():
+            if getattr(self, field_name).artifact_type != artifact_type:
+                raise ValueError(f"{field_name} must reference {artifact_type}")
+        if not self.config_refs:
+            raise ValueError("story review package requires exact config refs")
+        return self
+
+
+class ApprovedStorySnapshot(StrictContract):
+    review_id: UUID
+    decision_id: UUID
+    story_ref: ArtifactRef
+    fact_ref: ArtifactRef
+    identity_ref: ArtifactRef
+    event_set_ref: ArtifactRef
+    character_state_ref: ArtifactRef
+    causal_graph_ref: ArtifactRef
+    config_refs: tuple[ArtifactRef, ...]
+    model_refs: tuple[ArtifactRef, ...] = ()

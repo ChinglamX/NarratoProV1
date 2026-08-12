@@ -411,6 +411,21 @@ H01 temporary identity 要求 Story Character 允许无名，但仅 `temporary=t
 后果：各阶段可并发处理 Episode，但 Project Story assembly 读取固定 snapshot。Synthetic baseline
 只证明 typed/replay boundary，不代表模型理解质量；矛盾、梦境、回忆、否定仍需后续模型候选和人工 Gate。
 
+## ADR-037 — Gate 1 Publishes an Exact Approved Story Snapshot
+
+决策：Story Review Package 必须固定 FactSet、IdentityGraph、EventSet、CharacterStateGraph、
+CausalGraph、StoryGraph、Config 和 Model 的 exact refs。Gate 1 永远按 L1 创建 ReviewRequest；只有
+human reviewer 可提交 first-wins Decision。incomplete 或存在 blocker 的 Package 不允许 approve。
+批准事务同时 CAS 发布 project-scoped `approved_story` pointer，并先落 DB/outbox 后发送 Workflow
+Signal。Strategy 只能通过 Approved Story query 获取该 exact StoryGraph ref，不能读取“最新草稿”。
+
+Review Web 以 events/identities/states/causality/evidence/risks 六视图呈现 Package；UI 只提供交互
+投影，不直接写数据库。unresolved 必须显示并要求人工判断，但没有 blocker 时仍由 reviewer 决策，
+不由 Agent 自动批准。
+
+后果：Registry 兼容升级到 2.1.0。当前 UI 是 typed view-model 基线，不是完整视频交互体验；H06
+只验工程闭环，真实 Story Gate 签署等待用户数据。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

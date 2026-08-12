@@ -9,6 +9,7 @@ from fastapi import APIRouter, Header, HTTPException, Request, status
 from pydantic import BaseModel, Field
 from sqlalchemy import Engine
 
+from packages.contracts import StoryReviewPackage
 from packages.control.reviews import (
     ReviewConflict,
     ReviewDecision,
@@ -36,6 +37,44 @@ class DecisionResponse(BaseModel):
     review_id: UUID
     state: str
     delivery_pending: bool
+
+
+class StoryReviewRequestBody(BaseModel):
+    review_id: UUID
+    project_id: UUID
+    workflow_id: str = Field(min_length=1, max_length=255)
+    package: StoryReviewPackage
+
+
+@router.post("/story", status_code=status.HTTP_201_CREATED)
+def create_story_review(body: StoryReviewRequestBody, request: Request) -> dict[str, Any]:
+    engine: Engine = request.app.state.database_engine
+    repository: ReviewRepository = request.app.state.review_repository
+    with transaction(engine) as connection:
+        repository.create_request(
+            connection,
+            review_id=body.review_id,
+            project_id=body.project_id,
+            workflow_id=body.workflow_id,
+            gate="story",
+            target_ref=body.package.story_graph_ref.model_dump(mode="json"),
+            policy_snapshot={
+                "automation_level": "L1",
+                "story_review_package": body.package.model_dump(mode="json"),
+            },
+        )
+    return {"review_id": body.review_id, "state": "awaiting_review", "gate": "story"}
+
+
+@router.get("/story/approved/{project_id}")
+def get_approved_story(project_id: UUID, request: Request) -> dict[str, Any]:
+    engine: Engine = request.app.state.database_engine
+    repository: ReviewRepository = request.app.state.review_repository
+    with engine.connect() as connection:
+        reference = repository.approved_story(connection, project_id=project_id)
+    if reference is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail={"code": "story_not_approved"})
+    return {"approved_story_ref": reference}
 
 
 @router.post(

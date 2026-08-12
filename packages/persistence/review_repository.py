@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import Connection, and_, insert, select, update
+from sqlalchemy import Connection, and_, func, insert, select, update
 from sqlalchemy.exc import IntegrityError
 
 import packages.persistence.schema as schema
@@ -94,6 +94,11 @@ class ReviewRepository:
         actual_version = int(row["target_ref"]["version"])
         if row["state"] != "awaiting_review" or expected_target_version != actual_version:
             raise StoredReviewConflict("review target is stale or already decided")
+        policy = row["policy_snapshot"]
+        if row["gate"] == "story" and decision == "approve":
+            package = policy.get("story_review_package", {})
+            if package.get("incomplete") or package.get("blocker_codes"):
+                raise StoredReviewConflict("blocked or incomplete story cannot be approved")
         decision_id = uuid4()
         try:
             connection.execute(
@@ -117,6 +122,47 @@ class ReviewRepository:
             )
             if updated.rowcount != 1:
                 raise StoredReviewConflict("review was already decided")
+            if row["gate"] == "story" and decision == "approve":
+                connection.execute(
+                    select(func.pg_advisory_xact_lock(row["project_id"].int & (2**63 - 1)))
+                )
+                publication = connection.execute(
+                    select(schema.publication_pointer)
+                    .where(
+                        and_(
+                            schema.publication_pointer.c.project_id == row["project_id"],
+                            schema.publication_pointer.c.registry_type == "approved_story",
+                        )
+                    )
+                    .with_for_update()
+                ).first()
+                values = {
+                    "registry_id": UUID(str(row["target_ref"]["artifact_id"])),
+                    "version": actual_version,
+                }
+                if publication is None:
+                    connection.execute(
+                        insert(schema.publication_pointer).values(
+                            project_id=row["project_id"],
+                            registry_type="approved_story",
+                            **values,
+                        )
+                    )
+                else:
+                    connection.execute(
+                        update(schema.publication_pointer)
+                        .where(
+                            and_(
+                                schema.publication_pointer.c.project_id == row["project_id"],
+                                schema.publication_pointer.c.registry_type == "approved_story",
+                                schema.publication_pointer.c.row_version == publication.row_version,
+                            )
+                        )
+                        .values(
+                            **values,
+                            row_version=schema.publication_pointer.c.row_version + 1,
+                        )
+                    )
             connection.execute(
                 insert(schema.outbox_event).values(
                     id=uuid4(),
@@ -134,6 +180,23 @@ class ReviewRepository:
         except IntegrityError as error:
             raise StoredReviewConflict("review was already decided") from error
         return StoredReviewDecision(decision_id, review_id, "decided", True)
+
+    def approved_story(self, connection: Connection, *, project_id: UUID) -> dict[str, Any] | None:
+        row = connection.execute(
+            select(schema.publication_pointer).where(
+                and_(
+                    schema.publication_pointer.c.project_id == project_id,
+                    schema.publication_pointer.c.registry_type == "approved_story",
+                )
+            )
+        ).first()
+        if row is None:
+            return None
+        return {
+            "artifact_id": row.registry_id,
+            "version": int(row.version),
+            "artifact_type": "StoryGraph",
+        }
 
     def pending_signals(self, connection: Connection, *, limit: int = 100) -> list[PendingSignal]:
         rows = connection.execute(

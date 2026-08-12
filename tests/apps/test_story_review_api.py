@@ -1,0 +1,35 @@
+from types import SimpleNamespace
+from uuid import uuid4
+
+import pytest
+from fastapi import HTTPException
+
+from apps.api.reviews import get_approved_story
+
+
+class EmptyRepository:
+    def approved_story(self, *_args, **_kwargs):
+        return None
+
+
+class Engine:
+    class Context:
+        def __enter__(self):
+            return object()
+
+        def __exit__(self, *_args):
+            return None
+
+    def connect(self):
+        return self.Context()
+
+
+def test_unapproved_story_fails_closed() -> None:
+    request = SimpleNamespace(
+        app=SimpleNamespace(
+            state=SimpleNamespace(database_engine=Engine(), review_repository=EmptyRepository())
+        )
+    )
+    with pytest.raises(HTTPException) as captured:
+        get_approved_story(uuid4(), request)  # type: ignore[arg-type]
+    assert captured.value.status_code == 404

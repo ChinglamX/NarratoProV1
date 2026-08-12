@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 31
+State Version: 32
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 engineering built but production qualification debt retained; E07 engineering started.
 - Active Release Slice：R2 Story Intelligence（当前为 Identity, Fact and Story 工程子切片）。
 - Active Epics：E07 Identity, Fact and Story；bounded debt track E06/G05 qualification。
-- Active Backlog Entry：H05 Story Review Workspace and Gate 1。
+- Active Backlog Entry：H06 E07 Engineering Qualification。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -48,6 +48,7 @@ State Owner: Project
 - E07/H02 Identity Persistence/Review/Invalidation：typed merge/split/name preview、immutable successor、applied proposal lineage、Project advisory lock、active-pointer CAS、Correction/outbox、exact dependency invalidation 和 Review API/RBAC 已实现；Registry 1.9.0。
 - E07/H03 Fact/Evidence Fusion：Speech transcript、OCR、detection 到 observable Fact 的保守融合、supporting/opposing Evidence、ASR/OCR disagreement、incomplete partition 传播和 inferred VLM 排除已实现；Registry 1.10.0。
 - E07/H04 Typed Story Reasoning：Fact retrieval→EventSet→CharacterStateGraph→CausalGraph→StoryGraph typed Artifact/Temporal Activity 链路、pointer-only history、保守 event promotion、unresolved state/causal handling 已实现。temporary unnamed Character 修复触发合规 Registry major 2.0.0。
+- E07/H05 Story Review/Gate 1：exact-ref StoryReviewPackage、L1 Story Review API、blocker/incomplete fail-closed、human first-wins Decision、DB-first outbox、Approved Story project pointer/query 和 typed Review Web 六视图基线已实现；Registry 2.1.0。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -55,7 +56,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- Story 人工 Gate、Strategy 和最终生产 Pipeline 尚未开始。
+- Strategy 和最终生产 Pipeline 尚未开始；Story 真实素材人工 Gate 尚未签署。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -66,7 +67,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E07/H05 实现 Story Review Workspace/API 和 L1 Gate 1；审批必须固定 Fact/Identity/Event/State/Causal/Story/config/model exact refs。
+1. 按 E07/H06 完成 synthetic correction/invalidation/concurrency/replay、severe-error taxonomy、resource/cost、dashboard/runbook 和 Acceptance Report；真实质量与签署保持 pending。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 
@@ -171,6 +172,7 @@ State Owner: Project
 - H02 targeted checks：Identity correction/persistence/API 9 tests 通过；Ruff、strict mypy、Registry 1.9.0 generation 通过。ADR-034 固定 preview→human commit、Project serialization、CAS、successor lineage 和 exact dependency invalidation；恢复点切换 H03。
 - H03 targeted checks：Fact/Story contract 与 fusion 5 tests 通过；Ruff、strict mypy、Registry 1.10.0 generation 通过。ADR-035 固定 observable-only、correlated evidence 不重复计票、disagreement/incomplete 显式传播；恢复点切换 H04。
 - H04 targeted checks：Story contracts/domain/workflow 6 tests 通过；Ruff、strict mypy、Registry history/generation 通过。ADR-036 固定 typed Artifact pipeline 与 temporal≠causal；nullable temporary Character 属 breaking change，Registry 正确升级 2.0.0；恢复点切换 H05。
+- H05 targeted checks：Story Review Contract/API/control 5 tests 与 Review Web TypeScript 通过；Registry 2.1.0 generation 通过。ADR-037 固定 exact approval snapshot、L1 human Gate、blocked/incomplete fail-closed 和 Strategy approved-pointer-only；恢复点切换 H06。
 
 ---
 
