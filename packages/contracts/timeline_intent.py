@@ -251,6 +251,29 @@ class RhythmPlan(StrictContract):
         return self
 
 
+class DurationConflict(StrictContract):
+    minimum_required: RationalTime
+    available: RationalTime
+    affected_beat_ids: tuple[UUID, ...]
+    alternatives: tuple[StableName, ...]
+    blocker: bool = True
+
+
+class NarrationFinding(StrictContract):
+    line_id: UUID
+    code: StableName
+    explanation: Annotated[str, Field(min_length=1, max_length=2_048)]
+    blocker: bool
+
+
+class NarrationPlanningReport(StrictContract):
+    line_set_ref: ArtifactRef
+    findings: tuple[NarrationFinding, ...]
+    evidence_coverage: Annotated[float, Field(ge=0.0, le=1.0)]
+    estimated_seconds: Annotated[float, Field(ge=0.0)]
+    locked_line_ids: tuple[UUID, ...] = ()
+
+
 class DialogueRelationship(StrEnum):
     COMPLEMENT = "complement"
     BRIDGE = "bridge"

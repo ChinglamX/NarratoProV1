@@ -213,7 +213,9 @@ from packages.contracts.timeline_intent import (
     CompositionTarget,
     ContinuityReport,
     CropPath,
+    DurationConflict,
     NarrationLineSet,
+    NarrationPlanningReport,
     NarrativeBeatGraph,
     RhythmPlan,
     SourceSubtitleHandlingPlan,
@@ -241,7 +243,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.14.0"
+REGISTRY_VERSION = "2.15.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ASSArtifact,
     ActorRef,
@@ -285,6 +287,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     CreativeBrief,
     CriticResult,
     CropPath,
+    DurationConflict,
     DatasetManifest,
     DatasetSplitManifest,
     DetectionObservation,
@@ -334,6 +337,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     OfflineQualityReview,
     NarrativeBeatGraph,
     NarrationLineSet,
+    NarrationPlanningReport,
     ProviderIdentity,
     ProviderBenchmarkReport,
     ProviderDataPolicy,
