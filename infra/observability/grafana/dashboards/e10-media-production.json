@@ -1,0 +1,5 @@
+{"title":"NarratoPro E10 Voice Audio Subtitle","schemaVersion":39,"tags":["narratopro","e10","audio"],"panels":[
+{"type":"timeseries","title":"Voice take outcomes","targets":[{"expr":"sum by (outcome) (rate(narratopro_voice_take_total[5m]))"}]},
+{"type":"timeseries","title":"Conform duration delta","targets":[{"expr":"histogram_quantile(0.95, sum by (le) (rate(narratopro_conform_delta_seconds_bucket[5m])))"}]},
+{"type":"timeseries","title":"Audio and subtitle blockers","targets":[{"expr":"sum by (kind) (rate(narratopro_media_production_blocker_total[5m]))"}]}
+]}

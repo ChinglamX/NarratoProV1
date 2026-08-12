@@ -86,6 +86,21 @@ from packages.contracts.media import (
     MediaTechnicalMetadata,
     SceneShotCatalog,
 )
+from packages.contracts.media_production import (
+    AlignmentArtifact,
+    ASSArtifact,
+    AudioAssetSelection,
+    ConformReport,
+    MixedAudio,
+    MixPlan,
+    SubtitleCueSet,
+    VoiceAsset,
+    VoiceTakeSet,
+)
+from packages.contracts.media_production_qualification import (
+    MediaProductionEngineeringQualification,
+    MediaProductionSevereError,
+)
 from packages.contracts.providers import (
     ProviderDataPolicy,
     ProviderFailure,
@@ -207,16 +222,19 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.9.0"
+REGISTRY_VERSION = "2.11.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
+    ASSArtifact,
     ActorRef,
     ApprovedCreativeBrief,
     ApprovedStorySnapshot,
     AlignedToken,
+    AlignmentArtifact,
     ApplicableScope,
     ArtifactDependency,
     ArtifactEnvelope,
     ArtifactRef,
+    AudioAssetSelection,
     BenchmarkCase,
     BenchmarkDataset,
     BenchmarkPrediction,
@@ -239,6 +257,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     CommandEnvelope,
     ConfidenceFactor,
     ConfidenceRecord,
+    ConformReport,
     Correction,
     CostEstimate,
     CreativeBrief,
@@ -284,6 +303,10 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     MasterTimeline,
     MediaAsset,
     MediaTechnicalMetadata,
+    MediaProductionEngineeringQualification,
+    MediaProductionSevereError,
+    MixPlan,
+    MixedAudio,
     OCRObservation,
     NarrativeBeatGraph,
     NarrationLineSet,
@@ -329,6 +352,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     StoryReasoningReport,
     StoryReviewPackage,
     StorySevereError,
+    SubtitleCueSet,
     SupplementarySampleRequest,
     TextTrack,
     StrategyCandidateSet,
@@ -358,6 +382,8 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     TimeRange,
     TraceId,
     VADSegment,
+    VoiceAsset,
+    VoiceTakeSet,
     VisualEmbedding,
     VisualObservation,
     VisualQualityReport,

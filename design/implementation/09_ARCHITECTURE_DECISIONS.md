@@ -521,6 +521,21 @@ Release 三个 Gate 保持不变。E10 只消费 exact Approved Timeline Intent�
 后果：Registry 兼容升级到 2.9.0。E09 工程可在真实 craft benchmark 未完成时关闭，但 production
 decision 保持 pending_human、L1/Shadow；专业节奏、解说、表演余韵与构图只能由完整播放和真实数据验收。
 
+## ADR-045 — Actual Voice Duration Conforms the Timeline; Rights Precede Media Production
+
+决策：E10 TTS 通过统一 Provider/raw boundary 生成 bounded VoiceTake candidates；只有具备 committed
+audio、checksum、实际 duration、provider/voice version、cost/QC 和 RightsMetadata 的 take 可成为
+VoiceAsset。实际 Voice/Alignment 时间必须创建 Master Timeline 后继并精准失效 Subtitle/Mix/Render，
+禁止以估算时长继续渲染或维护私有音频时间线。
+
+MixPlan 必须显式区分 original/narration/BGM/SFX，BGM 存在时必须声明 narration ducking，并引用
+versioned loudness/True Peak Profile。Subtitle 由 Alignment 形成 typed Cue，主层禁止 overlap，highlight
+不得越界，safe-area/碰撞和固定 ASS/libass/font profile 必须可审核。Voice、BGM、SFX、font、graphic
+权利未知时 fail closed。
+
+后果：Registry 兼容升级到 2.11.0。E10 工程关闭不代表任何 TTS/音色或资产获生产准入；真实中文
+发音、情感、同步、可懂度、响度、字幕视觉和权利仍由后继 production qualification 决定。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

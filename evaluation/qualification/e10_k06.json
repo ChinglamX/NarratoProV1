@@ -1,0 +1,26 @@
+{
+  "release_slice":"R4-release-candidate",
+  "code_revision":"pending-k06-commit",
+  "automation_level":"L1",
+  "confidence_shadow":true,
+  "engineering_complete":true,
+  "production_decision":"pending_human",
+  "checks":[
+    {"check_id":"voice-take-boundary","dimension":"engineering","status":"passed","blocker":false,"detail":"Provider-neutral bounded takes require raw response, committed selected audio, duration and cost.","evidence_paths":["packages/contracts/media_production.py"]},
+    {"check_id":"duration-conform","dimension":"synchronization","status":"passed","blocker":false,"detail":"Actual voice duration and alignment are explicit inputs to conform and subtitle timing.","evidence_paths":["packages/production/conform.py"]},
+    {"check_id":"mix-and-subtitle-constraints","dimension":"engineering","status":"passed","blocker":false,"detail":"Narration/BGM ducking, loudness intent, cue overlap, highlight and safe-area metadata are typed.","evidence_paths":["packages/contracts/media_production.py"]},
+    {"check_id":"real-tts-provider","dimension":"provider","status":"blocked","blocker":true,"detail":"No TTS checkpoint has completed license, voice authorization and real short-drama benchmark admission.","evidence_paths":[]},
+    {"check_id":"real-audio-assets-rights","dimension":"rights","status":"not_evaluated","blocker":true,"detail":"Production BGM, SFX, font and voice RightsMetadata has not been supplied.","evidence_paths":[]},
+    {"check_id":"real-sync-loudness-subtitle-qc","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"Real full-program alignment, intelligibility, loudness, True Peak and subtitle collision measurements await assets.","evidence_paths":[]},
+    {"check_id":"production-audio-concurrency","dimension":"reliability","status":"not_evaluated","blocker":true,"detail":"Real synthesis/mix/ASS Worker restart, backpressure and cost require provider/runtime data.","evidence_paths":[]}
+  ],
+  "severe_errors":[
+    {"code":"unauthorized-voice-or-asset","description":"Voice, music, sound, font or graphic lacks usable rights."},
+    {"code":"wrong-pronunciation","description":"A key name, term or meaning-changing phrase is pronounced incorrectly."},
+    {"code":"voice-timeline-desync","description":"Actual voice timing is not conformed into the canonical Timeline."},
+    {"code":"bgm-masks-speech","description":"Music or sound effects materially mask narration or dialogue."},
+    {"code":"loudness-or-peak-failure","description":"Output violates the approved platform loudness or True Peak profile."},
+    {"code":"subtitle-desync","description":"Subtitle timing materially differs from the spoken line."},
+    {"code":"subtitle-obscures-content","description":"Subtitle or graphic blocks a key face, action, evidence or platform safe area."}
+  ]
+}
