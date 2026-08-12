@@ -310,7 +310,62 @@ Version: 1.0
 
 ---
 
-## 9. 任务完成定义
+## 9. Sprint Group H — Identity, Fact and Story
+
+E06 的真实数据、Provider rights 与 production qualification 可以作为显式 debt 保留，但 E07
+工程实现只能依赖冻结 Contract，并以 synthetic fixtures 验证；不得把 E06 research 输出当成
+已批准质量。
+
+### H01 Identity Graph Domain
+
+实现 Observation Node、same/cannot-link、Character cluster、Identity Conflict、merge/split/name
+proposal、人工约束优先级、deterministic component 与 temporary Character。
+
+验收：同时间互斥人脸 cannot-link、人工 different 覆盖相似度、merge/split 可逆、未知身份不强制
+命名、所有 link 回指 Observation Evidence。
+
+### H02 Identity Persistence, Review and Invalidation
+
+实现 Identity Graph immutable successor/CAS、Project commit serialization、semantic correction、
+dependency impact preview、Review Package/API 和受影响 Fact/Story 精准失效。
+
+验收：并发 reviewer 只有一个提交成功；往返 merge/split 保留 lineage；Review 不直接写内部表。
+
+### H03 Fact and Evidence Fusion
+
+将 Speech/Visual/OCR Observation 转换成 dialogue/person/entity/ocr/action/signal Fact，构建
+supporting/opposing Evidence Bundle、Fact Snapshot、ConflictSet 与 incomplete partitions。
+
+验收：Fact 只含可观察命题；相关来源不重复计票；冲突不静默消解；Correction 创建后继版本并
+只失效显式 dependency closure。
+
+### H04 Typed Story Reasoning Workflow
+
+实现 Fact Retrieval、Episode Event Candidate、Evidence Entailment、dedup/order、Character State、
+Relationship、Causal Edge、Arc、contradiction/coverage scan 的独立 Artifact 与 Temporal steps。
+
+验收：不允许单 Prompt 从视频生成 Story；关键 Event 有 Evidence；时间先后不自动变因果；
+dream/recall/negation/unavailable 保持 unresolved。
+
+### H05 Story Review Workspace and Gate 1
+
+实现 StoryReviewPackage 查询/API、事件线/身份/状态/关系/因果/evidence/conflict 视图数据、
+Correction impact preview 与 L1 Story Gate。
+
+验收：批准固定 story/fact/identity/model/prompt/config exact refs；重复/乱序 decision first-wins；
+Strategy 只能读取 ApprovedStoryRef。
+
+### H06 E07 Engineering Qualification
+
+完成多集 synthetic correction/invalidation、并发、Worker restart/replay、resource/cost baseline、
+Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
+
+验收：工程闭环可重放且无越权；真实人物/剧情准确率与 Story production approval 在用户提供合法
+数据后执行，缺失时保持 L1/Shadow/pending，不伪造通过。
+
+---
+
+## 10. 任务完成定义
 
 每项必须有：public contract、domain/application implementation、adapter、unit/contract/integration tests、observability、error/runbook、文档链接和 migration/rollback（适用时）。
 

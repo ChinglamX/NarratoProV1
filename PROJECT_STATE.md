@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 26
+State Version: 27
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E05 completed; E06 started.
-- Active Release Slice：R2 Story Intelligence（当前为 Speech and Visual Observation 子切片）。
-- Active Epics：E06 Speech and Visual Observation。
-- Active Backlog Entry：G05 Production Qualification（engineering review complete; human sign-off pending）。
+- Lifecycle：Implementation active; E00–E05 completed; E06 engineering built but production qualification debt retained; E07 engineering started.
+- Active Release Slice：R2 Story Intelligence（当前为 Identity, Fact and Story 工程子切片）。
+- Active Epics：E07 Identity, Fact and Story；bounded debt track E06/G05 qualification。
+- Active Backlog Entry：H01 Identity Graph Domain。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -62,9 +62,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 项目负责人审核 `quality/E06_ACCEPTANCE_REPORT.md` 与 `evaluation/qualification/e06_g05.json`；当前工程建议拒绝生产准入并继续 Research/L1。
-2. 若接受拒绝结论，保持 E06 active 并按 blocker 建设真实 Corpus、模型 rights/checksum、Mac mini load/fault/cost 与 telemetry drill；不能进入 E07 假定 E06 已稳定。
-3. 只有全部 blocker 变为 passed 后才生成后继 Qualification 并请求人工 production approval。Confidence 仍为 Shadow，E06 不创建 Fact/Story。
+1. 按 E07/H01 实现 Identity Graph Domain；只依赖冻结 Observation Contract 和 synthetic fixtures。
+2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
+3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -84,6 +84,7 @@ State Owner: Project
 - FunASR adapter 已真实运行但只准入 research：完整模型权重 checksum、模型卡许可、商业使用批准和真实按剧隔离 Speech baseline 均缺失。
 - PaddleOCR/semantic detector/tracker/embedding/VLM 尚无生产准入的 exact checkpoint 与真实短剧 benchmark；Ultralytics 许可姿态未批准，必须保持 blocked/research。
 - G05 生产资格结论为 rejected/pending_human；真实 Corpus、模型权利、long-series/multi-project、exact Worker restart、完整资源成本和 telemetry operator drill 均是显式 blocker。
+- 用户授权 E06 签署与真实数据验证暂存 TODO，并允许 E07 先做工程实现；该授权不等于批准 E06，也不允许 E07 绕过真实数据生产验收。
 
 ---
 
