@@ -147,6 +147,16 @@ from packages.contracts.strategy_config import (
     StrategyConfigConflict,
     StrategyProfile,
 )
+from packages.contracts.strategy_evaluation import (
+    CandidateEvaluation,
+    CostEstimate,
+    CriticResult,
+    DiversityPair,
+    DiversityReport,
+    FeasibilityReport,
+    StrategyComparisonPackage,
+    StrategyRisk,
+)
 from packages.contracts.timeline import (
     MasterTimeline,
     TimelineConflict,
@@ -170,7 +180,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.4.0"
+REGISTRY_VERSION = "2.5.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApprovedStorySnapshot,
@@ -188,6 +198,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     CandidateBlocker,
     CandidateBudget,
     CandidateValidation,
+    CandidateEvaluation,
     CausalGraph,
     CharacterIdentity,
     CharacterState,
@@ -197,10 +208,14 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ConfidenceFactor,
     ConfidenceRecord,
     Correction,
+    CostEstimate,
     CreativeBrief,
+    CriticResult,
     DatasetManifest,
     DatasetSplitManifest,
     DetectionObservation,
+    DiversityPair,
+    DiversityReport,
     ErrorDetail,
     ErrorEnvelope,
     EffectiveStrategyConfig,
@@ -216,6 +231,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     FrameSamplePlan,
     Fact,
     FactSet,
+    FeasibilityReport,
     FusionConflict,
     FusionReport,
     FaceObservation,
@@ -280,9 +296,11 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     SupplementarySampleRequest,
     TextTrack,
     StrategyCandidateSet,
+    StrategyComparisonPackage,
     StrategyConfigConflict,
     StrategyDirection,
     StrategyProfile,
+    StrategyRisk,
     Character,
     TimelineConflict,
     TimelineItem,

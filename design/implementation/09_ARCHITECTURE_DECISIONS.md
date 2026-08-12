@@ -463,6 +463,19 @@ duration 和 continuation beats。未知 source、无后续兑现或未启用 me
 后果：Registry 兼容升级到 2.4.0。I02 接受模型或人工 proposal，但 deterministic assembly/validation
 拥有最终工程约束；真实卖点相关性和 Hook 吸引力留给 I05 真实数据验收。
 
+## ADR-041 — Strategy Comparison Separates Blockers, Diversity, Feasibility and Cost
+
+决策：Strategy Direction 必须引用已知 Selling Point 和 Story-grounded Narrative Beat，并先经过
+CandidateBudget admission。Critic 使用独立 prompt/provider/run refs，只能产生 finding，不能修改
+Candidate。Evaluation 分开保存 deterministic blocker、critic disagreement、risk、feasibility、cost
+range 和 heuristic；blocker 或 infeasible 永远不能被综合分抵消。Diversity 以 primary selling point、
+viewpoint、reveal policy 和 narrative spine 等结构字段比较，文本改写不构成新 Direction。成本以
+versioned method/resource profile 和区间表达，不伪造精确金额。Comparison Package 保留所有候选、
+失败和差异，不用排名隐藏低分方案。
+
+后果：Registry 兼容升级到 2.5.0。I03 只建立可审核的候选比较基础；真实创意优劣和成本误差需
+Stage 4/5 实际数据与人工偏好校准。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。
