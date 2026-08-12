@@ -132,6 +132,13 @@ from packages.contracts.strategy import (
     StrategyCandidateSet,
     StrategyDirection,
 )
+from packages.contracts.strategy_candidates import (
+    CandidateBlocker,
+    CandidateBudget,
+    CandidateValidation,
+    HookCandidateSet,
+    SellingPointCoverage,
+)
 from packages.contracts.strategy_config import (
     EffectiveStrategyConfig,
     GenreCandidate,
@@ -163,7 +170,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.3.0"
+REGISTRY_VERSION = "2.4.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApprovedStorySnapshot,
@@ -178,6 +185,9 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     BoundingBox,
     CalibrationArtifact,
     CalibrationPackManifest,
+    CandidateBlocker,
+    CandidateBudget,
+    CandidateValidation,
     CausalGraph,
     CharacterIdentity,
     CharacterState,
@@ -214,6 +224,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     GenreCandidate,
     GenreResolution,
     HookCandidate,
+    HookCandidateSet,
     IdentityConflict,
     IdentityCorrectionResult,
     IdentityEdge,
@@ -251,6 +262,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     SevereErrorDefinition,
     SellingPoint,
     SellingPointSet,
+    SellingPointCoverage,
     SpeakerObservation,
     SpeechConflict,
     SpeechObservation,

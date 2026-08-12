@@ -184,6 +184,14 @@ from packages.contracts.strategy import (
     StrategyCandidateSet,
     StrategyDirection,
 )
+from packages.contracts.strategy_candidates import (
+    CandidateBlocker,
+    CandidateBudget,
+    CandidateDisposition,
+    CandidateValidation,
+    HookCandidateSet,
+    SellingPointCoverage,
+)
 from packages.contracts.strategy_config import (
     ConstraintSource,
     EffectiveStrategyConfig,
@@ -249,6 +257,10 @@ __all__ = [
     "CalibrationArtifact",
     "CalibrationLifecycle",
     "CalibrationPackManifest",
+    "CandidateBlocker",
+    "CandidateBudget",
+    "CandidateDisposition",
+    "CandidateValidation",
     "CausalGraph",
     "Character",
     "CharacterIdentity",
@@ -302,6 +314,7 @@ __all__ = [
     "GenreResolution",
     "GuidelineManifest",
     "HookCandidate",
+    "HookCandidateSet",
     "IdentityConflict",
     "IdentityConflictSeverity",
     "IdentityCorrectionResult",
@@ -361,6 +374,7 @@ __all__ = [
     "SceneShotCatalog",
     "SegmentKind",
     "SellingPoint",
+    "SellingPointCoverage",
     "SellingPointSet",
     "SevereErrorDefinition",
     "SliceCatalogManifest",

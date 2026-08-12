@@ -451,6 +451,18 @@ experimental Profile 不得成为自动路由依据。
 后果：Registry 兼容升级到 2.3.0。I01 只建立配置和输入真相边界，不声称完成 Genre 自动识别或
 营销效果验证；配置变化只失效 Strategy 及下游，不重算 Story。
 
+## ADR-040 — Selling Points and Hooks Are Bounded Evidence-grounded Candidates
+
+决策：Selling Point 只能从 Approved Story Event/Evidence 和 versioned taxonomy 形成，未知类型保留
+unknown，不补写刺激点。CandidateBudget 同时约束卖点、方向、每方向 Hook、总候选、revision、token
+和成本，Strategy×Hook 乘积不得突破全局上限；超限显式 incomplete/not-scheduled。Hook 是多轨 intent，
+必须包含 source moment、visual/audio/text intent、disclosed/withheld information、audience question、
+duration 和 continuation beats。未知 source、无后续兑现或未启用 mechanic 是 deterministic blocker，
+任何 heuristic score 均不能抵消。无真实发布数据时 Confidence/score 只表示内部一致性且保持 Shadow。
+
+后果：Registry 兼容升级到 2.4.0。I02 接受模型或人工 proposal，但 deterministic assembly/validation
+拥有最终工程约束；真实卖点相关性和 Hook 吸引力留给 I05 真实数据验收。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。
