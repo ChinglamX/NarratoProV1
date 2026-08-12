@@ -1,0 +1,250 @@
+"""E09 creative timeline intent contracts grounded in an approved strategy boundary."""
+
+from __future__ import annotations
+
+from enum import StrEnum
+from typing import Annotated, Self
+
+from pydantic import Field, model_validator
+
+from packages.contracts.base import StrictContract
+from packages.contracts.envelopes import JsonObject
+from packages.contracts.foundation import UUID, ArtifactRef, RationalTime, StableName, TimeRange
+
+
+class BeatFunction(StrEnum):
+    HOOK = "hook"
+    CONTEXT = "context"
+    ESCALATION = "escalation"
+    TURN = "turn"
+    PAYOFF = "payoff"
+    CTA = "cta"
+
+
+class TimelineIntentInput(StrictContract):
+    approved_creative_brief_ref: ArtifactRef
+    approved_variant_plan_ref: ArtifactRef
+    approved_story_ref: ArtifactRef
+    media_catalog_ref: ArtifactRef
+    platform_profile_ref: ArtifactRef
+
+    @model_validator(mode="after")
+    def require_approved_boundary_types(self) -> Self:
+        expected = (
+            (self.approved_creative_brief_ref, "CreativeBrief"),
+            (self.approved_variant_plan_ref, "VariantPlan"),
+            (self.approved_story_ref, "StoryGraph"),
+            (self.media_catalog_ref, "EpisodeCatalog"),
+        )
+        if any(reference.artifact_type != kind for reference, kind in expected):
+            raise ValueError("timeline intent input requires approved typed boundaries")
+        return self
+
+
+class NarrativeBeat(StrictContract):
+    beat_id: UUID
+    function: BeatFunction
+    story_refs: tuple[UUID, ...]
+    target_duration: RationalTime
+    minimum_duration: RationalTime
+    maximum_duration: RationalTime
+    required_information: tuple[Annotated[str, Field(min_length=1, max_length=1_024)], ...]
+    emotional_intent: JsonObject
+    locked: bool = False
+
+    @model_validator(mode="after")
+    def validate_budget(self) -> Self:
+        minimum = self.minimum_duration.seconds
+        target = self.target_duration.seconds
+        maximum = self.maximum_duration.seconds
+        if not self.story_refs or not self.required_information:
+            raise ValueError("narrative beat must be grounded and informative")
+        if minimum <= 0 or not minimum <= target <= maximum:
+            raise ValueError("beat duration must satisfy positive min <= target <= max")
+        return self
+
+
+class NarrativeBeatGraph(StrictContract):
+    creative_brief_ref: ArtifactRef
+    beats: tuple[NarrativeBeat, ...]
+    target_duration: RationalTime
+
+    @model_validator(mode="after")
+    def validate_graph_budget(self) -> Self:
+        if not self.beats or len({beat.beat_id for beat in self.beats}) != len(self.beats):
+            raise ValueError("beat graph requires unique beats")
+        if sum(beat.minimum_duration.seconds for beat in self.beats) > self.target_duration.seconds:
+            raise ValueError("minimum beat budget exceeds target duration")
+        return self
+
+
+class ClipCandidate(StrictContract):
+    candidate_id: UUID
+    beat_id: UUID
+    source_ref: ArtifactRef
+    source_range: TimeRange
+    story_refs: tuple[UUID, ...]
+    evidence_refs: tuple[UUID, ...]
+    visible_character_refs: tuple[UUID, ...] = ()
+    quality: JsonObject
+    continuity_features: JsonObject
+    reframe_feasible: bool
+    rights_allowed: bool
+    score_components: dict[StableName, Annotated[float, Field(ge=0.0, le=1.0)]]
+
+    @model_validator(mode="after")
+    def require_grounded_usable_source(self) -> Self:
+        if self.source_range.is_empty or not self.story_refs or not self.evidence_refs:
+            raise ValueError("clip candidate requires source duration, Story and Evidence")
+        return self
+
+
+class CoverageGap(StrictContract):
+    beat_id: UUID
+    reason: StableName
+    required_story_refs: tuple[UUID, ...]
+    blocker: bool = True
+
+
+class ClipCandidateSet(StrictContract):
+    beat_graph_ref: ArtifactRef
+    candidates: tuple[ClipCandidate, ...]
+    coverage_gaps: tuple[CoverageGap, ...] = ()
+    incomplete: bool = False
+
+    @model_validator(mode="after")
+    def reject_duplicate_candidates(self) -> Self:
+        ids = [candidate.candidate_id for candidate in self.candidates]
+        if len(ids) != len(set(ids)):
+            raise ValueError("clip candidate ids must be unique")
+        if self.coverage_gaps and not self.incomplete:
+            raise ValueError("coverage gaps require incomplete state")
+        return self
+
+
+class ClipSelection(StrictContract):
+    beat_id: UUID
+    candidate_id: UUID
+    selected_range: TimeRange
+    rationale: Annotated[str, Field(min_length=1, max_length=2_048)]
+    continuity_waivers: tuple[StableName, ...] = ()
+
+
+class ContinuityRisk(StrictContract):
+    left_candidate_id: UUID
+    right_candidate_id: UUID
+    risk_type: StableName
+    severity: Annotated[int, Field(ge=0, le=3)]
+    explanation: Annotated[str, Field(min_length=1, max_length=2_048)]
+    blocker: bool = False
+
+
+class ClipSelectionPlan(StrictContract):
+    candidate_set_ref: ArtifactRef
+    selections: tuple[ClipSelection, ...]
+    continuity_risks: tuple[ContinuityRisk, ...] = ()
+
+
+class BeatRhythm(StrictContract):
+    beat_id: UUID
+    target_duration: RationalTime
+    entry_energy: Annotated[float, Field(ge=0.0, le=1.0)]
+    exit_energy: Annotated[float, Field(ge=0.0, le=1.0)]
+    information_density: Annotated[float, Field(ge=0.0, le=1.0)]
+    breathing_point: bool = False
+
+
+class RhythmPlan(StrictContract):
+    beat_graph_ref: ArtifactRef
+    selection_plan_ref: ArtifactRef
+    beats: tuple[BeatRhythm, ...]
+    target_duration: RationalTime
+    unresolved_conflicts: tuple[StableName, ...] = ()
+
+    @model_validator(mode="after")
+    def reconcile_duration(self) -> Self:
+        if not self.beats:
+            raise ValueError("rhythm plan requires beats")
+        total = sum(item.target_duration.seconds for item in self.beats)
+        if total != self.target_duration.seconds:
+            raise ValueError("rhythm beat durations must equal target duration")
+        return self
+
+
+class DialogueRelationship(StrEnum):
+    COMPLEMENT = "complement"
+    BRIDGE = "bridge"
+    EMPHASIS = "emphasis"
+    NONE = "none"
+
+
+class NarrationLine(StrictContract):
+    line_id: UUID
+    beat_id: UUID
+    text: Annotated[str, Field(min_length=1, max_length=2_048)]
+    function: StableName
+    story_refs: tuple[UUID, ...]
+    evidence_refs: tuple[UUID, ...]
+    target_duration: RationalTime
+    dialogue_relationship: DialogueRelationship
+    rhetorical: bool = False
+    locked: bool = False
+
+    @model_validator(mode="after")
+    def require_evidence_for_factual_line(self) -> Self:
+        if self.target_duration.value <= 0:
+            raise ValueError("narration duration must be positive")
+        if not self.rhetorical and (not self.story_refs or not self.evidence_refs):
+            raise ValueError("factual narration requires Story and Evidence refs")
+        return self
+
+
+class NarrationLineSet(StrictContract):
+    creative_brief_ref: ArtifactRef
+    rhythm_plan_ref: ArtifactRef
+    lines: tuple[NarrationLine, ...]
+    estimated_duration: RationalTime
+    redundancy_findings: tuple[StableName, ...] = ()
+    unresolved_findings: tuple[StableName, ...] = ()
+
+
+class CropKeyframe(StrictContract):
+    position: RationalTime
+    x: Annotated[float, Field(ge=0.0, le=1.0)]
+    y: Annotated[float, Field(ge=0.0, le=1.0)]
+    width: Annotated[float, Field(gt=0.0, le=1.0)]
+    height: Annotated[float, Field(gt=0.0, le=1.0)]
+    locked: bool = False
+
+    @model_validator(mode="after")
+    def remain_in_frame(self) -> Self:
+        if self.x + self.width > 1.0 or self.y + self.height > 1.0:
+            raise ValueError("crop keyframe must remain inside normalized frame")
+        return self
+
+
+class CropPath(StrictContract):
+    selection_plan_ref: ArtifactRef
+    candidate_id: UUID
+    keyframes: tuple[CropKeyframe, ...]
+    fallback: StableName | None = None
+    manual_required: bool = False
+
+    @model_validator(mode="after")
+    def require_path_or_fallback(self) -> Self:
+        if not self.keyframes and self.fallback is None:
+            raise ValueError("crop path requires keyframes or explicit fallback")
+        return self
+
+
+class TimelineIntentPackage(StrictContract):
+    input_ref: ArtifactRef
+    beat_graph_ref: ArtifactRef
+    clip_candidate_set_ref: ArtifactRef
+    clip_selection_plan_ref: ArtifactRef
+    crop_path_refs: tuple[ArtifactRef, ...]
+    rhythm_plan_ref: ArtifactRef
+    narration_line_set_ref: ArtifactRef
+    master_timeline_ref: ArtifactRef
+    blocker_codes: tuple[StableName, ...] = ()
+    incomplete: bool = False

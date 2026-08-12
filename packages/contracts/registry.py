@@ -175,6 +175,22 @@ from packages.contracts.timeline import (
     TimelinePatch,
     TimelineTrack,
 )
+from packages.contracts.timeline_intent import (
+    BeatRhythm,
+    ClipCandidate,
+    ClipCandidateSet,
+    ClipSelectionPlan,
+    CropPath,
+    NarrationLineSet,
+    NarrativeBeatGraph,
+    RhythmPlan,
+    TimelineIntentInput,
+    TimelineIntentPackage,
+)
+from packages.contracts.timeline_qualification import (
+    TimelineEngineeringQualification,
+    TimelineSevereError,
+)
 from packages.contracts.visual import (
     BoundingBox,
     DetectionObservation,
@@ -191,7 +207,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.7.0"
+REGISTRY_VERSION = "2.9.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApprovedCreativeBrief,
@@ -204,6 +220,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     BenchmarkCase,
     BenchmarkDataset,
     BenchmarkPrediction,
+    BeatRhythm,
     BoundingBox,
     CalibrationArtifact,
     CalibrationPackManifest,
@@ -215,6 +232,9 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     CharacterIdentity,
     CharacterState,
     CharacterStateGraph,
+    ClipCandidate,
+    ClipCandidateSet,
+    ClipSelectionPlan,
     Checksum,
     CommandEnvelope,
     ConfidenceFactor,
@@ -223,6 +243,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     CostEstimate,
     CreativeBrief,
     CriticResult,
+    CropPath,
     DatasetManifest,
     DatasetSplitManifest,
     DetectionObservation,
@@ -264,6 +285,8 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     MediaAsset,
     MediaTechnicalMetadata,
     OCRObservation,
+    NarrativeBeatGraph,
+    NarrationLineSet,
     ProviderIdentity,
     ProviderBenchmarkReport,
     ProviderDataPolicy,
@@ -286,6 +309,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     RightsManifestRef,
     RightsMetadata,
     RoutingDecision,
+    RhythmPlan,
     SceneShotCatalog,
     SevereErrorDefinition,
     SellingPoint,
@@ -321,6 +345,10 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     VariantSpec,
     Character,
     TimelineConflict,
+    TimelineEngineeringQualification,
+    TimelineIntentInput,
+    TimelineIntentPackage,
+    TimelineSevereError,
     TimelineItem,
     TimelinePatch,
     TimelineTrack,

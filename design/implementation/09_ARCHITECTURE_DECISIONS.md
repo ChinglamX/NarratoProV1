@@ -506,6 +506,21 @@ DB-first signal 是工程不变量；真实多项目容量、运营成本和营�
 后果：Registry 兼容升级到 2.7.0。E09 可以开始工程建设，但只能消费 project-scoped Approved
 Creative Brief/Variant Plan；本报告不得被解释为 demo 成片质量或投放效果已经达标。
 
+## ADR-044 — Creative Planning Compiles into One Timeline and Uses a Checkpoint
+
+决策：E09 只能读取 project-scoped Approved Creative Brief/Variant Plan，并固定 Approved Story、
+Media Catalog 和 Platform Profile exact refs。Beat、Clip/Coverage、Crop、Rhythm、Narration 是独立
+typed intent；它们必须汇合为唯一 Master Timeline，不得各自维护成片时间真相。Embedding 只负责
+召回；正式 Clip 必须有 Story/Evidence、合法 source range 和 rights。CoverageGap、DurationConflict、
+不可行 crop 或无证据 narration 必须显式失败，禁止静默填充、极端加速或编造。
+
+Timeline Review 是可反复 Patch/CAS 的人工 Checkpoint，不是第四个正式 Gate。Story、Strategy、
+Release 三个 Gate 保持不变。E10 只消费 exact Approved Timeline Intent；任何时长改变创建 Timeline
+后继并精准失效 voice/alignment/subtitle/mix/render。
+
+后果：Registry 兼容升级到 2.9.0。E09 工程可在真实 craft benchmark 未完成时关闭，但 production
+decision 保持 pending_human、L1/Shadow；专业节奏、解说、表演余韵与构图只能由完整播放和真实数据验收。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

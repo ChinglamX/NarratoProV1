@@ -1,0 +1,29 @@
+{
+  "release_slice":"R3-creative-plan",
+  "code_revision":"pending-j06-commit",
+  "automation_level":"L1",
+  "confidence_shadow":true,
+  "timeline_checkpoint_required":true,
+  "engineering_complete":true,
+  "production_decision":"pending_human",
+  "checks":[
+    {"check_id":"approved-input-boundary","dimension":"governance","status":"passed","blocker":false,"detail":"Timeline input fails closed without Approved Creative Brief and Variant Plan pointers.","evidence_paths":["apps/services/timeline_inputs.py"]},
+    {"check_id":"typed-creative-plans","dimension":"engineering","status":"passed","blocker":false,"detail":"Beat, clip, crop, rhythm and narration plans use versioned typed contracts.","evidence_paths":["packages/contracts/timeline_intent.py"]},
+    {"check_id":"grounded-selection","dimension":"correctness","status":"passed","blocker":false,"detail":"Selection refuses rights-blocked or ungrounded fill and reports coverage gaps.","evidence_paths":["packages/timeline/creative.py"]},
+    {"check_id":"master-timeline-single-truth","dimension":"engineering","status":"passed","blocker":false,"detail":"Creative output assembles into the canonical Master Timeline and existing semantic Patch/CAS boundary.","evidence_paths":["packages/contracts/timeline.py","packages/timeline/creative.py"]},
+    {"check_id":"real-craft-benchmark","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"Full demo comparison for rhythm, narration, continuity and crop awaits real approved Story/Strategy data.","evidence_paths":[]},
+    {"check_id":"real-timeline-checkpoint","dimension":"approval","status":"not_evaluated","blocker":true,"detail":"No real Timeline Intent has received editor checkpoint approval.","evidence_paths":[]},
+    {"check_id":"semantic-visual-providers","dimension":"provider","status":"blocked","blocker":true,"detail":"E06 semantic visual providers remain unqualified for production selection/reframe.","evidence_paths":["quality/E06_ACCEPTANCE_REPORT.md"]},
+    {"check_id":"production-concurrency-replay","dimension":"reliability","status":"not_evaluated","blocker":true,"detail":"Real multi-variant planning, Worker restart and full preview load require approved real input.","evidence_paths":[]}
+  ],
+  "severe_errors":[
+    {"code":"wrong-story-clip","description":"Selected clip does not support its narrative beat."},
+    {"code":"coverage-gap-hidden","description":"Missing required footage is silently filled with unrelated material."},
+    {"code":"rights-blocked-clip","description":"A rights-blocked source enters the approved timeline."},
+    {"code":"dialogue-or-action-cut","description":"A required dialogue or action is cut before comprehension."},
+    {"code":"narration-fabrication","description":"Narration changes unsupported identity, event, causality or motivation."},
+    {"code":"narration-dialogue-duplication","description":"Narration repeatedly restates clearly audible dialogue without purpose."},
+    {"code":"unsafe-crop","description":"Crop removes a key face, action, text or violates safe composition."},
+    {"code":"duration-infeasible","description":"Required minimum beat durations exceed the approved target."}
+  ]
+}

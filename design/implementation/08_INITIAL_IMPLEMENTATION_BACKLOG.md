@@ -407,9 +407,9 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 实现 BGM/SFX/ducking、字幕安全区与唯一 MasterTimeline Patch assembly。
 
-### J05 Timeline Review Workspace and Gate
+### J05 Timeline Review Workspace and Checkpoint
 
-实现多轨对照、人工精修、exact-ref Timeline approval 和下游 publication。
+实现多轨对照、人工精修、exact-ref Timeline checkpoint 和下游 publication；不新增正式 Gate。
 
 ### J06 E09 Engineering Qualification
 
@@ -417,7 +417,63 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 ---
 
-## 12. 任务完成定义
+## 12. Sprint Group K — Voice, Audio and Subtitle
+
+### K01 Voice Provider and Take Contracts
+
+实现 provider-neutral VoiceTakeSet、发音/情感/rights/QC 和 bounded candidate take。
+
+### K02 Voice Synthesis, Selection and Alignment
+
+实现 typed synthesis boundary、真实时长、forced alignment、重试/降级和 VoiceAsset publication。
+
+### K03 Timeline Conform and Local Reflow
+
+以真实 Voice/Alignment 时长创建 Timeline 后继，限制 reflow scope 并精准失效下游。
+
+### K04 Audio Asset Selection and Mix Plan
+
+实现 rights-first BGM/SFX selection、original/narration/music routing、ducking 和 loudness intent。
+
+### K05 Subtitle, Graphics and ASS
+
+实现 Cue/Graphics contracts、alignment、重点词、安全区、碰撞检测与 deterministic ASS 输出。
+
+### K06 E10 Engineering Qualification
+
+完成同步、响度/可懂度、rights、并发/replay、runbook/dashboard 和 pending-real-data 验收。
+
+---
+
+## 13. Sprint Group L — Render and Release Candidate
+
+### L01 Render Preflight and Plan
+
+从 Conformed Timeline、Voice/Mix/Subtitle 与 Platform Profile 生成 deterministic RenderPlan。
+
+### L02 Proxy and Final Render Execution
+
+实现 FFmpeg graph、缓存、heartbeat、重试、资源准入和 Proxy/Final parity。
+
+### L03 Technical QC and Rights Manifest
+
+实现 probe、同步、黑帧/静音/字幕安全区、完整 RightsManifest 和 blocker fail-closed。
+
+### L04 Offline Quality Review Package
+
+按统一 Rubric 形成带时间码/Evidence 的 Story/Hook/Rhythm/Narration/Visual/Audio/Subtitle review。
+
+### L05 Human Release Gate 3
+
+实现 human release_approver-only、first-wins、exact candidate/checksum 和 immutable ReleaseRecord。
+
+### L06 E11 Engineering Qualification
+
+完成 end-to-end fault/restart/cache/parity/security/cost、runbook/dashboard 和 pending-real-data 验收。
+
+---
+
+## 14. 任务完成定义
 
 每项必须有：public contract、domain/application implementation、adapter、unit/contract/integration tests、observability、error/runbook、文档链接和 migration/rollback（适用时）。
 
@@ -425,7 +481,7 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 ---
 
-## 13. 首批明确不做
+## 15. 首批明确不做
 
 - 不接真实 ASR/VLM/TTS。
 - 不实现 Story/Strategy Agent。

@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 38
+State Version: 39
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -8,8 +8,8 @@ State Owner: Project
 
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
 - Active Release Slice：R3 Creative Plan。
-- Active Epics：E09 Creative Timeline；bounded debt tracks E06/G05、E07/H06、E08/I05 production qualification。
-- Active Backlog Entry：J01 Approved Brief Input and Timeline Intent Contracts。
+- Active Epics：E10 Voice, Audio and Subtitle；bounded debt tracks E06/G05、E07/H06、E08/I05、E09/J06 production qualification。
+- Active Backlog Entry：K01 Voice Provider and Take Contracts。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -55,6 +55,7 @@ State Owner: Project
 - E08/I03 Strategy Candidate/Comparison：bounded grounded Direction planning、independent Critic refs、blocker-over-score、Risk/Feasibility/Cost、structural Diversity 和 Comparison Package 已实现；Registry 2.5.0。
 - E08/I04 Strategy Review/Gate 2：exact-ref Review Package、L1 human selection、blocker/incomplete/out-of-package fail-closed、ApprovedCreativeBrief/VariantPlan 双 publication pointer 和 typed Web 六视图已实现；Registry 2.6.0。
 - E08/I05 Engineering Qualification：versioned Strategy qualification、严重错误 taxonomy、成本/并发/replay 边界、runbook、dashboard 和 pending-real-data Acceptance Report 已完成；工程结论 complete，production decision=pending_human。Registry 2.7.0。E08 工程正式关闭。
+- E09/J01–J06 Creative Timeline：Approved Strategy-only input、typed Beat/Clip/Crop/Rhythm/Narration intents、grounded selection、CoverageGap、唯一 MasterTimeline assembly、Checkpoint 语义和 engineering qualification 已实现；Registry 2.9.0。工程结论 complete，production decision=pending_human。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -62,7 +63,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- E09 Creative Timeline、最终 Render/Release Pipeline 尚未实现；Story/Strategy 真实素材人工 Gate 尚未签署。
+- E10 Voice/Audio/Subtitle 与 E11 Render/Release Candidate 尚未实现；Story/Strategy/Timeline 真实素材人工签署尚未完成。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -73,7 +74,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E09/J01 建立 Approved Creative Brief/Variant Plan-only 输入边界与 typed Timeline intent contracts。
+1. 按 E10/K01 建立 Voice Provider/Take、rights 和真实时长回写边界。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 
