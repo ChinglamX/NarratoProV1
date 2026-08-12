@@ -157,6 +157,13 @@ from packages.contracts.strategy_evaluation import (
     StrategyComparisonPackage,
     StrategyRisk,
 )
+from packages.contracts.strategy_review import (
+    ApprovedCreativeBrief,
+    StrategyGateSelection,
+    StrategyReviewPackage,
+    VariantPlan,
+    VariantSpec,
+)
 from packages.contracts.timeline import (
     MasterTimeline,
     TimelineConflict,
@@ -180,9 +187,10 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.5.0"
+REGISTRY_VERSION = "2.6.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
+    ApprovedCreativeBrief,
     ApprovedStorySnapshot,
     AlignedToken,
     ApplicableScope,
@@ -301,6 +309,10 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     StrategyDirection,
     StrategyProfile,
     StrategyRisk,
+    StrategyGateSelection,
+    StrategyReviewPackage,
+    VariantPlan,
+    VariantSpec,
     Character,
     TimelineConflict,
     TimelineItem,

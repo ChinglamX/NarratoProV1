@@ -4,11 +4,14 @@ from uuid import uuid4
 import pytest
 from fastapi import HTTPException
 
-from apps.api.reviews import get_approved_story
+from apps.api.reviews import get_approved_story, get_approved_strategy
 
 
 class EmptyRepository:
     def approved_story(self, *_args, **_kwargs):
+        return None
+
+    def approved_strategy_ref(self, *_args, **_kwargs):
         return None
 
 
@@ -32,4 +35,15 @@ def test_unapproved_story_fails_closed() -> None:
     )
     with pytest.raises(HTTPException) as captured:
         get_approved_story(uuid4(), request)  # type: ignore[arg-type]
+    assert captured.value.status_code == 404
+
+
+def test_unapproved_strategy_fails_closed() -> None:
+    request = SimpleNamespace(
+        app=SimpleNamespace(
+            state=SimpleNamespace(database_engine=Engine(), review_repository=EmptyRepository())
+        )
+    )
+    with pytest.raises(HTTPException) as captured:
+        get_approved_strategy(uuid4(), request)  # type: ignore[arg-type]
     assert captured.value.status_code == 404

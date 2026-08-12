@@ -214,6 +214,13 @@ from packages.contracts.strategy_evaluation import (
     StrategyComparisonPackage,
     StrategyRisk,
 )
+from packages.contracts.strategy_review import (
+    ApprovedCreativeBrief,
+    StrategyGateSelection,
+    StrategyReviewPackage,
+    VariantPlan,
+    VariantSpec,
+)
 from packages.contracts.timeline import (
     MasterTimeline,
     PatchOperationType,
@@ -253,6 +260,7 @@ __all__ = [
     "AlignedToken",
     "AlignmentGranularity",
     "ApplicableScope",
+    "ApprovedCreativeBrief",
     "ApprovedStorySnapshot",
     "ArtifactDependency",
     "ArtifactEnvelope",
@@ -417,8 +425,10 @@ __all__ = [
     "StrategyComparisonPackage",
     "StrategyConfigConflict",
     "StrategyDirection",
+    "StrategyGateSelection",
     "StrategyProfile",
     "StrategyProfileKind",
+    "StrategyReviewPackage",
     "StrategyRisk",
     "SupplementarySampleRequest",
     "TextRegionKind",
@@ -441,6 +451,8 @@ __all__ = [
     "VADSegment",
     "VLMClaim",
     "VLMClaimKind",
+    "VariantPlan",
+    "VariantSpec",
     "VideoStream",
     "VisualEmbedding",
     "VisualObservation",

@@ -72,6 +72,7 @@ class ReviewRepository:
         decision: str,
         reviewer_snapshot: dict[str, Any],
         reasons: list[dict[str, Any]],
+        strategy_selection: dict[str, Any] | None = None,
         trace_id: str,
     ) -> StoredReviewDecision:
         row = (
@@ -99,6 +100,24 @@ class ReviewRepository:
             package = policy.get("story_review_package", {})
             if package.get("incomplete") or package.get("blocker_codes"):
                 raise StoredReviewConflict("blocked or incomplete story cannot be approved")
+        if row["gate"] == "strategy" and decision == "approve":
+            package = policy.get("strategy_review_package", {})
+            if strategy_selection is None or package.get("incomplete"):
+                raise StoredReviewConflict("strategy selection is required and must be complete")
+            strategy_id = strategy_selection.get("selected_strategy_id")
+            hook_id = strategy_selection.get("selected_hook_id")
+            if strategy_id not in package.get("allowed_strategy_ids", []):
+                raise StoredReviewConflict("selected strategy is not in the review package")
+            if hook_id not in package.get("allowed_hook_ids", []):
+                raise StoredReviewConflict("selected hook is not in the review package")
+            if strategy_id in package.get("blocker_candidate_ids", []):
+                raise StoredReviewConflict("blocked strategy cannot be approved")
+            if strategy_selection.get("creative_brief_ref") not in package.get(
+                "candidate_brief_refs", []
+            ) or strategy_selection.get("variant_plan_ref") not in package.get(
+                "candidate_variant_plan_refs", []
+            ):
+                raise StoredReviewConflict("selection references are outside the review package")
         decision_id = uuid4()
         try:
             connection.execute(
@@ -107,7 +126,11 @@ class ReviewRepository:
                     request_id=review_id,
                     decision=decision,
                     reviewer_json=reviewer_snapshot,
-                    reasons=reasons,
+                    reasons=(
+                        [*reasons, {"kind": "strategy_selection", "selection": strategy_selection}]
+                        if strategy_selection is not None
+                        else reasons
+                    ),
                 )
             )
             updated = connection.execute(
@@ -126,43 +149,29 @@ class ReviewRepository:
                 connection.execute(
                     select(func.pg_advisory_xact_lock(row["project_id"].int & (2**63 - 1)))
                 )
-                publication = connection.execute(
-                    select(schema.publication_pointer)
-                    .where(
-                        and_(
-                            schema.publication_pointer.c.project_id == row["project_id"],
-                            schema.publication_pointer.c.registry_type == "approved_story",
-                        )
-                    )
-                    .with_for_update()
-                ).first()
-                values = {
-                    "registry_id": UUID(str(row["target_ref"]["artifact_id"])),
-                    "version": actual_version,
-                }
-                if publication is None:
-                    connection.execute(
-                        insert(schema.publication_pointer).values(
-                            project_id=row["project_id"],
-                            registry_type="approved_story",
-                            **values,
-                        )
-                    )
-                else:
-                    connection.execute(
-                        update(schema.publication_pointer)
-                        .where(
-                            and_(
-                                schema.publication_pointer.c.project_id == row["project_id"],
-                                schema.publication_pointer.c.registry_type == "approved_story",
-                                schema.publication_pointer.c.row_version == publication.row_version,
-                            )
-                        )
-                        .values(
-                            **values,
-                            row_version=schema.publication_pointer.c.row_version + 1,
-                        )
-                    )
+                self._publish_pointer(
+                    connection,
+                    project_id=row["project_id"],
+                    registry_type="approved_story",
+                    reference=row["target_ref"],
+                )
+            if row["gate"] == "strategy" and decision == "approve":
+                assert strategy_selection is not None
+                connection.execute(
+                    select(func.pg_advisory_xact_lock(row["project_id"].int & (2**63 - 1)))
+                )
+                self._publish_pointer(
+                    connection,
+                    project_id=row["project_id"],
+                    registry_type="approved_creative_brief",
+                    reference=strategy_selection["creative_brief_ref"],
+                )
+                self._publish_pointer(
+                    connection,
+                    project_id=row["project_id"],
+                    registry_type="approved_variant_plan",
+                    reference=strategy_selection["variant_plan_ref"],
+                )
             connection.execute(
                 insert(schema.outbox_event).values(
                     id=uuid4(),
@@ -180,6 +189,72 @@ class ReviewRepository:
         except IntegrityError as error:
             raise StoredReviewConflict("review was already decided") from error
         return StoredReviewDecision(decision_id, review_id, "decided", True)
+
+    def _publish_pointer(
+        self,
+        connection: Connection,
+        *,
+        project_id: UUID,
+        registry_type: str,
+        reference: dict[str, Any],
+    ) -> None:
+        publication = connection.execute(
+            select(schema.publication_pointer)
+            .where(
+                and_(
+                    schema.publication_pointer.c.project_id == project_id,
+                    schema.publication_pointer.c.registry_type == registry_type,
+                )
+            )
+            .with_for_update()
+        ).first()
+        values = {
+            "registry_id": UUID(str(reference["artifact_id"])),
+            "version": int(reference["version"]),
+        }
+        if publication is None:
+            connection.execute(
+                insert(schema.publication_pointer).values(
+                    project_id=project_id, registry_type=registry_type, **values
+                )
+            )
+        else:
+            connection.execute(
+                update(schema.publication_pointer)
+                .where(
+                    and_(
+                        schema.publication_pointer.c.project_id == project_id,
+                        schema.publication_pointer.c.registry_type == registry_type,
+                        schema.publication_pointer.c.row_version == publication.row_version,
+                    )
+                )
+                .values(**values, row_version=schema.publication_pointer.c.row_version + 1)
+            )
+
+    def approved_strategy_ref(
+        self, connection: Connection, *, project_id: UUID, registry_type: str
+    ) -> dict[str, Any] | None:
+        artifact_types = {
+            "approved_creative_brief": "CreativeBrief",
+            "approved_variant_plan": "VariantPlan",
+        }
+        if registry_type not in artifact_types:
+            raise ValueError("unknown strategy publication pointer")
+        row = connection.execute(
+            select(schema.publication_pointer).where(
+                and_(
+                    schema.publication_pointer.c.project_id == project_id,
+                    schema.publication_pointer.c.registry_type == registry_type,
+                )
+            )
+        ).first()
+        if row is None:
+            return None
+        return {
+            "artifact_id": row.registry_id,
+            "version": int(row.version),
+            "artifact_type": artifact_types[registry_type],
+        }
 
     def approved_story(self, connection: Connection, *, project_id: UUID) -> dict[str, Any] | None:
         row = connection.execute(

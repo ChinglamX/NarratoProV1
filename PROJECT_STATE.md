@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 36
+State Version: 37
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06/E07 engineering built with production qualification debt retained; E08 engineering active.
 - Active Release Slice：R3 Marketing Strategy（下一工程子切片）。
 - Active Epics：E08 Marketing Strategy；bounded debt tracks E06/G05 and E07/H06 production qualification。
-- Active Backlog Entry：I04 Strategy Review Workspace and Gate 2。
+- Active Backlog Entry：I05 E08 Engineering Qualification。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -53,6 +53,7 @@ State Owner: Project
 - E08/I01 Strategy Config/Input Boundary：versioned Genre/Platform/Audience/Duration/Brand-Safety Profile、hard/soft boundary、deterministic resolution、conflict blocker 和 ApprovedStory-only Input Service 已实现；Registry 2.3.0。
 - E08/I02 Selling Point/Hook Candidates：CandidateBudget、Event/Evidence-grounded Selling Point、coverage、HookCandidateSet、结构去重和 source/mechanic/continuation deterministic blocker 已实现；Registry 2.4.0。
 - E08/I03 Strategy Candidate/Comparison：bounded grounded Direction planning、independent Critic refs、blocker-over-score、Risk/Feasibility/Cost、structural Diversity 和 Comparison Package 已实现；Registry 2.5.0。
+- E08/I04 Strategy Review/Gate 2：exact-ref Review Package、L1 human selection、blocker/incomplete/out-of-package fail-closed、ApprovedCreativeBrief/VariantPlan 双 publication pointer 和 typed Web 六视图已实现；Registry 2.6.0。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -60,7 +61,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- Strategy Gate 2/CreativeBrief/VariantPlan 和最终生产 Pipeline 尚未开始；Story 真实素材人工 Gate 尚未签署。
+- E08 Engineering Qualification 和最终生产 Pipeline 尚未完成；Story/Strategy 真实素材人工 Gate 尚未签署。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -71,7 +72,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E08/I04 实现 Strategy Comparison Workspace、L1 Gate 2、ApprovedCreativeBrief 和 bounded VariantPlan publication/invalidation。
+1. 按 E08/I05 完成并发/replay、严重错误、成本、dashboard/runbook 和 pending-real-data Acceptance Report。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 
@@ -181,6 +182,7 @@ State Owner: Project
 - I01 targeted checks：Strategy profile/config/input 4 tests、Ruff、strict mypy、Registry 2.3.0 generation 通过。ADR-039 固定 ApprovedStory-only、hard-over-soft、equal-priority conflict blocker 和 experimental scope；恢复点切换 I02。
 - I02 targeted checks：Candidate Contract/domain 8 tests、Ruff、strict mypy、Registry 2.4.0 generation 通过。ADR-040 固定 evidence-grounded、bounded fan-out、structural dedup 和 blocker-over-score；恢复点切换 I03。
 - I03 targeted checks：Strategy planning/evaluation 7 tests、Ruff、strict mypy、Registry 2.5.0 generation 通过。ADR-041 固定 grounded direction、critic independence、structural diversity、blocker-over-score 和 cost range；恢复点切换 I04。
+- I04 targeted checks：Strategy Gate Contract/API/Web tests、Ruff、strict mypy、Registry 2.6.0 generation/history 和 Review Web TypeScript 通过。ADR-042 固定 exact selection、双批准 pointer、L1 human Gate 和 candidate-only Variant 语义；恢复点切换 I05。
 
 ---
 

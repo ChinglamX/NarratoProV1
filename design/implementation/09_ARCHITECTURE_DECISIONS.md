@@ -476,6 +476,21 @@ versioned method/resource profile 和区间表达，不伪造精确金额。Comp
 后果：Registry 兼容升级到 2.5.0。I03 只建立可审核的候选比较基础；真实创意优劣和成本误差需
 Stage 4/5 实际数据与人工偏好校准。
 
+## ADR-042 — Gate 2 Freezes an Exact Creative Boundary
+
+决策：Strategy Review Package 必须固定 Approved Story、Effective Config、Candidate/Hook Set 和
+Comparison exact refs，并显式列出允许选择、blocker 和候选 Brief/Variant refs。Gate 2 保持 L1；
+只有 human reviewer 可选择一个非阻断 Strategy 与 Hook。批准事务以 DB-first/outbox 和 project lock
+同时发布 `approved_creative_brief` 与 `approved_variant_plan` pointer；缺失 selection、越界 ref、stale
+target、incomplete 或 blocker 一律 fail closed。Stage 4 只能读取这两个批准 pointer。
+
+Creative Brief 冻结平台、受众、时长、质量 Profile、叙事脊柱、五类创意 intent、硬约束、必用 Story
+refs、风险与成本上限。Variant Plan 必须恰有一个 control、总增量成本不超预算；没有真实 exposure
+assignment 与结果时只能称 candidate variants，不得宣称 A/B experiment。
+
+后果：Registry 兼容升级到 2.6.0。Review Web 提供候选/Hook/Evidence/Diversity/Risk/Cost 六视图的
+typed fail-closed view model；实际视频对照体验和营销 lift 由后续真实数据验收，不由工程 fixture 推断。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

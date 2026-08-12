@@ -9,7 +9,7 @@ from fastapi import APIRouter, Header, HTTPException, Request, status
 from pydantic import BaseModel, Field
 from sqlalchemy import Engine
 
-from packages.contracts import StoryReviewPackage
+from packages.contracts import StoryReviewPackage, StrategyGateSelection, StrategyReviewPackage
 from packages.control.reviews import (
     ReviewConflict,
     ReviewDecision,
@@ -30,6 +30,7 @@ class DecisionBody(BaseModel):
     expected_target_version: int = Field(ge=1)
     decision: ReviewDecision
     reasons: list[dict[str, Any]] = Field(default_factory=list)
+    strategy_selection: StrategyGateSelection | None = None
 
 
 class DecisionResponse(BaseModel):
@@ -44,6 +45,13 @@ class StoryReviewRequestBody(BaseModel):
     project_id: UUID
     workflow_id: str = Field(min_length=1, max_length=255)
     package: StoryReviewPackage
+
+
+class StrategyReviewRequestBody(BaseModel):
+    review_id: UUID
+    project_id: UUID
+    workflow_id: str = Field(min_length=1, max_length=255)
+    package: StrategyReviewPackage
 
 
 @router.post("/story", status_code=status.HTTP_201_CREATED)
@@ -75,6 +83,42 @@ def get_approved_story(project_id: UUID, request: Request) -> dict[str, Any]:
     if reference is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail={"code": "story_not_approved"})
     return {"approved_story_ref": reference}
+
+
+@router.post("/strategy", status_code=status.HTTP_201_CREATED)
+def create_strategy_review(body: StrategyReviewRequestBody, request: Request) -> dict[str, Any]:
+    engine: Engine = request.app.state.database_engine
+    repository: ReviewRepository = request.app.state.review_repository
+    with transaction(engine) as connection:
+        repository.create_request(
+            connection,
+            review_id=body.review_id,
+            project_id=body.project_id,
+            workflow_id=body.workflow_id,
+            gate="strategy",
+            target_ref=body.package.comparison_ref.model_dump(mode="json"),
+            policy_snapshot={
+                "automation_level": "L1",
+                "strategy_review_package": body.package.model_dump(mode="json"),
+            },
+        )
+    return {"review_id": body.review_id, "state": "awaiting_review", "gate": "strategy"}
+
+
+@router.get("/strategy/approved/{project_id}")
+def get_approved_strategy(project_id: UUID, request: Request) -> dict[str, Any]:
+    engine: Engine = request.app.state.database_engine
+    repository: ReviewRepository = request.app.state.review_repository
+    with engine.connect() as connection:
+        brief = repository.approved_strategy_ref(
+            connection, project_id=project_id, registry_type="approved_creative_brief"
+        )
+        variants = repository.approved_strategy_ref(
+            connection, project_id=project_id, registry_type="approved_variant_plan"
+        )
+    if brief is None or variants is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail={"code": "strategy_not_approved"})
+    return {"approved_creative_brief_ref": brief, "approved_variant_plan_ref": variants}
 
 
 @router.post(
@@ -111,6 +155,11 @@ def submit_decision(
                     "service_account": reviewer.service_account,
                 },
                 reasons=body.reasons,
+                strategy_selection=(
+                    body.strategy_selection.model_dump(mode="json")
+                    if body.strategy_selection is not None
+                    else None
+                ),
                 trace_id=trace_id,
             )
     except (ReviewForbidden, StoredReviewForbidden) as error:
