@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 45
+State Version: 46
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
 - Active Release Slice：R4 Creative Production。
 - Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt。
-- Active Backlog Entry：J06 Engineering Qualification — integration remediation and real-data exit evidence。
+- Active Backlog Entry：J05 Precise Multi-track Editing — earlier J-group remediation closed; real-data exit evidence remains blocked。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -56,9 +56,9 @@ State Owner: Project
 - E08/I04 Strategy Review/Gate 2：exact-ref Review Package、L1 human selection、blocker/incomplete/out-of-package fail-closed、ApprovedCreativeBrief/VariantPlan 双 publication pointer 和 typed Web 六视图已实现；Registry 2.6.0。
 - E08/I05 Engineering Qualification：versioned Strategy qualification、严重错误 taxonomy、成本/并发/replay 边界、runbook、dashboard 和 pending-real-data Acceptance Report 已完成；工程结论 complete，production decision=pending_human。Registry 2.7.0。E08 工程正式关闭。
 - E09/J01 Creative Timeline contract/input baseline：Approved Strategy-only input 和 Beat/Clip/Crop/Rhythm/Narration 初始 Contract 已实现；E09 不得因此关闭。
-- E09/J02 Visual and Clip Planning domain baseline：可替换 Clip Index Port、Story/Evidence/Character 过滤、序列级连续性选择、Continuity Report、平滑 CropPath、原片字幕降级与局部重算已实现并通过确定性测试；生产 Provider、Artifact persistence 和完整 Workflow integration 未完成。Registry 2.14.0。
-- E09/J03 Rhythm and Narration Planning domain baseline：Beat 预算/总时长对账、DurationConflict、呼吸点意图、对白复述/无依据心理阻断、证据覆盖、人工 lock 与 scoped regeneration 已实现并通过确定性测试；Narration Provider、全局生成链和完整 Workflow integration 未完成。Registry 2.15.0。
-- E09/J04 Multi-track Assembly domain baseline：Video/Original Audio/Narration placeholder/BGM/SFX/Subtitle/Overlay 共用唯一 MasterTimeline 的组装与 blocker 校验已实现；真实媒体 Patch compilation、Artifact persistence、完整 Preview integration 未完成。Registry 2.16.0。
+- E09/J02 Visual and Clip Planning：可替换 Clip Index Port、Story/Evidence/Character 过滤、序列级连续性选择、Continuity Report、平滑 CropPath、原片字幕降级与局部重算已实现；持久化 ClipCandidateSet 适配器（路由分数+top-k+源时长校验）、TimelinePlanningService（全部规划产物经 ArtifactRepository 落库）与确定性测试已完成。Registry 2.14.0→2.18.0。
+- E09/J03 Rhythm and Narration Planning：Beat 预算/总时长对账、DurationConflict、呼吸点意图、对白复述/无依据心理阻断、证据覆盖、人工 lock 与 scoped regeneration 已实现；NarrationSourcePort/L1 人工解说边界、RhythmPlanningService（RhythmPlan/NarrationPlanningReport/后继 NarrationLineSet 落库）与 DurationConflict 分支测试已完成。Registry 2.15.0→2.18.0。
+- E09/J04 Multi-track Assembly：Video/Original Audio/Narration/BGM/SFX/Subtitle/Overlay 共用唯一 MasterTimeline 的组装与 blocker 校验已实现；TimelineAssemblyService 落库、确定性原声音频/字幕 intent 投影、CreativeTimelineWorkflow（visual→rhythm→narration→assembly→media preview→人工 checkpoint，stage blocker 即停）、真实媒体 Preview（真实源文件 trim/scale/concat + ASS 安全区字幕）与 Worker 注册已完成。Registry 2.16.0→2.18.0。
 - E09/J05 Timeline Checkpoint integration baseline：exact-ref Review Package、读取 API、L1 人工决定、DB-first outbox、publication pointer 和可运行 Web checkpoint cockpit 已实现；精确多轨编辑、undo/redo、局部真实预览和正式认证集成未完成。Registry 2.17.0。
 - E09/J06 Qualification harness：deterministic concurrency probe、versioned demo technical/shot benchmark、qualification matrix、runbook/dashboard 已实现；四个真实退出 blocker 未解决，`engineering_complete=false`。
 - E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。
@@ -70,7 +70,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- E09/J02–J05 已有 domain/integration baseline 但未达到各自完整生产 DoD；J06、E10/K01–K06、E11/L01–L06、E12 Safe Automation 和 E13 Online Performance 尚未完成。
+- E09/J05 精确多轨编辑（逐 item/track 语义精修、undo/redo、局部真实预览、正式认证集成）未完成；J02–J04 生产 DoD 已补齐，但 E09 四个真实退出 blocker（语义视觉 Provider 准入、真实 Approved 项目全片 Preview、带时间码的 demo craft 对比、Worker restart/replay + 人工 checkpoint）仍待真实数据验证，`engineering_complete=false`。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -81,12 +81,12 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 先补齐 J02–J04 Artifact persistence、完整 Temporal 编排、真实媒体 Preview，并将 J05 从 checkpoint cockpit 扩展为精确多轨编辑；随后使用真实 Approved Story/Creative Brief/Media 执行 candidate-to-demo 全片人工审核、Worker restart/replay 和 Timeline checkpoint。
+1. 将 J05 从 checkpoint cockpit 扩展为精确多轨编辑（逐 item/track 语义精修、undo/redo、局部真实预览）；随后使用真实 Approved Story/Creative Brief/Media 执行 candidate-to-demo 全片人工审核、Worker restart/replay 和 Timeline checkpoint。J02–J04 的 Artifact persistence、完整 Temporal 编排与真实媒体 Preview 已在本轮关闭（ADR-049）。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 4. E10/E11 现有代码只作为 advance baseline；在 E09 满足 Epic 退出条件前不得恢复为 active/completed。
 
-开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
+包管理决定已确认：PEP 621/setuptools editable + pyenv Python 3.11.8 + .venv/pip 24.0（ADR-003）；Python resolution lock 仍为首个 Release Slice 退出前的 bounded debt（见 §6）。
 
 ---
 
@@ -122,6 +122,9 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- J02–J04 remediation full check：298 tests、80.35% coverage、Ruff、strict mypy、Bandit、Context/Architecture 和 Registry 2.18.0 freshness/history 全部通过。
+- J02–J04 remediation 内容：新增 Artifact 类型 ClipSelectionPlan/ContinuityReport/VisualPlanningReport/NarrationPlanningReport/TimelineAssemblyReport/SourceSubtitleHandlingPlan（设计 Catalog 同步）；`packages/persistence/artifact_writer.py` 确定性 checksum 提交；`apps/services/clip_index.py` 持久化检索适配器；TimelinePlanningService/RhythmPlanningService/TimelineAssemblyService 全部落库；NarrationSourcePort L1 人工解说边界；`CreativeTimelineWorkflow` + 5 个 Activity 注册进 Worker；`packages/production/real_preview.py` 真实媒体 Preview（真实源文件 trim/scale/concat 集成测试通过，产出 720x1280 h264/aac + ASS 安全区字幕）；runbook 增补 8 条（#13–#20）；ADR-049 记录本链决策；J05 精确多轨编辑为下一项。
 
 - J05 checkpoint cockpit：新增 exact-ref Timeline Review 读取 API、不可变 repository snapshot、可运行多轨审核台、L1 approve/revise/reject 提交和 fail-closed UI；`make check` 272 tests、80.57% coverage、Ruff、strict mypy、Bandit、Context/Architecture 和 Registry freshness 通过；Review Web TypeScript/Vite build 通过。精确编辑器和真实 Preview 仍未完成。
 

@@ -1,6 +1,8 @@
 """Master Timeline domain."""
 
 from packages.timeline.compiler import RenderPlan, compile_render_plan
+from packages.timeline.multitrack import TimelineAssemblyError, assemble_multitrack_timeline
+from packages.timeline.narration import NarrationSourcePort, NarrationSourceUnavailable
 from packages.timeline.otio_adapter import LossEntry, LossReport, export_otio, import_otio
 from packages.timeline.patches import (
     TimelineChange,
@@ -8,6 +10,11 @@ from packages.timeline.patches import (
     apply_patch,
     can_rebase,
     semantic_diff,
+)
+from packages.timeline.rhythm_narration import (
+    allocate_rhythm,
+    replace_lines_in_scope,
+    review_narration,
 )
 from packages.timeline.validator import (
     ValidationIssue,
@@ -30,15 +37,20 @@ __all__ = [
     "ClipIndexPort",
     "LossEntry",
     "LossReport",
+    "NarrationSourcePort",
+    "NarrationSourceUnavailable",
     "RenderPlan",
+    "TimelineAssemblyError",
     "TimelineChange",
     "TimelinePatchConflict",
     "ValidationIssue",
     "ValidationReport",
     "ValidationSeverity",
     "VisualPlanningPolicy",
+    "allocate_rhythm",
     "analyze_continuity",
     "apply_patch",
+    "assemble_multitrack_timeline",
     "can_rebase",
     "choose_source_subtitle_policy",
     "compile_render_plan",
@@ -46,7 +58,9 @@ __all__ = [
     "import_otio",
     "local_recompute_scope",
     "plan_clip_sequence",
+    "replace_lines_in_scope",
     "retrieve_candidates",
+    "review_narration",
     "semantic_diff",
     "solve_crop_path",
     "validate_timeline",

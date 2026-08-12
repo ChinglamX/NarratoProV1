@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from uuid import UUID
 
 from packages.contracts import ArtifactRef, RationalTime
 from packages.contracts.timeline_intent import (
@@ -56,7 +57,7 @@ def review_narration(
     *,
     line_set_ref: ArtifactRef,
     lines: NarrationLineSet,
-    dialogue_by_beat: Mapping[object, Sequence[str]],
+    dialogue_by_beat: Mapping[UUID, Sequence[str]],
 ) -> NarrationPlanningReport:
     findings: list[NarrationFinding] = []
     grounded = 0
@@ -96,7 +97,7 @@ def review_narration(
 
 
 def replace_lines_in_scope(
-    current: NarrationLineSet, replacements: Mapping[object, NarrationLine]
+    current: NarrationLineSet, replacements: Mapping[UUID, NarrationLine]
 ) -> NarrationLineSet:
     lines = []
     for line in current.lines:

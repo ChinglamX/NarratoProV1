@@ -57,7 +57,7 @@ Version: 1.0
 | Strategy | CreativeBrief / VariantPlan / StrategyComparisonPackage | strategy | timeline |
 | Timeline | NarrativeBeatGraph / PatchProposal / ConflictSet | timeline/production | compiler/review |
 | Timeline | MasterTimeline / OTIOExport / PreviewManifest | timeline | production/review |
-| Production | ClipCandidateSet / CropPath / RhythmPlan / NarrationLineSet | production | timeline/compiler |
+| Production | ClipCandidateSet / ClipSelectionPlan / ContinuityReport / VisualPlanningReport / NarrationPlanningReport / TimelineAssemblyReport / SourceSubtitleHandlingPlan / CropPath / RhythmPlan / NarrationLineSet | production | timeline/compiler |
 | Voice | VoiceTakeSet / VoiceAsset / AlignmentArtifact | production | timeline/audio/subtitle |
 | Audio | AudioAssetSelection / MixPlan / MixedAudio | production | render/QC |
 | Subtitle | SubtitleCueSet / GraphicsCueSet / ASSArtifact | production | render/QC |

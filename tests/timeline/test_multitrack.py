@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from packages.contracts import ArtifactRef
+from packages.contracts import ArtifactRef, RationalTime
 from packages.contracts.timeline import TimelineTrackKind
 from packages.contracts.timeline_intent import (
     AudioIntent,
@@ -119,7 +119,7 @@ def test_all_creative_intents_share_one_master_timeline() -> None:
         dependencies=(ref("CreativeBrief"),),
         track_ids={kind: uuid4() for kind in kinds},
         item_ids=tuple(uuid4() for _ in range(6)),
-        duration=t(5),
+        duration=RationalTime(value=5, rate_num=1),
     )
     assert timeline is not None and not report.conflicts
     assert {track.kind for track in timeline.tracks} == set(kinds)
@@ -173,6 +173,6 @@ def test_duration_mismatch_is_blocking_not_silently_reflowed() -> None:
         dependencies=(),
         track_ids={TimelineTrackKind.VIDEO: uuid4()},
         item_ids=(uuid4(),),
-        duration=t(5),
+        duration=RationalTime(value=5, rate_num=1),
     )
     assert timeline is None and report.conflicts[0].code == "video-duration-mismatch"

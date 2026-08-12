@@ -581,6 +581,38 @@ demo 机器 benchmark 只固定技术和镜头结构特征；Hook、节奏张弛
 后果：J06 资格文件和 runbook 可以作为恢复点，但下一项仍是补齐 E09 四个 blocker，
 而不是 E10/K01。
 
+## ADR-049 — E09 Planning Products Are Persisted Artifacts Behind a Fail-closed Production Chain
+
+问题：J02–J04 只有 contract + 纯函数 domain，ClipCandidateSet/ClipSelectionPlan/RhythmPlan
+/MasterTimeline 等从未落库，`plan_clip_sequence` 等函数无生产调用方；Timeline-to-Preview
+只有 fake lavfi 合成；无 Temporal 编排链；这使四个 blocker 的工程前提不成立。
+
+决策：
+1. J02–J04 规划产物全部通过 E02 ArtifactRepository 持久化为不可变 Artifact（新增
+   ClipSelectionPlan/ContinuityReport/VisualPlanningReport/NarrationPlanningReport/
+   TimelineAssemblyReport/SourceSubtitleHandlingPlan 类型），校验与依赖边不变；
+   `packages/persistence/artifact_writer.py` 提供确定性 checksum 提交。
+2. ClipIndexPort 的生产适配器是持久化读取器（`apps/services/clip_index.py`），只读
+   已提交的 ClipCandidateSet，路由分数 + top-k 确定性排序，source_range 超出探测
+   时长即排除；HUMAN_PIN 无候选即空；语义 Provider 准入后替换边界，不改选择策略。
+3. 解说采用 L1 人工路径：NarrationSourcePort 只加载人工批准的 NarrationLineSet，
+   无生产准入前禁止任何生成适配器。DurationConflict 处置保留人工（三选一）。
+4. 装配、原声音频与字幕 intent 是确定性投影（sha256 派生 v4 形状 intent_id，重试收敛），
+   BGM/SFX 无 rights 准入前不出现；装配冲突（video-duration-mismatch）只提交报告，
+   fail closed。
+5. 新增 `CreativeTimelineWorkflow`（visual→rhythm→narration→assembly→media preview→人工
+   checkpoint），任何 stage blocker 即停；所有 Artifact 身份在请求中预分配。
+6. 真实媒体 Preview 管线（`packages/production/real_preview.py`）消费真实源文件：按
+   source_range 精确 trim、缩放/pad 到目标帧、按时间线顺序 concat、配 ASS 安全区字幕；
+   lavfi 合成仅用于测试。
+7. Registry 升 2.18.0（新增 Artifact 类型 + VisualPlanningReport schema）。
+
+后果：J02–J04 的 adapter/application/persistence/编排/预览缺口已关，测试 80%+；但
+E09 四个退出 blocker（语义视觉 Provider 准入、真实 Approved 项目全片 Preview、带时间码
+的 demo craft 对比、Worker restart/replay + 人工 checkpoint）仍待真实数据验证，
+`engineering_complete` 维持 false。包管理维持 PEP 621/setuptools + pyenv 3.11.8（ADR-003），
+Python resolution lock 仍为首个 Release Slice 退出前的 bounded debt。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

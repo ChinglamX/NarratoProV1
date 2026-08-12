@@ -17,6 +17,14 @@ from workflows.media import MediaIngestWorkflow, ingest_media_activity
 from workflows.project import ProjectRunWorkflow, execute_conformance_activity
 from workflows.speech import SpeechObservationWorkflow, process_speech_activity
 from workflows.timeline import TimelinePreviewWorkflow, render_preview_activity
+from workflows.timeline.creative_activities import (
+    assemble_timeline_activity,
+    plan_rhythm_activity,
+    plan_visual_activity,
+    render_media_preview_activity,
+    review_narration_activity,
+)
+from workflows.timeline.creative_workflow import CreativeTimelineWorkflow
 from workflows.visual import VisualObservationWorkflow, process_visual_activity
 
 CONTROL_TASK_QUEUE = "control"
@@ -35,6 +43,7 @@ async def serve() -> None:
         workflows=[
             ProjectRunWorkflow,
             TimelinePreviewWorkflow,
+            CreativeTimelineWorkflow,
             MediaIngestWorkflow,
             SpeechObservationWorkflow,
             VisualObservationWorkflow,
@@ -43,6 +52,11 @@ async def serve() -> None:
         activities=[
             execute_conformance_activity,
             render_preview_activity,
+            plan_visual_activity,
+            plan_rhythm_activity,
+            review_narration_activity,
+            assemble_timeline_activity,
+            render_media_preview_activity,
             ingest_media_activity,
             process_speech_activity,
             process_visual_activity,

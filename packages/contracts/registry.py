@@ -249,7 +249,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.17.0"
+REGISTRY_VERSION = "2.18.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ASSArtifact,
     AssemblyConflict,

@@ -64,6 +64,14 @@ class LocalObjectStore:
             raise InvalidObjectUri("object URI escapes store root")
         return path
 
+    def local_path(self, uri: str) -> Path:
+        """Validated local filesystem path for a store URI (same-host reads only)."""
+
+        path = self._path_for_uri(uri)
+        if not path.is_file():
+            raise FileNotFoundError(uri)
+        return path
+
     def _uri_for_path(self, path: Path) -> str:
         return self.URI_SCHEME + path.relative_to(self._root).as_posix()
 
