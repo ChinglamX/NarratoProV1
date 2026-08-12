@@ -9,9 +9,9 @@ from packages.contracts.timeline_qualification import TimelineEngineeringQualifi
 PATH = Path("evaluation/qualification/e09_j06.json")
 
 
-def test_e09_engineering_complete_keeps_real_quality_pending() -> None:
+def test_e09_qualification_refuses_completion_without_real_exit_evidence() -> None:
     value = TimelineEngineeringQualification.model_validate_json(PATH.read_text())
-    assert value.engineering_complete and value.production_decision.value == "pending_human"
+    assert not value.engineering_complete and value.production_decision.value == "pending_human"
     assert sum(check.blocker for check in value.checks) == 4
 
 

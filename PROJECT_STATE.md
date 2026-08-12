@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 43
+State Version: 44
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
 - Active Release Slice：R4 Creative Production。
 - Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt。
-- Active Backlog Entry：J04 Audio, Subtitle and Timeline Assembly。
+- Active Backlog Entry：J06 Engineering Qualification — waiting for real-data exit evidence。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -58,6 +58,9 @@ State Owner: Project
 - E09/J01 Creative Timeline contract/input baseline：Approved Strategy-only input 和 Beat/Clip/Crop/Rhythm/Narration 初始 Contract 已实现；J02–J06 未完成，E09 不得关闭。
 - E09/J02 Visual and Clip Planning：可替换 Clip Index Port、Story/Evidence/Character 过滤、序列级连续性选择、Continuity Report、平滑 CropPath、原片字幕降级与局部重算已实现；Registry 2.14.0。
 - E09/J03 Rhythm and Narration Planning：Beat 预算/总时长对账、DurationConflict、呼吸点意图、对白复述/无依据心理阻断、证据覆盖、人工 lock 与 scoped regeneration 已实现；Registry 2.15.0。
+- E09/J04 Multi-track Assembly：Video/Original Audio/Narration placeholder/BGM/SFX/Subtitle/Overlay 共用唯一 MasterTimeline；ducking、rights、safe area、evidence、duration blocker 和下游失效语义已实现；Registry 2.16.0。
+- E09/J05 Timeline Review Checkpoint：exact-ref Review Package、typed multi-track workspace、semantic Patch/CAS、L1 human reviewer、DB-first outbox 和 approved timeline publication pointer 已实现；Registry 2.17.0。
+- E09/J06 Qualification harness：deterministic concurrency probe、versioned demo technical/shot benchmark、qualification matrix、runbook/dashboard 已实现；四个真实退出 blocker 未解决，`engineering_complete=false`。
 - E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。
 - E11 advance boundary baseline：Render/Release Contract、基础 preflight/executor/API 已提前建立；L01–L06 主实现未开始，不构成 E11 完成。
 
@@ -78,7 +81,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E09/J04 实现 audio/subtitle/overlay intent 的多轨 MasterTimeline Patch assembly、typed conflict 和 bounded local reflow；随后依次完成 J05–J06。
+1. 使用真实 Approved Story/Creative Brief/Media 运行 E09，生成完整 Preview，执行 candidate-to-demo 全片人工审核、Worker restart/replay 和 Timeline checkpoint。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 4. E10/E11 现有代码只作为 advance baseline；在 E09 满足 Epic 退出条件前不得恢复为 active/completed。
@@ -99,6 +102,7 @@ State Owner: Project
 - Calibration Pack 尚无真实项目 Gold/Baseline。
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
 - 2026-08-12 审计发现 E09–E11 曾将 contract/boundary baseline 误标为 Epic engineering complete；原 Acceptance Report 和 ADR-044 对应关闭结论已由 ADR-047 supersede。
+- E09 当前四个 blocker：语义视觉 Provider 生产准入、真实完整 Preview、带时间码的 demo craft 对比、真实多 Variant restart/replay 与人工 checkpoint。
 - FunASR adapter 已真实运行但只准入 research：完整模型权重 checksum、模型卡许可、商业使用批准和真实按剧隔离 Speech baseline 均缺失。
 - PaddleOCR/semantic detector/tracker/embedding/VLM 尚无生产准入的 exact checkpoint 与真实短剧 benchmark；Ultralytics 许可姿态未批准，必须保持 blocked/research。
 - G05 生产资格结论为 rejected/pending_human；真实 Corpus、模型权利、long-series/multi-project、exact Worker restart、完整资源成本和 telemetry operator drill 均是显式 blocker。
@@ -118,6 +122,9 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- J04/J05 targeted checks：Multi-track Contract/domain 和 Timeline Review API/Web typecheck 通过；Registry 2.17.0 freshness/history 通过；提交 `486cf94` / `1297e50`。
+- J06 demo benchmark：`youzijuchang_demo.mp4`=260.7s、544x720、30fps、HEVC/AAC；PySceneDetect ContentDetector 记录 189 shots，median=1.2s；人工创意标注 pending。
 
 - J02/J03 full check：263 tests、80.77% coverage、Ruff、strict mypy、Bandit、Context/Architecture 和 Registry 2.15.0 freshness/history 通过；提交 `95986d3` / `7bb5d22`。E09 仍 active，J04–J06 未完成。
 

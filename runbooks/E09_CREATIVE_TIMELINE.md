@@ -10,3 +10,5 @@
 8. Compile all intents into one Master Timeline; no module-private final time coordinate.
 9. Human edits use semantic Patch/CAS and locks; stale overlapping edits conflict.
 10. Review complete playback before checkpoint; E10 consumes only the approved intent pointer.
+11. Build the reference benchmark with `python scripts/build_e09_demo_benchmark.py <demo> evaluation/benchmarks/e09_demo_v1.json`; machine features never substitute for human full playback.
+12. A missing Approved Story/Brief, failed Preview, Worker replay gap, semantic provider block or unsigned checkpoint keeps E09 active; do not advance to E10.

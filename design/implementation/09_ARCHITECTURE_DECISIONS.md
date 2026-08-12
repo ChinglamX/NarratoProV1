@@ -568,6 +568,19 @@ not started with advance baselines。
 后果：保留历史 commit/Schema 以避免破坏性回退，但 E09–E11 Acceptance Report 标记 superseded。
 任何后续“完成”判定必须逐项引用 Backlog ID 和验收证据。
 
+## ADR-048 — E09 Qualification Is Fail-closed Until a Real Preview Is Reviewed
+
+决策：J02–J05 的 Contract、domain、API、typed workspace 和测试可以单独记录为已实现，J06
+验收 harness 也可完成；但没有真实 Approved Story/Brief 生成的完整 Preview、人工全片
+demo 对比、生产语义视觉 Provider、Worker restart/replay 和人工 Timeline checkpoint 时，
+`engineering_complete` 必须为 false，E09 保持 active，E10 不得开始。
+
+demo 机器 benchmark 只固定技术和镜头结构特征；Hook、节奏张弛、表演停留、解说价值和
+构图必须由人工完整观看并记录时间码。无真实项目输入时，合成 fixture 只验工程不取代退出证据。
+
+后果：J06 资格文件和 runbook 可以作为恢复点，但下一项仍是补齐 E09 四个 blocker，
+而不是 E10/K01。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。
