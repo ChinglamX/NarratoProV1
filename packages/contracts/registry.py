@@ -107,8 +107,23 @@ from packages.contracts.timeline import (
     TimelinePatch,
     TimelineTrack,
 )
+from packages.contracts.visual import (
+    BoundingBox,
+    DetectionObservation,
+    FaceObservation,
+    FrameEvidence,
+    OCRObservation,
+    SupplementarySampleRequest,
+    TextTrack,
+    Tracklet,
+    TrackPoint,
+    VisualEmbedding,
+    VisualObservation,
+    VisualQualityReport,
+    VLMClaim,
+)
 
-REGISTRY_VERSION = "1.5.0"
+REGISTRY_VERSION = "1.6.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     AlignedToken,
@@ -119,6 +134,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     BenchmarkCase,
     BenchmarkDataset,
     BenchmarkPrediction,
+    BoundingBox,
     CalibrationArtifact,
     CalibrationPackManifest,
     Checksum,
@@ -129,6 +145,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     CreativeBrief,
     DatasetManifest,
     DatasetSplitManifest,
+    DetectionObservation,
     ErrorDetail,
     ErrorEnvelope,
     EpisodeCatalog,
@@ -141,11 +158,14 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     FrameSamplePlan,
     Fact,
     FactSet,
+    FaceObservation,
+    FrameEvidence,
     GuidelineManifest,
     HookCandidate,
     MasterTimeline,
     MediaAsset,
     MediaTechnicalMetadata,
+    OCRObservation,
     ProviderIdentity,
     ProviderBenchmarkReport,
     ProviderDataPolicy,
@@ -179,6 +199,8 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     StoryArc,
     StoryEdge,
     StoryGraph,
+    SupplementarySampleRequest,
+    TextTrack,
     StrategyCandidateSet,
     StrategyDirection,
     Character,
@@ -186,10 +208,16 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     TimelineItem,
     TimelinePatch,
     TimelineTrack,
+    Tracklet,
+    TrackPoint,
     TranscriptSegment,
     TimeRange,
     TraceId,
     VADSegment,
+    VisualEmbedding,
+    VisualObservation,
+    VisualQualityReport,
+    VLMClaim,
 )
 JsonDict: TypeAlias = dict[str, Any]
 

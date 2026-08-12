@@ -294,6 +294,37 @@ alignment 与 diarization bake-off 留给 G05 qualification；未满足前不得
 复议：只有真实 benchmark 证明其他 transport/model 更优且完成同等 license/checksum 审计时
 切换 champion；不得取消 raw/normalized 分层、source time、cluster/identity 隔离或 L1 Gate。
 
+## ADR-031 — Typed Visual Boundary, Shot-local Association and License-first Providers
+
+决策：G04 用独立 typed contracts 表达 OCR/TextTrack、Detection、Shot-local Tracklet、
+Face/Appearance、VisualEmbedding、VLM Claim、Source Quality 与 Supplementary Sample Request。
+每条观察必须引用 exact frame Artifact 与源时间；OCR 不得被 ASR 静默改写，Tracklet 不跨 Shot
+合并，Face/Embedding 只产生项目内 identity candidate，VLM 必须区分 visible/inferred/unknown，
+不得形成角色身份、Fact 或 Story。
+
+视觉模型接入复用 G01 Gateway 与 raw→normalized 边界。`VisualJsonHttpProvider` 是 OCR、
+detection、tracking、face/visual embedding 和 VLM 的统一 transport adapter，但每个实例只能声明
+一个 capability 与 exact Provider Package。首个可真实执行 baseline 固定 OpenCV 5.0.0.93
+contour/quality，只有 research admission；它不把 foreground contour 宣称为 person。
+
+工具候选按许可先行：PaddleOCR 3.x、Grounding DINO、ByteTrack、OpenCLIP/SigLIP 与 Qwen-VL
+只有在 exact revision/checkpoint checksum、代码/权重许可、商业范围和 benchmark 齐全后准入。
+Ultralytics YOLO 的 AGPL/Enterprise 许可必须显式解决，否则 production policy 阻断。任何 checkpoint
+许可不得由代码仓库许可推断。显存/Metal 通过 Resource Estimate、reserve 和缩小 micro-batch
+fail closed；重复 OOM 不得无限重试。
+
+原因：视觉工具的代码许可、checkpoint 权重、检测标签与跨帧身份含义互不等价。将“检测到了人”、
+“相似”或流畅 VLM 文本直接当成剧情事实会制造高风险串人和幻觉；Shot-local 和 typed claim
+边界使后续 E07 Fusion 可以显式解决冲突。
+
+后果：Registry 兼容升级到 1.6.0。G04 的真实 baseline 只证明 OpenCV decode/quality/transport；
+OCR、semantic detection、tracking、embedding、VLM 的真实质量与生产 Provider admission 必须在
+G05 报告中逐项判定。缺失能力显式 unavailable，Automation 保持 L1，Confidence 保持 Shadow。
+
+复议：只有真实短剧 benchmark 与许可审计支持替换/晋级时更新 Provider config；不得取消
+source-frame evidence、Shot-local tracking、embedding-space versioning、bounded sampling 或
+visible/inferred/unknown 区分。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

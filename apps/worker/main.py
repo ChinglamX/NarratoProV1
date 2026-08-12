@@ -10,6 +10,7 @@ from workflows.media import MediaIngestWorkflow, ingest_media_activity
 from workflows.project import ProjectRunWorkflow, execute_conformance_activity
 from workflows.speech import SpeechObservationWorkflow, process_speech_activity
 from workflows.timeline import TimelinePreviewWorkflow, render_preview_activity
+from workflows.visual import VisualObservationWorkflow, process_visual_activity
 
 CONTROL_TASK_QUEUE = "control"
 WORKER_BUILD_ID = "narratopro-e03-v1"
@@ -29,12 +30,14 @@ async def serve() -> None:
             TimelinePreviewWorkflow,
             MediaIngestWorkflow,
             SpeechObservationWorkflow,
+            VisualObservationWorkflow,
         ],
         activities=[
             execute_conformance_activity,
             render_preview_activity,
             ingest_media_activity,
             process_speech_activity,
+            process_visual_activity,
         ],
         build_id=WORKER_BUILD_ID,
         use_worker_versioning=False,
