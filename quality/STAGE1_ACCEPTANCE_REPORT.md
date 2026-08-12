@@ -2,7 +2,7 @@
 
 Version: 1.0
 Date: 2026-08-12
-Status: Engineering accepted; Project Owner signature pending
+Status: Approved
 
 ## Scope
 
@@ -28,8 +28,10 @@ E02 Artifact/Persistence、E03 Durable Workflow/Review、E04 Master Timeline、E
 
 ## Human Sign-off
 
-Project Owner: **PENDING**
+Project Owner: **Project Owner（user authorization in Codex task）**
 
-Decision: **PENDING** (`approve` / `reject`)
+Decision: **approve**
 
-Notes: 待项目负责人审阅本报告后签收；Agent 不得代签。
+Approved At: **2026-08-12 Asia/Shanghai**
+
+Notes: 项目负责人明确指令“正式关闭 E05，进入 E06”。该指令作为人工 Stage 1 签收证据；Release Gate 规则不受影响。

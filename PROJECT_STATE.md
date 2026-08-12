@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 20
+State Version: 21
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E04 completed; E05 engineering complete, Stage 1 human sign-off pending.
-- Active Release Slice：R2 Story Intelligence（当前仅 Media Ingest 子切片）。
-- Active Epics：E05 Media Ingest Vertical Slice。
-- Active Backlog Entry：F05 Stage 1 Acceptance human sign-off。
+- Lifecycle：Implementation active; E00–E05 completed; E06 started.
+- Active Release Slice：R2 Story Intelligence（当前为 Speech and Visual Observation 子切片）。
+- Active Epics：E06 Speech and Visual Observation。
+- Active Backlog Entry：G01 Provider Gateway and Observation Boundary。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -38,7 +38,7 @@ State Owner: Project
 - E02 Artifact and Persistence Core：PostgreSQL/SQLAlchemy/Alembic baseline、Project/Run/Artifact/Blob/Dependency/Command/Review/Policy/Config/Rights/Audit/Outbox schemas、LocalObjectStore、Artifact/Blob/Command/Publication repositories、CAS、cycle check、失效闭包和备份恢复已实现并用真实 PostgreSQL 验收。
 - E03 Durable Workflow and Review：Temporal ProjectRunWorkflow、typed Activity envelope、retry/heartbeat/non-retryable mapping、worker wait/restart/replay、Command/Run outbox、Review/Correction API、first-wins/RBAC/CAS、Resource Admission leases、trace/redaction/metric label policy 和 Confidence Shadow correction example 已实现；真实 Temporal 与 PostgreSQL/API 验收通过。
 - E04 Master Timeline Core：唯一 MasterTimeline domain validator、semantic Patch/Diff/rebase、PostgreSQL successor/CAS、OTIO 0.18.1 adapter/LossReport、deterministic RenderPlan、FFmpeg 8.1.2 fake Preview、ASS sidecar、Temporal Preview Workflow、Preview Artifact lineage/QC 和人工 Checkpoint 已实现并真实验收。
-- E05 Media Ingest 工程实现：UUIDv4/PostgreSQL ingest identity、FFprobe/FFmpeg provider、source/proxy/audio/frame、rational source map、PySceneDetect Shadow Catalog、Catalog API、Temporal Workflow、资源准入、L1 Review 和 rights fail-closed 已实现；Stage 1 报告等待项目负责人签收。
+- E05 Media Ingest：UUIDv4/PostgreSQL ingest identity、FFprobe/FFmpeg provider、source/proxy/audio/frame、rational source map、PySceneDetect Shadow Catalog、Catalog API、Temporal Workflow、资源准入、L1 Review 和 rights fail-closed 已实现；Stage 1 Acceptance Report 已由项目负责人批准，E05 正式关闭。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -47,7 +47,7 @@ State Owner: Project
 ## 3. 尚未开始
 
 - Speech、Visual、Identity、Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
-- Master Timeline、Provider、Review Workspace 和媒体 Pipeline 代码。
+- Speech/Visual Provider Gateway、Observation Pipeline 和对应 Review Workspace 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
 
@@ -57,9 +57,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 项目负责人审阅并签收 `quality/STAGE1_ACCEPTANCE_REPORT.md`。
-2. 签收通过后更新 State Version 21，关闭 E05 并进入 E06 Speech and Visual Observation。
-3. E06 首步冻结 Provider Gateway/raw response/cost/resource contract；不得从镜头 Catalog 推断剧情。
+1. 开始 E06/G01 Provider Gateway and Observation Boundary。
+2. 冻结 Provider Package、capability port、raw response、normalized Observation、错误、rights/data-residency、resource/cost 和 unavailable fallback 契约。
+3. G01 通过后进入 G02 Evaluation Corpus，再分别建设 G03 Speech、G04 Visual 和 G05 Production Qualification；不得从 Observation 直接推断 Fact/Story。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -76,7 +76,6 @@ State Owner: Project
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
 - Calibration Pack 尚无真实项目 Gold/Baseline。
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
-- Stage 1 自动验收已通过，但 Human Sign-off 尚未完成；Agent 不得代签或将 E05 报告为正式关闭。
 
 ---
 
@@ -146,7 +145,8 @@ State Owner: Project
 - E04 完成，R1 Foundation 退出；恢复点切换 E05/F01。E05 只代表 Media Ingest，不得报告 Story Intelligence 已完成。
 - E05 full check：157 tests、80.05% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 全通过。
 - E05 real demo acceptance：12,747,283 bytes；6 core Artifacts、9 frame samples、220 PySceneDetect Shadow shots；audio present、duplicate idempotent、unknown rights blocked。
-- ADR-027 固定 UUIDv4 + PostgreSQL ingest identity、FFprobe raw boundary、FFmpeg derivatives、PySceneDetect Shadow、Temporal/L1 Catalog Review；Stage 1 人工签收待完成。
+- ADR-027 固定 UUIDv4 + PostgreSQL ingest identity、FFprobe raw boundary、FFmpeg derivatives、PySceneDetect Shadow、Temporal/L1 Catalog Review；Stage 1 人工签收已于 2026-08-12 完成。
+- 2026-08-12 项目负责人明确批准 `quality/STAGE1_ACCEPTANCE_REPORT.md`；E05 正式关闭，恢复点进入 E06/G01。E06 只建设 Speech/Visual Observation，不得报告 Identity/Fact/Story 已完成。
 
 ---
 

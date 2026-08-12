@@ -276,7 +276,41 @@ Version: 1.0
 
 ---
 
-## 7. 任务完成定义
+## 8. Sprint Group G — Speech and Visual Observation
+
+### G01 Provider Gateway and Observation Boundary
+
+冻结 Provider Package、capability port、raw response artifact、normalized Observation envelope、错误分类、timeout/retry/batch、rights/data-residency、Resource/Cost Profile 和 unavailable fallback。Provider 私有字段不得泄漏到领域 Contract。
+
+验收：主 Provider 与 unavailable/manual 路径可替换；raw/normalized lineage、版本、checksum、trace、cost 完整；许可证或数据策略缺失在执行前 fail closed；破坏性 Contract 变化有 Registry SemVer/migration。
+
+### G02 Evaluation Corpus and Benchmark Harness
+
+建立按剧隔离的 Development/Validation/Frozen Test manifest、ASR/OCR/Detection/Tracking/VLM 严重错误 taxonomy、标注指南、slice metrics 和可重放 BenchmarkRun。
+
+验收：无 series leakage；每个 prediction 可定位 SourceTime/Evidence；provider/config/hardware/resource/cost 可复现；没有真实标签时只报告 baseline，不拍脑袋设生产阈值。
+
+### G03 Speech Observation Pipeline
+
+实现 VAD、ASR、文本规范化、强制对齐、diarization/speaker observation、hotword、cross-provider conflict、manual Correction、Temporal shard/retry 和精准失效。
+
+验收：CER、entity CER、timestamp deviation、DER/JER 分层基线；人名/否定/金额/时间严重错误单列；无音频、重叠语音、BGM、方言、Provider 不可用、Worker restart 和预算耗尽 fail closed/recoverable。
+
+### G04 Visual Observation Pipeline
+
+实现 OCR/TextTrack、person/object/face detection、Shot tracking、appearance observation、embedding index、constrained VLM、supplementary sampling 和显存/Metal 资源保护。
+
+验收：OCR、Detection、Tracking、Identity candidate、VLM 分层 benchmark；所有观察回指原帧/源时间；模型 OOM、低质量帧、遮挡、换装、快速运动和 provider fallback 可定位且不编造结果。
+
+### G05 E06 Production Qualification
+
+完成 Speech/Visual provider bake-off、Confidence Shadow、长视频/多项目并发、Worker 中断、resource/cost baseline、canary/rollback、dashboard/runbook 和 E06 Acceptance Report。
+
+验收：固定 Mac mini Resource Profile 下质量、吞吐、成本、恢复和 rights/provider approval 获人工签收；Confidence 仍为 Shadow，E06 不创建 Fact/Story、不越过 Story Gate。
+
+---
+
+## 9. 任务完成定义
 
 每项必须有：public contract、domain/application implementation、adapter、unit/contract/integration tests、observability、error/runbook、文档链接和 migration/rollback（适用时）。
 
