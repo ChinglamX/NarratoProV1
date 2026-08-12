@@ -22,7 +22,8 @@ class IdentityLink(StrictContract):
 
 class Character(StrictContract):
     character_id: UUID
-    display_name: Annotated[str, Field(min_length=1, max_length=512)]
+    display_name: Annotated[str, Field(min_length=1, max_length=512)] | None = None
+    temporary: bool = False
     aliases: tuple[Annotated[str, Field(min_length=1, max_length=512)], ...] = ()
     identity_links: tuple[IdentityLink, ...] = ()
     evidence: tuple[EvidenceLink, ...]
@@ -31,6 +32,8 @@ class Character(StrictContract):
     def require_identity_evidence(self) -> Self:
         if not self.evidence:
             raise ValueError("character requires evidence")
+        if not self.temporary and self.display_name is None:
+            raise ValueError("unnamed story character must be temporary")
         return self
 
 

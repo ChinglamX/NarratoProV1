@@ -110,6 +110,14 @@ from packages.contracts.speech import (
     VADSegment,
 )
 from packages.contracts.story import Character, Event, StoryArc, StoryEdge, StoryGraph
+from packages.contracts.story_reasoning import (
+    CausalGraph,
+    CharacterState,
+    CharacterStateGraph,
+    EventCandidate,
+    EventSet,
+    StoryReasoningReport,
+)
 from packages.contracts.strategy import (
     CreativeBrief,
     HookCandidate,
@@ -141,7 +149,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "1.10.0"
+REGISTRY_VERSION = "2.0.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     AlignedToken,
@@ -155,7 +163,10 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     BoundingBox,
     CalibrationArtifact,
     CalibrationPackManifest,
+    CausalGraph,
     CharacterIdentity,
+    CharacterState,
+    CharacterStateGraph,
     Checksum,
     CommandEnvelope,
     ConfidenceFactor,
@@ -170,6 +181,8 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     EpisodeCatalog,
     EventEnvelope,
     Event,
+    EventCandidate,
+    EventSet,
     EvaluationRun,
     EvidenceBundle,
     EvidenceLink,
@@ -229,6 +242,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     StoryArc,
     StoryEdge,
     StoryGraph,
+    StoryReasoningReport,
     SupplementarySampleRequest,
     TextTrack,
     StrategyCandidateSet,

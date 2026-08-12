@@ -396,6 +396,21 @@ opposing Evidence 的 `FusionConflict`。Provider unavailable/incomplete 必须�
 后果：Registry 兼容升级到 1.10.0。H03 synthetic fixture 只验证类型和边界；真实 OCR/ASR/视觉
 准确率仍受 E06 qualification 阻断，Confidence 保持 Shadow。
 
+## ADR-036 — Story Reasoning Is a Typed Artifact Pipeline
+
+决策：Story 不允许由视频或一个大 Prompt 直接生成。H04 固定 Fact retrieval → EventSet →
+CharacterStateGraph → CausalGraph → StoryGraph 的独立 Activity/Artifact 链路，Temporal history 只传
+ArtifactPointer。每步输入引用 exact version 并可单独重试/失效。当前确定性 baseline 只把
+dialogue/action/signal 提升为 evidence-grounded Event；OCR/entity 保持上下文 Fact。时间相邻事件
+只进入 unresolved causal pair，不能自动生成因果边；无法支持的 Character State 保持 unresolved。
+
+H01 temporary identity 要求 Story Character 允许无名，但仅 `temporary=true` 时合法。这改变既有
+`Character.display_name` 类型，因此 Registry 必须按 SemVer 从 1.10.0 major 升级为 2.0.0，禁止
+伪装成 minor。迁移消费者必须处理 nullable display name。
+
+后果：各阶段可并发处理 Episode，但 Project Story assembly 读取固定 snapshot。Synthetic baseline
+只证明 typed/replay boundary，不代表模型理解质量；矛盾、梦境、回忆、否定仍需后续模型候选和人工 Gate。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

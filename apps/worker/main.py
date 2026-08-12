@@ -6,6 +6,13 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from packages.foundation.settings import get_settings
+from workflows.intelligence import (
+    StoryReasoningWorkflow,
+    assemble_story_graph_activity,
+    build_causal_graph_activity,
+    build_character_state_activity,
+    build_event_set_activity,
+)
 from workflows.media import MediaIngestWorkflow, ingest_media_activity
 from workflows.project import ProjectRunWorkflow, execute_conformance_activity
 from workflows.speech import SpeechObservationWorkflow, process_speech_activity
@@ -31,6 +38,7 @@ async def serve() -> None:
             MediaIngestWorkflow,
             SpeechObservationWorkflow,
             VisualObservationWorkflow,
+            StoryReasoningWorkflow,
         ],
         activities=[
             execute_conformance_activity,
@@ -38,6 +46,10 @@ async def serve() -> None:
             ingest_media_activity,
             process_speech_activity,
             process_visual_activity,
+            build_event_set_activity,
+            build_character_state_activity,
+            build_causal_graph_activity,
+            assemble_story_graph_activity,
         ],
         build_id=WORKER_BUILD_ID,
         use_worker_versioning=False,
