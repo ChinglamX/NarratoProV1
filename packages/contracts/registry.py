@@ -62,6 +62,14 @@ from packages.contracts.foundation import (
     RationalTime,
     TimeRange,
 )
+from packages.contracts.identity import (
+    CharacterIdentity,
+    IdentityConflict,
+    IdentityEdge,
+    IdentityGraph,
+    IdentityNode,
+    IdentityProposal,
+)
 from packages.contracts.media import (
     EpisodeCatalog,
     FrameSamplePlan,
@@ -124,7 +132,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "1.7.0"
+REGISTRY_VERSION = "1.8.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     AlignedToken,
@@ -138,6 +146,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     BoundingBox,
     CalibrationArtifact,
     CalibrationPackManifest,
+    CharacterIdentity,
     Checksum,
     CommandEnvelope,
     ConfidenceFactor,
@@ -163,6 +172,11 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     FrameEvidence,
     GuidelineManifest,
     HookCandidate,
+    IdentityConflict,
+    IdentityEdge,
+    IdentityGraph,
+    IdentityNode,
+    IdentityProposal,
     MasterTimeline,
     MediaAsset,
     MediaTechnicalMetadata,

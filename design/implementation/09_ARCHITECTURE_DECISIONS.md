@@ -352,6 +352,27 @@ Dashboard 与 runbook 必须与能力同时版本化，但“存在 JSON 面板�
 复议：只有新 evidence 使所有 blocker 变为 passed 时生成后继 qualification；不得覆盖本次拒绝
 记录，也不得降低检查项来获得 approval。
 
+## ADR-033 — Identity Is a Reviewed Graph, Not a Similarity Threshold
+
+决策：E07 人物身份由 `IdentityNode`、typed `IdentityEdge`、`CharacterIdentity` 和
+`IdentityConflict` 组成。Face、tracklet、speaker cluster、name mention 和 known seed 只是带
+Evidence 的节点；模型相似度只能产生 `same_candidate`，不得自动合并人物。只有人工创建的
+`corrected_same` 可以合并 component；`cannot_be_same`/`corrected_different` 优先于合并并形成
+blocker。未知人物保留 temporary identity，禁止为填满字段猜名字。
+
+Identity assembly 必须按稳定 key 排序，并允许调用者注入 UUIDv4 factory，以便 Workflow replay
+复用预分配 ID；默认 factory 只适用于首次执行。Identity Proposal 与正式 Graph 分离，Proposal
+不能充当批准结果。Confidence 在真实按剧隔离数据校准前保持 Shadow，Story Gate 保持 L1 人工。
+
+原因：脸、声音、名字和同框只是不同强度的观察，直接按 embedding threshold 合并会造成跨集串人，
+并污染所有下游 Fact/Story。显式 cannot-link、冲突和临时身份使错误可审核、可修正、可失效。
+
+后果：Contract Registry 兼容升级到 1.8.0。H01 只完成领域契约和保守 assembly，不包含持久化、
+Review API、跨版本失效或真实人物识别质量；这些分别由 H02 和 H06 验收。
+
+复议：只有真实短剧 benchmark 和人工修正数据证明某个适用范围已校准，才能讨论受 policy 约束的
+候选自动化；不得取消 Evidence、cannot-link、Conflict、人工纠正来源或 Story Gate。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。
