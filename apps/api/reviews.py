@@ -74,6 +74,36 @@ class TimelineReviewRequestBody(BaseModel):
     package: TimelineReviewPackage
 
 
+class TimelineReviewResponse(BaseModel):
+    review_id: UUID
+    project_id: UUID
+    state: str
+    target_version: int
+    package: TimelineReviewPackage
+
+
+@router.get("/timeline/{review_id}", response_model=TimelineReviewResponse)
+def get_timeline_review(review_id: UUID, request: Request) -> TimelineReviewResponse:
+    engine: Engine = request.app.state.database_engine
+    repository: ReviewRepository = request.app.state.review_repository
+    with engine.connect() as connection:
+        snapshot = repository.snapshot(connection, review_id=review_id)
+    if snapshot is None or snapshot.gate != "timeline":
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail={"code": "timeline_review_not_found"})
+    package = snapshot.policy_snapshot.get("timeline_review_package")
+    if not isinstance(package, dict):
+        raise HTTPException(
+            status.HTTP_409_CONFLICT, detail={"code": "timeline_review_package_missing"}
+        )
+    return TimelineReviewResponse(
+        review_id=snapshot.review_id,
+        project_id=snapshot.project_id,
+        state=snapshot.state,
+        target_version=int(snapshot.target_ref["version"]),
+        package=TimelineReviewPackage.model_validate(package),
+    )
+
+
 @router.post("/timeline", status_code=status.HTTP_201_CREATED)
 def create_timeline_review(body: TimelineReviewRequestBody, request: Request) -> dict[str, Any]:
     engine: Engine = request.app.state.database_engine

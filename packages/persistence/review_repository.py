@@ -37,7 +37,36 @@ class PendingSignal:
     attempts: int
 
 
+@dataclass(frozen=True, slots=True)
+class StoredReviewSnapshot:
+    review_id: UUID
+    project_id: UUID
+    gate: str
+    state: str
+    target_ref: dict[str, Any]
+    policy_snapshot: dict[str, Any]
+
+
 class ReviewRepository:
+    def snapshot(self, connection: Connection, *, review_id: UUID) -> StoredReviewSnapshot | None:
+        row = (
+            connection.execute(
+                select(schema.review_request).where(schema.review_request.c.id == review_id)
+            )
+            .mappings()
+            .first()
+        )
+        if row is None:
+            return None
+        return StoredReviewSnapshot(
+            review_id=row["id"],
+            project_id=row["project_id"],
+            gate=str(row["gate"]),
+            state=str(row["state"]),
+            target_ref=dict(row["target_ref"]),
+            policy_snapshot=dict(row["policy_snapshot"]),
+        )
+
     def create_request(
         self,
         connection: Connection,

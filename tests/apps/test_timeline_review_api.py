@@ -34,6 +34,11 @@ class FakeReviewRepository:
     def publication_ref(self, _connection: object, **_kwargs: object) -> dict[str, object]:
         return ref("MasterTimeline").model_dump(mode="json")
 
+    def snapshot(self, _connection: object, **_kwargs: object):
+        return self.snapshot_value
+
+    snapshot_value = None
+
 
 def test_timeline_checkpoint_uses_candidate_intent_not_mutable_ui_state(monkeypatch) -> None:
     repository = FakeReviewRepository()
@@ -57,3 +62,38 @@ def test_timeline_checkpoint_uses_candidate_intent_not_mutable_ui_state(monkeypa
     assert repository.created["target_ref"] == body.package.master_timeline_ref.model_dump(
         mode="json"
     )
+
+
+def test_timeline_workspace_loads_exact_review_package(monkeypatch) -> None:
+    review_package = package()
+    review_id = uuid4()
+    project_id = uuid4()
+    repository = FakeReviewRepository()
+    repository.snapshot_value = SimpleNamespace(
+        review_id=review_id,
+        project_id=project_id,
+        gate="timeline",
+        state="awaiting_review",
+        target_ref=review_package.master_timeline_ref.model_dump(mode="json"),
+        policy_snapshot={
+            "automation_level": "L1",
+            "timeline_review_package": review_package.model_dump(mode="json"),
+        },
+    )
+    request = SimpleNamespace(
+        app=SimpleNamespace(
+            state=SimpleNamespace(
+                database_engine=SimpleNamespace(connect=lambda: connection()),
+                review_repository=repository,
+            )
+        )
+    )
+
+    @contextmanager
+    def connection():
+        yield object()
+
+    response = api.get_timeline_review(review_id, request)
+    assert response.review_id == review_id
+    assert response.target_version == review_package.master_timeline_ref.version
+    assert response.package == review_package
