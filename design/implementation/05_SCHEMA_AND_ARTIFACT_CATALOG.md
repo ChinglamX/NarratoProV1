@@ -63,7 +63,7 @@ Version: 1.0
 | Subtitle | SubtitleCueSet / GraphicsCueSet / ASSArtifact | production | render/QC |
 | Render | RenderPlan / ProxyRender / FinalCandidate / RenderExecutionReport | production | evaluation/release |
 | Quality | QualityEventSet / TechnicalQCReport / QualityReview | evaluation | review/router |
-| Feedback | CorrectionDataset / DatasetManifest / EvaluationRun | evaluation | calibration/release |
+| Feedback | CorrectionDataset / DatasetManifest / BenchmarkPredictionSet / ProviderBenchmarkReport / EvaluationRun | evaluation | calibration/release |
 | Automation | CalibrationArtifact / DriftReport / RoutingDecision | evaluation/control | router/audit |
 | Release | ReleaseReviewPackage / ReleaseRecord / PerformanceWindow | evaluation/control | human/online |
 | Experiment | ExperimentPlan / ExperimentResult / ApplicableScope | evaluation | strategy feedback |

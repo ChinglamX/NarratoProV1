@@ -13,6 +13,14 @@ from pydantic.json_schema import models_json_schema
 
 from packages.contracts.artifact_catalog import ARTIFACT_TYPE_SPECS, validate_artifact_catalog
 from packages.contracts.artifacts import ArtifactDependency, ArtifactEnvelope, ProducerRecord
+from packages.contracts.benchmark import (
+    BenchmarkCase,
+    BenchmarkDataset,
+    BenchmarkPrediction,
+    ProviderBenchmarkReport,
+    SevereErrorDefinition,
+    SliceMetric,
+)
 from packages.contracts.calibration import (
     CalibrationPackManifest,
     DatasetSplitManifest,
@@ -92,13 +100,16 @@ from packages.contracts.timeline import (
     TimelineTrack,
 )
 
-REGISTRY_VERSION = "1.3.0"
+REGISTRY_VERSION = "1.4.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApplicableScope,
     ArtifactDependency,
     ArtifactEnvelope,
     ArtifactRef,
+    BenchmarkCase,
+    BenchmarkDataset,
+    BenchmarkPrediction,
     CalibrationArtifact,
     CalibrationPackManifest,
     Checksum,
@@ -127,6 +138,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     MediaAsset,
     MediaTechnicalMetadata,
     ProviderIdentity,
+    ProviderBenchmarkReport,
     ProviderDataPolicy,
     ProviderFailure,
     ProviderInvocationRequest,
@@ -145,10 +157,12 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     RightsMetadata,
     RoutingDecision,
     SceneShotCatalog,
+    SevereErrorDefinition,
     SellingPoint,
     SellingPointSet,
     SliceCatalogManifest,
     SliceDefinition,
+    SliceMetric,
     SourceQualityFeatureSet,
     StoryArc,
     StoryEdge,

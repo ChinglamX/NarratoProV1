@@ -248,6 +248,20 @@ MediaIngestWorkflow 只在 Activity 中执行文件、数据库和媒体 I/O，�
 
 复议：只有真实 Provider 无法通过该 Port 表达必要的 streaming/batch 行为时扩展接口；不得取消 raw/normalized 隔离、执行前 policy admission 或 explicit unavailable。
 
+## ADR-029 — Series-isolated Provider Benchmark Evidence
+
+决策：Provider 评测以版本化 `BenchmarkDataset`、`BenchmarkPredictionSet` 和 `ProviderBenchmarkReport` 表达。每个 case 必须绑定 series/episode、split、Source ArtifactRef、slice、annotation guideline 和 gold；同一 series 不得跨 development/validation/frozen_test，Frozen Test 禁止 tuning。Prediction 必须二选一表达 value 或 failure，并关联 ProviderIdentity、raw/normalized refs、latency、cost 和 severe errors。
+
+指标按 capability/slice/metric version 分开，严重错误 taxonomy 使用 S0–S3 独立计数；总体平均不得掩盖否定、人名、金额、身份串线等风险。失败与缺失 case 进入 incomplete，不从 denominator 静默消失。Benchmark report 固定 code revision、dependency lock checksum、hardware、seed 和 prediction lineage。
+
+G02 的仓库 fixture 只验证工程可重放性，明确为 synthetic/not-production；未建立合法真实标注集前 `admission_thresholds_declared=false`。生产门槛只能在 G03/G04 真实 baseline 后通过版本化 Quality Profile 和人工审批建立。
+
+原因：公开榜单、单一 demo 和总体准确率无法证明短剧域严重错误风险；按剧隔离与逐样本 lineage 是可校准、可回归和避免数据泄漏的前提。
+
+后果：Registry 兼容升级到 1.4.0，新增 benchmark contracts 和两个 Artifact Types。G03/G04 必须在同一 Harness 上增加 capability-specific metrics，不能为追求分数修改 Frozen Test 或隐藏 unavailable。
+
+复议：只有评测任务需要非 series 分组时增加显式 leakage group；不得取消 Frozen Test 隔离、严重错误单列或逐 prediction lineage。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

@@ -1,0 +1,46 @@
+{
+  "dataset_id": "g02-asr-contract-fixture",
+  "version": "1.0.0",
+  "capability": "asr",
+  "cases": [
+    {
+      "case_id": "dev-clean-001",
+      "series_id": "synthetic-series-dev",
+      "episode_id": "episode-1",
+      "split": "development",
+      "source_ref": {"artifact_id": "10000000-0000-4000-8000-000000000001", "version": 1, "artifact_type": "AudioStem"},
+      "slices": ["clean", "mandarin"],
+      "annotation_guideline_version": "speech-fixture-v1",
+      "gold": "他没有回来"
+    },
+    {
+      "case_id": "validation-negation-001",
+      "series_id": "synthetic-series-validation",
+      "episode_id": "episode-1",
+      "split": "validation",
+      "source_ref": {"artifact_id": "20000000-0000-4000-8000-000000000002", "version": 1, "artifact_type": "AudioStem"},
+      "slices": ["negation", "mandarin"],
+      "annotation_guideline_version": "speech-fixture-v1",
+      "gold": "我不答应"
+    },
+    {
+      "case_id": "frozen-unavailable-001",
+      "series_id": "synthetic-series-frozen",
+      "episode_id": "episode-1",
+      "split": "frozen_test",
+      "source_ref": {"artifact_id": "30000000-0000-4000-8000-000000000003", "version": 1, "artifact_type": "AudioStem"},
+      "slices": ["provider_failure"],
+      "annotation_guideline_version": "speech-fixture-v1",
+      "gold": "测试"
+    }
+  ],
+  "taxonomy": [
+    {
+      "error_id": "negation_flip",
+      "capability": "asr",
+      "severity": "S1",
+      "description": "否定词遗漏或反转导致语义相反",
+      "detection_rule_version": "speech-fixture-v1"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 22
+State Version: 23
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 started.
 - Active Release Slice：R2 Story Intelligence（当前为 Speech and Visual Observation 子切片）。
 - Active Epics：E06 Speech and Visual Observation。
-- Active Backlog Entry：G02 Evaluation Corpus and Benchmark Harness。
+- Active Backlog Entry：G03 Speech Observation Pipeline。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -40,6 +40,7 @@ State Owner: Project
 - E04 Master Timeline Core：唯一 MasterTimeline domain validator、semantic Patch/Diff/rebase、PostgreSQL successor/CAS、OTIO 0.18.1 adapter/LossReport、deterministic RenderPlan、FFmpeg 8.1.2 fake Preview、ASS sidecar、Temporal Preview Workflow、Preview Artifact lineage/QC 和人工 Checkpoint 已实现并真实验收。
 - E05 Media Ingest：UUIDv4/PostgreSQL ingest identity、FFprobe/FFmpeg provider、source/proxy/audio/frame、rational source map、PySceneDetect Shadow Catalog、Catalog API、Temporal Workflow、资源准入、L1 Review 和 rights fail-closed 已实现；Stage 1 Acceptance Report 已由项目负责人批准，E05 正式关闭。
 - E06/G01 Provider Gateway：Provider Package/Data Policy/Resource Estimate/Invocation/Failure/Raw Response contracts、统一 Port、fail-closed Gateway、raw Object Store/Artifact lineage 和 unavailable/manual boundary 已实现；Registry 1.3.0 为兼容 minor evolution。
+- E06/G02 Benchmark Harness：series-isolated Dataset、Prediction、Severe Error、Slice Metric、Provider Report contracts 与 deterministic summary harness 已实现；synthetic fixture 只验证工程，不声明生产质量阈值。Registry 1.4.0 为兼容 minor evolution。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -58,9 +59,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 E06/G02 Evaluation Corpus and Benchmark Harness。
-2. 建立按剧隔离的 dataset manifest、严重错误 taxonomy、slice metrics、prediction lineage 和可重放 BenchmarkRun。
-3. G02 通过后进入 G03 Speech、G04 Visual 和 G05 Production Qualification；不得在无项目标签时拍脑袋设生产阈值。
+1. 开始 E06/G03 Speech Observation Pipeline。
+2. 冻结 Speech/VAD/ASR/Alignment/Speaker typed contracts，接入首个本地 Provider 与 unavailable fallback，并建立 capability-specific benchmark。
+3. 保持 speaker cluster 与角色身份分离；不得将 ASR 文本直接升级为 Fact/Story，Confidence 仍为 Shadow。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -149,6 +150,7 @@ State Owner: Project
 - ADR-027 固定 UUIDv4 + PostgreSQL ingest identity、FFprobe raw boundary、FFmpeg derivatives、PySceneDetect Shadow、Temporal/L1 Catalog Review；Stage 1 人工签收已于 2026-08-12 完成。
 - 2026-08-12 项目负责人明确批准 `quality/STAGE1_ACCEPTANCE_REPORT.md`；E05 正式关闭，恢复点进入 E06/G01。E06 只建设 Speech/Visual Observation，不得报告 Identity/Fact/Story 已完成。
 - G01 full check：Provider/Contract/Gateway/Raw persistence 定向测试通过；Registry 1.3.0 生成 118 schemas、71 Artifact Types，历史版本保持不变。ADR-028 固定 Provider Port、执行前 policy admission、raw/normalized 隔离和 explicit unavailable；恢复点切换 G02。
+- G02 acceptance：3-case synthetic fixture 覆盖 development/validation/frozen_test、4 个 slice metrics、显式 unavailable、series isolation，未声明阈值；ADR-029 固定按剧隔离、Frozen Test 防调参、严重错误单列和 prediction lineage。恢复点切换 G03。
 
 ---
 

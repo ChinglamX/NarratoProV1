@@ -62,7 +62,12 @@ ARTIFACT_TYPE_SPECS = (
         "RenderPlan ProxyRender FinalCandidate RenderExecutionReport",
     ),
     *_specs("Quality", "evaluation", "QualityEventSet TechnicalQCReport QualityReview"),
-    *_specs("Feedback", "evaluation", "CorrectionDataset DatasetManifest EvaluationRun"),
+    *_specs(
+        "Feedback",
+        "evaluation",
+        "CorrectionDataset DatasetManifest BenchmarkPredictionSet "
+        "ProviderBenchmarkReport EvaluationRun",
+    ),
     *_specs("Automation", "evaluation", "CalibrationArtifact DriftReport RoutingDecision"),
     *_specs("Release", "evaluation", "ReleaseReviewPackage ReleaseRecord PerformanceWindow"),
     *_specs("Experiment", "evaluation", "ExperimentPlan ExperimentResult ApplicableScope"),
