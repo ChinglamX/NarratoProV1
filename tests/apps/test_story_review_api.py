@@ -4,7 +4,12 @@ from uuid import uuid4
 import pytest
 from fastapi import HTTPException
 
-from apps.api.reviews import get_approved_story, get_approved_strategy, get_released_candidate
+from apps.api.reviews import (
+    get_approved_story,
+    get_approved_strategy,
+    get_approved_timeline,
+    get_released_candidate,
+)
 
 
 class EmptyRepository:
@@ -60,4 +65,15 @@ def test_unreleased_candidate_fails_closed() -> None:
     )
     with pytest.raises(HTTPException) as captured:
         get_released_candidate(uuid4(), request)  # type: ignore[arg-type]
+    assert captured.value.status_code == 404
+
+
+def test_unapproved_timeline_fails_closed() -> None:
+    request = SimpleNamespace(
+        app=SimpleNamespace(
+            state=SimpleNamespace(database_engine=Engine(), review_repository=EmptyRepository())
+        )
+    )
+    with pytest.raises(HTTPException) as captured:
+        get_approved_timeline(uuid4(), request)  # type: ignore[arg-type]
     assert captured.value.status_code == 404

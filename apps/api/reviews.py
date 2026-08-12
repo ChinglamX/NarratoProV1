@@ -14,6 +14,7 @@ from packages.contracts import (
     StoryReviewPackage,
     StrategyGateSelection,
     StrategyReviewPackage,
+    TimelineReviewPackage,
 )
 from packages.control.reviews import (
     ReviewConflict,
@@ -64,6 +65,49 @@ class ReleaseReviewRequestBody(BaseModel):
     project_id: UUID
     workflow_id: str = Field(min_length=1, max_length=255)
     package: ReleaseReviewPackage
+
+
+class TimelineReviewRequestBody(BaseModel):
+    review_id: UUID
+    project_id: UUID
+    workflow_id: str = Field(min_length=1, max_length=255)
+    package: TimelineReviewPackage
+
+
+@router.post("/timeline", status_code=status.HTTP_201_CREATED)
+def create_timeline_review(body: TimelineReviewRequestBody, request: Request) -> dict[str, Any]:
+    engine: Engine = request.app.state.database_engine
+    repository: ReviewRepository = request.app.state.review_repository
+    with transaction(engine) as connection:
+        repository.create_request(
+            connection,
+            review_id=body.review_id,
+            project_id=body.project_id,
+            workflow_id=body.workflow_id,
+            gate="timeline",
+            target_ref=body.package.master_timeline_ref.model_dump(mode="json"),
+            policy_snapshot={
+                "automation_level": "L1",
+                "timeline_review_package": body.package.model_dump(mode="json"),
+            },
+        )
+    return {"review_id": body.review_id, "state": "awaiting_review", "gate": "timeline"}
+
+
+@router.get("/timeline/approved/{project_id}")
+def get_approved_timeline(project_id: UUID, request: Request) -> dict[str, Any]:
+    engine: Engine = request.app.state.database_engine
+    repository: ReviewRepository = request.app.state.review_repository
+    with engine.connect() as connection:
+        reference = repository.publication_ref(
+            connection,
+            project_id=project_id,
+            registry_type="approved_timeline_intent",
+            artifact_type="MasterTimeline",
+        )
+    if reference is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail={"code": "timeline_not_approved"})
+    return {"approved_timeline_intent_ref": reference}
 
 
 @router.post("/story", status_code=status.HTTP_201_CREATED)

@@ -124,6 +124,12 @@ class ReviewRepository:
                 raise StoredReviewConflict("blocked or incomplete candidate cannot be released")
             if package.get("final_candidate_ref") != row["target_ref"]:
                 raise StoredReviewConflict("release package target does not match review target")
+        if row["gate"] == "timeline" and decision == "approve":
+            package = policy.get("timeline_review_package", {})
+            if package.get("incomplete") or package.get("blocker_codes"):
+                raise StoredReviewConflict("blocked or incomplete timeline cannot be approved")
+            if package.get("master_timeline_ref") != row["target_ref"]:
+                raise StoredReviewConflict("timeline package target does not match review target")
         decision_id = uuid4()
         try:
             connection.execute(
@@ -187,6 +193,16 @@ class ReviewRepository:
                     connection,
                     project_id=row["project_id"],
                     registry_type="released_candidate",
+                    reference=row["target_ref"],
+                )
+            if row["gate"] == "timeline" and decision == "approve":
+                connection.execute(
+                    select(func.pg_advisory_xact_lock(row["project_id"].int & (2**63 - 1)))
+                )
+                self._publish_pointer(
+                    connection,
+                    project_id=row["project_id"],
+                    registry_type="approved_timeline_intent",
                     reference=row["target_ref"],
                 )
             connection.execute(

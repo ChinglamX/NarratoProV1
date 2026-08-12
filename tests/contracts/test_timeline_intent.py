@@ -12,6 +12,7 @@ from packages.contracts.timeline_intent import (
     NarrativeBeatGraph,
     RhythmPlan,
     TimelineIntentInput,
+    TimelineReviewPackage,
 )
 
 
@@ -99,3 +100,21 @@ def test_narration_and_crop_require_evidence_and_valid_geometry() -> None:
         )
     with pytest.raises(ValidationError, match="inside normalized frame"):
         CropKeyframe(position=time(0), x=0.8, y=0.0, width=0.5, height=1.0)
+
+
+def test_timeline_review_package_freezes_exact_checkpoint_refs() -> None:
+    package = TimelineReviewPackage(
+        master_timeline_ref=ref("MasterTimeline"),
+        preview_ref=ref("ProxyRender"),
+        creative_brief_ref=ref("CreativeBrief"),
+        approved_story_ref=ref("StoryGraph"),
+        platform_profile_ref=ref("ConfigArtifact"),
+        visual_planning_report_ref=ref("QualityReview"),
+        narration_planning_report_ref=ref("QualityReview"),
+        assembly_report_ref=ref("QualityReview"),
+    )
+    assert package.master_timeline_ref.artifact_type == "MasterTimeline"
+    with pytest.raises(ValidationError, match="exact typed refs"):
+        TimelineReviewPackage.model_validate(
+            package.model_dump(mode="python") | {"preview_ref": ref("FinalCandidate")}
+        )

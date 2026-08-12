@@ -226,6 +226,7 @@ from packages.contracts.timeline_intent import (
     TimelineAssemblyReport,
     TimelineIntentInput,
     TimelineIntentPackage,
+    TimelineReviewPackage,
     VisualPlanningReport,
 )
 from packages.contracts.timeline_qualification import (
@@ -248,7 +249,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.16.0"
+REGISTRY_VERSION = "2.17.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ASSArtifact,
     AssemblyConflict,
@@ -417,6 +418,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     TimelineEngineeringQualification,
     TimelineIntentInput,
     TimelineIntentPackage,
+    TimelineReviewPackage,
     TimelineAssemblyReport,
     TimelineSevereError,
     TechnicalQCReport,

@@ -9,7 +9,13 @@ from pydantic import Field, model_validator
 
 from packages.contracts.base import StrictContract
 from packages.contracts.envelopes import JsonObject
-from packages.contracts.foundation import UUID, ArtifactRef, RationalTime, StableName, TimeRange
+from packages.contracts.foundation import (
+    UUID,
+    ArtifactRef,
+    RationalTime,
+    StableName,
+    TimeRange,
+)
 
 
 class BeatFunction(StrEnum):
@@ -355,6 +361,33 @@ class TimelineAssemblyReport(StrictContract):
     def enforce_revision_budget(self) -> Self:
         if self.revision_count > self.revision_budget:
             raise ValueError("assembly revision count exceeds budget")
+        return self
+
+
+class TimelineReviewPackage(StrictContract):
+    master_timeline_ref: ArtifactRef
+    preview_ref: ArtifactRef
+    creative_brief_ref: ArtifactRef
+    approved_story_ref: ArtifactRef
+    platform_profile_ref: ArtifactRef
+    visual_planning_report_ref: ArtifactRef
+    narration_planning_report_ref: ArtifactRef
+    assembly_report_ref: ArtifactRef
+    demo_benchmark_ref: ArtifactRef | None = None
+    blocker_codes: tuple[StableName, ...] = ()
+    accepted_risk_codes: tuple[StableName, ...] = ()
+    incomplete: bool = False
+
+    @model_validator(mode="after")
+    def require_exact_review_boundary(self) -> Self:
+        expected = (
+            (self.master_timeline_ref, "MasterTimeline"),
+            (self.preview_ref, "ProxyRender"),
+            (self.creative_brief_ref, "CreativeBrief"),
+            (self.approved_story_ref, "StoryGraph"),
+        )
+        if any(reference.artifact_type != kind for reference, kind in expected):
+            raise ValueError("timeline review package requires exact typed refs")
         return self
 
 
