@@ -439,6 +439,18 @@ recall error 和 evidence mismatch。未来验收创建后继 Qualification/Repo
 后果：Registry 兼容升级到 2.2.0。E08 可继续建设工程能力，但 Strategy 生产运行只能消费真实人工
 批准的 ApprovedStoryRef；synthetic Story 不得成为营销策略质量依据。
 
+## ADR-039 — Strategy Starts from Approved Story and Deterministic Profile Resolution
+
+决策：E08 Strategy Input Service 只能通过 project-scoped `approved_story` publication 读取 exact
+StoryGraph；不存在批准 pointer 时 fail closed，禁止读取 latest/draft Story。Genre/Platform/Audience/
+Duration/Brand-Safety Profile 使用 versioned typed Contract。Rights/Safety 和 Platform hard constraint
+优先于 soft preference；Genre/Audience/Duration 只能表达偏好，不能制造剧情或硬约束。同优先级 hard
+constraint 冲突形成 blocker，不以模型选择一方。Approved Profile 必须声明 validated scope；
+experimental Profile 不得成为自动路由依据。
+
+后果：Registry 兼容升级到 2.3.0。I01 只建立配置和输入真相边界，不声称完成 Genre 自动识别或
+营销效果验证；配置变化只失效 Strategy 及下游，不重算 Story。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

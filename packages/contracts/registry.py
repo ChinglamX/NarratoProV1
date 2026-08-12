@@ -132,6 +132,14 @@ from packages.contracts.strategy import (
     StrategyCandidateSet,
     StrategyDirection,
 )
+from packages.contracts.strategy_config import (
+    EffectiveStrategyConfig,
+    GenreCandidate,
+    GenreResolution,
+    ResolvedStrategyValue,
+    StrategyConfigConflict,
+    StrategyProfile,
+)
 from packages.contracts.timeline import (
     MasterTimeline,
     TimelineConflict,
@@ -155,7 +163,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.2.0"
+REGISTRY_VERSION = "2.3.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApprovedStorySnapshot,
@@ -185,6 +193,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     DetectionObservation,
     ErrorDetail,
     ErrorEnvelope,
+    EffectiveStrategyConfig,
     EpisodeCatalog,
     EventEnvelope,
     Event,
@@ -202,6 +211,8 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     FaceObservation,
     FrameEvidence,
     GuidelineManifest,
+    GenreCandidate,
+    GenreResolution,
     HookCandidate,
     IdentityConflict,
     IdentityCorrectionResult,
@@ -231,6 +242,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     RationalTime,
     RawProviderResponse,
     ResourceErrorRef,
+    ResolvedStrategyValue,
     RightsGrantRef,
     RightsManifestRef,
     RightsMetadata,
@@ -256,7 +268,9 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     SupplementarySampleRequest,
     TextTrack,
     StrategyCandidateSet,
+    StrategyConfigConflict,
     StrategyDirection,
+    StrategyProfile,
     Character,
     TimelineConflict,
     TimelineItem,
