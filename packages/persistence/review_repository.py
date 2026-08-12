@@ -118,6 +118,12 @@ class ReviewRepository:
                 "candidate_variant_plan_refs", []
             ):
                 raise StoredReviewConflict("selection references are outside the review package")
+        if row["gate"] == "release" and decision == "approve":
+            package = policy.get("release_review_package", {})
+            if package.get("incomplete") or package.get("blocker_codes"):
+                raise StoredReviewConflict("blocked or incomplete candidate cannot be released")
+            if package.get("final_candidate_ref") != row["target_ref"]:
+                raise StoredReviewConflict("release package target does not match review target")
         decision_id = uuid4()
         try:
             connection.execute(
@@ -172,6 +178,16 @@ class ReviewRepository:
                     project_id=row["project_id"],
                     registry_type="approved_variant_plan",
                     reference=strategy_selection["variant_plan_ref"],
+                )
+            if row["gate"] == "release" and decision == "approve":
+                connection.execute(
+                    select(func.pg_advisory_xact_lock(row["project_id"].int & (2**63 - 1)))
+                )
+                self._publish_pointer(
+                    connection,
+                    project_id=row["project_id"],
+                    registry_type="released_candidate",
+                    reference=row["target_ref"],
                 )
             connection.execute(
                 insert(schema.outbox_event).values(
@@ -255,6 +271,30 @@ class ReviewRepository:
             "artifact_id": row.registry_id,
             "version": int(row.version),
             "artifact_type": artifact_types[registry_type],
+        }
+
+    def publication_ref(
+        self,
+        connection: Connection,
+        *,
+        project_id: UUID,
+        registry_type: str,
+        artifact_type: str,
+    ) -> dict[str, Any] | None:
+        row = connection.execute(
+            select(schema.publication_pointer).where(
+                and_(
+                    schema.publication_pointer.c.project_id == project_id,
+                    schema.publication_pointer.c.registry_type == registry_type,
+                )
+            )
+        ).first()
+        if row is None:
+            return None
+        return {
+            "artifact_id": row.registry_id,
+            "version": int(row.version),
+            "artifact_type": artifact_type,
         }
 
     def approved_story(self, connection: Connection, *, project_id: UUID) -> dict[str, Any] | None:

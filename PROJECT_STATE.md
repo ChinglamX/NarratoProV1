@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 40
+State Version: 41
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
-- Active Release Slice：R3 Creative Plan。
-- Active Epics：E11 Render and Release Candidate；bounded debt tracks E06/G05–E10/K06 production qualification。
-- Active Backlog Entry：L01 Render Preflight and Plan。
+- Active Release Slice：R5 Safe Automation；R4 engineering built but production qualification pending。
+- Active Epics：E12 Evaluation and Automation；bounded debt tracks E06/G05–E11/L06 production qualification。
+- Active Backlog Entry：M01 Quality Events and Blocker Detectors。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -57,6 +57,7 @@ State Owner: Project
 - E08/I05 Engineering Qualification：versioned Strategy qualification、严重错误 taxonomy、成本/并发/replay 边界、runbook、dashboard 和 pending-real-data Acceptance Report 已完成；工程结论 complete，production decision=pending_human。Registry 2.7.0。E08 工程正式关闭。
 - E09/J01–J06 Creative Timeline：Approved Strategy-only input、typed Beat/Clip/Crop/Rhythm/Narration intents、grounded selection、CoverageGap、唯一 MasterTimeline assembly、Checkpoint 语义和 engineering qualification 已实现；Registry 2.9.0。工程结论 complete，production decision=pending_human。
 - E10/K01–K06 Voice/Audio/Subtitle：bounded provider-neutral VoiceTake、selected VoiceAsset/actual duration、Alignment/Conform、rights-bearing Audio Selection、Mix ducking/loudness intent、Subtitle/ASS contracts 和 engineering qualification 已实现；Registry 2.11.0。工程结论 complete，production decision=pending_human。
+- E11/L01–L06 Render/Release：exact Render Plan/Execution、Technical QC、Release Rights Manifest、Offline Quality Review、blocker-dominant preflight、human-only Gate 3/released pointer 和 engineering qualification 已实现；Registry 2.13.0。工程结论 complete，production decision=pending_human；无真实可发布成片声明。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -64,7 +65,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- E11 Render/Release Candidate 尚未实现；Story/Strategy/Timeline 真实素材人工签署和 E10 provider/asset production admission 尚未完成。
+- E12 Safe Automation、E13 Online Performance 尚未实现；E06–E11 的真实数据、Provider、Rights、Craft、运行与人工签署 production qualification 尚未完成。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -75,7 +76,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E11/L01 实现 deterministic Render Preflight/Plan 和 blocker fail-closed。
+1. 按 E12/M01 实现 Quality Events、required blocker detector、故障集与 unavailable fail-closed。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 

@@ -1,0 +1,5 @@
+{"title":"NarratoPro E11 Render Release","schemaVersion":39,"tags":["narratopro","e11","release"],"panels":[
+{"type":"timeseries","title":"Render outcomes","targets":[{"expr":"sum by (outcome) (rate(narratopro_render_total[5m]))"}]},
+{"type":"timeseries","title":"QC blockers","targets":[{"expr":"sum by (kind) (rate(narratopro_release_blocker_total[5m]))"}]},
+{"type":"timeseries","title":"Release decisions","targets":[{"expr":"sum by (decision) (rate(narratopro_release_decision_total[5m]))"}]}
+]}

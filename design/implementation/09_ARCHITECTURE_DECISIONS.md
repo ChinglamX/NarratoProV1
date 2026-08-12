@@ -536,6 +536,20 @@ versioned loudness/True Peak Profile。Subtitle 由 Alignment 形成 typed Cue�
 后果：Registry 兼容升级到 2.11.0。E10 工程关闭不代表任何 TTS/音色或资产获生产准入；真实中文
 发音、情感、同步、可懂度、响度、字幕视觉和权利仍由后继 production qualification 决定。
 
+## ADR-046 — Release Is Blocker-dominant, Exact and Human-only
+
+决策：E11 RenderPlan 必须绑定 exact Conformed Timeline、MixedAudio、ASS、Platform Profile、toolchain
+和 deterministic operation/cache checksum；成功 Execution 必须有 output blob/checksum，失败必须有
+typed failure。TechnicalQC、RightsManifest 和 OfflineQualityReview 分别保留检查证据，任一 blocker
+使 Release preflight Reject，总分、Confidence、线上表现或服务角色不得抵消。
+
+Gate 3 只能由 human `release_approver` 对 exact FinalCandidate/version/checksum first-wins 决策。
+批准采用 DB-first/outbox 和 project publication pointer；Router、模型、评测服务、作者或 service
+account 永远不能批准 Release。修正必须产生后继 Candidate 并重新执行完整 preflight。
+
+后果：Registry 兼容升级到 2.13.0。E11 工程完成只证明可审核的 Release 边界，不代表已经生成
+或批准 demo 级成片；真实 Final Render/QC/Rights/Craft Review/故障容量和人工签署保持 production blocker。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

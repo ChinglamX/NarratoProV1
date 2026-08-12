@@ -1,0 +1,29 @@
+{
+  "release_slice":"R4-release-candidate",
+  "code_revision":"pending-l06-commit",
+  "automation_level":"L1",
+  "release_gate_human_only":true,
+  "engineering_complete":true,
+  "production_decision":"pending_human",
+  "checks":[
+    {"check_id":"deterministic-render-contract","dimension":"engineering","status":"passed","blocker":false,"detail":"RenderPlan binds exact conformed timeline, audio, ASS, platform, toolchain, operation cache keys and checksum.","evidence_paths":["packages/contracts/render_release.py"]},
+    {"check_id":"technical-rights-quality-preflight","dimension":"governance","status":"passed","blocker":false,"detail":"Technical, Rights and Offline Quality blockers aggregate without score compensation.","evidence_paths":["packages/production/preflight.py"]},
+    {"check_id":"human-release-gate","dimension":"approval","status":"passed","blocker":false,"detail":"Release requires human release_approver, first-wins exact target and DB-first publication.","evidence_paths":["packages/persistence/review_repository.py","apps/api/reviews.py"]},
+    {"check_id":"real-final-render","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"No real fully conformed E10 input exists for final FFmpeg render and proxy/final parity.","evidence_paths":[]},
+    {"check_id":"real-technical-qc","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"Full decode, sync, loudness, black/freeze/silence, subtitle geometry and platform upload checks await final media.","evidence_paths":[]},
+    {"check_id":"complete-rights-manifest","dimension":"rights","status":"not_evaluated","blocker":true,"detail":"No complete real release asset manifest has been supplied and cleared.","evidence_paths":[]},
+    {"check_id":"demo-craft-review","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"No real candidate has been blind-reviewed against the demo rubric and timecoded evidence.","evidence_paths":[]},
+    {"check_id":"human-release-signoff","dimension":"approval","status":"not_evaluated","blocker":true,"detail":"No real FinalCandidate has received human Gate 3 approval.","evidence_paths":[]},
+    {"check_id":"render-fault-capacity-security","dimension":"reliability","status":"not_evaluated","blocker":true,"detail":"Production-sized retry/cache/restart/disk-full/OOM/timeout/cost/security drills await real assets.","evidence_paths":[]}
+  ],
+  "severe_errors":[
+    {"code":"corrupt-or-unplayable-output","description":"Rendered candidate cannot decode completely or violates required container/codec profile."},
+    {"code":"proxy-final-mismatch","description":"Final output materially differs from approved proxy geometry, timing, audio or subtitles."},
+    {"code":"audio-video-subtitle-desync","description":"Material sync failure impairs comprehension."},
+    {"code":"missing-or-uncleared-rights","description":"Release package lacks cleared rights for any used asset."},
+    {"code":"story-or-identity-error","description":"Final candidate contains a material story, identity, temporal or causal error."},
+    {"code":"speech-masked-or-unintelligible","description":"Dialogue or narration is materially masked or unintelligible."},
+    {"code":"subtitle-blocks-key-content","description":"Rendered subtitle or graphic obscures key visual evidence."},
+    {"code":"nonhuman-release-attempt","description":"A service, model or router attempts to approve Release Gate."}
+  ]
+}

@@ -111,6 +111,20 @@ from packages.contracts.providers import (
     RawProviderResponse,
 )
 from packages.contracts.qualification import ProductionQualification, QualificationCheck
+from packages.contracts.render_release import (
+    FinalCandidate,
+    OfflineQualityReview,
+    ReleaseRecord,
+    ReleaseReviewPackage,
+    ReleaseRightsManifest,
+    RenderExecutionReport,
+    RenderPlanContract,
+    TechnicalQCReport,
+)
+from packages.contracts.render_release_qualification import (
+    RenderReleaseEngineeringQualification,
+    RenderReleaseSevereError,
+)
 from packages.contracts.rights import (
     RightsGrantRef,
     RightsManifestRef,
@@ -222,7 +236,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.11.0"
+REGISTRY_VERSION = "2.13.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ASSArtifact,
     ActorRef,
@@ -283,6 +297,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     FrameSamplePlan,
     Fact,
     FactSet,
+    FinalCandidate,
     FeasibilityReport,
     FusionConflict,
     FusionReport,
@@ -308,6 +323,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     MixPlan,
     MixedAudio,
     OCRObservation,
+    OfflineQualityReview,
     NarrativeBeatGraph,
     NarrationLineSet,
     ProviderIdentity,
@@ -327,6 +343,13 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     RationalTime,
     RawProviderResponse,
     ResourceErrorRef,
+    ReleaseRecord,
+    ReleaseReviewPackage,
+    ReleaseRightsManifest,
+    RenderExecutionReport,
+    RenderPlanContract,
+    RenderReleaseEngineeringQualification,
+    RenderReleaseSevereError,
     ResolvedStrategyValue,
     RightsGrantRef,
     RightsManifestRef,
@@ -373,6 +396,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     TimelineIntentInput,
     TimelineIntentPackage,
     TimelineSevereError,
+    TechnicalQCReport,
     TimelineItem,
     TimelinePatch,
     TimelineTrack,

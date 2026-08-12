@@ -473,7 +473,35 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 ---
 
-## 14. 任务完成定义
+## 14. Sprint Group M — Evaluation and Safe Automation
+
+### M01 Quality Events and Blocker Detectors
+
+实现统一 QualityEvent、required detector resolution、故障集和 unavailable fail-closed。
+
+### M02 Correction Dataset and Governance
+
+实现 correction normalization、label quality、rights/privacy、series split 和 frozen dataset。
+
+### M03 Confidence Calibration
+
+实现按 task/scope calibration、severe slice、threshold candidate 和 drift baseline。
+
+### M04 L2/L3 Routing, Sampling and Downgrade
+
+实现 blocker precedence、risk sampling、kill switch、自动降级和人工审批升级。
+
+### M05 Candidate Evaluation and Rollback
+
+实现 Prompt/Model/Config/Policy candidate、paired evaluation、canary 和 rollback。
+
+### M06 E12 Engineering Qualification
+
+完成安全、治理、DR、至少一个合法 canary 或明确保持 L1 的数据证据。
+
+---
+
+## 15. 任务完成定义
 
 每项必须有：public contract、domain/application implementation、adapter、unit/contract/integration tests、observability、error/runbook、文档链接和 migration/rollback（适用时）。
 
@@ -481,7 +509,7 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 ---
 
-## 15. 首批明确不做
+## 16. 首批明确不做
 
 - 不接真实 ASR/VLM/TTS。
 - 不实现 Story/Strategy Agent。
