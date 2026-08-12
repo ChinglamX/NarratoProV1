@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 21
+State Version: 22
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 started.
 - Active Release Slice：R2 Story Intelligence（当前为 Speech and Visual Observation 子切片）。
 - Active Epics：E06 Speech and Visual Observation。
-- Active Backlog Entry：G01 Provider Gateway and Observation Boundary。
+- Active Backlog Entry：G02 Evaluation Corpus and Benchmark Harness。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -39,6 +39,7 @@ State Owner: Project
 - E03 Durable Workflow and Review：Temporal ProjectRunWorkflow、typed Activity envelope、retry/heartbeat/non-retryable mapping、worker wait/restart/replay、Command/Run outbox、Review/Correction API、first-wins/RBAC/CAS、Resource Admission leases、trace/redaction/metric label policy 和 Confidence Shadow correction example 已实现；真实 Temporal 与 PostgreSQL/API 验收通过。
 - E04 Master Timeline Core：唯一 MasterTimeline domain validator、semantic Patch/Diff/rebase、PostgreSQL successor/CAS、OTIO 0.18.1 adapter/LossReport、deterministic RenderPlan、FFmpeg 8.1.2 fake Preview、ASS sidecar、Temporal Preview Workflow、Preview Artifact lineage/QC 和人工 Checkpoint 已实现并真实验收。
 - E05 Media Ingest：UUIDv4/PostgreSQL ingest identity、FFprobe/FFmpeg provider、source/proxy/audio/frame、rational source map、PySceneDetect Shadow Catalog、Catalog API、Temporal Workflow、资源准入、L1 Review 和 rights fail-closed 已实现；Stage 1 Acceptance Report 已由项目负责人批准，E05 正式关闭。
+- E06/G01 Provider Gateway：Provider Package/Data Policy/Resource Estimate/Invocation/Failure/Raw Response contracts、统一 Port、fail-closed Gateway、raw Object Store/Artifact lineage 和 unavailable/manual boundary 已实现；Registry 1.3.0 为兼容 minor evolution。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -57,9 +58,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 E06/G01 Provider Gateway and Observation Boundary。
-2. 冻结 Provider Package、capability port、raw response、normalized Observation、错误、rights/data-residency、resource/cost 和 unavailable fallback 契约。
-3. G01 通过后进入 G02 Evaluation Corpus，再分别建设 G03 Speech、G04 Visual 和 G05 Production Qualification；不得从 Observation 直接推断 Fact/Story。
+1. 开始 E06/G02 Evaluation Corpus and Benchmark Harness。
+2. 建立按剧隔离的 dataset manifest、严重错误 taxonomy、slice metrics、prediction lineage 和可重放 BenchmarkRun。
+3. G02 通过后进入 G03 Speech、G04 Visual 和 G05 Production Qualification；不得在无项目标签时拍脑袋设生产阈值。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -147,6 +148,7 @@ State Owner: Project
 - E05 real demo acceptance：12,747,283 bytes；6 core Artifacts、9 frame samples、220 PySceneDetect Shadow shots；audio present、duplicate idempotent、unknown rights blocked。
 - ADR-027 固定 UUIDv4 + PostgreSQL ingest identity、FFprobe raw boundary、FFmpeg derivatives、PySceneDetect Shadow、Temporal/L1 Catalog Review；Stage 1 人工签收已于 2026-08-12 完成。
 - 2026-08-12 项目负责人明确批准 `quality/STAGE1_ACCEPTANCE_REPORT.md`；E05 正式关闭，恢复点进入 E06/G01。E06 只建设 Speech/Visual Observation，不得报告 Identity/Fact/Story 已完成。
+- G01 full check：Provider/Contract/Gateway/Raw persistence 定向测试通过；Registry 1.3.0 生成 118 schemas、71 Artifact Types，历史版本保持不变。ADR-028 固定 Provider Port、执行前 policy admission、raw/normalized 隔离和 explicit unavailable；恢复点切换 G02。
 
 ---
 

@@ -49,7 +49,7 @@ Version: 1.0
 | Foundation | RightsGrant / RightsManifest | control/rights | production/release |
 | Media | SourceMedia / MediaProbe / ProxyMedia / AudioStem | intelligence | production |
 | Media | EpisodeCatalog / SceneShotCatalog / FrameSamplePlan | intelligence | perception/timeline |
-| Observation | SpeechObservation / VisualObservation / OCRObservation / Tracklet | intelligence | fusion/evaluation |
+| Observation | RawProviderResponse / SpeechObservation / VisualObservation / OCRObservation / Tracklet | intelligence | fusion/evaluation |
 | Identity | IdentityGraph / IdentityConflict | intelligence | fact/story/timeline |
 | Fact | FactSet / EvidenceBundle / SourceQualityFeatureSet | intelligence | story/strategy |
 | Story | EventSet / CharacterStateGraph / CausalGraph / StoryGraph | intelligence | strategy/evaluation |

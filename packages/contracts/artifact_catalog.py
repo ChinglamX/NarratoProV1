@@ -32,7 +32,7 @@ ARTIFACT_TYPE_SPECS = (
     *_specs(
         "Observation",
         "intelligence",
-        "SpeechObservation VisualObservation OCRObservation Tracklet",
+        "RawProviderResponse SpeechObservation VisualObservation OCRObservation Tracklet",
     ),
     *_specs("Identity", "intelligence", "IdentityGraph IdentityConflict"),
     *_specs("Fact", "intelligence", "FactSet EvidenceBundle SourceQualityFeatureSet"),

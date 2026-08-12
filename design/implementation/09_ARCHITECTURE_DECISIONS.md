@@ -234,6 +234,20 @@ MediaIngestWorkflow 只在 Activity 中执行文件、数据库和媒体 I/O，�
 
 复议：只有真实并发、容量或媒体兼容 benchmark 证明 identity registry/FFmpeg/PySceneDetect 不满足目标时复议；不得放松 UUIDv4、rights fail-closed、raw/normalized 边界或人工 Release。
 
+## ADR-028 — Provider Gateway and Raw Observation Boundary
+
+决策：所有 Stage 2 感知 Provider 实现统一 `package/validate/estimate/infer/health` Port。Gateway 在推理前依次验证 capability、production/research/blocked admission、代码与模型权重许可、commercial scope、execution location、data residency、cost、RAM/accelerator memory 和 health；任何缺失或越界均 fail closed。Provider `infer` 只返回进程内 `ProviderRawOutput`，不得自行分配 Artifact identity 或写领域数据库。
+
+原始响应由 application service 立即写 Object Store 并提交 `RawProviderResponse` Artifact，记录 exact input/config/resource refs、ProviderIdentity、request/payload checksum、media type、provider schema、trace 和 rights class。下游只接收 capability-specific normalized ArtifactRef；Gateway 不提供万能 JSON Observation。ASR/OCR/Detection 等 typed payload 分别由 G03/G04 以 Registry minor evolution 引入。
+
+错误分类固定区分 invalid input、policy/rights blocked、resource exhausted、rate limited、timeout、unavailable、malformed response 和 internal；不可重试错误在 Contract 层禁止标为 retryable。Provider 不可用时显式 unavailable/manual，禁止返回空结果冒充成功。Confidence 保持 Shadow，Provider admission 不等于输出自动批准。
+
+原因：模型替换、许可证、数据出境、资源预算和 raw schema 漂移都必须在公共领域边界之外被治理；让 adapter 创建业务 Artifact 或让下游解析私有 JSON 会形成第二真相源并破坏可替换性。
+
+后果：Registry 兼容升级到 1.3.0，新增 Provider contracts 和 `RawProviderResponse` Artifact。G02 benchmark、G03 Speech、G04 Visual 必须复用此 Gateway；具体 Provider 只能在许可、checksum、数据政策和 benchmark 齐全后进入 production admission。
+
+复议：只有真实 Provider 无法通过该 Port 表达必要的 streaming/batch 行为时扩展接口；不得取消 raw/normalized 隔离、执行前 policy admission 或 explicit unavailable。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

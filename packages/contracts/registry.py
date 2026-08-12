@@ -61,6 +61,15 @@ from packages.contracts.media import (
     MediaTechnicalMetadata,
     SceneShotCatalog,
 )
+from packages.contracts.providers import (
+    ProviderDataPolicy,
+    ProviderFailure,
+    ProviderInvocationRequest,
+    ProviderInvocationResult,
+    ProviderPackage,
+    ProviderResourceEstimate,
+    RawProviderResponse,
+)
 from packages.contracts.rights import (
     RightsGrantRef,
     RightsManifestRef,
@@ -83,7 +92,7 @@ from packages.contracts.timeline import (
     TimelineTrack,
 )
 
-REGISTRY_VERSION = "1.2.0"
+REGISTRY_VERSION = "1.3.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApplicableScope,
@@ -118,11 +127,18 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     MediaAsset,
     MediaTechnicalMetadata,
     ProviderIdentity,
+    ProviderDataPolicy,
+    ProviderFailure,
+    ProviderInvocationRequest,
+    ProviderInvocationResult,
+    ProviderPackage,
+    ProviderResourceEstimate,
     PublicErrorDetail,
     PublicErrorEnvelope,
     ProducerRecord,
     QualityEvent,
     RationalTime,
+    RawProviderResponse,
     ResourceErrorRef,
     RightsGrantRef,
     RightsManifestRef,
