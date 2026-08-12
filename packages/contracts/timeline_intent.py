@@ -274,6 +274,90 @@ class NarrationPlanningReport(StrictContract):
     locked_line_ids: tuple[UUID, ...] = ()
 
 
+class AudioIntentRole(StrEnum):
+    ORIGINAL = "original"
+    NARRATION = "narration"
+    BGM = "bgm"
+    SFX = "sfx"
+
+
+class AudioIntent(StrictContract):
+    intent_id: UUID
+    role: AudioIntentRole
+    timeline_range: TimeRange
+    source_ref: ArtifactRef | None = None
+    content_ref: StableName | None = None
+    rights_ref: ArtifactRef | None = None
+    duck_under_narration: bool = False
+    gain_db: Annotated[float, Field(ge=-96.0, le=24.0)] = 0.0
+
+    @model_validator(mode="after")
+    def validate_audio_source(self) -> Self:
+        if self.timeline_range.is_empty:
+            raise ValueError("audio intent requires positive duration")
+        if self.role is AudioIntentRole.ORIGINAL and self.source_ref is None:
+            raise ValueError("original audio intent requires source ref")
+        if self.role in {AudioIntentRole.BGM, AudioIntentRole.SFX} and (
+            self.content_ref is None or self.rights_ref is None
+        ):
+            raise ValueError("BGM/SFX intent requires content and rights refs")
+        if self.role is AudioIntentRole.BGM and not self.duck_under_narration:
+            raise ValueError("BGM intent must declare narration ducking")
+        return self
+
+
+class SubtitleIntent(StrictContract):
+    intent_id: UUID
+    line_id: UUID
+    timeline_range: TimeRange
+    text: Annotated[str, Field(min_length=1, max_length=2_048)]
+    style_ref: ArtifactRef
+    safe_area: JsonObject
+    evidence_refs: tuple[UUID, ...]
+
+    @model_validator(mode="after")
+    def require_safe_grounded_subtitle(self) -> Self:
+        if self.timeline_range.is_empty or not self.evidence_refs:
+            raise ValueError("subtitle intent requires duration and evidence")
+        required = {"x", "y", "width", "height"}
+        if not required.issubset(self.safe_area):
+            raise ValueError("subtitle safe area requires normalized rectangle")
+        return self
+
+
+class OverlayIntent(StrictContract):
+    intent_id: UUID
+    timeline_range: TimeRange
+    overlay_type: StableName
+    content_ref: StableName
+    style_ref: ArtifactRef
+    safe_area: JsonObject
+
+
+class AssemblyConflict(StrictContract):
+    code: StableName
+    owner: StableName
+    affected_range: TimeRange
+    explanation: Annotated[str, Field(min_length=1, max_length=2_048)]
+    blocker: bool
+    allowed_reflow_scope: Annotated[int, Field(ge=0, le=4)]
+
+
+class TimelineAssemblyReport(StrictContract):
+    timeline_ref: ArtifactRef | None = None
+    track_kinds: tuple[StableName, ...]
+    conflicts: tuple[AssemblyConflict, ...] = ()
+    invalidated_artifact_types: tuple[StableName, ...] = ()
+    revision_count: Annotated[int, Field(ge=0)] = 0
+    revision_budget: Annotated[int, Field(ge=0)] = 0
+
+    @model_validator(mode="after")
+    def enforce_revision_budget(self) -> Self:
+        if self.revision_count > self.revision_budget:
+            raise ValueError("assembly revision count exceeds budget")
+        return self
+
+
 class DialogueRelationship(StrEnum):
     COMPLEMENT = "complement"
     BRIDGE = "bridge"

@@ -205,6 +205,8 @@ from packages.contracts.timeline import (
     TimelineTrack,
 )
 from packages.contracts.timeline_intent import (
+    AssemblyConflict,
+    AudioIntent,
     BeatRhythm,
     ClipCandidate,
     ClipCandidateSet,
@@ -217,8 +219,11 @@ from packages.contracts.timeline_intent import (
     NarrationLineSet,
     NarrationPlanningReport,
     NarrativeBeatGraph,
+    OverlayIntent,
     RhythmPlan,
     SourceSubtitleHandlingPlan,
+    SubtitleIntent,
+    TimelineAssemblyReport,
     TimelineIntentInput,
     TimelineIntentPackage,
     VisualPlanningReport,
@@ -243,9 +248,10 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.15.0"
+REGISTRY_VERSION = "2.16.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ASSArtifact,
+    AssemblyConflict,
     ActorRef,
     ApprovedCreativeBrief,
     ApprovedStorySnapshot,
@@ -256,6 +262,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ArtifactEnvelope,
     ArtifactRef,
     AudioAssetSelection,
+    AudioIntent,
     BenchmarkCase,
     BenchmarkDataset,
     BenchmarkPrediction,
@@ -335,6 +342,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     MixedAudio,
     OCRObservation,
     OfflineQualityReview,
+    OverlayIntent,
     NarrativeBeatGraph,
     NarrationLineSet,
     NarrationPlanningReport,
@@ -389,6 +397,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     StoryReviewPackage,
     StorySevereError,
     SubtitleCueSet,
+    SubtitleIntent,
     SupplementarySampleRequest,
     TextTrack,
     StrategyCandidateSet,
@@ -408,6 +417,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     TimelineEngineeringQualification,
     TimelineIntentInput,
     TimelineIntentPackage,
+    TimelineAssemblyReport,
     TimelineSevereError,
     TechnicalQCReport,
     TimelineItem,
