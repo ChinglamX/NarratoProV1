@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 42
+State Version: 43
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
 - Active Release Slice：R4 Creative Production。
 - Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt。
-- Active Backlog Entry：J02 Visual and Clip Planning。
+- Active Backlog Entry：J04 Audio, Subtitle and Timeline Assembly。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -56,6 +56,8 @@ State Owner: Project
 - E08/I04 Strategy Review/Gate 2：exact-ref Review Package、L1 human selection、blocker/incomplete/out-of-package fail-closed、ApprovedCreativeBrief/VariantPlan 双 publication pointer 和 typed Web 六视图已实现；Registry 2.6.0。
 - E08/I05 Engineering Qualification：versioned Strategy qualification、严重错误 taxonomy、成本/并发/replay 边界、runbook、dashboard 和 pending-real-data Acceptance Report 已完成；工程结论 complete，production decision=pending_human。Registry 2.7.0。E08 工程正式关闭。
 - E09/J01 Creative Timeline contract/input baseline：Approved Strategy-only input 和 Beat/Clip/Crop/Rhythm/Narration 初始 Contract 已实现；J02–J06 未完成，E09 不得关闭。
+- E09/J02 Visual and Clip Planning：可替换 Clip Index Port、Story/Evidence/Character 过滤、序列级连续性选择、Continuity Report、平滑 CropPath、原片字幕降级与局部重算已实现；Registry 2.14.0。
+- E09/J03 Rhythm and Narration Planning：Beat 预算/总时长对账、DurationConflict、呼吸点意图、对白复述/无依据心理阻断、证据覆盖、人工 lock 与 scoped regeneration 已实现；Registry 2.15.0。
 - E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。
 - E11 advance boundary baseline：Render/Release Contract、基础 preflight/executor/API 已提前建立；L01–L06 主实现未开始，不构成 E11 完成。
 
@@ -76,7 +78,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E09/J02 实现 evidence-grounded retrieval、sequence continuity、rights/safety、source mapping 和 reframe；随后依次完成 J03–J06。
+1. 按 E09/J04 实现 audio/subtitle/overlay intent 的多轨 MasterTimeline Patch assembly、typed conflict 和 bounded local reflow；随后依次完成 J05–J06。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 4. E10/E11 现有代码只作为 advance baseline；在 E09 满足 Epic 退出条件前不得恢复为 active/completed。
@@ -116,6 +118,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- J02/J03 full check：263 tests、80.77% coverage、Ruff、strict mypy、Bandit、Context/Architecture 和 Registry 2.15.0 freshness/history 通过；提交 `95986d3` / `7bb5d22`。E09 仍 active，J04–J06 未完成。
 
 - 六阶段、实施和校准设计入口全部存在。
 - Markdown `git diff --check` 通过。
