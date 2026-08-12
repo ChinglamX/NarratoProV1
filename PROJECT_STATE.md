@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 25
+State Version: 26
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 started.
 - Active Release Slice：R2 Story Intelligence（当前为 Speech and Visual Observation 子切片）。
 - Active Epics：E06 Speech and Visual Observation。
-- Active Backlog Entry：G05 Production Qualification。
+- Active Backlog Entry：G05 Production Qualification（engineering review complete; human sign-off pending）。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -43,6 +43,7 @@ State Owner: Project
 - E06/G02 Benchmark Harness：series-isolated Dataset、Prediction、Severe Error、Slice Metric、Provider Report contracts 与 deterministic summary harness 已实现；synthetic fixture 只验证工程，不声明生产质量阈值。Registry 1.4.0 为兼容 minor evolution。
 - E06/G03 Speech Observation：typed VAD/Transcript/Alignment/Speaker/Conflict/unavailable contracts、FunASR HTTP/legacy SRT research adapter、raw→normalized Artifact service、Temporal Workflow、关键语义冲突与 CER/entity CER/timestamp/DER/JER metrics 已实现；Registry 1.5.0。合成普通话真实本地调用 CER=0.0 只作为工程 baseline，不是生产质量准入。
 - E06/G04 Visual Observation：typed OCR/TextTrack/Detection/Tracklet/Face/Embedding/VLM/Quality/Supplementary contracts、typed HTTP 与 OpenCV research adapters、raw→normalized Artifact service、Temporal Workflow、资源保护与分能力 metrics 已实现；Registry 1.6.0。真实 demo frame OpenCV baseline 只证明 decode/quality/transport，不代表语义视觉模型准入。
+- E06/G05 Production Qualification engineering review：versioned Qualification Contract/matrix、canary/rollback、dashboard、runbook、bounded concurrency probe 与 E06 Acceptance Report 已实现；Registry 1.7.0。结论为 6 passed / 4 blocked / 2 not evaluated，engineering recommendation=rejected，human decision=pending；因此 E06 未正式关闭。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -61,9 +62,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 E06/G05 Production Qualification。
-2. 对 Speech/Visual 逐能力完成 provider/rights/quality/resource/resilience/cost 矩阵、canary/rollback、dashboard/runbook 和 E06 Acceptance Report。
-3. 缺少真实按剧隔离标签或模型权重批准的能力必须判定未准入；不得为了关闭 E06 编造阈值。Confidence 仍为 Shadow，最终资格报告必须人工签署。
+1. 项目负责人审核 `quality/E06_ACCEPTANCE_REPORT.md` 与 `evaluation/qualification/e06_g05.json`；当前工程建议拒绝生产准入并继续 Research/L1。
+2. 若接受拒绝结论，保持 E06 active 并按 blocker 建设真实 Corpus、模型 rights/checksum、Mac mini load/fault/cost 与 telemetry drill；不能进入 E07 假定 E06 已稳定。
+3. 只有全部 blocker 变为 passed 后才生成后继 Qualification 并请求人工 production approval。Confidence 仍为 Shadow，E06 不创建 Fact/Story。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -82,6 +83,7 @@ State Owner: Project
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
 - FunASR adapter 已真实运行但只准入 research：完整模型权重 checksum、模型卡许可、商业使用批准和真实按剧隔离 Speech baseline 均缺失。
 - PaddleOCR/semantic detector/tracker/embedding/VLM 尚无生产准入的 exact checkpoint 与真实短剧 benchmark；Ultralytics 许可姿态未批准，必须保持 blocked/research。
+- G05 生产资格结论为 rejected/pending_human；真实 Corpus、模型权利、long-series/multi-project、exact Worker restart、完整资源成本和 telemetry operator drill 均是显式 blocker。
 
 ---
 
@@ -158,6 +160,7 @@ State Owner: Project
 - G03 full check：183 tests、80.55% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 和 Review Web TypeScript 通过。
 - G03 local research acceptance：生成普通话 WAV 经本地 FunASR legacy adapter 得到 1 个 timed segment、1 个 speaker cluster、1,313 ms、synthetic CER=0.0；adapter 明确 `research`，不声明真实域 CER/DER/质量阈值。ADR-030 固定 typed Speech/raw boundary、cluster≠identity、关键冲突与 L1/Shadow。恢复点切换 G04。
 - G04 targeted check：9 tests；Ruff、strict mypy、Registry generation 和 Review Web TypeScript 通过。真实 demo frame 经 OpenCV research adapter 24 ms，8 个 generic foreground candidates，质量特征可追踪且 identity usability=false；未声明 OCR/detection/tracking/embedding/VLM 生产质量。ADR-031 固定 source-frame/Shot-local/typed VLM/license-first 边界。恢复点切换 G05。
+- G05 deterministic qualification：12 checks=6 passed/4 blocked/2 not evaluated；engineering recommendation=rejected、human decision=pending、production_qualified=false。最近 bounded probe 为 4 threads/16 requests、16 successes、P50 8 ms/P95 17 ms（非准入指标），仅证明 research adapter 线程执行。ADR-032 禁止 Agent 合成生产批准；E06 保持 active，等待人工审核与 blocker closure。
 
 ---
 

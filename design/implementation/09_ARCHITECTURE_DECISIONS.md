@@ -325,6 +325,33 @@ G05 报告中逐项判定。缺失能力显式 unavailable，Automation 保持 L
 source-frame evidence、Shot-local tracking、embedding-space versioning、bounded sampling 或
 visible/inferred/unknown 区分。
 
+## ADR-032 — Qualification Can Reject, Human Approval Cannot Be Synthesized
+
+决策：G05 以 versioned `ProductionQualification` 和逐项 `QualificationCheck` 表达生产资格。
+passed、failed、blocked、not_evaluated 必须显式区分；工程任务完成可以产生“资格审计已完成但
+拒绝生产准入”的结果，不得把缺证据解释为通过。`approved` 只有全部检查 passed 且 human
+Actor 明确签署时 Contract 才接受；Agent、service account、Git commit 或 Automation Policy
+不能代替人工签署。
+
+E06 当前结论固定为 engineering recommendation=`rejected`、decision=`pending_human`：Speech
+权重许可与真实域 benchmark、Visual semantic providers、长视频/多项目容量、Speech/Visual exact
+Worker restart、完整资源/成本均为 blocker。Confidence 保持 Shadow，Automation 保持 L1，E06
+不创建 Fact/Story。Canary 只能先运行 shadow，无 routing authority；rollback 使用 CAS 指回最后
+批准的 Provider Package，并保留所有旧 Artifact。
+
+Dashboard 与 runbook 必须与能力同时版本化，但“存在 JSON 面板”不证明 telemetry 部署完成；
+部署端 metric export、alert 与 operator drill 仍需单独验收。当前 4-thread/16-frame OpenCV probe
+只证明 research adapter 的有界线程执行，不替代 long-series/full-workflow capacity。
+
+原因：生产资格的价值在于阻断不可靠能力。若把 G05 完成等同于“必须通过”，系统会诱导 Agent
+编造阈值、忽略许可或用工程 fixture 代替真实短剧质量，直接违背项目质量纲领。
+
+后果：Registry 兼容升级到 1.7.0，新增 `ProductionQualificationReport` Artifact Type。E06 不能
+正式关闭或进入 E07 作为稳定依赖，直到 blocker 关闭、报告重跑并获得项目负责人明确签署。
+
+复议：只有新 evidence 使所有 blocker 变为 passed 时生成后继 qualification；不得覆盖本次拒绝
+记录，也不得降低检查项来获得 approval。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

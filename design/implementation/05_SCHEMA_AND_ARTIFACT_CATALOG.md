@@ -62,7 +62,7 @@ Version: 1.0
 | Audio | AudioAssetSelection / MixPlan / MixedAudio | production | render/QC |
 | Subtitle | SubtitleCueSet / GraphicsCueSet / ASSArtifact | production | render/QC |
 | Render | RenderPlan / ProxyRender / FinalCandidate / RenderExecutionReport | production | evaluation/release |
-| Quality | QualityEventSet / TechnicalQCReport / QualityReview | evaluation | review/router |
+| Quality | QualityEventSet / TechnicalQCReport / QualityReview / ProductionQualificationReport | evaluation | review/router |
 | Feedback | CorrectionDataset / DatasetManifest / BenchmarkPredictionSet / ProviderBenchmarkReport / EvaluationRun | evaluation | calibration/release |
 | Automation | CalibrationArtifact / DriftReport / RoutingDecision | evaluation/control | router/audit |
 | Release | ReleaseReviewPackage / ReleaseRecord / PerformanceWindow | evaluation/control | human/online |

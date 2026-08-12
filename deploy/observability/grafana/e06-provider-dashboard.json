@@ -1,0 +1,47 @@
+{
+  "title": "NarratoPro E06 Provider Qualification",
+  "uid": "narratopro-e06-provider",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["narratopro", "e06", "provider"],
+  "time": {"from": "now-6h", "to": "now"},
+  "panels": [
+    {
+      "id": 1,
+      "title": "Invocation rate by capability/status",
+      "type": "timeseries",
+      "targets": [{"expr": "sum by (capability, state) (rate(narratopro_provider_invocations_total[5m]))"}]
+    },
+    {
+      "id": 2,
+      "title": "Provider P95 duration",
+      "type": "timeseries",
+      "targets": [{"expr": "histogram_quantile(0.95, sum by (le, capability, provider) (rate(narratopro_provider_duration_ms_bucket[5m])))"}]
+    },
+    {
+      "id": 3,
+      "title": "Unavailable and policy blocked",
+      "type": "timeseries",
+      "targets": [{"expr": "sum by (capability, error_type) (rate(narratopro_provider_failures_total[5m]))"}]
+    },
+    {
+      "id": 4,
+      "title": "Cost micros per media minute",
+      "type": "timeseries",
+      "targets": [{"expr": "sum by (capability, provider) (rate(narratopro_provider_cost_micros_total[5m]))"}]
+    },
+    {
+      "id": 5,
+      "title": "Correction and severe error rate",
+      "type": "timeseries",
+      "targets": [{"expr": "sum by (capability, severity) (rate(narratopro_observation_quality_events_total[5m]))"}]
+    },
+    {
+      "id": 6,
+      "title": "Queue and resource admission",
+      "type": "timeseries",
+      "targets": [{"expr": "sum by (queue, state) (narratopro_resource_admission_current)"}]
+    }
+  ],
+  "links": [{"title": "E06 Provider Operations Runbook", "url": "/deploy/runbooks/E06_PROVIDER_OPERATIONS.md"}]
+}

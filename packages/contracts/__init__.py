@@ -110,6 +110,12 @@ from packages.contracts.providers import (
     ProviderResourceEstimate,
     RawProviderResponse,
 )
+from packages.contracts.qualification import (
+    ProductionQualification,
+    QualificationCheck,
+    QualificationDecision,
+    QualificationStatus,
+)
 from packages.contracts.rights import (
     RightsGrantRef,
     RightsManifestRef,
@@ -250,6 +256,7 @@ __all__ = [
     "OCRObservation",
     "PatchOperationType",
     "ProducerRecord",
+    "ProductionQualification",
     "ProviderAdmission",
     "ProviderBenchmarkReport",
     "ProviderCapability",
@@ -263,6 +270,9 @@ __all__ = [
     "ProviderResourceEstimate",
     "PublicErrorDetail",
     "PublicErrorEnvelope",
+    "QualificationCheck",
+    "QualificationDecision",
+    "QualificationStatus",
     "QualityEvent",
     "QualityEventStatus",
     "QualityLabel",

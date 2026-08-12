@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "default_mode": "shadow",
+  "production_requires": [
+    "provider_package.admission=production",
+    "exact_model_checksum",
+    "code_and_weight_license_approved",
+    "commercial_scope_approved",
+    "validation_and_frozen_test_thresholds_passed",
+    "resource_profile_passed",
+    "human_change_approval"
+  ],
+  "stages": [
+    {"name": "shadow", "traffic_percent": 100, "routing_authority": false},
+    {"name": "canary", "traffic_percent": 5, "routing_authority": false},
+    {"name": "staged", "traffic_percent": 25, "routing_authority": false},
+    {"name": "champion", "traffic_percent": 100, "routing_authority": false}
+  ],
+  "automatic_rollback_triggers": [
+    "any_S0",
+    "severe_error_threshold_exceeded",
+    "unavailable_rate_threshold_exceeded",
+    "resource_limit_exceeded",
+    "rights_or_checksum_drift"
+  ],
+  "rollback": {
+    "action": "CAS routing pointer to last approved Provider Package",
+    "preserve_existing_artifacts": true,
+    "automation_level_after_rollback": "L1",
+    "confidence_status_after_rollback": "shadow"
+  }
+}

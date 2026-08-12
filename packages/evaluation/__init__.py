@@ -1,6 +1,7 @@
 """Quality, calibration, automation and feedback domain."""
 
 from packages.evaluation.benchmark import BenchmarkSummary, summarize_exact_match
+from packages.evaluation.qualification import load_qualification, qualification_summary
 from packages.evaluation.shadow import ShadowPrediction
 from packages.evaluation.speech_metrics import (
     character_error_rate,
@@ -28,8 +29,10 @@ __all__ = [
     "edit_distance",
     "entity_character_error_rate",
     "jaccard_error_rate",
+    "load_qualification",
     "mean_boundary_deviation_ms",
     "ocr_character_error_rate",
+    "qualification_summary",
     "summarize_exact_match",
     "tracking_id_switch_rate",
     "vlm_evidence_compliance",

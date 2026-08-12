@@ -1,0 +1,113 @@
+{
+  "release_slice": "R2-observation",
+  "resource_profile_ref": {
+    "artifact_id": "8db50969-0183-4f44-a93f-1a77cf44f3fd",
+    "version": 1,
+    "artifact_type": "ResourceProfile"
+  },
+  "code_revision": "4b6b7e4",
+  "checks": [
+    {
+      "check_id": "engineering-contracts",
+      "dimension": "engineering",
+      "status": "passed",
+      "blocker": false,
+      "detail": "G01-G04 contracts, adapters, services, workflows and Registry checks pass.",
+      "evidence_paths": ["PROJECT_STATE.md"]
+    },
+    {
+      "check_id": "speech-engineering-baseline",
+      "dimension": "speech-quality",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Generated Mandarin fixture traversed the local adapter with explicit timing and speaker cluster.",
+      "evidence_paths": ["evaluation/reports/G03_SPEECH_BASELINE.md"]
+    },
+    {
+      "check_id": "speech-domain-benchmark",
+      "dimension": "speech-quality",
+      "status": "blocked",
+      "blocker": true,
+      "detail": "No legal multi-series Development/Validation/Frozen Test labels for CER, entity CER, timestamp, DER/JER and severe slices.",
+      "evidence_paths": ["evaluation/reports/G03_SPEECH_BASELINE.md"]
+    },
+    {
+      "check_id": "speech-provider-rights",
+      "dimension": "rights",
+      "status": "blocked",
+      "blocker": true,
+      "detail": "FunASR model weights lack a complete checkpoint checksum, exact model-card license record and commercial approval.",
+      "evidence_paths": ["evaluation/reports/G03_SPEECH_BASELINE.md"]
+    },
+    {
+      "check_id": "visual-engineering-baseline",
+      "dimension": "visual-quality",
+      "status": "passed",
+      "blocker": false,
+      "detail": "A real demo frame traversed local OpenCV decode, candidate and quality transport.",
+      "evidence_paths": ["evaluation/reports/G04_VISUAL_BASELINE.md"]
+    },
+    {
+      "check_id": "visual-provider-bakeoff",
+      "dimension": "visual-quality",
+      "status": "blocked",
+      "blocker": true,
+      "detail": "OCR, semantic detection, tracking, identity candidates, embedding and VLM have no admitted checkpoint or domain threshold.",
+      "evidence_paths": ["evaluation/reports/G04_VISUAL_BASELINE.md"]
+    },
+    {
+      "check_id": "long-series-concurrency",
+      "dimension": "capacity",
+      "status": "not_evaluated",
+      "blocker": true,
+      "detail": "Long-video and concurrent multi-project Speech/Visual workload has not run on the fixed Mac mini profile.",
+      "evidence_paths": ["quality/E06_ACCEPTANCE_REPORT.md"]
+    },
+    {
+      "check_id": "worker-interruption-recovery",
+      "dimension": "resilience",
+      "status": "not_evaluated",
+      "blocker": true,
+      "detail": "E03 proves generic Temporal restart, but exact Speech/Visual Activities have not completed kill/restart/idempotency acceptance.",
+      "evidence_paths": ["quality/E06_ACCEPTANCE_REPORT.md"]
+    },
+    {
+      "check_id": "resource-cost-baseline",
+      "dimension": "capacity",
+      "status": "blocked",
+      "blocker": true,
+      "detail": "No end-to-end P50/P95, RAM/Metal/disk, throughput and per-media-minute cost baseline exists.",
+      "evidence_paths": ["quality/E06_ACCEPTANCE_REPORT.md"]
+    },
+    {
+      "check_id": "confidence-shadow-scope",
+      "dimension": "automation",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Confidence remains Shadow, Automation remains L1, and E06 creates no Fact or Story.",
+      "evidence_paths": ["PROJECT_STATE.md"]
+    },
+    {
+      "check_id": "canary-rollback-plan",
+      "dimension": "operations",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Provider shadow/canary/rollback configuration is fail-closed and requires approved Provider Packages.",
+      "evidence_paths": ["deploy/provider-routing/e06-canary-policy.json"]
+    },
+    {
+      "check_id": "dashboard-runbook",
+      "dimension": "operations",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Dashboard definition and incident/recovery runbook are versioned; production telemetry wiring remains part of deployment qualification.",
+      "evidence_paths": ["deploy/observability/grafana/e06-provider-dashboard.json", "deploy/runbooks/E06_PROVIDER_OPERATIONS.md"]
+    }
+  ],
+  "automation_level": "L1",
+  "confidence_shadow": true,
+  "fact_story_created": false,
+  "engineering_recommendation": "rejected",
+  "decision": "pending_human",
+  "approved_by": null
+}

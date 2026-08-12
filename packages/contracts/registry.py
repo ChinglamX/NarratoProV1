@@ -78,6 +78,7 @@ from packages.contracts.providers import (
     ProviderResourceEstimate,
     RawProviderResponse,
 )
+from packages.contracts.qualification import ProductionQualification, QualificationCheck
 from packages.contracts.rights import (
     RightsGrantRef,
     RightsManifestRef,
@@ -123,7 +124,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "1.6.0"
+REGISTRY_VERSION = "1.7.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     AlignedToken,
@@ -177,7 +178,9 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     PublicErrorDetail,
     PublicErrorEnvelope,
     ProducerRecord,
+    ProductionQualification,
     QualityEvent,
+    QualificationCheck,
     RationalTime,
     RawProviderResponse,
     ResourceErrorRef,

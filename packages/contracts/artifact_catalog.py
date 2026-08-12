@@ -63,7 +63,11 @@ ARTIFACT_TYPE_SPECS = (
         "production",
         "RenderPlan ProxyRender FinalCandidate RenderExecutionReport",
     ),
-    *_specs("Quality", "evaluation", "QualityEventSet TechnicalQCReport QualityReview"),
+    *_specs(
+        "Quality",
+        "evaluation",
+        "QualityEventSet TechnicalQCReport QualityReview ProductionQualificationReport",
+    ),
     *_specs(
         "Feedback",
         "evaluation",
