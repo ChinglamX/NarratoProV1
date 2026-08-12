@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 23
+State Version: 24
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 started.
 - Active Release Slice：R2 Story Intelligence（当前为 Speech and Visual Observation 子切片）。
 - Active Epics：E06 Speech and Visual Observation。
-- Active Backlog Entry：G03 Speech Observation Pipeline。
+- Active Backlog Entry：G04 Visual Observation Pipeline。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -41,6 +41,7 @@ State Owner: Project
 - E05 Media Ingest：UUIDv4/PostgreSQL ingest identity、FFprobe/FFmpeg provider、source/proxy/audio/frame、rational source map、PySceneDetect Shadow Catalog、Catalog API、Temporal Workflow、资源准入、L1 Review 和 rights fail-closed 已实现；Stage 1 Acceptance Report 已由项目负责人批准，E05 正式关闭。
 - E06/G01 Provider Gateway：Provider Package/Data Policy/Resource Estimate/Invocation/Failure/Raw Response contracts、统一 Port、fail-closed Gateway、raw Object Store/Artifact lineage 和 unavailable/manual boundary 已实现；Registry 1.3.0 为兼容 minor evolution。
 - E06/G02 Benchmark Harness：series-isolated Dataset、Prediction、Severe Error、Slice Metric、Provider Report contracts 与 deterministic summary harness 已实现；synthetic fixture 只验证工程，不声明生产质量阈值。Registry 1.4.0 为兼容 minor evolution。
+- E06/G03 Speech Observation：typed VAD/Transcript/Alignment/Speaker/Conflict/unavailable contracts、FunASR HTTP/legacy SRT research adapter、raw→normalized Artifact service、Temporal Workflow、关键语义冲突与 CER/entity CER/timestamp/DER/JER metrics 已实现；Registry 1.5.0。合成普通话真实本地调用 CER=0.0 只作为工程 baseline，不是生产质量准入。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -48,8 +49,8 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- Speech、Visual、Identity、Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
-- Speech/Visual Provider Gateway、Observation Pipeline 和对应 Review Workspace 代码。
+- Visual、Identity、Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
+- Visual Provider/Observation Pipeline 和 Speech/Visual Review Workspace 代码。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
 
@@ -59,9 +60,9 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 开始 E06/G03 Speech Observation Pipeline。
-2. 冻结 Speech/VAD/ASR/Alignment/Speaker typed contracts，接入首个本地 Provider 与 unavailable fallback，并建立 capability-specific benchmark。
-3. 保持 speaker cluster 与角色身份分离；不得将 ASR 文本直接升级为 Fact/Story，Confidence 仍为 Shadow。
+1. 开始 E06/G04 Visual Observation Pipeline。
+2. 冻结 OCR/Detection/Tracklet/Face/Embedding/VLM/Supplementary Sample typed contracts，所有观察回指原帧与源时间。
+3. 接入经 rights policy 管理的 research/unavailable adapters；不得把相似度、检测或 VLM 描述升级为身份/Fact/Story，Confidence 仍为 Shadow。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -78,6 +79,7 @@ State Owner: Project
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
 - Calibration Pack 尚无真实项目 Gold/Baseline。
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
+- FunASR adapter 已真实运行但只准入 research：完整模型权重 checksum、模型卡许可、商业使用批准和真实按剧隔离 Speech baseline 均缺失。
 
 ---
 
@@ -151,6 +153,8 @@ State Owner: Project
 - 2026-08-12 项目负责人明确批准 `quality/STAGE1_ACCEPTANCE_REPORT.md`；E05 正式关闭，恢复点进入 E06/G01。E06 只建设 Speech/Visual Observation，不得报告 Identity/Fact/Story 已完成。
 - G01 full check：Provider/Contract/Gateway/Raw persistence 定向测试通过；Registry 1.3.0 生成 118 schemas、71 Artifact Types，历史版本保持不变。ADR-028 固定 Provider Port、执行前 policy admission、raw/normalized 隔离和 explicit unavailable；恢复点切换 G02。
 - G02 acceptance：3-case synthetic fixture 覆盖 development/validation/frozen_test、4 个 slice metrics、显式 unavailable、series isolation，未声明阈值；ADR-029 固定按剧隔离、Frozen Test 防调参、严重错误单列和 prediction lineage。恢复点切换 G03。
+- G03 full check：183 tests、80.55% coverage；Ruff、strict mypy、Bandit、Context/Architecture、Registry freshness 和 Review Web TypeScript 通过。
+- G03 local research acceptance：生成普通话 WAV 经本地 FunASR legacy adapter 得到 1 个 timed segment、1 个 speaker cluster、1,313 ms、synthetic CER=0.0；adapter 明确 `research`，不声明真实域 CER/DER/质量阈值。ADR-030 固定 typed Speech/raw boundary、cluster≠identity、关键冲突与 L1/Shadow。恢复点切换 G04。
 
 ---
 

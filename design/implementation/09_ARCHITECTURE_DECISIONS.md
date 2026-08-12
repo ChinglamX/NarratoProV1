@@ -262,6 +262,38 @@ G02 的仓库 fixture 只验证工程可重放性，明确为 synthetic/not-prod
 
 复议：只有评测任务需要非 series 分组时增加显式 leakage group；不得取消 Frozen Test 隔离、严重错误单列或逐 prediction lineage。
 
+## ADR-030 — Typed Speech Boundary and Research-first FunASR Admission
+
+决策：G03 的正式领域边界为 `SpeechObservation`，分别保存 VAD、原始/规范化
+transcript、可选 word/character alignment、speaker cluster、冲突与 explicit unavailable。
+全部范围使用源音轨 rational time；近似 timestamp 必须声明 granularity/error。Speaker
+cluster 只表示声学聚类，永远不是角色身份。ASR 结果仍是 Observation，不能直接升级为
+Fact/Story。
+
+首个 adapter 固定 FunASR HTTP interface version `1.3.26`，同时兼容官方
+OpenAI-style transcription transport 与已部署的 legacy Narrato SRT transport。代码许可与
+模型权重许可分开审计；缺少完整 model checksum、weight license 或 commercial approval
+时 adapter 必须报告 `research`，G01 Gateway 在 production policy 下执行前阻断。原始响应
+先形成 RawProviderResponse，normalized service 只读取该不可变 blob 并提交独立
+SpeechObservation Artifact。
+
+关键否定、数字、金额和时间的跨 Provider 差异形成 `SpeechConflict`，不由 LLM 猜测消解。
+人工 transcript 修正继续使用 E03 canonical Correction successor/CAS 与 dependency
+invalidation，不覆盖原观察。CER、entity CER、timestamp deviation、DER 与 JER 分开评测；
+synthetic baseline 只证明工程链路，不能建立生产阈值。Confidence 保持 Shadow，Automation
+保持 L1。
+
+原因：短剧对白的否定、人名、金额和归属错误可直接污染后续剧情；将 provider 私有 JSON、
+speaker label 或单一总体 CER 暴露给下游会制造不可追踪的伪事实。Research-first admission
+可在本地能力可用的同时保持 rights 和质量诚实。
+
+后果：Registry 兼容升级到 1.5.0。真实多剧标注、方言/BGM/重叠语音 slice、forced
+alignment 与 diarization bake-off 留给 G05 qualification；未满足前不得把 FunASR adapter
+或任何 Speech confidence 标为 production/calibrated。
+
+复议：只有真实 benchmark 证明其他 transport/model 更优且完成同等 license/checksum 审计时
+切换 champion；不得取消 raw/normalized 分层、source time、cluster/identity 隔离或 L1 Gate。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

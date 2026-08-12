@@ -116,6 +116,16 @@ from packages.contracts.rights import (
     RightsMetadata,
     RightsStatus,
 )
+from packages.contracts.speech import (
+    AlignedToken,
+    AlignmentGranularity,
+    SpeakerObservation,
+    SpeechConflict,
+    SpeechObservation,
+    SpeechObservationStatus,
+    TranscriptSegment,
+    VADSegment,
+)
 from packages.contracts.story import (
     Character,
     Event,
@@ -155,6 +165,8 @@ __all__ = [
     "UUID",
     "ActorKind",
     "ActorRef",
+    "AlignedToken",
+    "AlignmentGranularity",
     "ApplicableScope",
     "ArtifactDependency",
     "ArtifactEnvelope",
@@ -254,6 +266,10 @@ __all__ = [
     "SliceMetric",
     "SourceQualityFeature",
     "SourceQualityFeatureSet",
+    "SpeakerObservation",
+    "SpeechConflict",
+    "SpeechObservation",
+    "SpeechObservationStatus",
     "StoryArc",
     "StoryEdge",
     "StoryEdgeType",
@@ -272,6 +288,8 @@ __all__ = [
     "TimelineTrack",
     "TimelineTrackKind",
     "TraceId",
+    "TranscriptSegment",
     "UnresolvedQuestion",
+    "VADSegment",
     "VideoStream",
 ]

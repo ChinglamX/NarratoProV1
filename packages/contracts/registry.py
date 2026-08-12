@@ -83,6 +83,14 @@ from packages.contracts.rights import (
     RightsManifestRef,
     RightsMetadata,
 )
+from packages.contracts.speech import (
+    AlignedToken,
+    SpeakerObservation,
+    SpeechConflict,
+    SpeechObservation,
+    TranscriptSegment,
+    VADSegment,
+)
 from packages.contracts.story import Character, Event, StoryArc, StoryEdge, StoryGraph
 from packages.contracts.strategy import (
     CreativeBrief,
@@ -100,9 +108,10 @@ from packages.contracts.timeline import (
     TimelineTrack,
 )
 
-REGISTRY_VERSION = "1.4.0"
+REGISTRY_VERSION = "1.5.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
+    AlignedToken,
     ApplicableScope,
     ArtifactDependency,
     ArtifactEnvelope,
@@ -160,6 +169,9 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     SevereErrorDefinition,
     SellingPoint,
     SellingPointSet,
+    SpeakerObservation,
+    SpeechConflict,
+    SpeechObservation,
     SliceCatalogManifest,
     SliceDefinition,
     SliceMetric,
@@ -174,8 +186,10 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     TimelineItem,
     TimelinePatch,
     TimelineTrack,
+    TranscriptSegment,
     TimeRange,
     TraceId,
+    VADSegment,
 )
 JsonDict: TypeAlias = dict[str, Any]
 
