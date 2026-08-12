@@ -53,7 +53,14 @@ from packages.contracts.evidence import (
     EvidenceLink,
     FrameRange,
 )
-from packages.contracts.facts import EvidenceBundle, Fact, FactSet, SourceQualityFeatureSet
+from packages.contracts.facts import (
+    EvidenceBundle,
+    Fact,
+    FactSet,
+    FusionConflict,
+    FusionReport,
+    SourceQualityFeatureSet,
+)
 from packages.contracts.foundation import (
     ActorRef,
     ArtifactRef,
@@ -134,7 +141,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "1.9.0"
+REGISTRY_VERSION = "1.10.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     AlignedToken,
@@ -170,6 +177,8 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     FrameSamplePlan,
     Fact,
     FactSet,
+    FusionConflict,
+    FusionReport,
     FaceObservation,
     FrameEvidence,
     GuidelineManifest,

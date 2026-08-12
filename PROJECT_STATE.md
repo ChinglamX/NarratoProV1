@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 29
+State Version: 30
 Last Updated: 2026-08-12
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 engineering built but production qualification debt retained; E07 engineering started.
 - Active Release Slice：R2 Story Intelligence（当前为 Identity, Fact and Story 工程子切片）。
 - Active Epics：E07 Identity, Fact and Story；bounded debt track E06/G05 qualification。
-- Active Backlog Entry：H03 Fact and Evidence Fusion。
+- Active Backlog Entry：H04 Typed Story Reasoning Workflow。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -46,6 +46,7 @@ State Owner: Project
 - E06/G05 Production Qualification engineering review：versioned Qualification Contract/matrix、canary/rollback、dashboard、runbook、bounded concurrency probe 与 E06 Acceptance Report 已实现；Registry 1.7.0。结论为 6 passed / 4 blocked / 2 not evaluated，engineering recommendation=rejected，human decision=pending；因此 E06 未正式关闭。
 - E07/H01 Identity Graph Domain：Face/tracklet/speaker/name/seed typed nodes、candidate/cannot-link/human correction edges、temporary CharacterIdentity、IdentityConflict 和 IdentityProposal 已实现；保守 assembly 仅接受人工 `corrected_same`，cannot-link 优先并产生 blocker，相似度只形成审核候选。Registry 1.8.0。
 - E07/H02 Identity Persistence/Review/Invalidation：typed merge/split/name preview、immutable successor、applied proposal lineage、Project advisory lock、active-pointer CAS、Correction/outbox、exact dependency invalidation 和 Review API/RBAC 已实现；Registry 1.9.0。
+- E07/H03 Fact/Evidence Fusion：Speech transcript、OCR、detection 到 observable Fact 的保守融合、supporting/opposing Evidence、ASR/OCR disagreement、incomplete partition 传播和 inferred VLM 排除已实现；Registry 1.10.0。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -53,7 +54,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- Fact、Story、Strategy 和最终生产 Pipeline 尚未开始。
+- Story、Strategy 和最终生产 Pipeline 尚未开始。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -64,7 +65,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E07/H03 实现 Fact/Evidence Fusion；只允许可观察命题并显式保留 supporting/opposing evidence 与 incomplete partition。
+1. 按 E07/H04 实现 typed Story Reasoning Workflow；每个推理阶段独立 Artifact/Contract，禁止单 Prompt 从视频直出 Story。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 
@@ -167,6 +168,7 @@ State Owner: Project
 - G05 deterministic qualification：12 checks=6 passed/4 blocked/2 not evaluated；engineering recommendation=rejected、human decision=pending、production_qualified=false。最近 bounded probe 为 4 threads/16 requests、16 successes、P50 8 ms/P95 17 ms（非准入指标），仅证明 research adapter 线程执行。ADR-032 禁止 Agent 合成生产批准；E06 保持 active，等待人工审核与 blocker closure。
 - H01 targeted checks：Identity Contract/assembly 5 tests 通过；Registry 1.8.0 生成并通过 freshness；Ruff 和 strict mypy 通过。ADR-033 固定 similarity≠identity、human-only merge、cannot-link precedence、temporary unknown 和 replay ID injection；恢复点切换 H02。
 - H02 targeted checks：Identity correction/persistence/API 9 tests 通过；Ruff、strict mypy、Registry 1.9.0 generation 通过。ADR-034 固定 preview→human commit、Project serialization、CAS、successor lineage 和 exact dependency invalidation；恢复点切换 H03。
+- H03 targeted checks：Fact/Story contract 与 fusion 5 tests 通过；Ruff、strict mypy、Registry 1.10.0 generation 通过。ADR-035 固定 observable-only、correlated evidence 不重复计票、disagreement/incomplete 显式传播；恢复点切换 H04。
 
 ---
 

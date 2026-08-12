@@ -385,6 +385,17 @@ application/repository，不直接写内部表。
 后果：Registry 兼容升级到 1.9.0。H02 工程闭环支持 reversible successor lineage；真实 reviewer
 体验、跨集规模和 PostgreSQL 并发压力在 H06/真实数据验收，不得由单元 fixture 推断。
 
+## ADR-035 — Facts Contain Observable Claims and Preserve Evidence Disagreement
+
+决策：H03 只把 timed transcript、OCR、detection 等直接观察转换为 Fact；speaker cluster 仍是候选
+subject，不升级为 Character。VLM `inferred`/`unknown`、动机、关系、因果和营销标签禁止进入 Fact。
+ASR 与烧录字幕作为可能相关的来源分别保留，不因一致而重复计票，不一致时生成包含 supporting 与
+opposing Evidence 的 `FusionConflict`。Provider unavailable/incomplete 必须传播到 FactSet partition，
+不得用空结果伪装 complete。EvidenceBundle 指向将要持久化的 exact FactSet ref。
+
+后果：Registry 兼容升级到 1.10.0。H03 synthetic fixture 只验证类型和边界；真实 OCR/ASR/视觉
+准确率仍受 E06 qualification 阻断，Confidence 保持 Shadow。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

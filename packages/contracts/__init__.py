@@ -67,6 +67,8 @@ from packages.contracts.facts import (
     FactSet,
     FactStatus,
     FactType,
+    FusionConflict,
+    FusionReport,
     SourceQualityFeature,
     SourceQualityFeatureSet,
 )
@@ -259,6 +261,8 @@ __all__ = [
     "FrameRange",
     "FrameSample",
     "FrameSamplePlan",
+    "FusionConflict",
+    "FusionReport",
     "GuidelineManifest",
     "HookCandidate",
     "IdentityConflict",
