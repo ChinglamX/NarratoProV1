@@ -1,0 +1,30 @@
+{
+  "release_slice": "R3-marketing-strategy",
+  "code_revision": "pending-i05-commit",
+  "automation_level": "L1",
+  "confidence_shadow": true,
+  "story_gate_required": true,
+  "strategy_gate_required": true,
+  "engineering_complete": true,
+  "production_decision": "pending_human",
+  "checks": [
+    {"check_id":"contracts-and-registry","dimension":"engineering","status":"passed","blocker":false,"detail":"Strategy config, candidates, comparison, review, brief and variant contracts are versioned.","evidence_paths":["generated/contracts/versions/2.7.0/json-schema.json"]},
+    {"check_id":"deterministic-replay-boundary","dimension":"engineering","status":"passed","blocker":false,"detail":"Candidate admission and comparison are deterministic for the same exact input snapshot; review signals are DB-first and first-wins.","evidence_paths":["tests/strategy/test_marketing_strategy_domain.py","tests/control/test_reviews.py"]},
+    {"check_id":"gate-two-boundary","dimension":"governance","status":"passed","blocker":false,"detail":"L1 Gate 2 fails closed and publishes exact Creative Brief and Variant Plan pointers.","evidence_paths":["apps/api/reviews.py","packages/persistence/review_repository.py"]},
+    {"check_id":"bounded-cost-and-fanout","dimension":"cost","status":"passed","blocker":false,"detail":"CandidateBudget and VariantPlan enforce generation, token, cost and variant limits before execution.","evidence_paths":["packages/contracts/strategy_candidates.py","packages/contracts/strategy_review.py"]},
+    {"check_id":"real-strategy-corpus","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"Legally usable multi-genre strategy gold corpus and editor labels have not been provided.","evidence_paths":[]},
+    {"check_id":"real-hook-retention-data","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"No controlled exposure, retention or completion data exists for Hook calibration.","evidence_paths":[]},
+    {"check_id":"provider-production-admission","dimension":"rights","status":"blocked","blocker":true,"detail":"E06 provider production qualification remains rejected/pending human.","evidence_paths":["quality/E06_ACCEPTANCE_REPORT.md"]},
+    {"check_id":"human-story-and-strategy-signoff","dimension":"approval","status":"not_evaluated","blocker":true,"detail":"No real Approved Story and Gate 2 decision have been signed by the project owner.","evidence_paths":[]},
+    {"check_id":"production-concurrency-restart","dimension":"reliability","status":"not_evaluated","blocker":true,"detail":"Real multi-project Worker restart, queue saturation and DB contention require production-like data and runtime validation.","evidence_paths":[]}
+  ],
+  "severe_errors": [
+    {"code":"fabricated-selling-point","description":"A selling point or Hook asserts content unsupported by Approved Story evidence."},
+    {"code":"blocked-candidate-selected","description":"A deterministic blocker is overridden by score or reviewer payload."},
+    {"code":"hook-without-payoff","description":"Opening withholds information without a grounded continuation/payoff."},
+    {"code":"strategy-story-mismatch","description":"Narrative spine changes identity, event, causality or outcome from Approved Story."},
+    {"code":"unsafe-or-rights-violating-strategy","description":"Creative direction violates hard safety, platform or rights constraints."},
+    {"code":"cost-or-duration-infeasible","description":"Approved strategy cannot satisfy the frozen duration or cost ceiling."},
+    {"code":"false-experiment-claim","description":"Unexposed candidate variants are reported as a validated experiment."}
+  ]
+}

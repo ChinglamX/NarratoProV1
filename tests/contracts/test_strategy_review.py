@@ -50,3 +50,26 @@ def test_variant_plan_requires_one_control_and_enforces_budget() -> None:
         VariantPlan(
             creative_brief_ref=ref("CreativeBrief"), variants=(candidate,), budget_micros=10
         )
+    with pytest.raises(ValidationError, match="cannot declare changed dimensions"):
+        VariantSpec(
+            variant_id=uuid4(),
+            label="bad-control",
+            control=True,
+            changed_dimensions={"hook": "changed"},
+            estimated_incremental_cost_micros=0,
+        )
+    with pytest.raises(ValidationError, match="requires changed dimensions"):
+        VariantSpec(
+            variant_id=uuid4(),
+            label="empty-candidate",
+            control=False,
+            changed_dimensions={},
+            estimated_incremental_cost_micros=0,
+        )
+    with pytest.raises(ValidationError, match="cannot be called an experiment"):
+        VariantPlan(
+            creative_brief_ref=ref("CreativeBrief"),
+            variants=(control, candidate),
+            budget_micros=10,
+            candidate_variants_only=False,
+        )

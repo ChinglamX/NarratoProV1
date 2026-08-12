@@ -157,6 +157,10 @@ from packages.contracts.strategy_evaluation import (
     StrategyComparisonPackage,
     StrategyRisk,
 )
+from packages.contracts.strategy_qualification import (
+    StrategyEngineeringQualification,
+    StrategySevereError,
+)
 from packages.contracts.strategy_review import (
     ApprovedCreativeBrief,
     StrategyGateSelection,
@@ -187,7 +191,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.6.0"
+REGISTRY_VERSION = "2.7.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApprovedCreativeBrief,
@@ -307,8 +311,10 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     StrategyComparisonPackage,
     StrategyConfigConflict,
     StrategyDirection,
+    StrategyEngineeringQualification,
     StrategyProfile,
     StrategyRisk,
+    StrategySevereError,
     StrategyGateSelection,
     StrategyReviewPackage,
     VariantPlan,

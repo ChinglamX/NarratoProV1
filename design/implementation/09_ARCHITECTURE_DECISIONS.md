@@ -491,6 +491,21 @@ assignment 与结果时只能称 candidate variants，不得宣称 A/B experimen
 后果：Registry 兼容升级到 2.6.0。Review Web 提供候选/Hook/Evidence/Diversity/Risk/Cost 六视图的
 typed fail-closed view model；实际视频对照体验和营销 lift 由后续真实数据验收，不由工程 fixture 推断。
 
+## ADR-043 — E08 Engineering Closure Does Not Certify Marketing Performance
+
+决策：I05 用 versioned `StrategyEngineeringQualification` 独立表达 engineering completion 与
+production approval。Contract/config/candidate/comparison/Gate/cost/fan-out 工程检查通过可关闭 E08
+工程；真实多类型策略 corpus、Hook exposure/retention、E06 Provider admission、真实 Story/Gate 2
+签署和 production-like concurrency/restart 任一缺失时，production decision 必须保持
+`pending_human`，Automation=L1、Confidence=Shadow。
+
+严重错误至少覆盖虚构卖点、选择 blocker、Hook 无兑现、Strategy 改写 Story、安全/权利违反、
+成本/时长不可行和虚假 experiment 声明。并发 first-wins、deterministic exact-input repeat 与
+DB-first signal 是工程不变量；真实多项目容量、运营成本和营销效果只能由后继验收确认。
+
+后果：Registry 兼容升级到 2.7.0。E09 可以开始工程建设，但只能消费 project-scoped Approved
+Creative Brief/Variant Plan；本报告不得被解释为 demo 成片质量或投放效果已经达标。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

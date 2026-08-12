@@ -156,7 +156,8 @@ class ReviewRepository:
                     reference=row["target_ref"],
                 )
             if row["gate"] == "strategy" and decision == "approve":
-                assert strategy_selection is not None
+                if strategy_selection is None:
+                    raise StoredReviewConflict("strategy selection disappeared before publication")
                 connection.execute(
                     select(func.pg_advisory_xact_lock(row["project_id"].int & (2**63 - 1)))
                 )

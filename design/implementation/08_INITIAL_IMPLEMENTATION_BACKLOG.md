@@ -389,7 +389,35 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 ---
 
-## 11. 任务完成定义
+## 11. Sprint Group J — Creative Timeline
+
+### J01 Approved Brief Input and Timeline Intent Contracts
+
+强制只读取 Approved Creative Brief/Variant Plan，定义 visual/rhythm/narration/audio/subtitle intent。
+
+### J02 Visual and Clip Planning
+
+实现 evidence-grounded clip candidates、coverage、continuity、rights/safety 和 source-time mapping。
+
+### J03 Rhythm and Narration Planning
+
+实现节奏曲线、信息密度、呼吸点、解说与对白避重、时长预算和可解释冲突。
+
+### J04 Audio, Subtitle and Timeline Assembly
+
+实现 BGM/SFX/ducking、字幕安全区与唯一 MasterTimeline Patch assembly。
+
+### J05 Timeline Review Workspace and Gate
+
+实现多轨对照、人工精修、exact-ref Timeline approval 和下游 publication。
+
+### J06 E09 Engineering Qualification
+
+完成 replay/concurrency、时间/覆盖/严重错误、dashboard/runbook 和 pending-real-data 验收。
+
+---
+
+## 12. 任务完成定义
 
 每项必须有：public contract、domain/application implementation、adapter、unit/contract/integration tests、observability、error/runbook、文档链接和 migration/rollback（适用时）。
 
@@ -397,7 +425,7 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 ---
 
-## 8. 首批明确不做
+## 13. 首批明确不做
 
 - 不接真实 ASR/VLM/TTS。
 - 不实现 Story/Strategy Agent。

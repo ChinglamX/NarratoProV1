@@ -214,6 +214,10 @@ from packages.contracts.strategy_evaluation import (
     StrategyComparisonPackage,
     StrategyRisk,
 )
+from packages.contracts.strategy_qualification import (
+    StrategyEngineeringQualification,
+    StrategySevereError,
+)
 from packages.contracts.strategy_review import (
     ApprovedCreativeBrief,
     StrategyGateSelection,
@@ -425,11 +429,13 @@ __all__ = [
     "StrategyComparisonPackage",
     "StrategyConfigConflict",
     "StrategyDirection",
+    "StrategyEngineeringQualification",
     "StrategyGateSelection",
     "StrategyProfile",
     "StrategyProfileKind",
     "StrategyReviewPackage",
     "StrategyRisk",
+    "StrategySevereError",
     "SupplementarySampleRequest",
     "TextRegionKind",
     "TextTrack",

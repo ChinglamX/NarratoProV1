@@ -1,0 +1,11 @@
+{
+  "title": "NarratoPro E08 Marketing Strategy",
+  "schemaVersion": 39,
+  "tags": ["narratopro", "e08", "strategy"],
+  "panels": [
+    {"type":"timeseries","title":"Candidate outcomes","targets":[{"expr":"sum by (outcome) (rate(narratopro_strategy_candidate_total[5m]))"}]},
+    {"type":"timeseries","title":"Gate 2 decisions","targets":[{"expr":"sum by (decision) (rate(narratopro_strategy_review_decision_total[5m]))"}]},
+    {"type":"timeseries","title":"Blocker attempts","targets":[{"expr":"sum by (blocker_code) (rate(narratopro_strategy_blocker_total[5m]))"}]},
+    {"type":"timeseries","title":"Estimated versus actual cost","targets":[{"expr":"sum by (cost_kind) (rate(narratopro_strategy_cost_micros_total[5m]))"}]}
+  ]
+}
