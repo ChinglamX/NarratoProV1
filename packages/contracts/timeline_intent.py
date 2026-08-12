@@ -145,6 +145,86 @@ class ClipSelectionPlan(StrictContract):
     continuity_risks: tuple[ContinuityRisk, ...] = ()
 
 
+class RetrievalRoute(StrEnum):
+    EVIDENCE = "evidence"
+    CHARACTER = "character"
+    NEIGHBORHOOD = "neighborhood"
+    SEMANTIC = "semantic"
+    HUMAN_PIN = "human_pin"
+
+
+class ClipRetrievalQuery(StrictContract):
+    beat_id: UUID
+    story_refs: tuple[UUID, ...]
+    required_character_refs: tuple[UUID, ...] = ()
+    routes: tuple[RetrievalRoute, ...]
+    top_k_per_route: Annotated[int, Field(ge=1, le=100)]
+
+    @model_validator(mode="after")
+    def require_grounded_routes(self) -> Self:
+        if not self.story_refs or not self.routes:
+            raise ValueError("clip retrieval query requires Story refs and routes")
+        if len(set(self.routes)) != len(self.routes):
+            raise ValueError("clip retrieval routes must be unique")
+        return self
+
+
+class ContinuityReport(StrictContract):
+    selection_plan_ref: ArtifactRef
+    risks: tuple[ContinuityRisk, ...]
+    checked_edges: Annotated[int, Field(ge=0)]
+    blocker_count: Annotated[int, Field(ge=0)]
+
+    @model_validator(mode="after")
+    def reconcile_blockers(self) -> Self:
+        if self.blocker_count != sum(risk.blocker for risk in self.risks):
+            raise ValueError("continuity blocker count must match risks")
+        return self
+
+
+class CompositionTarget(StrictContract):
+    target_ref: UUID
+    start: RationalTime
+    end: RationalTime
+    center_x: Annotated[float, Field(ge=0.0, le=1.0)]
+    center_y: Annotated[float, Field(ge=0.0, le=1.0)]
+    minimum_coverage: Annotated[float, Field(gt=0.0, le=1.0)]
+    priority: Annotated[int, Field(ge=0, le=100)]
+    locked: bool = False
+
+    @model_validator(mode="after")
+    def require_positive_window(self) -> Self:
+        if self.end.seconds <= self.start.seconds:
+            raise ValueError("composition target window must be positive")
+        return self
+
+
+class SourceSubtitlePolicy(StrEnum):
+    PRESERVE = "preserve"
+    CROP_OUT = "crop_out"
+    MASK = "mask"
+    REPOSITION_CANVAS = "reposition_canvas"
+    MANUAL = "manual"
+
+
+class SourceSubtitleHandlingPlan(StrictContract):
+    candidate_id: UUID
+    policy: SourceSubtitlePolicy
+    source_text_track_refs: tuple[UUID, ...] = ()
+    rationale: Annotated[str, Field(min_length=1, max_length=2_048)]
+    human_confirmation_required: bool = False
+
+
+class VisualPlanningReport(StrictContract):
+    candidate_set_ref: ArtifactRef
+    selection_plan_ref: ArtifactRef
+    continuity_report_ref: ArtifactRef
+    crop_path_refs: tuple[ArtifactRef, ...]
+    subtitle_plan_refs: tuple[ArtifactRef, ...]
+    blocker_codes: tuple[StableName, ...] = ()
+    locally_recomputed_beat_ids: tuple[UUID, ...] = ()
+
+
 class BeatRhythm(StrictContract):
     beat_id: UUID
     target_duration: RationalTime

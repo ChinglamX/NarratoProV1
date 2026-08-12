@@ -208,13 +208,18 @@ from packages.contracts.timeline_intent import (
     BeatRhythm,
     ClipCandidate,
     ClipCandidateSet,
+    ClipRetrievalQuery,
     ClipSelectionPlan,
+    CompositionTarget,
+    ContinuityReport,
     CropPath,
     NarrationLineSet,
     NarrativeBeatGraph,
     RhythmPlan,
+    SourceSubtitleHandlingPlan,
     TimelineIntentInput,
     TimelineIntentPackage,
+    VisualPlanningReport,
 )
 from packages.contracts.timeline_qualification import (
     TimelineEngineeringQualification,
@@ -236,7 +241,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.13.0"
+REGISTRY_VERSION = "2.14.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ASSArtifact,
     ActorRef,
@@ -266,12 +271,15 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     CharacterStateGraph,
     ClipCandidate,
     ClipCandidateSet,
+    ClipRetrievalQuery,
     ClipSelectionPlan,
+    CompositionTarget,
     Checksum,
     CommandEnvelope,
     ConfidenceFactor,
     ConfidenceRecord,
     ConformReport,
+    ContinuityReport,
     Correction,
     CostEstimate,
     CreativeBrief,
@@ -368,6 +376,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     SliceDefinition,
     SliceMetric,
     SourceQualityFeatureSet,
+    SourceSubtitleHandlingPlan,
     StoryArc,
     StoryEdge,
     StoryEngineeringQualification,
@@ -411,6 +420,7 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     VisualEmbedding,
     VisualObservation,
     VisualQualityReport,
+    VisualPlanningReport,
     VLMClaim,
 )
 JsonDict: TypeAlias = dict[str, Any]
