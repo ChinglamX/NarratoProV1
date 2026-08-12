@@ -110,6 +110,10 @@ from packages.contracts.speech import (
     VADSegment,
 )
 from packages.contracts.story import Character, Event, StoryArc, StoryEdge, StoryGraph
+from packages.contracts.story_qualification import (
+    StoryEngineeringQualification,
+    StorySevereError,
+)
 from packages.contracts.story_reasoning import (
     ApprovedStorySnapshot,
     CausalGraph,
@@ -151,7 +155,7 @@ from packages.contracts.visual import (
     VLMClaim,
 )
 
-REGISTRY_VERSION = "2.1.0"
+REGISTRY_VERSION = "2.2.0"
 SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     ActorRef,
     ApprovedStorySnapshot,
@@ -244,9 +248,11 @@ SCHEMA_ROOTS: tuple[type[BaseModel], ...] = (
     SourceQualityFeatureSet,
     StoryArc,
     StoryEdge,
+    StoryEngineeringQualification,
     StoryGraph,
     StoryReasoningReport,
     StoryReviewPackage,
+    StorySevereError,
     SupplementarySampleRequest,
     TextTrack,
     StrategyCandidateSet,

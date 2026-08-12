@@ -426,6 +426,19 @@ Review Web 以 events/identities/states/causality/evidence/risks 六视图呈现
 后果：Registry 兼容升级到 2.1.0。当前 UI 是 typed view-model 基线，不是完整视频交互体验；H06
 只验工程闭环，真实 Story Gate 签署等待用户数据。
 
+## ADR-038 — E07 Can Close Engineering While Production Qualification Remains Pending
+
+决策：H06 使用 versioned `StoryEngineeringQualification` 区分 engineering completion 与 production
+approval。E07 H01–H05 代码、Contract、Workflow、Gate、runbook/dashboard 和 synthetic invariants
+全部通过时可以关闭工程 Epic；真实 identity/story corpus、E06 provider admission 和 human Story
+signoff 任一缺失时，production decision 必须为 `pending_human`，Automation=L1、Confidence=Shadow。
+
+严重错误分类至少包含 wrong identity、fabricated/missing event、reversed causality、negation/dream/
+recall error 和 evidence mismatch。未来验收创建后继 Qualification/Report，不覆盖本次 pending 证据。
+
+后果：Registry 兼容升级到 2.2.0。E08 可继续建设工程能力，但 Strategy 生产运行只能消费真实人工
+批准的 ApprovedStoryRef；synthetic Story 不得成为营销策略质量依据。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

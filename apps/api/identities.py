@@ -107,10 +107,21 @@ def apply(
     engine: Engine = request.app.state.database_engine
     try:
         with transaction(engine) as connection:
+            snapshot = repository.lock_and_load(
+                connection, project_id=project_id, graph_ref=proposal.base_graph_ref
+            )
+            impact = preview_identity_correction(
+                graph_ref=snapshot.reference,
+                graph=snapshot.graph,
+                proposal=proposal,
+                downstream_refs=repository.downstream_refs(connection, snapshot.reference),
+            )
             after_ref, plan = repository.apply(
                 connection,
                 project_id=project_id,
                 proposal=proposal,
+                resulting_graph=impact.resulting_graph,
+                changed_character_ids=impact.changed_character_ids,
                 actor={"actor_id": actor_id, "roles": roles},
                 trace_id=trace_id,
             )

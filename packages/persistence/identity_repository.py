@@ -12,7 +12,6 @@ from sqlalchemy.exc import IntegrityError
 
 import packages.persistence.schema as schema
 from packages.contracts import ArtifactRef, IdentityGraph, IdentityProposal
-from packages.intelligence.identity_corrections import preview_identity_correction
 from packages.persistence.artifact_repository import ArtifactRepository, RecomputePlan
 
 
@@ -116,20 +115,16 @@ class IdentityRepository:
         *,
         project_id: UUID,
         proposal: IdentityProposal,
+        resulting_graph: IdentityGraph,
+        changed_character_ids: tuple[UUID, ...],
         actor: dict[str, Any],
         trace_id: str,
     ) -> tuple[ArtifactRef, RecomputePlan]:
         snapshot = self.lock_and_load(
             connection, project_id=project_id, graph_ref=proposal.base_graph_ref
         )
-        impact = preview_identity_correction(
-            graph_ref=snapshot.reference,
-            graph=snapshot.graph,
-            proposal=proposal,
-            downstream_refs=self.downstream_refs(connection, snapshot.reference),
-        )
-        payload = impact.resulting_graph.model_dump(mode="json")
-        encoded = impact.resulting_graph.canonical_bytes()
+        payload = resulting_graph.model_dump(mode="json")
+        encoded = resulting_graph.canonical_bytes()
         checksum = "sha256:" + sha256(encoded).hexdigest()
         next_version = snapshot.reference.version + 1
         try:
@@ -211,7 +206,7 @@ class IdentityRepository:
             change_set={
                 "proposal_id": str(proposal.proposal_id),
                 "operation": proposal.operation.value,
-                "changed_character_ids": [str(item) for item in impact.changed_character_ids],
+                "changed_character_ids": [str(item) for item in changed_character_ids],
             },
             trace_id=trace_id,
         )

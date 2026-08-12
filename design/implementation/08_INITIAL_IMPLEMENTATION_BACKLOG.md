@@ -365,7 +365,31 @@ Story severe-error taxonomy、dashboard/runbook 与 E07 Acceptance Report。
 
 ---
 
-## 10. 任务完成定义
+## 10. Sprint Group I — Marketing Strategy
+
+### I01 Strategy Config and Approved Story Input Boundary
+
+实现 versioned Genre/Platform/Quality profiles，并强制 Strategy 只读取项目 ApprovedStoryRef。
+
+### I02 Selling Point and Hook Candidates
+
+实现 evidence-grounded SellingPoint、Hook 候选、多样性和 severe-error critic。
+
+### I03 Strategy Candidate and Comparison
+
+实现候选策略、预测维度、成本/风险和同输入可比较性，不使用线上指标反改 Story。
+
+### I04 Strategy Review Workspace and Gate 2
+
+实现 exact-ref Comparison Package、人工 Gate 2、CreativeBrief 和 VariantPlan publication。
+
+### I05 E08 Engineering Qualification
+
+完成并发/replay、成本、严重错误、dashboard/runbook 和 pending-real-data Acceptance Report。
+
+---
+
+## 11. 任务完成定义
 
 每项必须有：public contract、domain/application implementation、adapter、unit/contract/integration tests、observability、error/runbook、文档链接和 migration/rollback（适用时）。
 

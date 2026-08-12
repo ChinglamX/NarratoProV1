@@ -1,0 +1,27 @@
+{
+  "release_slice": "R2-story-intelligence",
+  "code_revision": "pending-h06-commit",
+  "automation_level": "L1",
+  "confidence_shadow": true,
+  "story_gate_required": true,
+  "engineering_complete": true,
+  "production_decision": "pending_human",
+  "checks": [
+    {"check_id":"contracts-and-registry","dimension":"engineering","status":"passed","blocker":false,"detail":"Identity, Fact, Story and Review contracts are generated and versioned.","evidence_paths":["generated/contracts/versions/2.2.0/json-schema.json"]},
+    {"check_id":"identity-correction-lineage","dimension":"engineering","status":"passed","blocker":false,"detail":"Merge/split/name use immutable successors with proposal lineage.","evidence_paths":["tests/intelligence/test_identity_corrections.py"]},
+    {"check_id":"typed-story-workflow","dimension":"engineering","status":"passed","blocker":false,"detail":"Story reasoning is a typed multi-Activity Artifact pipeline.","evidence_paths":["workflows/intelligence/workflow.py"]},
+    {"check_id":"story-gate-boundary","dimension":"governance","status":"passed","blocker":false,"detail":"L1 Gate publishes exact approved Story pointer and fails closed on blockers.","evidence_paths":["apps/api/reviews.py"]},
+    {"check_id":"real-identity-corpus","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"Legally usable multi-series identity gold corpus has not been provided.","evidence_paths":[]},
+    {"check_id":"real-story-corpus","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"Real Story severe-error and evidence-coverage evaluation awaits user data.","evidence_paths":[]},
+    {"check_id":"provider-production-admission","dimension":"rights","status":"blocked","blocker":true,"detail":"E06 provider production qualification remains rejected/pending human.","evidence_paths":["quality/E06_ACCEPTANCE_REPORT.md"]},
+    {"check_id":"human-story-signoff","dimension":"approval","status":"not_evaluated","blocker":true,"detail":"No real StoryReviewPackage has received project-owner approval.","evidence_paths":[]}
+  ],
+  "severe_errors": [
+    {"code":"wrong-character-identity","description":"A key event is assigned to the wrong character."},
+    {"code":"fabricated-event","description":"Story contains an event unsupported by source evidence."},
+    {"code":"reversed-causality","description":"Cause and effect are reversed or temporal order is asserted as causality."},
+    {"code":"negation-dream-recall-error","description":"Negation, dream, recall or hypothetical content is presented as present reality."},
+    {"code":"missing-key-event","description":"A key event required for narrative correctness is omitted."},
+    {"code":"evidence-mismatch","description":"Evidence link does not entail the reviewed claim."}
+  ]
+}

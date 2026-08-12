@@ -1,5 +1,7 @@
 from uuid import uuid4
 
+import pytest
+
 from packages.contracts import ArtifactRef, SpeechObservation, VisualObservation
 from packages.intelligence.facts import fuse_observations
 
@@ -118,3 +120,8 @@ def test_unavailable_partition_remains_incomplete() -> None:
     )
     assert report.fact_set.incomplete
     assert report.incomplete_partitions == ("speech",)
+
+
+def test_fact_fusion_requires_payload_ref_pairs() -> None:
+    with pytest.raises(ValueError, match="provided together"):
+        fuse_observations(fact_set_ref=ref("FactSet"), speech_ref=ref("SpeechObservation"))

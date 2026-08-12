@@ -159,6 +159,10 @@ from packages.contracts.story import (
     StoryImportance,
     UnresolvedQuestion,
 )
+from packages.contracts.story_qualification import (
+    StoryEngineeringQualification,
+    StorySevereError,
+)
 from packages.contracts.story_reasoning import (
     ApprovedStorySnapshot,
     CausalGraph,
@@ -354,10 +358,12 @@ __all__ = [
     "StoryArc",
     "StoryEdge",
     "StoryEdgeType",
+    "StoryEngineeringQualification",
     "StoryGraph",
     "StoryImportance",
     "StoryReasoningReport",
     "StoryReviewPackage",
+    "StorySevereError",
     "StrategyCandidateSet",
     "StrategyDirection",
     "SupplementarySampleRequest",
