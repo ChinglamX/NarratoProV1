@@ -550,6 +550,24 @@ account 永远不能批准 Release。修正必须产生后继 Candidate 并重�
 后果：Registry 兼容升级到 2.13.0。E11 工程完成只证明可审核的 Release 边界，不代表已经生成
 或批准 demo 级成片；真实 Final Render/QC/Rights/Craft Review/故障容量和人工签署保持 production blocker。
 
+## ADR-047 — Epic Closure Requires the Canonical Backlog Definition of Done
+
+问题：E09–E11 曾将 Contract、领域边界和少量单元测试误标为 engineering complete，与
+`07_EPICS_AND_DELIVERY_SEQUENCE.md` 的垂直能力退出条件和 `08_INITIAL_IMPLEMENTATION_BACKLOG.md`
+的 Definition of Done 冲突。这会使恢复协议跳过未实现的 workflow、adapter、Review Workspace、完整
+Preview、故障恢复和真实验收。
+
+决策：Epic 只有在对应全部 Backlog 项具备 public contract、domain/application、adapter、workflow/API、
+observability、error/runbook、migration/rollback 和指定验收证据后才能关闭。提前实现的下游 Contract
+只记为 `advance baseline`，不改变上游 Epic 恢复点。E09 恢复为 active/J02；E10/E11 恢复为
+not started with advance baselines。
+
+被取代结论：ADR-044 中“E09 可在真实 craft benchmark 未完成时关闭”、ADR-045 的 E10
+工程关闭和 ADR-046 的 E11 工程关闭结论不再作为状态证据；其余架构不变量仍有效。
+
+后果：保留历史 commit/Schema 以避免破坏性回退，但 E09–E11 Acceptance Report 标记 superseded。
+任何后续“完成”判定必须逐项引用 Backlog ID 和验收证据。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。

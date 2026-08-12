@@ -1,15 +1,15 @@
 # Project Current State
 
-State Version: 41
+State Version: 42
 Last Updated: 2026-08-12
 State Owner: Project
 
 ## 1. 当前阶段
 
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
-- Active Release Slice：R5 Safe Automation；R4 engineering built but production qualification pending。
-- Active Epics：E12 Evaluation and Automation；bounded debt tracks E06/G05–E11/L06 production qualification。
-- Active Backlog Entry：M01 Quality Events and Blocker Detectors。
+- Active Release Slice：R4 Creative Production。
+- Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt。
+- Active Backlog Entry：J02 Visual and Clip Planning。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -55,9 +55,9 @@ State Owner: Project
 - E08/I03 Strategy Candidate/Comparison：bounded grounded Direction planning、independent Critic refs、blocker-over-score、Risk/Feasibility/Cost、structural Diversity 和 Comparison Package 已实现；Registry 2.5.0。
 - E08/I04 Strategy Review/Gate 2：exact-ref Review Package、L1 human selection、blocker/incomplete/out-of-package fail-closed、ApprovedCreativeBrief/VariantPlan 双 publication pointer 和 typed Web 六视图已实现；Registry 2.6.0。
 - E08/I05 Engineering Qualification：versioned Strategy qualification、严重错误 taxonomy、成本/并发/replay 边界、runbook、dashboard 和 pending-real-data Acceptance Report 已完成；工程结论 complete，production decision=pending_human。Registry 2.7.0。E08 工程正式关闭。
-- E09/J01–J06 Creative Timeline：Approved Strategy-only input、typed Beat/Clip/Crop/Rhythm/Narration intents、grounded selection、CoverageGap、唯一 MasterTimeline assembly、Checkpoint 语义和 engineering qualification 已实现；Registry 2.9.0。工程结论 complete，production decision=pending_human。
-- E10/K01–K06 Voice/Audio/Subtitle：bounded provider-neutral VoiceTake、selected VoiceAsset/actual duration、Alignment/Conform、rights-bearing Audio Selection、Mix ducking/loudness intent、Subtitle/ASS contracts 和 engineering qualification 已实现；Registry 2.11.0。工程结论 complete，production decision=pending_human。
-- E11/L01–L06 Render/Release：exact Render Plan/Execution、Technical QC、Release Rights Manifest、Offline Quality Review、blocker-dominant preflight、human-only Gate 3/released pointer 和 engineering qualification 已实现；Registry 2.13.0。工程结论 complete，production decision=pending_human；无真实可发布成片声明。
+- E09/J01 Creative Timeline contract/input baseline：Approved Strategy-only input 和 Beat/Clip/Crop/Rhythm/Narration 初始 Contract 已实现；J02–J06 未完成，E09 不得关闭。
+- E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。
+- E11 advance boundary baseline：Render/Release Contract、基础 preflight/executor/API 已提前建立；L01–L06 主实现未开始，不构成 E11 完成。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -65,7 +65,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- E12 Safe Automation、E13 Online Performance 尚未实现；E06–E11 的真实数据、Provider、Rights、Craft、运行与人工签署 production qualification 尚未完成。
+- E09/J02–J06、E10/K01–K06、E11/L01–L06、E12 Safe Automation 和 E13 Online Performance 尚未完成。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -76,9 +76,10 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. 按 E12/M01 实现 Quality Events、required blocker detector、故障集与 unavailable fail-closed。
+1. 按 E09/J02 实现 evidence-grounded retrieval、sequence continuity、rights/safety、source mapping 和 reframe；随后依次完成 J03–J06。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
+4. E10/E11 现有代码只作为 advance baseline；在 E09 满足 Epic 退出条件前不得恢复为 active/completed。
 
 开始编码前必须验证工作区状态、选择包管理/版本并将决定写入 ADR/State。
 
@@ -95,6 +96,7 @@ State Owner: Project
 - 真实 Provider、模型权重、字体、音乐和音色的生产许可尚未完成准入。
 - Calibration Pack 尚无真实项目 Gold/Baseline。
 - demo 已存在于项目，但完整人工 benchmark artifact 尚未建设。
+- 2026-08-12 审计发现 E09–E11 曾将 contract/boundary baseline 误标为 Epic engineering complete；原 Acceptance Report 和 ADR-044 对应关闭结论已由 ADR-047 supersede。
 - FunASR adapter 已真实运行但只准入 research：完整模型权重 checksum、模型卡许可、商业使用批准和真实按剧隔离 Speech baseline 均缺失。
 - PaddleOCR/semantic detector/tracker/embedding/VLM 尚无生产准入的 exact checkpoint 与真实短剧 benchmark；Ultralytics 许可姿态未批准，必须保持 blocked/research。
 - G05 生产资格结论为 rejected/pending_human；真实 Corpus、模型权利、long-series/multi-project、exact Worker restart、完整资源成本和 telemetry operator drill 均是显式 blocker。

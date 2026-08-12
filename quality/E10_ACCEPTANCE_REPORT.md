@@ -2,7 +2,7 @@
 
 Version: 1.0  
 Date: 2026-08-12  
-Decision: Engineering complete; production approval pending providers, rights and real QC.
+Decision: Superseded by ADR-047; advance contract baseline only, E10 not started.
 
 E10 implements provider-neutral bounded Voice Takes, selected Voice Asset and actual duration,
 Alignment, conform delta, rights-bearing audio selection, explicit narration/BGM ducking and loudness

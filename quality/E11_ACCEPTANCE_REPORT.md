@@ -2,7 +2,7 @@
 
 Version: 1.0  
 Date: 2026-08-12  
-Decision: Engineering complete; no real candidate is production-approved.
+Decision: Superseded by ADR-047; advance boundary baseline only, E11 not started.
 
 E11 implements exact-input deterministic Render Plan/Execution contracts, Technical QC, complete
 Rights Manifest boundary, eight-dimension Offline Quality Review, blocker-dominant Release preflight,
