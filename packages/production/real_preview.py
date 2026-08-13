@@ -13,6 +13,7 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess  # nosec B404
+from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
 from typing import Any, cast
@@ -284,3 +285,278 @@ def render_media_preview(
         height=int(streams["video"]["height"]),
         ffmpeg_version=version,
     )
+
+
+@dataclass(frozen=True, slots=True)
+class PartialPreviewResult:
+    """Result of a partial (time-range) preview render."""
+
+    output_path: Path
+    subtitle_path: Path
+    original_start: float
+    original_end: float
+    duration_seconds: float
+    clip_count: int
+    ffmpeg_version: str
+
+
+def compute_changed_ranges(
+    before: MasterTimeline,
+    after: MasterTimeline,
+    *,
+    min_segment_duration: float = 0.5,
+    merge_gap: float = 1.0,
+) -> tuple[tuple[float, float], ...]:
+    """Compute timeline time ranges that differ between two versions.
+
+    Used by partial preview to determine which segments need re-render.
+    Ranges shorter than ``min_segment_duration`` are expanded. Ranges within
+    ``merge_gap`` seconds of each other are merged.
+    """
+    old_items = {
+        item.item_id: item
+        for track in before.tracks
+        if track.kind == TimelineTrackKind.VIDEO
+        for item in track.items
+    }
+    ranges: list[tuple[float, float]] = []
+    for track in after.tracks:
+        if track.kind != TimelineTrackKind.VIDEO:
+            continue
+        for item in track.items:
+            old = old_items.get(item.item_id)
+            if old is None or old != item:
+                start = float(item.timeline_range.start.seconds)
+                end = start + float(item.timeline_range.duration.seconds)
+                ranges.append((start, end))
+    if not ranges:
+        return ()
+    # Expand very short segments
+    expanded = [
+        (
+            max(0.0, start),
+            end if (end - start) >= min_segment_duration else start + min_segment_duration,
+        )
+        for start, end in ranges
+    ]
+    expanded.sort()
+    merged: list[tuple[float, float]] = [expanded[0]]
+    for start, end in expanded[1:]:
+        last_start, last_end = merged[-1]
+        if start - last_end <= merge_gap:
+            merged[-1] = (last_start, max(last_end, end))
+        else:
+            merged.append((start, end))
+    return tuple(merged)
+
+
+def render_partial_preview(
+    timeline: MasterTimeline,
+    source_paths: dict[UUID, Path],
+    output_path: Path,
+    *,
+    time_range: tuple[float, float],
+    target_width: int = 720,
+    target_height: int = 1280,
+    frame_rate: int = 25,
+) -> PartialPreviewResult:
+    """Render only the portion of the timeline within ``time_range``.
+
+    Video items overlapping the range are trimmed to the intersection and
+    re-timed from zero. Subtitle/narration items within the range are included
+    with adjusted timestamps. Items entirely outside the range are skipped.
+
+    This is much faster than a full re-render when only a small edit was made.
+    """
+    if not validate_timeline(timeline).render_ready:
+        raise PreviewRenderError("timeline is not render-ready")
+    range_start, range_end = time_range
+    if range_end <= range_start:
+        raise PreviewRenderError("partial preview range must have positive duration")
+    ffmpeg = shutil.which("ffmpeg")
+    ffprobe = shutil.which("ffprobe")
+    if ffmpeg is None or ffprobe is None:
+        raise PreviewRenderError("ffmpeg and ffprobe are required")
+
+    # Filter and re-time video items
+    all_video = _video_items(timeline)
+    selected: list[tuple[TimelineItem, float]] = []  # (item, new_start)
+    cursor = 0.0
+    for item in all_video:
+        item_start = float(item.timeline_range.start.seconds)
+        item_end = item_start + float(item.timeline_range.duration.seconds)
+        if item_end <= range_start or item_start >= range_end:
+            continue
+        selected.append((item, cursor))
+        overlap_start = max(item_start, range_start)
+        overlap_end = min(item_end, range_end)
+        cursor += overlap_end - overlap_start
+
+    if not selected:
+        raise PreviewRenderError(
+            f"no video items overlap range [{range_start:.3f}, {range_end:.3f}]"
+        )
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    work = output_path.parent / f".{output_path.stem}.partial.work"
+    work.mkdir(parents=True, exist_ok=True)
+
+    clip_paths: list[Path] = []
+    for index, (item, _new_start) in enumerate(selected):
+        assert item.source_ref is not None
+        source = source_paths.get(item.source_ref.artifact_id)
+        if source is None or not source.is_file():
+            raise PreviewRenderError(
+                f"source media unavailable: {item.source_ref.artifact_id}"
+            )
+        item_start = float(item.timeline_range.start.seconds)
+        item_end = item_start + float(item.timeline_range.duration.seconds)
+        overlap_start = max(item_start, range_start)
+        overlap_end = min(item_end, range_end)
+        # Source range: shift by the item's offset into its source
+        source_offset = float(item.source_range.start.seconds) if item.source_range else 0.0
+        src_start = source_offset + (overlap_start - item_start)
+        src_duration = overlap_end - overlap_start
+
+        clip = work / f"clip_{index:04d}.mp4"
+        part = clip.with_suffix(".mp4.part")
+        _run(
+            [
+                ffmpeg,
+                "-y",
+                "-i",
+                str(source),
+                "-ss",
+                _seconds_text(Fraction(src_start)),
+                "-t",
+                _seconds_text(Fraction(src_duration)),
+                "-vf",
+                (
+                    f"scale={target_width}:{target_height}:force_original_aspect_ratio=decrease,"
+                    f"pad={target_width}:{target_height}:(ow-iw)/2:(oh-ih)/2,"
+                    f"fps={frame_rate},setsar=1"
+                ),
+                "-an",
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                str(part),
+            ]
+        )
+        os.replace(part, clip)
+        clip_paths.append(clip)
+
+    concat_file = work / "concat.txt"
+    _write_concat_file(concat_file, [str(p) for p in clip_paths])
+    video_path = work / "video.mp4"
+    video_part = work / "video.mp4.part"
+    _run(
+        [
+            ffmpeg,
+            "-y",
+            "-f",
+            "concat",
+            "-safe",
+            "0",
+            "-i",
+            str(concat_file),
+            "-c",
+            "copy",
+            str(video_part),
+        ]
+    )
+    os.replace(video_part, video_path)
+
+    # Subtitles: include items within range, adjust timestamps
+    subtitle_path = output_path.with_suffix(".ass")
+    range_subtitles = [
+        item
+        for item in _text_items(timeline, TimelineTrackKind.SUBTITLE)
+        if _item_overlaps(item, range_start, range_end)
+    ]
+    range_narration = [
+        item
+        for item in _text_items(timeline, TimelineTrackKind.NARRATION)
+        if _item_overlaps(item, range_start, range_end)
+    ]
+    _write_partial_ass(
+        subtitle_path,
+        cursor,
+        range_subtitles,
+        range_narration,
+        range_start=range_start,
+    )
+
+    part = output_path.with_suffix(".mp4.part")
+    _run([ffmpeg, "-y", "-i", str(video_path), "-c", "copy", str(part)])
+    os.replace(part, output_path)
+
+    version = subprocess.run(  # nosec B603
+        [ffmpeg, "-version"], check=True, capture_output=True, text=True
+    ).stdout.splitlines()[0]
+    return PartialPreviewResult(
+        output_path=output_path,
+        subtitle_path=subtitle_path,
+        original_start=range_start,
+        original_end=range_end,
+        duration_seconds=cursor,
+        clip_count=len(selected),
+        ffmpeg_version=version,
+    )
+
+
+def _item_overlaps(item: TimelineItem, range_start: float, range_end: float) -> bool:
+    start = item.timeline_range.start.seconds
+    end = start + item.timeline_range.duration.seconds
+    return end > range_start and start < range_end
+
+
+def _write_partial_ass(
+    path: Path,
+    duration: float,
+    subtitle_items: list[TimelineItem],
+    narration_items: list[TimelineItem],
+    *,
+    range_start: float,
+) -> None:
+    """Write ASS subtitles for a partial preview, shifting timestamps to zero."""
+    lines = [
+        "[Script Info]",
+        "ScriptType: v4.00+",
+        "PlayResX: 720",
+        "PlayResY: 1280",
+        "",
+        "[V4+ Styles]",
+        "Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,"
+        "BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,"
+        "BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding",
+        "Style: Default,Arial,44,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,"
+        "100,100,0,0,1,3,1,2,40,40,120,1",
+        "",
+        "[Events]",
+        "Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text",
+    ]
+    for item in [*subtitle_items, *narration_items]:
+        text = str(item.parameters.get("text", "")).strip()
+        if not text:
+            continue
+        start = item.timeline_range.start.seconds - range_start
+        end = start + item.timeline_range.duration.seconds
+        start = max(0.0, start)
+        end = min(duration, end)
+        if end <= start:
+            continue
+        safe_area = cast(dict[str, Any], item.parameters.get("safe_area"))
+        margin_v = 120
+        if safe_area and all(key in safe_area for key in ("y", "height")):
+            margin_v = round(
+                max(0.0, 1.0 - float(safe_area["y"]) - float(safe_area["height"])) * 1280
+            )
+        escaped = text.replace("\n", "\\N")
+        lines.append(
+            f"Dialogue: 0,{_ass_timestamp(Fraction(start))},"
+            f"{_ass_timestamp(Fraction(end))},Default,,0,0,{margin_v},,{escaped}"
+        )
+    lines.append("")
+    path.write_text("\n".join(lines), encoding="utf-8")
