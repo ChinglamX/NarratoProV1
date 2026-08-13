@@ -170,6 +170,7 @@ class CreativeTimelineWorkflow:
                 run_id=request.run_id,
                 project_id=request.project_id,
                 trace_id=request.trace_id,
+                resource_profile=request.resource_profile,
                 timeline=assembly.master_timeline,
                 output_path=request.output_path,
             ),

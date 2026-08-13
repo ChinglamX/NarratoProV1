@@ -174,7 +174,10 @@ def render_media_preview(
         clip_paths.append(clip)
 
     concat_file = work / "concat.txt"
-    _write_concat_file(concat_file, [str(path) for path in clip_paths])
+    # ffmpeg's concat demuxer resolves entries relative to the concat file's
+    # directory, not the process cwd; absolute entries keep relative output
+    # paths (e.g. settings.temp_root="tmp") working.
+    _write_concat_file(concat_file, [str(Path(path).resolve()) for path in clip_paths])
     video_path = work / "video.mp4"
     video_part = work / "video.tmp.mp4"
     _run(
@@ -235,7 +238,7 @@ def render_media_preview(
     part = output_path.with_suffix(".tmp.mp4")
     if audio_clips:
         audio_concat = work / "audio_concat.txt"
-        _write_concat_file(audio_concat, [str(path) for path in audio_clips])
+        _write_concat_file(audio_concat, [str(Path(path).resolve()) for path in audio_clips])
         audio_path = work / "audio.m4a"
         _run(
             [
@@ -451,7 +454,7 @@ def render_partial_preview(
         clip_paths.append(clip)
 
     concat_file = work / "concat.txt"
-    _write_concat_file(concat_file, [str(p) for p in clip_paths])
+    _write_concat_file(concat_file, [str(Path(p).resolve()) for p in clip_paths])
     video_path = work / "video.mp4"
     video_part = work / "video.tmp.mp4"
     _run(

@@ -121,6 +121,7 @@ class MediaPreviewActivityRequest:
     run_id: str
     project_id: str
     trace_id: str
+    resource_profile: ArtifactPointer
     timeline: ArtifactPointer
     output_path: str
     target_width: int = 720

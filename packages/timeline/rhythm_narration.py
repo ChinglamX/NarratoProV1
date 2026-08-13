@@ -30,14 +30,18 @@ def allocate_rhythm(
             affected_beat_ids=tuple(beat.beat_id for beat in graph.beats),
             alternatives=("remove-non-core-beat", "change-expression", "return-to-gate-2"),
         )
-    targets = [beat.target_duration.seconds for beat in graph.beats]
-    scale = available / sum(targets)
-    values = [round(value * scale) for value in targets]
-    values[-1] += int(available - sum(values))
+    # Allocate in whole microseconds so fractional-second targets sum exactly
+    # to the graph target (integer-second rounding used to fail any non-integer
+    # target with a duration mismatch).
+    targets_micro = [round(beat.target_duration.seconds * 1_000_000) for beat in graph.beats]
+    available_micro = round(graph.target_duration.seconds * 1_000_000)
+    scale = available_micro / sum(targets_micro)
+    values = [round(value * scale) for value in targets_micro]
+    values[-1] += available_micro - sum(values)
     beats = tuple(
         BeatRhythm(
             beat_id=beat.beat_id,
-            target_duration=RationalTime(value=value, rate_num=1),
+            target_duration=RationalTime(value=value, rate_num=1_000_000),
             entry_energy=_number(beat.emotional_intent.get("entry_energy"), 0.4),
             exit_energy=_number(beat.emotional_intent.get("exit_energy"), 0.6),
             information_density=_number(beat.emotional_intent.get("information_density"), 0.6),
