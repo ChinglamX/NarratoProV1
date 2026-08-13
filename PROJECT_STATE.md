@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 48
+State Version: 49
 Last Updated: 2026-08-13
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
 - Active Release Slice：R4 Creative Production。
 - Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt。
-- Active Backlog Entry：J05 Precise Multi-track Editing — 工程实现已审计并修复（2026-08-13，State v48）；真实数据退出证据仍 blocked。
+- Active Backlog Entry：J05 Precise Multi-track Editing — 工程实现已审计修复（State v48），真实数据 candidate-to-demo 链路已跑通（State v49）；人工签署 pending。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -82,7 +82,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. J05 精确多轨编辑工程实现已审计并修复（State v48 / ADR-050）：approved-intent L1 门禁、append-only 版本分配（undo→新编辑不再 PK 冲突）、局部预览端点 `POST /{id}/preview-partial`、Worker 沙箱细粒度 passthrough；下一步使用真实 Approved Story/Creative Brief/Media 执行 candidate-to-demo 全片人工审核、Worker restart/replay 和 Timeline checkpoint 正式认证。J02–J04 的 Artifact persistence、完整 Temporal 编排与真实媒体 Preview 已关闭（ADR-049）。
+1. E09 真实数据认证已跑通工程链路（State v49 / 提交 `101f8a7`）：`scripts/accept_e09.py` 用真实 SourceMedia（105.7s/17 shots）完成 visual→rhythm→narration→assembly→media preview 全链路 succeeded、Worker 硬重启恢复、history replay PASS、9 个 Artifact 落库、真实 720x1280 h264/aac preview 渲染。**下一步：项目负责人人工审核 preview + 时间码 craft 对比表，并在 timeline checkpoint 签署 approve**（`--auto-approve` 仅工程验收路径；默认停在 awaiting_review 等人工）。J02–J04 与 J05 工程缺口已关闭（ADR-049/050）。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 4. E10/E11 现有代码只作为 advance baseline；在 E09 满足 Epic 退出条件前不得恢复为 active/completed。
@@ -126,6 +126,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-13 E09 真实数据认证 evidence run（提交 `101f8a7`）：`scripts/accept_e09.py` 对真实 SourceMedia `8a0ce63f`（273MB、105.7s、17 个 PySceneDetect shots）跑通 CreativeTimelineWorkflow 全链路——visual/rhythm/narration/assembly/preview 五阶段全部 succeeded；到达人工 timeline checkpoint（awaiting_review）；**Worker 硬停止后重启，workflow 从 durable history 恢复**；**Replayer 重放 PASS**；9 个 Artifact（candidate_set/selection_plan/continuity_report/visual_report/rhythm_plan/narration_report/master_timeline/assembly_report/preview）全部确定性落库；preview 为真实 ffmpeg 渲染 720x1280 h264/aac + ASS 字幕（`tmp/e09-cert-c8dbb0bb-*-preview.mp4`，media_checksum sha256:74cc39a5…）。真实运行暴露并修复 4 个潜伏 bug：allocate_rhythm 整秒舍入（改微秒分配）、render_media_preview 三处 concat 相对路径（ffmpeg concat demuxer 按 concat 文件目录解析；改绝对路径）、MediaPreviewActivityRequest 缺 resource_profile（补字段并接线）。`make check` 352 tests、80.62% coverage 全绿。
 
 - 2026-08-13 J05 审计修复 full check：`make check` 全绿 — 352 tests、80.61% coverage、Ruff、strict mypy、Bandit、Context/Architecture、Registry 2.18.0 freshness/history 全部通过。
 - 2026-08-13 J05 审计修复内容（对提交 `367066b` 逐项审查后）：(1) 迁移根因修复 — `media_schema.py` 不再污染不可变 `baseline_v0001.metadata`（媒体表独立 metadata），已在真实 Postgres 全新库验证 `alembic upgrade head` 与 downgrade/upgrade 往返（此前全新库会在 0001 失败）；豆包就地改写的 0001/0002 已按用户授权丢弃并保持不可变（test_media_identity_migration 回归通过）；(2) Worker 沙箱 — 撤销全局 `with_passthrough_all_modules()`，改为 `workflows/media/__init__.py`、`workflows/visual/__init__.py` 细粒度 `imports_passed_through`（scenedetect/cv2/numpy C 扩展重复加载根因）；真实启动 worker 验证 7 个 workflow 全部通过沙箱验证并持续运行；(3) 编辑通道 L1 门禁 — 新增 `TimelineRepository.approved_intent_version`，`apply_patch`（服务与 `/patches` 端点两条路径）在 active version 等于已批准 timeline intent 时返回 409（fail-closed，防止改写已批准版本）；(4) append-only 版本分配 — `commit` 改为 max(version)+1，undo→新编辑不再与既有版本 PK 冲突（v3 保留为孤儿审计版本）；真实 Postgres 回归测试 4/4 通过（`tests/persistence/test_timeline_repository_db.py`，CI 无 DB 时跳过）；(5) 局部预览接线 — 新增 `POST /v1/timelines/{id}/preview-partial`（服务器端从 Object Store 解析真实源媒体、计算 changed ranges、渲染首段）；修复 `render_partial_preview` 的 `.mp4.part` 扩展名导致 ffmpeg 无法推断容器格式的 bug（改为 `.tmp.mp4`）；新增 compute_changed_ranges 单元测试与 ffmpeg 集成测试；(6) `JumpRequest.version` 加 ge=1；导航端点存储冲突统一映射 409（此前 missing version 会 500）；(7) settings 测试确定性修复（显式 bootstrap URL，不受本地 .env 影响）；Bandit assert 修复；(8) 死代码 `revisions.py`（RevisionHistory）保留但记为 bounded debt（删除需人工批准）。ADR-050 记录本轮决策。
