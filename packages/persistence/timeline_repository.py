@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import Connection, and_, insert, select, update
+from sqlalchemy import Connection, and_, func, insert, select, update
 from sqlalchemy.exc import IntegrityError
 
 import packages.persistence.schema as schema
@@ -88,7 +88,17 @@ class TimelineRepository:
         rebased: bool,
         trace_id: str,
     ) -> int:
-        next_version = current.version + 1
+        # Append-only version allocation: the caller holds the active_pointer
+        # row lock (see lock_and_load), so max(version)+1 is race-free. This
+        # keeps undo/redo navigation safe: editing after an undo appends a NEW
+        # version instead of reusing the undone number (artifact_version PK is
+        # artifact_id+version and versions are immutable once written).
+        max_version = connection.scalar(
+            select(func.max(schema.artifact_version.c.version)).where(
+                schema.artifact_version.c.artifact_id == artifact_id
+            )
+        )
+        next_version = (int(max_version) + 1) if max_version is not None else 1
         try:
             connection.execute(
                 insert(schema.artifact_version).values(
@@ -209,12 +219,16 @@ class TimelineRepository:
         limit: int = 100,
     ) -> list[TimelineSnapshot]:
         """List timeline versions newest-first, up to ``limit``."""
-        rows = connection.execute(
-            select(schema.artifact_version)
-            .where(schema.artifact_version.c.artifact_id == artifact_id)
-            .order_by(schema.artifact_version.c.version.desc())
-            .limit(limit)
-        ).mappings().all()
+        rows = (
+            connection.execute(
+                select(schema.artifact_version)
+                .where(schema.artifact_version.c.artifact_id == artifact_id)
+                .order_by(schema.artifact_version.c.version.desc())
+                .limit(limit)
+            )
+            .mappings()
+            .all()
+        )
         snapshots: list[TimelineSnapshot] = []
         for row in rows:
             payload = row["payload_json"]
@@ -236,10 +250,28 @@ class TimelineRepository:
     def get_active_version(self, connection: Connection, *, artifact_id: UUID) -> int:
         """Return the current active version number."""
         pointer = connection.execute(
-            select(schema.active_pointer).where(
-                schema.active_pointer.c.artifact_id == artifact_id
-            )
+            select(schema.active_pointer).where(schema.active_pointer.c.artifact_id == artifact_id)
         ).first()
         if pointer is None:
             raise TimelineStorageConflict("timeline does not exist")
         return int(pointer.version)
+
+    def approved_intent_version(self, connection: Connection, *, artifact_id: UUID) -> int | None:
+        """Return the version approved as the timeline intent, if any.
+
+        The approved intent is the exact version referenced by the
+        ``approved_timeline_intent`` publication pointer (set only by an L1
+        human approve decision). Editing that version is blocked by the
+        service until a new review cycle approves a successor.
+        """
+        row = connection.execute(
+            select(schema.publication_pointer).where(
+                and_(
+                    schema.publication_pointer.c.registry_type == "approved_timeline_intent",
+                    schema.publication_pointer.c.registry_id == artifact_id,
+                )
+            )
+        ).first()
+        if row is None:
+            return None
+        return int(row.version)

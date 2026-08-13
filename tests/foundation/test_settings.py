@@ -18,4 +18,9 @@ def test_rejects_non_postgres_database() -> None:
 
 def test_production_rejects_bootstrap_credentials() -> None:
     with pytest.raises(ValidationError, match="must be supplied externally"):
-        Settings(environment="production")
+        Settings(
+            environment="production",
+            # Explicit bootstrap URL keeps the assertion deterministic even when
+            # a local .env provides a different NARRATOPRO_DATABASE_URL.
+            database_url="postgresql+psycopg://narratopro:narratopro@127.0.0.1:5432/narratopro",
+        )

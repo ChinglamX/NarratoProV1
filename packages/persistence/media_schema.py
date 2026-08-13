@@ -1,13 +1,27 @@
 """Media persistence extensions introduced by E05."""
 
-from sqlalchemy import Column, DateTime, ForeignKey, String, Table, UniqueConstraint, func
+from sqlalchemy import (
+    Column,
+    DateTime,
+    ForeignKey,
+    MetaData,
+    String,
+    Table,
+    UniqueConstraint,
+    func,
+)
 from sqlalchemy.dialects.postgresql import UUID
 
-from packages.persistence.baseline_v0001 import metadata
+# E05 media tables use their own metadata so the immutable baseline v0001
+# snapshot (used by migration 0001) is never mutated at runtime. Fresh
+# deployments therefore get media tables exclusively from revision 0002, and
+# existing deployments keep their applied 0001/0002 history intact.
+# `packages.persistence.schema` still exposes the table for repositories.
+media_metadata = MetaData()
 
 media_ingest_identity = Table(
     "ingest_identity",
-    metadata,
+    media_metadata,
     Column("id", UUID(as_uuid=True), primary_key=True),
     Column("project_id", UUID(as_uuid=True), ForeignKey("core.project.id"), nullable=False),
     Column("source_checksum", String(72), nullable=False),

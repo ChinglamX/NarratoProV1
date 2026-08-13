@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 47
+State Version: 48
 Last Updated: 2026-08-13
 State Owner: Project
 
@@ -9,7 +9,7 @@ State Owner: Project
 - Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active.
 - Active Release Slice：R4 Creative Production。
 - Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt。
-- Active Backlog Entry：J05 Precise Multi-track Editing — earlier J-group remediation closed; real-data exit evidence remains blocked。
+- Active Backlog Entry：J05 Precise Multi-track Editing — 工程实现已审计并修复（2026-08-13，State v48）；真实数据退出证据仍 blocked。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
 ---
@@ -59,7 +59,7 @@ State Owner: Project
 - E09/J02 Visual and Clip Planning：可替换 Clip Index Port、Story/Evidence/Character 过滤、序列级连续性选择、Continuity Report、平滑 CropPath、原片字幕降级与局部重算已实现；持久化 ClipCandidateSet 适配器（路由分数+top-k+源时长校验）、TimelinePlanningService（全部规划产物经 ArtifactRepository 落库）与确定性测试已完成。Registry 2.14.0→2.18.0。
 - E09/J03 Rhythm and Narration Planning：Beat 预算/总时长对账、DurationConflict、呼吸点意图、对白复述/无依据心理阻断、证据覆盖、人工 lock 与 scoped regeneration 已实现；NarrationSourcePort/L1 人工解说边界、RhythmPlanningService（RhythmPlan/NarrationPlanningReport/后继 NarrationLineSet 落库）与 DurationConflict 分支测试已完成。Registry 2.15.0→2.18.0。
 - E09/J04 Multi-track Assembly：Video/Original Audio/Narration/BGM/SFX/Subtitle/Overlay 共用唯一 MasterTimeline 的组装与 blocker 校验已实现；TimelineAssemblyService 落库、确定性原声音频/字幕 intent 投影、CreativeTimelineWorkflow（visual→rhythm→narration→assembly→media preview→人工 checkpoint，stage blocker 即停）、真实媒体 Preview（真实源文件 trim/scale/concat + ASS 安全区字幕）与 Worker 注册已完成。Registry 2.16.0→2.18.0。
-- E09/J05 Timeline Checkpoint integration baseline：exact-ref Review Package、读取 API、L1 人工决定、DB-first outbox、publication pointer 和可运行 Web checkpoint cockpit 已实现；精确多轨编辑（RevisionHistory undo/redo/jump、TimelineEditingService、版本列表/diff API、局部真实预览渲染）已完成；正式认证集成待真实数据验证。Registry 2.17.0→2.18.0。
+- E09/J05 Timeline Checkpoint integration baseline：exact-ref Review Package、读取 API、L1 人工决定、DB-first outbox、publication pointer 和可运行 Web checkpoint cockpit 已实现；精确多轨编辑（TimelineEditingService、版本列表/diff API、局部真实预览渲染）已完成；2026-08-13 对提交 `367066b` 逐项审计并修复（见 §7 最新条目与 ADR-050）；正式认证集成待真实数据验证。Registry 2.17.0→2.18.0。
 - E09/J06 Qualification harness：deterministic concurrency probe、versioned demo technical/shot benchmark、qualification matrix、runbook/dashboard 已实现；四个真实退出 blocker 未解决，`engineering_complete=false`。
 - E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。
 - E11 advance boundary baseline：Render/Release Contract、基础 preflight/executor/API 已提前建立；L01–L06 主实现未开始，不构成 E11 完成。
@@ -70,7 +70,8 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- E09/J05 正式认证集成（Revision undo/redo/jump、TimelineEditingService、局部真实预览已完成工程实现，待真实数据验证）；J02–J04 生产 DoD 已补齐，但 E09 四个真实退出 blocker（语义视觉 Provider 准入、真实 Approved 项目全片 Preview、带时间码的 demo craft 对比、Worker restart/replay + 人工 checkpoint）仍待真实数据验证，`engineering_complete=false`。
+- E09/J05 正式认证集成（TimelineEditingService、局部真实预览、undo/redo/jump API 已完成工程实现并通过审计修复，待真实数据验证）；J02–J04 生产 DoD 已补齐，但 E09 四个真实退出 blocker（语义视觉 Provider 准入、真实 Approved 项目全片 Preview、带时间码的 demo craft 对比、Worker restart/replay + 人工 checkpoint）仍待真实数据验证，`engineering_complete=false`。
+- J05 剩余接线（bounded）：`/patches` 端点与 TimelineEditingService 仍为双实现（都带 approved-intent 门禁，行为一致，待合并）；`packages/timeline/revisions.py`（RevisionHistory，纯内存截断语义）未接线且与 append-only 持久化语义不一致（待删除或改写，需人工批准）；Review Web 尚未调用版本/局部预览 API；CI 无 Postgres 服务（`tests/persistence/test_timeline_repository_db.py` 在 CI 跳过）。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -81,7 +82,7 @@ State Owner: Project
 
 按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
 
-1. J05 精确多轨编辑工程实现已完成（RevisionHistory undo/redo/jump、TimelineEditingService、版本列表/diff API、局部真实预览渲染）；下一步使用真实 Approved Story/Creative Brief/Media 执行 candidate-to-demo 全片人工审核、Worker restart/replay 和 Timeline checkpoint 正式认证。J02–J04 的 Artifact persistence、完整 Temporal 编排与真实媒体 Preview 已在本轮关闭（ADR-049）。
+1. J05 精确多轨编辑工程实现已审计并修复（State v48 / ADR-050）：approved-intent L1 门禁、append-only 版本分配（undo→新编辑不再 PK 冲突）、局部预览端点 `POST /{id}/preview-partial`、Worker 沙箱细粒度 passthrough；下一步使用真实 Approved Story/Creative Brief/Media 执行 candidate-to-demo 全片人工审核、Worker restart/replay 和 Timeline checkpoint 正式认证。J02–J04 的 Artifact persistence、完整 Temporal 编排与真实媒体 Preview 已关闭（ADR-049）。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
 4. E10/E11 现有代码只作为 advance baseline；在 E09 满足 Epic 退出条件前不得恢复为 active/completed。
@@ -105,6 +106,9 @@ State Owner: Project
 - E09 当前四个 blocker：语义视觉 Provider 生产准入、真实完整 Preview、带时间码的 demo craft 对比、真实多 Variant restart/replay 与人工 checkpoint。
 - FunASR adapter 已真实运行但只准入 research：完整模型权重 checksum、模型卡许可、商业使用批准和真实按剧隔离 Speech baseline 均缺失。
 - PaddleOCR/semantic detector/tracker/embedding/VLM 尚无生产准入的 exact checkpoint 与真实短剧 benchmark；Ultralytics 许可姿态未批准，必须保持 blocked/research。
+- 本地未跟踪 `.env`（gitignored）会注入 NARRATOPRO_DATABASE_URL，曾使 `test_production_rejects_bootstrap_credentials` 在本地失败（CI 无 .env 不受影响）；已改为测试内显式 bootstrap URL 断言，不再依赖环境。
+- CI 无 Postgres 服务：`test_timeline_repository_db.py` 的 4 个真实 SQL 回归测试在 CI 跳过（本地 `narratopro_test` 库 4/4 通过）；后续应给 CI 加 Postgres service 以持续执行。
+- Temporal 沙箱与 numpy/OpenCV 不兼容（C 扩展重复加载）：`workflows/media/__init__.py` 与 `workflows/visual/__init__.py` 已用细粒度 `imports_passed_through` 处理；禁止回退到全局 `with_passthrough_all_modules()`（ADR-050）。macOS 下 cv2/av 的 objc 重复类警告无害。
 - G05 生产资格结论为 rejected/pending_human；真实 Corpus、模型权利、long-series/multi-project、exact Worker restart、完整资源成本和 telemetry operator drill 均是显式 blocker。
 - 用户授权 E06 签署与真实数据验证暂存 TODO，并允许 E07 先做工程实现；该授权不等于批准 E06，也不允许 E07 绕过真实数据生产验收。
 - H01 synthetic tests 只证明 Identity Contract/assembly 工程不变量，未证明跨集人物识别准确率；H02/H06 仍须保留人工纠正与真实数据验收。
@@ -122,6 +126,9 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-13 J05 审计修复 full check：`make check` 全绿 — 352 tests、80.61% coverage、Ruff、strict mypy、Bandit、Context/Architecture、Registry 2.18.0 freshness/history 全部通过。
+- 2026-08-13 J05 审计修复内容（对提交 `367066b` 逐项审查后）：(1) 迁移根因修复 — `media_schema.py` 不再污染不可变 `baseline_v0001.metadata`（媒体表独立 metadata），已在真实 Postgres 全新库验证 `alembic upgrade head` 与 downgrade/upgrade 往返（此前全新库会在 0001 失败）；豆包就地改写的 0001/0002 已按用户授权丢弃并保持不可变（test_media_identity_migration 回归通过）；(2) Worker 沙箱 — 撤销全局 `with_passthrough_all_modules()`，改为 `workflows/media/__init__.py`、`workflows/visual/__init__.py` 细粒度 `imports_passed_through`（scenedetect/cv2/numpy C 扩展重复加载根因）；真实启动 worker 验证 7 个 workflow 全部通过沙箱验证并持续运行；(3) 编辑通道 L1 门禁 — 新增 `TimelineRepository.approved_intent_version`，`apply_patch`（服务与 `/patches` 端点两条路径）在 active version 等于已批准 timeline intent 时返回 409（fail-closed，防止改写已批准版本）；(4) append-only 版本分配 — `commit` 改为 max(version)+1，undo→新编辑不再与既有版本 PK 冲突（v3 保留为孤儿审计版本）；真实 Postgres 回归测试 4/4 通过（`tests/persistence/test_timeline_repository_db.py`，CI 无 DB 时跳过）；(5) 局部预览接线 — 新增 `POST /v1/timelines/{id}/preview-partial`（服务器端从 Object Store 解析真实源媒体、计算 changed ranges、渲染首段）；修复 `render_partial_preview` 的 `.mp4.part` 扩展名导致 ffmpeg 无法推断容器格式的 bug（改为 `.tmp.mp4`）；新增 compute_changed_ranges 单元测试与 ffmpeg 集成测试；(6) `JumpRequest.version` 加 ge=1；导航端点存储冲突统一映射 409（此前 missing version 会 500）；(7) settings 测试确定性修复（显式 bootstrap URL，不受本地 .env 影响）；Bandit assert 修复；(8) 死代码 `revisions.py`（RevisionHistory）保留但记为 bounded debt（删除需人工批准）。ADR-050 记录本轮决策。
 
 - J02–J04 remediation full check：298 tests、80.35% coverage、Ruff、strict mypy、Bandit、Context/Architecture 和 Registry 2.18.0 freshness/history 全部通过。
 - J02–J04 remediation 内容：新增 Artifact 类型 ClipSelectionPlan/ContinuityReport/VisualPlanningReport/NarrationPlanningReport/TimelineAssemblyReport/SourceSubtitleHandlingPlan（设计 Catalog 同步）；`packages/persistence/artifact_writer.py` 确定性 checksum 提交；`apps/services/clip_index.py` 持久化检索适配器；TimelinePlanningService/RhythmPlanningService/TimelineAssemblyService 全部落库；NarrationSourcePort L1 人工解说边界；`CreativeTimelineWorkflow` + 5 个 Activity 注册进 Worker；`packages/production/real_preview.py` 真实媒体 Preview（真实源文件 trim/scale/concat 集成测试通过，产出 720x1280 h264/aac + ASS 安全区字幕）；runbook 增补 8 条（#13–#20）；ADR-049 记录本链决策；J05 精确多轨编辑为下一项。

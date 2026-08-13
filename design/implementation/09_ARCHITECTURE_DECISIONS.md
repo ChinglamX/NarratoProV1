@@ -628,3 +628,39 @@ Python resolution lock 仍为首个 Release Slice 退出前的 bounded debt。
 - Schema/Workflow breaking change 关联 migration/replay ADR。
 - Review Director 可从 Audit 重建一次例外和回滚决定。
 - ADR Index 与实际代码/部署不存在已知偏离。
+
+---
+
+## ADR-050 — J05 Editing Is Append-only, Approved-intent-locked and Sandbox-consistent
+
+问题：提交 `367066b` 引入的精确多轨编辑存在五类工程缺口：(1) 编辑通道不检查 L1 已批准
+状态，可改写已批准 timeline intent；(2) undo 后新编辑按 current+1 分配版本，与既有版本
+PK（artifact_id+version）冲突而失败；(3) 局部预览渲染器用 `.mp4.part` 后缀，ffmpeg 无法
+推断容器格式，渲染必然失败；(4) Worker 用全局 `with_passthrough_all_modules()` 绕开沙箱
+（media/visual 活动链的 scenedetect→cv2→numpy C 扩展在沙箱内重复加载崩溃）；(5) 未提交
+改动就地改写已应用迁移 0001/0002（违反 ADR-024 不可变迁移），根因是 media_schema 把表
+注册到不可变 baseline snapshot。
+
+决策：
+1. 已批准 intent 锁定：`TimelineRepository.approved_intent_version` 读取
+   `approved_timeline_intent` publication pointer；`apply_patch`（服务与 `/patches` 端点
+   两条路径一致）在 active version == 批准版本时 409 fail-closed。undo/redo/jump 只移动
+   pointer，不改内容，不触发锁定；新 review cycle 批准后继版本后锁定前移。
+2. Timeline 版本 append-only：`commit` 在 active_pointer 行锁内取 max(version)+1；
+   undo→新编辑追加新版本（旧版本保留为孤儿审计行），redo 语义为“未到最新时前进”，
+   不再截断。
+3. 局部预览 `POST /v1/timelines/{id}/preview-partial`：服务器端从 Object Store 解析真实
+   源媒体、compute_changed_ranges 计算变更区间、渲染首段；`.mp4.part` 改为 `.tmp.mp4`
+   （ffmpeg 按扩展名推断容器）。
+4. Worker 沙箱保持默认保护：全局 passthrough 拒绝；`workflows/media/__init__.py` 与
+   `workflows/visual/__init__.py` 用细粒度 `imports_passed_through` 加载含 C 扩展的活动链。
+5. 迁移不可变：0001/0002 保持原样；`media_schema.py` 使用独立 `MetaData`，不再污染
+   `baseline_v0001.metadata`；全新库 `alembic upgrade head` 与 downgrade/upgrade 往返在
+   真实 Postgres 验证通过。
+6. 已知 bounded debt：`/patches` 与 TimelineEditingService 双实现（行为一致，待合并）；
+   `packages/timeline/revisions.py`（RevisionHistory 纯内存截断语义）未接线，删除需人工
+   批准；CI 无 Postgres service，DB 回归测试在 CI 跳过。
+
+后果：J05 编辑链在 fail-closed 下可用；352 tests、80.61% coverage、全部质量门禁通过；
+Worker 7 个 workflow 全部通过沙箱验证并真实运行。E09 四个真实退出 blocker 不变，
+`engineering_complete` 维持 false。

@@ -28,6 +28,7 @@ class FakeRepository:
     def __init__(self, snapshots: dict[int, TimelineSnapshot]) -> None:
         self.snapshots = snapshots
         self.active_version = max(snapshots.keys()) if snapshots else 1
+        self.approved: int | None = None
         self.commits: list[dict] = []
         self.navigations: list[dict] = []
 
@@ -93,6 +94,9 @@ class FakeRepository:
 
     def get_active_version(self, _conn, *, artifact_id):
         return self.active_version
+
+    def approved_intent_version(self, _conn, *, artifact_id):
+        return self.approved
 
 
 def _make_snapshot(tl: MasterTimeline, version: int = 1) -> TimelineSnapshot:
@@ -314,3 +318,44 @@ class TestGetCurrent:
         service, _ = _make_service(tl)
         current = service.get_current(timeline_id=tl.timeline_id)
         assert current.timeline_id == tl.timeline_id
+
+
+class TestApprovedIntentGate:
+    def test_apply_patch_blocked_on_approved_active_version(self):
+        tl = timeline(item(start=0, duration=25), item(start=25, duration=25))
+        snapshot = _make_snapshot(tl, version=1)
+        repo = FakeRepository({1: snapshot})
+        repo.approved = 1
+        service = TimelineEditingService(engine=object(), repository=repo)
+        target = tl.tracks[0].items[0]
+        p = patch(target, "set_parameter", {"key": "crop", "value": "center"})
+        p = p.model_copy(
+            update={
+                "base_timeline": ArtifactRef.model_validate(
+                    artifact_ref("MasterTimeline") | {"artifact_id": tl.timeline_id}
+                )
+            }
+        )
+        with pytest.raises(TimelineEditingError, match="approved timeline intent"):
+            service.apply_patch(timeline_id=tl.timeline_id, patch=p, trace_id="test")
+
+    def test_apply_patch_allowed_when_approved_version_is_older(self):
+        tl = timeline(item(start=0, duration=25), item(start=25, duration=25))
+        snapshot = _make_snapshot(tl, version=1)
+        repo = FakeRepository({1: snapshot})
+        repo.approved = 1
+        service = TimelineEditingService(engine=object(), repository=repo)
+        # Move the active pointer to a newer version first (approved is older)
+        repo.snapshots[2] = _make_snapshot(tl, version=2)
+        repo.active_version = 2
+        target = tl.tracks[0].items[0]
+        p = patch(target, "set_parameter", {"key": "crop", "value": "center"})
+        p = p.model_copy(
+            update={
+                "base_timeline": ArtifactRef.model_validate(
+                    artifact_ref("MasterTimeline") | {"artifact_id": tl.timeline_id}
+                )
+            }
+        )
+        result = service.apply_patch(timeline_id=tl.timeline_id, patch=p, trace_id="test")
+        assert result.version == 3

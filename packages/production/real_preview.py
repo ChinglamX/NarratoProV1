@@ -22,7 +22,9 @@ from uuid import UUID
 from packages.contracts import MasterTimeline
 from packages.contracts.timeline import TimelineItem, TimelineTrackKind
 from packages.production.fake_preview import (
-    PreviewRenderError,
+    PreviewRenderError as PreviewRenderError,
+)
+from packages.production.fake_preview import (
     PreviewResult,
     _ass_timestamp,
     _probe,
@@ -403,12 +405,11 @@ def render_partial_preview(
 
     clip_paths: list[Path] = []
     for index, (item, _new_start) in enumerate(selected):
-        assert item.source_ref is not None
+        if item.source_ref is None:
+            raise PreviewRenderError("video item has no source ref")
         source = source_paths.get(item.source_ref.artifact_id)
         if source is None or not source.is_file():
-            raise PreviewRenderError(
-                f"source media unavailable: {item.source_ref.artifact_id}"
-            )
+            raise PreviewRenderError(f"source media unavailable: {item.source_ref.artifact_id}")
         item_start = float(item.timeline_range.start.seconds)
         item_end = item_start + float(item.timeline_range.duration.seconds)
         overlap_start = max(item_start, range_start)
@@ -419,7 +420,9 @@ def render_partial_preview(
         src_duration = overlap_end - overlap_start
 
         clip = work / f"clip_{index:04d}.mp4"
-        part = clip.with_suffix(".mp4.part")
+        # ffmpeg infers the container from the file extension; a trailing
+        # ".part" would make it fail, so stage with ".tmp.mp4" and rename.
+        part = clip.with_suffix(".tmp.mp4")
         _run(
             [
                 ffmpeg,
@@ -450,7 +453,7 @@ def render_partial_preview(
     concat_file = work / "concat.txt"
     _write_concat_file(concat_file, [str(p) for p in clip_paths])
     video_path = work / "video.mp4"
-    video_part = work / "video.mp4.part"
+    video_part = work / "video.tmp.mp4"
     _run(
         [
             ffmpeg,
@@ -488,7 +491,7 @@ def render_partial_preview(
         range_start=range_start,
     )
 
-    part = output_path.with_suffix(".mp4.part")
+    part = output_path.with_suffix(".tmp.mp4")
     _run([ffmpeg, "-y", "-i", str(video_path), "-c", "copy", str(part)])
     os.replace(part, output_path)
 

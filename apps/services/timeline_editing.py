@@ -96,6 +96,14 @@ class TimelineEditingService:
                     artifact_id=timeline_id,
                     base_version=patch.base_timeline.version,
                 )
+                approved = self._repository.approved_intent_version(
+                    connection, artifact_id=timeline_id
+                )
+                if approved is not None and approved == current_snapshot.version:
+                    raise TimelineEditingError(
+                        "active version is the approved timeline intent; "
+                        "edits require a new review cycle"
+                    )
                 base = MasterTimeline.model_validate(base_snapshot.payload)
                 current = MasterTimeline.model_validate(current_snapshot.payload)
                 rebased = base_snapshot.version != current_snapshot.version
@@ -106,9 +114,7 @@ class TimelineEditingService:
                 candidate = apply_patch(current, patch)
                 validation = validate_timeline(candidate)
                 if not validation.render_ready:
-                    raise TimelineEditingError(
-                        f"timeline validation failed: {validation.issues}"
-                    )
+                    raise TimelineEditingError(f"timeline validation failed: {validation.issues}")
                 changes = semantic_diff(current, candidate)
                 payload = candidate.model_dump(mode="json")
                 checksum = _payload_checksum(payload)
@@ -140,21 +146,24 @@ class TimelineEditingService:
         reason: str = "undo",
     ) -> NavigationResult:
         """Navigate to the previous version. Raises if at version 1."""
-        with transaction(self._engine) as connection:
-            current_version = self._repository.get_active_version(
-                connection, artifact_id=timeline_id
-            )
-            if current_version <= 1:
-                raise TimelineEditingError("cannot undo: already at earliest version")
-            target = current_version - 1
-            self._repository.set_active_version(
-                connection,
-                artifact_id=timeline_id,
-                target_version=target,
-                expected_version=current_version,
-                trace_id=trace_id,
-                reason=reason,
-            )
+        try:
+            with transaction(self._engine) as connection:
+                current_version = self._repository.get_active_version(
+                    connection, artifact_id=timeline_id
+                )
+                if current_version <= 1:
+                    raise TimelineEditingError("cannot undo: already at earliest version")
+                target = current_version - 1
+                self._repository.set_active_version(
+                    connection,
+                    artifact_id=timeline_id,
+                    target_version=target,
+                    expected_version=current_version,
+                    trace_id=trace_id,
+                    reason=reason,
+                )
+        except TimelineStorageConflict as error:
+            raise TimelineEditingError(str(error)) from error
         return NavigationResult(
             timeline_id=timeline_id,
             version=target,
@@ -170,25 +179,28 @@ class TimelineEditingService:
         reason: str = "redo",
     ) -> NavigationResult:
         """Navigate to the next version. Raises if at latest."""
-        with transaction(self._engine) as connection:
-            current_version = self._repository.get_active_version(
-                connection, artifact_id=timeline_id
-            )
-            versions = self._repository.list_versions(
-                connection, artifact_id=timeline_id, limit=2
-            )
-            latest = max(v.version for v in versions) if versions else current_version
-            if current_version >= latest:
-                raise TimelineEditingError("cannot redo: already at latest version")
-            target = current_version + 1
-            self._repository.set_active_version(
-                connection,
-                artifact_id=timeline_id,
-                target_version=target,
-                expected_version=current_version,
-                trace_id=trace_id,
-                reason=reason,
-            )
+        try:
+            with transaction(self._engine) as connection:
+                current_version = self._repository.get_active_version(
+                    connection, artifact_id=timeline_id
+                )
+                versions = self._repository.list_versions(
+                    connection, artifact_id=timeline_id, limit=2
+                )
+                latest = max(v.version for v in versions) if versions else current_version
+                if current_version >= latest:
+                    raise TimelineEditingError("cannot redo: already at latest version")
+                target = current_version + 1
+                self._repository.set_active_version(
+                    connection,
+                    artifact_id=timeline_id,
+                    target_version=target,
+                    expected_version=current_version,
+                    trace_id=trace_id,
+                    reason=reason,
+                )
+        except TimelineStorageConflict as error:
+            raise TimelineEditingError(str(error)) from error
         return NavigationResult(
             timeline_id=timeline_id,
             version=target,
@@ -205,25 +217,28 @@ class TimelineEditingService:
         reason: str = "jump",
     ) -> NavigationResult:
         """Navigate to any existing version by number."""
-        with transaction(self._engine) as connection:
-            current_version = self._repository.get_active_version(
-                connection, artifact_id=timeline_id
-            )
-            if target_version == current_version:
-                return NavigationResult(
-                    timeline_id=timeline_id,
-                    version=target_version,
-                    previous_version=current_version,
-                    reason="no-op",
+        try:
+            with transaction(self._engine) as connection:
+                current_version = self._repository.get_active_version(
+                    connection, artifact_id=timeline_id
                 )
-            self._repository.set_active_version(
-                connection,
-                artifact_id=timeline_id,
-                target_version=target_version,
-                expected_version=current_version,
-                trace_id=trace_id,
-                reason=reason,
-            )
+                if target_version == current_version:
+                    return NavigationResult(
+                        timeline_id=timeline_id,
+                        version=target_version,
+                        previous_version=current_version,
+                        reason="no-op",
+                    )
+                self._repository.set_active_version(
+                    connection,
+                    artifact_id=timeline_id,
+                    target_version=target_version,
+                    expected_version=current_version,
+                    trace_id=trace_id,
+                    reason=reason,
+                )
+        except TimelineStorageConflict as error:
+            raise TimelineEditingError(str(error)) from error
         return NavigationResult(
             timeline_id=timeline_id,
             version=target_version,
@@ -237,9 +252,7 @@ class TimelineEditingService:
             current_version = self._repository.get_active_version(
                 connection, artifact_id=timeline_id
             )
-            snapshots = self._repository.list_versions(
-                connection, artifact_id=timeline_id, limit=1
-            )
+            snapshots = self._repository.list_versions(connection, artifact_id=timeline_id, limit=1)
             # list_versions is newest-first; find the active one
             for snapshot in snapshots:
                 if snapshot.version == current_version:
@@ -251,6 +264,19 @@ class TimelineEditingService:
                 base_version=current_version,
             )
             return MasterTimeline.model_validate(current.payload)
+
+    def get_version(self, *, timeline_id: UUID, version: int) -> MasterTimeline:
+        """Load a specific timeline version by number."""
+        try:
+            with transaction(self._engine) as connection:
+                base_snapshot, _current = self._repository.lock_and_load(
+                    connection,
+                    artifact_id=timeline_id,
+                    base_version=version,
+                )
+                return MasterTimeline.model_validate(base_snapshot.payload)
+        except TimelineStorageConflict as error:
+            raise TimelineEditingError(str(error)) from error
 
     def list_versions(
         self,
@@ -307,9 +333,7 @@ class TimelineEditingService:
                 )
             }
         if from_version not in snapshots or to_version not in snapshots:
-            raise TimelineEditingError(
-                f"version {from_version} or {to_version} not found"
-            )
+            raise TimelineEditingError(f"version {from_version} or {to_version} not found")
         from_timeline = MasterTimeline.model_validate(snapshots[from_version].payload)
         to_timeline = MasterTimeline.model_validate(snapshots[to_version].payload)
         return semantic_diff(from_timeline, to_timeline)

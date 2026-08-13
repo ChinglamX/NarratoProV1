@@ -87,9 +87,7 @@ class RevisionHistory:
         """Seed the history with a baseline timeline. Must be called first."""
         if self._entries:
             raise RevisionHistoryError("revision history already initialized")
-        self._entries.append(
-            RevisionEntry(version=version, timeline=timeline, label="baseline")
-        )
+        self._entries.append(RevisionEntry(version=version, timeline=timeline, label="baseline"))
         self._cursor = 0
 
     def undo(self) -> RevisionEntry:
@@ -147,17 +145,13 @@ class RevisionHistory:
                 return entry
         raise RevisionHistoryError(f"version {version} not found in history")
 
-    def diff(
-        self, from_version: int, to_version: int
-    ) -> tuple[TimelineChange, ...]:
+    def diff(self, from_version: int, to_version: int) -> tuple[TimelineChange, ...]:
         """Compute semantic diff between two versions in the history."""
         from_entry = self._find(from_version)
         to_entry = self._find(to_version)
         return semantic_diff(from_entry.timeline, to_entry.timeline)
 
-    def changed_ranges(
-        self, from_version: int, to_version: int
-    ) -> tuple[tuple[float, float], ...]:
+    def changed_ranges(self, from_version: int, to_version: int) -> tuple[tuple[float, float], ...]:
         """Return merged timeline time ranges affected by changes.
 
         Used by partial preview to determine which segments need re-render.
@@ -166,9 +160,7 @@ class RevisionHistory:
         from_entry = self._find(from_version)
         to_entry = self._find(to_version)
         old_items = {
-            item.item_id: item
-            for track in from_entry.timeline.tracks
-            for item in track.items
+            item.item_id: item for track in from_entry.timeline.tracks for item in track.items
         }
         ranges: list[tuple[float, float]] = []
         for track in to_entry.timeline.tracks:
