@@ -1,32 +1,164 @@
 {
-  "release_slice":"R3-creative-plan",
-  "code_revision":"pending-j06-requalification",
-  "automation_level":"L1",
-  "confidence_shadow":true,
-  "timeline_checkpoint_required":true,
-  "engineering_complete":false,
-  "production_decision":"pending_human",
-  "checks":[
-    {"check_id":"approved-input-boundary","dimension":"governance","status":"passed","blocker":false,"detail":"Timeline input fails closed without Approved Creative Brief and Variant Plan pointers.","evidence_paths":["apps/services/timeline_inputs.py"]},
-    {"check_id":"visual-clip-planning","dimension":"correctness","status":"passed","blocker":false,"detail":"Multi-route retrieval boundary, Story/Evidence/Character filtering, sequence continuity, reframe fallback and local scope are tested.","evidence_paths":["packages/timeline/visual_planning.py","tests/timeline/test_visual_planning.py"]},
-    {"check_id":"rhythm-narration-planning","dimension":"correctness","status":"passed","blocker":false,"detail":"Duration reconciliation, explicit conflict, evidence coverage, dialogue repetition and lock boundaries are tested.","evidence_paths":["packages/timeline/rhythm_narration.py","tests/timeline/test_rhythm_narration.py"]},
-    {"check_id":"master-timeline-single-truth","dimension":"engineering","status":"passed","blocker":false,"detail":"Video, original audio, narration placeholder, BGM/SFX, subtitle and overlay intents assemble into one canonical Master Timeline.","evidence_paths":["packages/timeline/multitrack.py","tests/timeline/test_multitrack.py"]},
-    {"check_id":"timeline-review-checkpoint","dimension":"governance","status":"passed","blocker":false,"detail":"Exact-ref package, typed workspace, semantic patch boundary and L1 human checkpoint publication are implemented.","evidence_paths":["apps/api/reviews.py","apps/review_web/src/timelineReview.ts","tests/apps/test_timeline_review_api.py"]},
-    {"check_id":"demo-technical-benchmark","dimension":"quality","status":"passed","blocker":false,"detail":"Desktop demo technical and shot structure are versioned; 260.7s, 544x720, 30fps, 189 shots, median 1.2s.","evidence_paths":["evaluation/benchmarks/e09_demo_v1.json"]},
-    {"check_id":"real-craft-benchmark","dimension":"quality","status":"not_evaluated","blocker":true,"detail":"Human Hook/rhythm/narration/composition annotation and candidate-to-demo full-playback comparison require real approved project data.","evidence_paths":["evaluation/benchmarks/e09_demo_v1.json"]},
-    {"check_id":"real-timeline-checkpoint","dimension":"approval","status":"not_evaluated","blocker":true,"detail":"No real Timeline Intent has received editor checkpoint approval.","evidence_paths":[]},
-    {"check_id":"semantic-visual-providers","dimension":"provider","status":"blocked","blocker":true,"detail":"E06 semantic visual providers remain unqualified for production selection/reframe.","evidence_paths":["quality/E06_ACCEPTANCE_REPORT.md"]},
-    {"check_id":"deterministic-concurrency","dimension":"reliability","status":"passed","blocker":false,"detail":"Parallel fan-in ordering is deterministic and unit tested.","evidence_paths":["tests/evaluation/test_timeline_benchmark.py"]},
-    {"check_id":"production-replay-preview","dimension":"reliability","status":"not_evaluated","blocker":true,"detail":"Real multi-variant Worker restart/replay and complete candidate Preview require approved real input.","evidence_paths":["workflows/timeline/workflow.py"]}
+  "release_slice": "R4-creative-production",
+  "code_revision": "v52-2026-08-15",
+  "automation_level": "L1",
+  "confidence_shadow": true,
+  "timeline_checkpoint_required": true,
+  "engineering_complete": false,
+  "production_decision": "pending_human",
+  "checks": [
+    {
+      "check_id": "approved-input-boundary",
+      "dimension": "governance",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Timeline input fails closed without Approved Creative Brief and Variant Plan pointers.",
+      "evidence_paths": [
+        "apps/services/timeline_inputs.py"
+      ]
+    },
+    {
+      "check_id": "visual-clip-planning",
+      "dimension": "correctness",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Multi-route retrieval boundary, Story/Evidence/Character filtering, sequence continuity, reframe fallback and local scope are tested.",
+      "evidence_paths": [
+        "packages/timeline/visual_planning.py",
+        "tests/timeline/test_visual_planning.py"
+      ]
+    },
+    {
+      "check_id": "rhythm-narration-planning",
+      "dimension": "correctness",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Duration reconciliation, explicit conflict, evidence coverage, dialogue repetition and lock boundaries are tested.",
+      "evidence_paths": [
+        "packages/timeline/rhythm_narration.py",
+        "tests/timeline/test_rhythm_narration.py"
+      ]
+    },
+    {
+      "check_id": "master-timeline-single-truth",
+      "dimension": "engineering",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Video, original audio, narration placeholder, BGM/SFX, subtitle and overlay intents assemble into one canonical Master Timeline.",
+      "evidence_paths": [
+        "packages/timeline/multitrack.py",
+        "tests/timeline/test_multitrack.py"
+      ]
+    },
+    {
+      "check_id": "timeline-review-checkpoint",
+      "dimension": "governance",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Exact-ref package, typed workspace, semantic patch boundary and L1 human checkpoint publication are implemented.",
+      "evidence_paths": [
+        "apps/api/reviews.py",
+        "apps/review_web/src/timelineReview.ts",
+        "tests/apps/test_timeline_review_api.py"
+      ]
+    },
+    {
+      "check_id": "demo-technical-benchmark",
+      "dimension": "quality",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Desktop demo technical and shot structure are versioned; 260.7s, 544x720, 30fps, 189 shots, median 1.2s.",
+      "evidence_paths": [
+        "evaluation/benchmarks/e09_demo_v1.json"
+      ]
+    },
+    {
+      "check_id": "real-craft-benchmark",
+      "dimension": "quality",
+      "status": "not_evaluated",
+      "blocker": true,
+      "detail": "Project owner approved the full playback on 2026-08-15; AI craft-comparison draft archived at evaluation/benchmarks/e09_craft_compare_v1.json pending human score signoff.",
+      "evidence_paths": [
+        "evaluation/benchmarks/e09_craft_compare_v1.json",
+        "PROJECT_STATE.md (State v51)"
+      ]
+    },
+    {
+      "check_id": "real-timeline-checkpoint",
+      "dimension": "approval",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Project owner approved the 30.27s full-cut preview on 2026-08-15; CreativeTimelineWorkflow reached succeeded via scripts/sign_e09_review.py (human gate).",
+      "evidence_paths": [
+        "PROJECT_STATE.md (State v51)",
+        "scripts/sign_e09_review.py"
+      ]
+    },
+    {
+      "check_id": "semantic-visual-providers",
+      "dimension": "provider",
+      "status": "blocked",
+      "blocker": true,
+      "detail": "E06 semantic visual providers remain unqualified for production selection/reframe.",
+      "evidence_paths": [
+        "quality/E06_ACCEPTANCE_REPORT.md"
+      ]
+    },
+    {
+      "check_id": "deterministic-concurrency",
+      "dimension": "reliability",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Parallel fan-in ordering is deterministic and unit tested.",
+      "evidence_paths": [
+        "tests/evaluation/test_timeline_benchmark.py"
+      ]
+    },
+    {
+      "check_id": "production-replay-preview",
+      "dimension": "reliability",
+      "status": "passed",
+      "blocker": false,
+      "detail": "Engineering side closed: scripts/accept_e09_multi_variant.py ran two real-data variants concurrently through hard worker restart; both resumed from durable history and history replay PASS (State v52). Production project data still pending for final approval evidence.",
+      "evidence_paths": [
+        "scripts/accept_e09_multi_variant.py",
+        "PROJECT_STATE.md (State v52)",
+        "runbooks/E09_CREATIVE_TIMELINE.md"
+      ]
+    }
   ],
-  "severe_errors":[
-    {"code":"wrong-story-clip","description":"Selected clip does not support its narrative beat."},
-    {"code":"coverage-gap-hidden","description":"Missing required footage is silently filled with unrelated material."},
-    {"code":"rights-blocked-clip","description":"A rights-blocked source enters the approved timeline."},
-    {"code":"dialogue-or-action-cut","description":"A required dialogue or action is cut before comprehension."},
-    {"code":"narration-fabrication","description":"Narration changes unsupported identity, event, causality or motivation."},
-    {"code":"narration-dialogue-duplication","description":"Narration repeatedly restates clearly audible dialogue without purpose."},
-    {"code":"unsafe-crop","description":"Crop removes a key face, action, text or violates safe composition."},
-    {"code":"duration-infeasible","description":"Required minimum beat durations exceed the approved target."}
+  "severe_errors": [
+    {
+      "code": "wrong-story-clip",
+      "description": "Selected clip does not support its narrative beat."
+    },
+    {
+      "code": "coverage-gap-hidden",
+      "description": "Missing required footage is silently filled with unrelated material."
+    },
+    {
+      "code": "rights-blocked-clip",
+      "description": "A rights-blocked source enters the approved timeline."
+    },
+    {
+      "code": "dialogue-or-action-cut",
+      "description": "A required dialogue or action is cut before comprehension."
+    },
+    {
+      "code": "narration-fabrication",
+      "description": "Narration changes unsupported identity, event, causality or motivation."
+    },
+    {
+      "code": "narration-dialogue-duplication",
+      "description": "Narration repeatedly restates clearly audible dialogue without purpose."
+    },
+    {
+      "code": "unsafe-crop",
+      "description": "Crop removes a key face, action, text or violates safe composition."
+    },
+    {
+      "code": "duration-infeasible",
+      "description": "Required minimum beat durations exceed the approved target."
+    }
   ]
 }

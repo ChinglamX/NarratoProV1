@@ -12,7 +12,12 @@ PATH = Path("evaluation/qualification/e09_j06.json")
 def test_e09_qualification_refuses_completion_without_real_exit_evidence() -> None:
     value = TimelineEngineeringQualification.model_validate_json(PATH.read_text())
     assert not value.engineering_complete and value.production_decision.value == "pending_human"
-    assert sum(check.blocker for check in value.checks) == 4
+    # Real human checkpoint signoff (State v51) and multi-variant restart/replay
+    # (State v52) closed two of the original four exit blockers; semantic visual
+    # providers and the human craft score signoff remain blockers.
+    assert sum(check.blocker for check in value.checks) == 2
+    blocker_ids = {check.check_id for check in value.checks if check.blocker}
+    assert blocker_ids == {"semantic-visual-providers", "real-craft-benchmark"}
 
 
 def test_e09_cannot_bypass_checkpoint_or_synthesize_approval() -> None:

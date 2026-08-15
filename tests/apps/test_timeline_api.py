@@ -121,6 +121,8 @@ def _request(repository: FakeRepository) -> SimpleNamespace:
 
 @pytest.fixture(autouse=True)
 def _patch_transactions(monkeypatch: pytest.MonkeyPatch) -> None:
+    # The /patches endpoint delegates to TimelineEditingService; the service
+    # module and the preview-partial endpoint each open their own transaction.
     monkeypatch.setattr(api, "transaction", _fake_transaction)
     monkeypatch.setattr(editing_module, "transaction", _fake_transaction)
 
@@ -157,11 +159,6 @@ def test_timeline_api_applies_valid_semantic_patch(monkeypatch: pytest.MonkeyPat
     repository = FakeRepository({1: snapshot})
     request = _request(repository)
 
-    @contextmanager
-    def fake_transaction(_engine: object):
-        yield object()
-
-    monkeypatch.setattr(api, "transaction", fake_transaction)
     response = api.apply_timeline_patch(  # type: ignore[arg-type]
         timeline_id, candidate, request, "editor", "a" * 32
     )

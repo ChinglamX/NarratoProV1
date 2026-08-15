@@ -11,12 +11,6 @@ from packages.timeline.patches import (
     can_rebase,
     semantic_diff,
 )
-from packages.timeline.revisions import (
-    RevisionEntry,
-    RevisionHistory,
-    RevisionHistoryError,
-    build_history_from_versions,
-)
 from packages.timeline.rhythm_narration import (
     allocate_rhythm,
     replace_lines_in_scope,
@@ -46,9 +40,6 @@ __all__ = [
     "NarrationSourcePort",
     "NarrationSourceUnavailable",
     "RenderPlan",
-    "RevisionEntry",
-    "RevisionHistory",
-    "RevisionHistoryError",
     "TimelineAssemblyError",
     "TimelineChange",
     "TimelinePatchConflict",
@@ -60,7 +51,6 @@ __all__ = [
     "analyze_continuity",
     "apply_patch",
     "assemble_multitrack_timeline",
-    "build_history_from_versions",
     "can_rebase",
     "choose_source_subtitle_policy",
     "compile_render_plan",

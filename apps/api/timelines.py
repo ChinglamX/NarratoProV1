@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-import json
 import shutil
-from hashlib import sha256
 from pathlib import Path
 from typing import Annotated
 from uuid import UUID
@@ -23,20 +21,12 @@ from packages.foundation.settings import get_settings
 from packages.persistence.artifact_repository import ArtifactRepository
 from packages.persistence.database import transaction
 from packages.persistence.timeline_repository import (
-    TimelineRepository,
     TimelineStorageConflict,
 )
 from packages.production.real_preview import (
     PreviewRenderError,
     compute_changed_ranges,
     render_partial_preview,
-)
-from packages.timeline import (
-    TimelinePatchConflict,
-    apply_patch,
-    can_rebase,
-    semantic_diff,
-    validate_timeline,
 )
 
 router = APIRouter(prefix="/v1/timelines", tags=["timelines"])
@@ -61,57 +51,32 @@ def apply_timeline_patch(
     actor_roles: Annotated[str, Header(alias="X-Actor-Roles")],
     trace_id: Annotated[str, Header(alias="X-Trace-Id")] = "0" * 32,
 ) -> dict[str, object]:
-    if "editor" not in {role.strip() for role in actor_roles.split(",")}:
-        raise HTTPException(status.HTTP_403_FORBIDDEN, detail={"code": "timeline_forbidden"})
-    engine: Engine = request.app.state.database_engine
-    repository: TimelineRepository = request.app.state.timeline_repository
+    _require_editor(actor_roles)
     try:
-        with transaction(engine) as connection:
-            if patch.base_timeline.artifact_id != timeline_id:
-                raise TimelinePatchConflict("patch base does not match timeline identity")
-            base_snapshot, current_snapshot = repository.lock_and_load(
-                connection,
-                artifact_id=timeline_id,
-                base_version=patch.base_timeline.version,
-            )
-            approved = repository.approved_intent_version(connection, artifact_id=timeline_id)
-            if approved is not None and approved == current_snapshot.version:
-                raise TimelinePatchConflict(
-                    "active version is the approved timeline intent; "
-                    "edits require a new review cycle"
-                )
-            base = MasterTimeline.model_validate(base_snapshot.payload)
-            current = MasterTimeline.model_validate(current_snapshot.payload)
-            rebased = base_snapshot.version != current_snapshot.version
-            if rebased and not can_rebase(patch, semantic_diff(base, current)):
-                raise TimelinePatchConflict("concurrent patch touches the same item")
-            candidate = apply_patch(current, patch)
-            if not validate_timeline(candidate).render_ready:
-                raise TimelinePatchConflict("timeline validation failed")
-            payload = candidate.model_dump(mode="json")
-            encoded = json.dumps(
-                payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-            ).encode()
-            checksum = "sha256:" + sha256(encoded).hexdigest()
-            version = repository.commit(
-                connection,
-                artifact_id=timeline_id,
-                current=current_snapshot,
-                payload=payload,
-                checksum=checksum,
-                patch_id=patch.patch_id,
-                rebased=rebased,
-                trace_id=trace_id,
-            )
-    except (TimelinePatchConflict, TimelineStorageConflict) as error:
+        result = _editing_service(request).apply_patch(
+            timeline_id=timeline_id,
+            patch=patch,
+            trace_id=trace_id,
+        )
+    except TimelineEditingError as error:
         raise HTTPException(
-            status.HTTP_409_CONFLICT, detail={"code": "timeline_conflict"}
+            status.HTTP_409_CONFLICT,
+            detail={"code": "timeline_conflict", "message": str(error)},
         ) from error
     return {
-        "timeline_id": timeline_id,
-        "version": version,
-        "checksum": checksum,
-        "rebased": rebased,
+        "timeline_id": result.timeline_id,
+        "version": result.version,
+        "checksum": result.checksum,
+        "rebased": result.rebased,
+        "changes": [
+            {
+                "item_id": str(change.item_id),
+                "change": change.change,
+                "before_version": change.before_version,
+                "after_version": change.after_version,
+            }
+            for change in result.changes
+        ],
     }
 
 

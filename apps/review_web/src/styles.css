@@ -21,3 +21,19 @@ textarea { min-height: 110px; resize: vertical; }.field-label { display: grid; g
 .actions { position: sticky; bottom: 0; justify-content: flex-end; padding: 18px 0; background: linear-gradient(transparent, #0a0c0f 25%); }.actions button { padding: 11px 18px; color: #dbe3ea; background: #171d23; border: 1px solid #37434e; border-radius: 8px; cursor: pointer; }.actions .primary { color: #08110d; background: #76e6ba; border-color: #76e6ba; }.actions button:disabled { opacity: .35; cursor: not-allowed; }
 .inline-error { color: #f39b9b; }.center-state { min-height: 100vh; display: grid; place-content: center; text-align: center; }
 @media (max-width: 800px) { .workspace { padding: 18px; }.preview-panel, .review-grid { grid-template-columns: 1fr; }.track { grid-template-columns: 90px 1fr; } }
+
+.version-list { display: grid; gap: 6px; margin-top: 14px; }
+.version-row { display: flex; align-items: center; gap: 14px; padding: 9px 12px; background: #10161c; border-radius: 8px; font-size: 12px; }
+.version-row strong { min-width: 44px; color: #d9e2eb; }
+.change-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.change-tags code { padding: 3px 8px; font-size: 11px; }
+.diff-tools { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-top: 16px; }
+.diff-tools .field-label { margin-bottom: 0; min-width: 120px; }
+.diff-tools select { width: 100%; padding: 10px; color: #e8edf2; background: #090c10; border: 1px solid #34404b; border-radius: 8px; }
+.diff-tools button { padding: 10px 14px; color: #dbe3ea; background: #171d23; border: 1px solid #37434e; border-radius: 8px; cursor: pointer; }
+.diff-tools button:disabled { opacity: .35; cursor: not-allowed; }
+.diff-tools button.primary { color: #08110d; background: #76e6ba; border-color: #76e6ba; }
+.diff-result { margin-top: 16px; padding: 14px; background: #10161c; border-radius: 10px; font-size: 13px; }
+.diff-result ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px; }
+.diff-result li code { padding: 2px 6px; font-size: 11px; }
+.muted { color: #7f91a4; }

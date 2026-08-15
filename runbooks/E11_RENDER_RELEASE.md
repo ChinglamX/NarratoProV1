@@ -10,3 +10,4 @@
 8. Any Technical, Rights or Quality blocker forces Reject regardless of weighted score.
 9. Gate 3 requires a human `release_approver`; service accounts and automation can never approve.
 10. Publish only the exact FinalCandidate/checksum; corrections create successors and repeat preflight.
+11. Time-base discipline (E09 ADR-051 lesson): MasterTimeline track ranges are microsecond-based (rate 1_000_000) while the timeline duration may use a coarser rate (e.g. 121/4 = 30.25s). RenderPlan operations carry each item's raw range; consumers must compare via `seconds`, never by raw value across different rates. Deterministic compilation is verified: identical inputs produce identical RenderPlan checksums.
