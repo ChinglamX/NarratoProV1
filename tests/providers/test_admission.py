@@ -26,8 +26,8 @@ def test_detection_candidate_is_open_source_not_agpl() -> None:
 
 
 def test_production_admission_requires_complete_evidence() -> None:
-    gaps = production_readiness_gaps(CANDIDATE_VISUAL_PROVIDERS[0])
-    assert "model_checksum" in gaps[0] or "model_checksum" in " ".join(gaps)
+    incomplete = next(p for p in CANDIDATE_VISUAL_PROVIDERS if p.model_checksum is None)
+    gaps = production_readiness_gaps(incomplete)
     assert any("checksum" in gap for gap in gaps)
     assert any("commercial_use_allowed" in gap for gap in gaps)
 
@@ -44,8 +44,7 @@ def test_production_ready_package_passes_gate() -> None:
 
 
 def test_production_gate_fails_closed_on_missing_checksum() -> None:
-    package = CANDIDATE_VISUAL_PROVIDERS[0].model_copy(
-        update={"admission": ProviderAdmission.PRODUCTION}
-    )
+    incomplete = next(p for p in CANDIDATE_VISUAL_PROVIDERS if p.model_checksum is None)
+    package = incomplete.model_copy(update={"admission": ProviderAdmission.PRODUCTION})
     with pytest.raises(ProviderAdmissionError, match="model_checksum"):
         assert_production_ready(package)

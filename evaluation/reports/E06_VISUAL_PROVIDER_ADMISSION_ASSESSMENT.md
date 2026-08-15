@@ -59,7 +59,16 @@ E06 Acceptance Report（`quality/E06_ACCEPTANCE_REPORT.md`）、G05 probe、
   提交新 E06 Acceptance Report（engineering recommendation + human signoff）。
   任何阶段都遵守 ADR-032：Agent 不合成生产批准。
 
-## 6. 下一步建议（等你决定后执行）
+## 6. 阶段进展
+
+- **阶段 A（已完成 2026-08-15）**：Provider 准入注册表（`packages/providers/admission.py`）+ production 完整性 gate（gateway 强制校验）。
+- **阶段 B 部分完成（2026-08-15）**：本地 runtime 已安装并验证——
+  - PaddleOCR 3.7.0 / PaddleX 3.7.2 / paddlepaddle 3.3.1（arm64 CPU）：PP-OCRv6_medium_det + PP-OCRv6_medium_rec 权重已固定（checksum 见注册表），demo 帧推理 1.46s，识别文本可用。
+  - RT-DETR-L（PaddleX 内置）：权重已固定（checksum 见注册表），demo 帧 2 个检测（score 0.94/0.81）。
+  - 依赖记录于 `pyproject.toml` `[research]` extra；模型缓存 `.paddlex-cache/`（workspace 内，已 gitignore）。
+  - **仍缺**：真实短剧按剧隔离 OCR/detection benchmark（素材前置）、Mac mini 长视频吞吐/容量验收、跟踪/embedding 链路验证。
+
+## 7. 下一步建议（等你决定后执行）
 
 1. 批准阶段 A：我产出候选 Provider 的 `ProviderPackage` 声明骨架与准入材料清单模板。
 2. 决策上述 5 个决策点（至少 1/2/3）。

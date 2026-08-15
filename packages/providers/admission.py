@@ -13,6 +13,12 @@ from __future__ import annotations
 
 from packages.contracts import ProviderAdmission, ProviderPackage
 
+# Pinned model weight checksums (verified 2026-08-15 from the official Paddle
+# model source downloads into .paddlex-cache).
+_PP_OCRV6_MEDIUM_DET_SHA = "sha256:85218d2e3d98f5a21c58b4220627be923a97aee5db3cc71f39536ab31ac53960"
+_PP_OCRV6_MEDIUM_REC_SHA = "sha256:1b01c79a914587933f615569e75de54f2e638ebb5d3f3b3c1b38c24ede8c7319"
+_RT_DETR_L_SHA = "sha256:51200fe6bb524263985c462d1a1ce5af48a3909136638e9d3ab13ed488ba19a8"
+
 # Model/weight license facts below are stated as candidate values that MUST be
 # re-verified against the exact pinned revision before any production upgrade;
 # no package here is admitted as production.
@@ -21,16 +27,16 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
         {
             "identity": {
                 "provider": "paddleocr",
-                "implementation": "pp-ocrv5",
-                "version": "3.x-pending-pin",
-                "license": "Apache-2.0-weight-pending-verify",
+                "implementation": "pp-ocrv6",
+                "version": "paddleocr-3.7.0-paddlex-3.7.2",
+                "license": "Apache-2.0",
             },
             "capabilities": ["ocr"],
             "admission": "research",
             "code_license": "Apache-2.0",
-            "weight_license": "Apache-2.0-pending-verify",
+            "weight_license": "Apache-2.0",
             "commercial_use_allowed": False,
-            "model_checksum": None,
+            "model_checksum": _PP_OCRV6_MEDIUM_DET_SHA,
             "data_policy": {
                 "execution_location": "local",
                 "allowed_residencies": ["CN", "LOCAL"],
@@ -42,8 +48,10 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "retry_safe": True,
             "max_batch_size": 16,
             "known_limitations": [
-                "runtime/model not pinned; no checksum; no real short-drama OCR benchmark",
-                "subtitle/text-box quality on drama captions unmeasured",
+                "models pinned: PP-OCRv6_medium_det (checksum above) + PP-OCRv6_medium_rec "
+                f"({_PP_OCRV6_MEDIUM_REC_SHA}); verified 2026-08-15 on demo frame "
+                "(1.46s CPU); real short-drama OCR benchmark and subtitle/text-box "
+                "quality still pending",
             ],
         }
     ),
@@ -51,16 +59,16 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
         {
             "identity": {
                 "provider": "paddle-detection",
-                "implementation": "rt-detr-detector",
-                "version": "pending-pin",
-                "license": "Apache-2.0-pending-verify",
+                "implementation": "rt-detr-l",
+                "version": "paddlex-3.7.2",
+                "license": "Apache-2.0",
             },
             "capabilities": ["detection"],
             "admission": "research",
             "code_license": "Apache-2.0",
-            "weight_license": "Apache-2.0-pending-verify",
+            "weight_license": "Apache-2.0",
             "commercial_use_allowed": False,
-            "model_checksum": None,
+            "model_checksum": _RT_DETR_L_SHA,
             "data_policy": {
                 "execution_location": "local",
                 "allowed_residencies": ["CN", "LOCAL"],
@@ -72,9 +80,9 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "retry_safe": True,
             "max_batch_size": 16,
             "known_limitations": [
-                "project decision 2026-08-15: open-source only; supersedes ultralytics/yolo "
-                "(AGPL-3.0, not adopted for commercial short-drama production)",
-                "runtime/model not pinned; no checksum; no real short-drama detection benchmark",
+                "model pinned: RT-DETR-L (checksum above); verified 2026-08-15 on demo "
+                "frame (2 detections); supersedes ultralytics/yolo (AGPL, not adopted); "
+                "real short-drama detection benchmark still pending",
             ],
         }
     ),
@@ -142,7 +150,7 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "identity": {
                 "provider": "volcengine-ark",
                 "implementation": "doubao-vision-vlm",
-                "version": "pending-exact-endpoint",
+                "version": "Doubao-SeedDance-2.0-mini-pending-endpoint",
                 "license": "volcengine-ark-tos-pending-verify",
             },
             "capabilities": ["vlm"],
@@ -163,8 +171,9 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "retry_safe": True,
             "max_batch_size": 4,
             "known_limitations": [
-                "project decision 2026-08-15: VLM via Volcengine Ark (Doubao vision models); "
-                "exact model endpoint, API key, data-residency terms and cost caps pending",
+                "project decision 2026-08-15: VLM via Volcengine Ark, model "
+                "Doubao-SeedDance-2.0-mini; exact endpoint, API key and cost caps pending, "
+                "capability class to be confirmed in the Ark console",
                 "claims constrained by the VLM claim contract; frames are transmitted to the API",
             ],
         }

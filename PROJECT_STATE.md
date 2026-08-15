@@ -1,14 +1,14 @@
 # Project Current State
 
-State Version: 53
+State Version: 54
 Last Updated: 2026-08-15
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained（语义视觉 Provider 准入准备阶段 A 已启动，State v53）; E07/E08 engineering closed with real-data qualification pending; E09 active（认证链路人天签署完成，多 Variant replay 工程验证通过，剩余 blocker 见 §5）; E10/E11 advance baseline（不启动主实现）。
+- Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained（语义视觉 Provider 准入阶段 B 本地 runtime 已安装验证，State v54）; E07/E08 engineering closed with real-data qualification pending; E09 active（认证链路人天签署完成，多 Variant replay 工程验证通过，剩余 blocker 见 §5）; E10/E11 advance baseline（不启动主实现）。
 - Active Release Slice：R4 Creative Production。
-- Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt（准入评估进行中）。
+- Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt（准入评估 + 本地 runtime 验证进行中）。
 - Active Backlog Entry：J05 Precise Multi-track Editing — 工程实现已审计修复（State v48）、渲染时间基 bug 修复并重跑认证（State v50）、项目负责人人工审核 approve（State v51）、多 Variant restart/replay 工程验证 + preview heartbeat 修复（State v52）、J05 debt 清理完成（/patches 合并、Web 接线、CI Postgres、revisions.py 经授权删除）；剩余 Epic 退出 blocker 见 §5。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
 
@@ -127,7 +127,8 @@ State Owner: Project
 
 ## 7. 最近验证
 
-- 2026-08-15 E06 语义视觉 Provider 准入准备阶段 A（State v53）：评估报告 `evaluation/reports/E06_VISUAL_PROVIDER_ADMISSION_ASSESSMENT.md`（现状盘点、能力×材料差距矩阵、5 个决策点、分阶段路径）；`packages/providers/admission.py` 新增候选 Provider 注册表与 production 完整性校验器（fail-closed：缺 model_checksum/weight_license/commercial 批准/未固定 revision 即拒绝）；`packages/providers/gateway.py` 对 production admission 的 provider 强制 `assert_production_ready`（ProviderAdmissionError 统一映射 ProviderPolicyError）；tests/providers/test_admission.py 5 个新测试 + test_gateway fixture 补齐 production 证据。`make check` 342 tests、80.36% coverage 全绿。**项目决策 2026-08-15：全开源路线不采用商业化**——Detection 排除 Ultralytics YOLO（AGPL）改选 PaddleDetection RT-DETR（Apache-2.0）；**VLM 走火山引擎（Volcengine Ark）豆包视觉模型 API**（external_cloud、数据驻留 CN、帧外传，exact endpoint/API key/成本上限待定）。**仍待决：OCR 本地 runtime 验收、VLM API key/endpoint 配置、Mac mini 容量目标、真实 benchmark pack 素材。**
+- 2026-08-15 E06 语义视觉 Provider 本地 runtime 安装验证（State v54）：经项目负责人授权安装 paddlepaddle 3.3.1（arm64 CPU）+ paddleocr 3.7.0/paddlex 3.7.2，新增 `pyproject.toml` `[research]` extra；**PaddleOCR PP-OCRv6_medium_det+rec 与 RT-DETR-L 权重已下载、固定并记录完整 sha256 checksum**（注册表 `packages/providers/admission.py`）；demo 帧实测——OCR 推理 1.46s 识别文本、RT-DETR-L 检测 2 对象（score 0.94/0.81）；PaddleX 缓存重定向 workspace `.paddlex-cache/`（已 gitignore + ruff exclude）。`make check` 342 tests、80.38% coverage 全绿。**仍缺：真实短剧 benchmark 素材、Mac mini 容量验收、跟踪/embedding 链路验证、火山方舟 API key/endpoint。**
+- 2026-08-15 E06 语义视觉 Provider 准入准备阶段 A + 决策（State v53）：评估报告 `evaluation/reports/E06_VISUAL_PROVIDER_ADMISSION_ASSESSMENT.md`；`packages/providers/admission.py` 候选注册表 + production 完整性校验器（fail-closed）；gateway 强制 `assert_production_ready`；tests/providers 5 新测试。**项目决策 2026-08-15：全开源路线不采用商业化**——Detection 排除 Ultralytics YOLO（AGPL）改选 PaddleDetection RT-DETR（Apache-2.0）；**VLM 走火山引擎（Volcengine Ark）豆包视觉模型 API（Doubao-SeedDance-2.0-mini，external_cloud、CN 驻留、帧外传，endpoint/API key/成本上限待定）**。
 - 2026-08-15 E10 时间基防御与 qualification 测试维护（State v52 追加）：(1) `test_conform.py` 新增微秒基多行 subtitle cue 回归测试（E09 ADR-051 教训固化——cue 时间按 seconds 语义，rate 混合被拒）；(2) E10/E11 runbook 各增补时间基纪律条目（轨道微秒基 vs duration 低 rate，消费按 seconds 比较）；(3) `test_timeline_qualification.py` 更新 E09 blocker 断言 4→2（人工签署与多 Variant replay 关闭两个退出 blocker，剩余 semantic-visual-providers 与 craft 评分签核）；(4) `make check` 356 tests、80.56% coverage 全绿。
 - 2026-08-15 qualification 一致性审阅（State v52 追加）：逐一对照 6 个 qualification 文件与 State 声称——e06_g05（R2，未关闭，6 passed/4 blocked/2 not_evaluated）、e07_h06（R2，工程关闭 4 passed）、e08_i05（R3，工程关闭 4 passed）、e10_k06/e11_l06（R4-release-candidate，契约基线）均与 State 一致；**修复 e09_j06 release_slice 过期值**（R3-creative-plan → R4-creative-production，与 State v49 起 Active Release Slice 一致）。其余 Epic 的 blocked/not_evaluated 均为真实 Provider/Corpus/rights 前置，无工程侧过期状态。
 - 2026-08-15 E09 qualification 矩阵更新（State v52 追加）：`evaluation/qualification/e09_j06.json` 反映最新证据——`real-timeline-checkpoint` → passed（人工 approve + workflow succeeded，State v51）、`production-replay-preview` → passed（多 Variant restart/replay 工程验证，State v52）、`real-craft-benchmark` 保持 not_evaluated（AI 草稿 `e09_craft_compare_v1.json` 待人工评分签核）。9 passed / 1 blocked（semantic-visual-providers）/ 1 not_evaluated；`engineering_complete` 维持 false（语义视觉 Provider 未准入，E09 不得关闭）。
