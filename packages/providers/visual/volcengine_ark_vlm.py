@@ -117,7 +117,8 @@ class VolcengineArkVLMProvider:
         parsed = json.loads(raw)
         text = parsed["choices"][0]["message"]["content"]
         payload = json.dumps(
-            {"frames": [{"claims": [{"text": text}]}]}, separators=(",", ":")
+            {"vlm_claims": [{"kind": "visible", "statement": text, "score": None}]},
+            separators=(",", ":"),
         ).encode()
         elapsed = max(1, round((time.perf_counter() - started) * 1_000))
         return ProviderRawOutput(payload, "application/json", "ark-vlm-v1", elapsed, 0)

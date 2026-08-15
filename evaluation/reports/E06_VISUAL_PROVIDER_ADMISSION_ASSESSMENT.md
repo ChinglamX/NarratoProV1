@@ -67,7 +67,7 @@ E06 Acceptance Report（`quality/E06_ACCEPTANCE_REPORT.md`）、G05 probe、
   - RT-DETR-L（PaddleX 内置）：权重已固定（checksum 见注册表），demo 帧 2 个检测（score 0.94/0.81）。
   - 依赖记录于 `pyproject.toml` `[research]` extra；模型缓存 `.paddlex-cache/`（workspace 内，已 gitignore）。
   - **VLM（火山引擎 Ark）**：model `doubao-seed-2-0-mini-260428`（endpoint `ep-m-20260716234644-hqltj`），API key 已配置（`.env`，gitignored）；**2026-08-15 真实帧验证通过**（HTTP 200、8.1s，准确描述人物/野兔/山野场景/被打码文字）；成本上限与真实短剧 VLM benchmark 仍待定。
-  - **typed adapter 接入（2026-08-15）**：三个 ProviderPort adapter（PaddleOCR / RT-DETR / Ark VLM）已实现并通过 gateway e2e（OCR 3.7s、DET 2.9s、VLM 7.8s/帧）；`package()` 复用准入注册表（research 单一真相源）；paddle 依赖 lazy import；PaddleX 缓存落 workspace。**已知限制：PaddleX 单进程单次初始化——OCR 与 detection 需进程级隔离（E06 集成设计项）。**
+  - **VisualObservationWorkflow 接入（2026-08-15）**：`capability` 参数驱动 OCR/detection/VLM 三 adapter，output 对齐 normalize 契约（region 归一化 BoundingBox）；gateway→normalize e2e 全过（OCR 2.9s、DET 2.9s、VLM 5.5s，均 complete）。**实测更正：PaddleX 同进程可共存 OCR+detection，无需进程隔离**（原"单进程单次初始化"结论是缓存 env 半初始化副作用，已消除）。
   - **仍缺**：真实短剧按剧隔离 OCR/detection/VLM benchmark（素材前置）、Mac mini 长视频吞吐/容量验收、跟踪/embedding 链路验证。
 
 ## 7. 下一步建议（等你决定后执行）

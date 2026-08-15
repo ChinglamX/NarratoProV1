@@ -71,32 +71,57 @@ class PaddleDetectionProvider:
     def infer(self, request: ProviderInvocationRequest) -> ProviderRawOutput:
         global _MODEL_INSTANCE
         _ensure_paddlex_cache()  # must precede any paddle import
+        import cv2
         from paddlex import create_model  # type: ignore[import-untyped]  # lazy: research extra
 
         started = time.perf_counter()
+        path = self._frame_path(request)
         if _MODEL_INSTANCE is None:
             _MODEL_INSTANCE = create_model("RT-DETR-L")
         model = _MODEL_INSTANCE
-        output = model.predict(str(self._frame_path(request)))
+        output = model.predict(str(path))
+        image = cv2.imread(str(path))
+        height, width = image.shape[:2] if image is not None else (1, 1)
         detections: list[dict[str, object]] = []
         for page in output:
             boxes = page.get("boxes") or page.get("det_boxes") or []
             labels = page.get("labels") or page.get("det_labels") or []
             for index, box in enumerate(boxes):
+                region = _pixel_box_to_bbox(box, width, height)
+                if region is None:
+                    continue
                 detections.append(
                     {
                         "label": labels[index] if index < len(labels) else "unknown",
                         "score": box.get("score"),
-                        "region": {
-                            "x_min": box.get("xmin"),
-                            "y_min": box.get("ymin"),
-                            "x_max": box.get("xmax"),
-                            "y_max": box.get("ymax"),
-                        },
+                        "region": region,
                     }
                 )
-        payload = json.dumps(
-            {"frames": [{"detections": detections}]}, separators=(",", ":")
-        ).encode()
+        payload = json.dumps({"detections": detections}, separators=(",", ":")).encode()
         elapsed = max(1, round((time.perf_counter() - started) * 1_000))
         return ProviderRawOutput(payload, "application/json", "paddlex-rtdetr-l-v1", elapsed, 0)
+
+
+def _pixel_box_to_bbox(box: Any, width: int, height: int) -> dict[str, float] | None:
+    """Convert a PaddleX detection box to a normalized unit box.
+
+    PaddleX boxes carry ``coordinate`` = [x1, y1, x2, y2] in pixels.
+    """
+    if width <= 0 or height <= 0:
+        return None
+    try:
+        coordinate = box.get("coordinate")
+        if not isinstance(coordinate, (list, tuple)) or len(coordinate) < 4:
+            return None
+        x_min, y_min, x_max, y_max = (float(value) for value in coordinate[:4])
+    except (TypeError, ValueError, AttributeError):
+        return None
+    region = {
+        "x_min": max(0.0, min(1.0, x_min / width)),
+        "y_min": max(0.0, min(1.0, y_min / height)),
+        "x_max": max(0.0, min(1.0, x_max / width)),
+        "y_max": max(0.0, min(1.0, y_max / height)),
+    }
+    if region["x_max"] <= region["x_min"] or region["y_max"] <= region["y_min"]:
+        return None
+    return region

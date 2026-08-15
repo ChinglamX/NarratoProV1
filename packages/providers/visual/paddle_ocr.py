@@ -75,9 +75,11 @@ class PaddleOCRProvider:
     def infer(self, request: ProviderInvocationRequest) -> ProviderRawOutput:
         global _MODEL_INSTANCE
         _ensure_paddlex_cache()  # must precede any paddle import
+        import cv2
         from paddleocr import PaddleOCR  # type: ignore[import-untyped]  # lazy: research extra
 
         started = time.perf_counter()
+        path = self._frame_path(request)
         if _MODEL_INSTANCE is None:
             _MODEL_INSTANCE = PaddleOCR(
                 use_doc_orientation_classify=False,
@@ -85,22 +87,54 @@ class PaddleOCRProvider:
                 use_textline_orientation=False,
             )
         ocr = _MODEL_INSTANCE
-        result = ocr.predict(str(self._frame_path(request)))
+        result = list(ocr.predict(str(path)))
         page = result[0]
         texts = list(page.get("rec_texts", []))
-        scores = [
-            float(score) if score is not None else None for score in page.get("rec_scores", [])
-        ]
-        polys = [
-            poly.tolist() if hasattr(poly, "tolist") else poly for poly in page.get("rec_polys", [])
-        ]
-        frames = [
-            {
-                "ocr_texts": texts,
-                "ocr_scores": scores,
-                "regions": polys,
-            }
-        ]
-        payload = json.dumps({"frames": frames}, separators=(",", ":")).encode()
+        scores = page.get("rec_scores", [])
+        polys = page.get("rec_polys", [])
+        image = cv2.imread(str(path))
+        height, width = image.shape[:2] if image is not None else (1, 1)
+        ocr_items: list[dict[str, object]] = []
+        for index, text in enumerate(texts):
+            poly = polys[index] if index < len(polys) else None
+            region = _polygon_to_bbox(poly, width, height)
+            if region is None:
+                continue
+            ocr_items.append(
+                {
+                    "text": text,
+                    "region": region,
+                    "kind": "burned_in_subtitle",
+                    "score": (
+                        float(scores[index]) if index < len(scores) and scores[index] else None
+                    ),
+                }
+            )
+        payload = json.dumps({"ocr": ocr_items}, separators=(",", ":")).encode()
         elapsed = max(1, round((time.perf_counter() - started) * 1_000))
         return ProviderRawOutput(payload, "application/json", "paddleocr-ppocrv6-v1", elapsed, 0)
+
+
+def _polygon_to_bbox(poly: Any, width: int, height: int) -> dict[str, float] | None:
+    """Convert a PaddleOCR polygon (list of [x, y] points) to a normalized box."""
+    if poly is None:
+        return None
+    points = poly.tolist() if hasattr(poly, "tolist") else poly
+    try:
+        xs = [float(point[0]) for point in points]
+        ys = [float(point[1]) for point in points]
+    except (TypeError, IndexError):
+        return None
+    if not xs or not ys:
+        return None
+    if width <= 0 or height <= 0:
+        return None
+    box = {
+        "x_min": max(0.0, min(xs) / width),
+        "y_min": max(0.0, min(ys) / height),
+        "x_max": min(1.0, max(xs) / width),
+        "y_max": min(1.0, max(ys) / height),
+    }
+    if box["x_max"] <= box["x_min"] or box["y_max"] <= box["y_min"]:
+        return None
+    return box

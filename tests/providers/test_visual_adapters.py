@@ -114,3 +114,97 @@ def test_ark_health_reflects_configuration() -> None:
     adapter = VolcengineArkVLMProvider()
     # health follows the configured key/model; assert it is a bool either way.
     assert isinstance(adapter.health(), bool)
+
+
+def test_polygon_to_bbox_normalizes_and_clamps() -> None:
+    from packages.providers.visual.paddle_ocr import _polygon_to_bbox
+
+    box = _polygon_to_bbox([[0, 0], [100, 0], [100, 50], [0, 50]], width=200, height=100)
+    assert box == {"x_min": 0.0, "y_min": 0.0, "x_max": 0.5, "y_max": 0.5}
+    assert _polygon_to_bbox(None, 200, 100) is None
+    assert _polygon_to_bbox([], 200, 100) is None
+    assert _polygon_to_bbox([[0, 0], [0, 0]], 200, 100) is None
+    assert _polygon_to_bbox([[0, 0], [100, 0], [100, 50], [0, 50]], 0, 100) is None
+
+
+def test_pixel_box_to_bbox_uses_coordinate_array() -> None:
+    from packages.providers.visual.paddle_detection import _pixel_box_to_bbox
+
+    box = _pixel_box_to_bbox(
+        {"score": 0.9, "coordinate": [10, 20, 110, 120]}, width=200, height=100
+    )
+    assert box == {"x_min": 0.05, "y_min": 0.2, "x_max": 0.55, "y_max": 1.0}
+    assert _pixel_box_to_bbox({"score": 0.9}, 200, 100) is None
+    assert _pixel_box_to_bbox({"coordinate": "bad"}, 200, 100) is None
+    assert _pixel_box_to_bbox({"coordinate": [1, 1, 1, 1]}, 200, 100) is None
+    assert _pixel_box_to_bbox({"coordinate": [0, 0, 10, 10]}, 0, 100) is None
+
+
+def test_provider_for_selects_adapters() -> None:
+    from packages.providers.visual.paddle_detection import PaddleDetectionProvider
+    from packages.providers.visual.paddle_ocr import PaddleOCRProvider
+    from packages.providers.visual.volcengine_ark_vlm import VolcengineArkVLMProvider
+    from workflows.visual.activities import _provider_for
+
+    assert isinstance(_provider_for("ocr"), PaddleOCRProvider)
+    assert isinstance(_provider_for("detection"), PaddleDetectionProvider)
+    assert isinstance(_provider_for("vlm"), VolcengineArkVLMProvider)
+    with pytest.raises(ValueError, match="unsupported visual capability"):
+        _provider_for("tracking")
+
+
+def test_local_adapters_report_health_and_estimate(tmp_path: Path) -> None:
+    frame = _make_frame(tmp_path)
+    ocr = PaddleOCRProvider()
+    det = PaddleDetectionProvider()
+    assert ocr.health() is True
+    assert det.health() is True
+    ocr_req = _request(ProviderCapability.OCR, frame)
+    assert ocr.estimate(ocr_req).memory_bytes >= 0
+    det_req = _request(ProviderCapability.DETECTION, frame)
+    assert det.estimate(det_req).estimated_duration_ms > 0
+    ark = VolcengineArkVLMProvider()
+    with pytest.raises(ValueError, match="only supports VLM"):
+        ark.validate(_request(ProviderCapability.OCR, frame))
+
+
+def test_opencv_adapter_validate_and_estimate(tmp_path: Path) -> None:
+    from packages.providers.visual.opencv_contour import OpenCVContourProvider
+
+    frame = _make_frame(tmp_path)
+    provider = OpenCVContourProvider()
+    assert provider.package().identity.provider == "opencv"
+    with pytest.raises(ValueError, match="only supports detection"):
+        provider.validate(_request(ProviderCapability.OCR, frame))
+    provider.validate(_request(ProviderCapability.DETECTION, frame))
+    assert provider.estimate(_request(ProviderCapability.DETECTION, frame)).cpu_cores >= 1
+    assert provider.health() is True
+    with pytest.raises(FileNotFoundError):
+        provider.validate(_request(ProviderCapability.DETECTION, tmp_path / "missing.jpg"))
+
+
+def test_json_http_adapter_validate_and_estimate(tmp_path: Path) -> None:
+    from packages.contracts import ProviderCapability as PC
+    from packages.providers.visual.json_http import VisualJsonHttpProvider
+
+    frame = _make_frame(tmp_path)
+    provider = VisualJsonHttpProvider(
+        base_url="http://127.0.0.1:9",
+        capability=PC.DETECTION,
+        implementation="fake",
+        version="1",
+        model="m",
+        code_license="Apache-2.0",
+    )
+    assert provider.package().admission.value == "research"
+    with pytest.raises(ValueError, match="frame_paths"):
+        provider.validate(_request(PC.DETECTION, frame))
+    with pytest.raises(ValueError, match="unsupported"):
+        VisualJsonHttpProvider(
+            base_url="http://x",
+            capability=PC.VAD,
+            implementation="x",
+            version="1",
+            model="m",
+            code_license="Apache-2.0",
+        )
