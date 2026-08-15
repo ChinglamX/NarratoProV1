@@ -140,20 +140,20 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
     ProviderPackage.model_validate(
         {
             "identity": {
-                "provider": "vlm-api",
-                "implementation": "hosted-vlm",
-                "version": "pending-vendor",
-                "license": "open-model-api-pending-vendor",
+                "provider": "volcengine-ark",
+                "implementation": "doubao-vision-vlm",
+                "version": "pending-exact-endpoint",
+                "license": "volcengine-ark-tos-pending-verify",
             },
             "capabilities": ["vlm"],
             "admission": "research",
-            "code_license": "open-model-license-pending-vendor",
+            "code_license": "volcengine-ark-tos",
             "weight_license": None,
             "commercial_use_allowed": False,
             "model_checksum": None,
             "data_policy": {
                 "execution_location": "external_cloud",
-                "allowed_residencies": ["CN", "LOCAL"],
+                "allowed_residencies": ["CN"],
                 "transmits_source_media": True,
                 "retains_input": True,
                 "retention_days": 30,
@@ -163,8 +163,8 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "retry_safe": True,
             "max_batch_size": 4,
             "known_limitations": [
-                "project decision 2026-08-15: VLM via hosted API (open-model backend); "
-                "vendor/endpoint not yet selected, data residency and cost caps pending",
+                "project decision 2026-08-15: VLM via Volcengine Ark (Doubao vision models); "
+                "exact model endpoint, API key, data-residency terms and cost caps pending",
                 "claims constrained by the VLM claim contract; frames are transmitted to the API",
             ],
         }
