@@ -44,3 +44,4 @@ apps/review_web/dist/
 /demo_frames/
 /.paddlex-cache/
 /data/corpus/
+/evaluation/corpus/e06_visual/frames/*.jpg
