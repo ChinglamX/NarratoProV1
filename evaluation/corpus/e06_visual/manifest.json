@@ -1,0 +1,273 @@
+{
+  "manifest_id": "e06-visual-v1",
+  "version": "1.0.0",
+  "series_assignment": {
+    "e06-series-01": "train",
+    "e06-series-03": "train",
+    "e06-series-04": "train",
+    "e06-series-00": "train",
+    "e06-series-05": "train",
+    "e06-series-02": "validation",
+    "e06-series-09": "validation",
+    "e06-series-06": "validation",
+    "e06-series-08": "validation",
+    "e06-series-12": "frozen_test",
+    "e06-1970": "frozen_test",
+    "e06-1982": "frozen_test",
+    "e06-series-07": "frozen_test"
+  },
+  "items": [
+    {
+      "item_id": "e06-1970_e01",
+      "series_id": "e06-1970",
+      "episode_id": "e01",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-1970/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-1970_e02",
+      "series_id": "e06-1970",
+      "episode_id": "e02",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-1970/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-1970_e03",
+      "series_id": "e06-1970",
+      "episode_id": "e03",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-1970/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-1970_hot",
+      "series_id": "e06-1970",
+      "episode_id": "hot",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-1970/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-1982_e01",
+      "series_id": "e06-1982",
+      "episode_id": "e01",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-1982/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-1982_e02",
+      "series_id": "e06-1982",
+      "episode_id": "e02",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-1982/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-1982_e03",
+      "series_id": "e06-1982",
+      "episode_id": "e03",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-1982/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-series-00_hot",
+      "series_id": "e06-series-00",
+      "episode_id": "hot",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-00/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-01_e01",
+      "series_id": "e06-series-01",
+      "episode_id": "e01",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-01/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-series-01_e02",
+      "series_id": "e06-series-01",
+      "episode_id": "e02",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-01/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-series-01_e03",
+      "series_id": "e06-series-01",
+      "episode_id": "e03",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-01/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-series-01_hot",
+      "series_id": "e06-series-01",
+      "episode_id": "hot",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-01/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-02_e01",
+      "series_id": "e06-series-02",
+      "episode_id": "e01",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-02/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-series-02_e02",
+      "series_id": "e06-series-02",
+      "episode_id": "e02",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-02/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-series-02_e03",
+      "series_id": "e06-series-02",
+      "episode_id": "e03",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-02/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-series-02_hot",
+      "series_id": "e06-series-02",
+      "episode_id": "hot",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-02/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-03_e01",
+      "series_id": "e06-series-03",
+      "episode_id": "e01",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-03/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-series-03_e02",
+      "series_id": "e06-series-03",
+      "episode_id": "e02",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-03/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-series-03_e03",
+      "series_id": "e06-series-03",
+      "episode_id": "e03",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-03/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-series-03_hot",
+      "series_id": "e06-series-03",
+      "episode_id": "hot",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-03/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-04_e01",
+      "series_id": "e06-series-04",
+      "episode_id": "e01",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-04/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-series-04_e02",
+      "series_id": "e06-series-04",
+      "episode_id": "e02",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-04/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-series-04_e03",
+      "series_id": "e06-series-04",
+      "episode_id": "e03",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-04/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-series-04_hot",
+      "series_id": "e06-series-04",
+      "episode_id": "hot",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-04/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-05_hot",
+      "series_id": "e06-series-05",
+      "episode_id": "hot",
+      "split": "train",
+      "artifact_ref": "data/corpus/e06-series-05/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-06_hot",
+      "series_id": "e06-series-06",
+      "episode_id": "hot",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-06/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-07_hot",
+      "series_id": "e06-series-07",
+      "episode_id": "hot",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-series-07/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-08_hot",
+      "series_id": "e06-series-08",
+      "episode_id": "hot",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-08/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-09_e01",
+      "series_id": "e06-series-09",
+      "episode_id": "e01",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-09/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-series-09_e02",
+      "series_id": "e06-series-09",
+      "episode_id": "e02",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-09/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-series-09_e03",
+      "series_id": "e06-series-09",
+      "episode_id": "e03",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-09/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-series-09_hot",
+      "series_id": "e06-series-09",
+      "episode_id": "hot",
+      "split": "validation",
+      "artifact_ref": "data/corpus/e06-series-09/episodes/hot.mp4"
+    },
+    {
+      "item_id": "e06-series-12_e01",
+      "series_id": "e06-series-12",
+      "episode_id": "e01",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-series-12/episodes/e01.mp4"
+    },
+    {
+      "item_id": "e06-series-12_e02",
+      "series_id": "e06-series-12",
+      "episode_id": "e02",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-series-12/episodes/e02.mp4"
+    },
+    {
+      "item_id": "e06-series-12_e03",
+      "series_id": "e06-series-12",
+      "episode_id": "e03",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-series-12/episodes/e03.mp4"
+    },
+    {
+      "item_id": "e06-series-12_hot",
+      "series_id": "e06-series-12",
+      "episode_id": "hot",
+      "split": "frozen_test",
+      "artifact_ref": "data/corpus/e06-series-12/episodes/hot.mp4"
+    }
+  ]
+}
