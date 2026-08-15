@@ -55,7 +55,9 @@ def package(*, admission: str = "production", location: str = "local") -> Provid
             "capabilities": ["asr"],
             "admission": admission,
             "code_license": "Apache-2.0",
+            "weight_license": "Apache-2.0" if admission == "production" else None,
             "commercial_use_allowed": admission == "production",
+            "model_checksum": "sha256:" + "b" * 64 if admission == "production" else None,
             "data_policy": {
                 "execution_location": location,
                 "allowed_residencies": ["CN"],

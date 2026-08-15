@@ -12,6 +12,7 @@ from packages.contracts.providers import (
     ProviderPackage,
     ProviderResourceEstimate,
 )
+from packages.providers.admission import ProviderAdmissionError, assert_production_ready
 
 
 class ProviderPolicyError(RuntimeError):
@@ -61,6 +62,13 @@ class ProviderGateway:
             raise ProviderPolicyError("provider does not implement requested capability")
         if package.admission is ProviderAdmission.BLOCKED:
             raise ProviderPolicyError("provider is blocked")
+        if package.admission is ProviderAdmission.PRODUCTION:
+            # Fail-closed: a production package must carry full admission
+            # evidence (model checksum, license, commercial approval).
+            try:
+                assert_production_ready(package)
+            except ProviderAdmissionError as error:
+                raise ProviderPolicyError(str(error)) from error
         if package.admission is ProviderAdmission.RESEARCH and not policy.allow_research:
             raise ProviderPolicyError("research provider is not permitted")
         if not package.commercial_use_allowed and not policy.allow_research:
