@@ -34,9 +34,7 @@ class Settings(BaseSettings):
 
     # Volcengine Ark (E06 VLM provider; open-source model backend via API).
     volcengine_ark_api_key: SecretStr | None = None
-    volcengine_ark_endpoint: str = (
-        "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
-    )
+    volcengine_ark_endpoint: str = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
     volcengine_ark_model: str | None = None
 
     @field_validator("secret_api_key", "volcengine_ark_api_key", mode="before")
