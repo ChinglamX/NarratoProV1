@@ -46,7 +46,7 @@ def project_original_audio_intents(
     """One ORIGINAL audio intent per selected clip, aligned to its timeline range."""
 
     by_id = {candidate.candidate_id: candidate for candidate in candidates}
-    cursor = RationalTime(value=0, rate_num=1)
+    cursor = RationalTime(value=0, rate_num=1_000_000)
     intents: list[AudioIntent] = []
     for selection in selections.selections:
         candidate = by_id.get(selection.candidate_id)
@@ -59,6 +59,7 @@ def project_original_audio_intents(
                 role=AudioIntentRole.ORIGINAL,
                 timeline_range=TimeRange(start=cursor, duration=duration),
                 source_ref=candidate.source_ref,
+                source_range=selection.selected_range,
             )
         )
         cursor = cursor.model_copy(update={"value": cursor.value + duration.value})
@@ -74,7 +75,7 @@ def project_subtitle_intents_from_narration(
     """Subtitle intents mirroring each narration line inside the declared safe area."""
 
     area = safe_area or DEFAULT_SUBTITLE_SAFE_AREA
-    cursor = RationalTime(value=0, rate_num=1)
+    cursor = RationalTime(value=0, rate_num=1_000_000)
     intents: list[SubtitleIntent] = []
     for line in narration.lines:
         intents.append(

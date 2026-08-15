@@ -13,6 +13,7 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess  # nosec B404
+from collections.abc import Callable
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
@@ -120,7 +121,14 @@ def render_media_preview(
     target_width: int = 720,
     target_height: int = 1280,
     frame_rate: int = 25,
+    progress: Callable[[int, int], None] | None = None,
 ) -> PreviewResult:
+    """Render a media-grounded preview of the master timeline.
+
+    ``progress(done, total)`` is invoked after each source clip is trimmed so
+    long-running callers (e.g. Temporal activities with heartbeat timeouts) can
+    report liveness during rendering.
+    """
     if not validate_timeline(timeline).render_ready:
         raise PreviewRenderError("timeline is not render-ready")
     ffmpeg = shutil.which("ffmpeg")
@@ -172,6 +180,8 @@ def render_media_preview(
         )
         os.replace(part, clip)
         clip_paths.append(clip)
+        if progress is not None:
+            progress(index + 1, len(video_items))
 
     concat_file = work / "concat.txt"
     # ffmpeg's concat demuxer resolves entries relative to the concat file's
@@ -226,6 +236,8 @@ def render_media_preview(
         )
         os.replace(part, clip)
         audio_clips.append(clip)
+        if progress is not None:
+            progress(len(video_items) + index + 1, len(video_items) + len(audio_items))
 
     subtitle_path = output_path.with_suffix(".ass")
     _write_ass(

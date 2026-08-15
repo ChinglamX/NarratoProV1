@@ -108,7 +108,7 @@ def assemble_multitrack_timeline(
             AudioIntentRole.BGM: TimelineTrackKind.BGM,
             AudioIntentRole.SFX: TimelineTrackKind.SFX,
         }[intent.role]
-        source_range = intent.timeline_range if intent.source_ref is not None else None
+        source_range = intent.source_range if intent.source_ref is not None else None
         grouped[kind].append(
             TimelineItem(
                 item_id=item_ids[id_cursor],

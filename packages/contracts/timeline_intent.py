@@ -292,6 +292,7 @@ class AudioIntent(StrictContract):
     role: AudioIntentRole
     timeline_range: TimeRange
     source_ref: ArtifactRef | None = None
+    source_range: TimeRange | None = None
     content_ref: StableName | None = None
     rights_ref: ArtifactRef | None = None
     duck_under_narration: bool = False
@@ -303,6 +304,8 @@ class AudioIntent(StrictContract):
             raise ValueError("audio intent requires positive duration")
         if self.role is AudioIntentRole.ORIGINAL and self.source_ref is None:
             raise ValueError("original audio intent requires source ref")
+        if self.role is AudioIntentRole.ORIGINAL and self.source_range is None:
+            raise ValueError("original audio intent requires source range")
         if self.role in {AudioIntentRole.BGM, AudioIntentRole.SFX} and (
             self.content_ref is None or self.rights_ref is None
         ):

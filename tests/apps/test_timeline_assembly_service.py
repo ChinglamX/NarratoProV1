@@ -96,6 +96,7 @@ def audio(chosen: ClipCandidate) -> tuple[AudioIntent, ...]:
                 "duration": {"value": 5, "rate_num": 1},
             },
             source_ref=chosen.source_ref,
+            source_range=chosen.source_range,
         ),
     )
 

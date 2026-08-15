@@ -658,9 +658,39 @@ PK（artifact_id+version）冲突而失败；(3) 局部预览渲染器用 `.mp4.
    `baseline_v0001.metadata`；全新库 `alembic upgrade head` 与 downgrade/upgrade 往返在
    真实 Postgres 验证通过。
 6. 已知 bounded debt：`/patches` 与 TimelineEditingService 双实现（行为一致，待合并）；
-   `packages/timeline/revisions.py`（RevisionHistory 纯内存截断语义）未接线，删除需人工
-   批准；CI 无 Postgres service，DB 回归测试在 CI 跳过。
+   CI 无 Postgres service，DB 回归测试在 CI 跳过。`revisions.py`（RevisionHistory 纯内存
+   截断语义）已于 2026-08-15 经项目负责人授权删除（无生产引用，与 append-only 持久化语义冲突）。
 
 后果：J05 编辑链在 fail-closed 下可用；352 tests、80.61% coverage、全部质量门禁通过；
 Worker 7 个 workflow 全部通过沙箱验证并真实运行。E09 四个真实退出 blocker 不变，
 `engineering_complete` 维持 false。
+
+## ADR-051 — Creative Timeline Ranges Use One Microsecond Time Base
+
+问题：E09 真实数据认证（run `c8dbb0bb`，State v49）的 preview 实际只有 4.08s（首段），
+ASS 副标题轨时间码为荒谬值（`1134:15:33` 等）。审核证据链（`tmp/E09_REVIEW_DRAFT_FINDINGS.md`）
+定位到双根因：(1) `workflows/timeline/creative_activities.py` `_assemble_sync` 兜底 duration
+用 `RationalTime(value=sum(...), rate_num=1)`，把 30,250,000 微秒当 30,250,000 秒，
+污染 multitrack 各轨 timeline_range；(2) `packages/timeline/intent_projection.py` 两处游标
+`RationalTime(value=0, rate_num=1)` 累加微秒基 duration，使第 2 个 intent 起 start 变成
+4,083,333 秒。连锁后果：`multitrack.py` 把 timeline 位置复制为 ORIGINAL_AUDIO source_range →
+渲染器 `-ss 4083333` 超出源时长 → 空音频容器 → mux `-shortest` 截断 preview 到 4.08s；
+SUBTITLE 轨时间码写错。v48/v49 测试未发现：fixture 用 rate=1 duration 且只测单元素，
+掩盖跨 time base 累加。
+
+决策：
+1. 所有 Creative Timeline 时间量统一微秒 time base（rate 1_000_000）：`_assemble_sync`
+   兜底 duration 与 `intent_projection.py` 两处游标均改 `rate_num=1_000_000`。
+2. `AudioIntent` 契约新增可选 `source_range`（ORIGINAL 角色带 source_ref 时 fail-closed
+   必填），`project_original_audio_intents` 填充真实源范围（selection.selected_range），
+   `multitrack.py` 使用 `intent.source_range`；禁止再把 timeline 位置当作源时间。
+3. Registry 兼容升级 2.19.0（新增可选字段 = minor，历史版本不变）。
+4. 测试补强：intent_projection 多元素微秒基游标累积断言、multitrack 微秒基 timeline/source
+   范围断言（ORIGINAL_AUDIO source_range = 真实源时间，非 timeline 位置）。
+5. 人工审核流程后签署 approve（run `d8eb4cd5`，State v51）。
+
+后果：真实数据重跑 `accept_e09.py`（run `d8eb4cd5`）产出 30.27s 全片 preview（修复前仅
+4.08s）、audio 4 段全部非空、ASS 字幕时间轴正确、DB MasterTimeline 各轨 timeline_range 与
+ORIGINAL_AUDIO source_range（0/21.5/52.0417/99.625s）正确；355 tests、80.61% coverage 全绿。
+E09 "真实完整 Preview" 与 "人工 checkpoint 签署" blocker 关闭；语义视觉 Provider 准入、
+多 Variant replay、demo craft 对比表归档仍为剩余 blocker。

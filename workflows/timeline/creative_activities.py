@@ -317,9 +317,11 @@ def _assemble_sync(request: AssemblyActivityRequest) -> AssemblyActivityResult:
         if request.duration:
             duration = RationalTime.model_validate(request.duration)
         else:
+            # Selected clip durations are microsecond-based (rate 1_000_000);
+            # keep the same time base so assembled track ranges stay in seconds.
             duration = RationalTime(
                 value=sum(s.selected_range.duration.value for s in selections.selections),
-                rate_num=1,
+                rate_num=1_000_000,
             )
         audio_intents = project_original_audio_intents(selections, candidates)
         subtitle_intents = project_subtitle_intents_from_narration(
@@ -384,7 +386,15 @@ def _source_paths(
     return paths
 
 
-def _render_media_sync(request: MediaPreviewActivityRequest) -> MediaPreviewActivityResult:
+def _render_media_sync(
+    request: MediaPreviewActivityRequest, loop: asyncio.AbstractEventLoop
+) -> MediaPreviewActivityResult:
+    def heartbeat(done: int, total: int) -> None:
+        loop.call_soon_threadsafe(
+            activity.heartbeat,
+            {"stage": "media-preview", "clip": done, "clips": total},
+        )
+
     def work(connection: Connection) -> MediaPreviewActivityResult:
         repository = ArtifactRepository()
         timeline = _load_contract(connection, repository, request.timeline, MasterTimeline)
@@ -396,6 +406,7 @@ def _render_media_sync(request: MediaPreviewActivityRequest) -> MediaPreviewActi
             Path(request.output_path),
             target_width=request.target_width,
             target_height=request.target_height,
+            progress=heartbeat,
         )
         media_digest = "sha256:" + sha256(result.output_path.read_bytes()).hexdigest()
         preview_id = _deterministic_uuid4(
@@ -462,4 +473,7 @@ async def render_media_preview_activity(
     request: MediaPreviewActivityRequest,
 ) -> MediaPreviewActivityResult:
     activity.heartbeat({"stage": "media-preview", "trace_id": request.trace_id})
-    return await asyncio.to_thread(_render_media_sync, request)
+    # Rendering runs in a worker thread; activity.heartbeat must be invoked on
+    # the event loop, so schedule it via call_soon_threadsafe from the thread.
+    loop = asyncio.get_running_loop()
+    return await asyncio.to_thread(_render_media_sync, request, loop)
