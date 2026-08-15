@@ -17,12 +17,12 @@ def test_candidates_are_not_production() -> None:
         assert package.admission in {ProviderAdmission.RESEARCH, ProviderAdmission.BLOCKED}
 
 
-def test_ultralytics_is_blocked_until_license_decision() -> None:
-    ultralytics = next(
-        p for p in CANDIDATE_VISUAL_PROVIDERS if p.identity.provider == "ultralytics"
-    )
-    assert ultralytics.admission is ProviderAdmission.BLOCKED
-    assert "AGPL" in ultralytics.code_license
+def test_detection_candidate_is_open_source_not_agpl() -> None:
+    detection = next(p for p in CANDIDATE_VISUAL_PROVIDERS if "detection" in p.capabilities)
+    assert detection.identity.provider == "paddle-detection"
+    assert detection.code_license == "Apache-2.0"
+    # The AGPL ultralytics/yolo detector is explicitly excluded by project decision.
+    assert all("ultralytics" not in p.identity.provider for p in CANDIDATE_VISUAL_PROVIDERS)
 
 
 def test_production_admission_requires_complete_evidence() -> None:

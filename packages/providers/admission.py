@@ -50,15 +50,15 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
     ProviderPackage.model_validate(
         {
             "identity": {
-                "provider": "ultralytics",
-                "implementation": "yolo-detector",
+                "provider": "paddle-detection",
+                "implementation": "rt-detr-detector",
                 "version": "pending-pin",
-                "license": "AGPL-3.0-pending-decision",
+                "license": "Apache-2.0-pending-verify",
             },
             "capabilities": ["detection"],
-            "admission": "blocked",
-            "code_license": "AGPL-3.0",
-            "weight_license": "AGPL-3.0",
+            "admission": "research",
+            "code_license": "Apache-2.0",
+            "weight_license": "Apache-2.0-pending-verify",
             "commercial_use_allowed": False,
             "model_checksum": None,
             "data_policy": {
@@ -72,8 +72,9 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "retry_safe": True,
             "max_batch_size": 16,
             "known_limitations": [
-                "AGPL posture undecided: production short-drama use requires Enterprise "
-                "license or an Apache-2.0 alternative",
+                "project decision 2026-08-15: open-source only; supersedes ultralytics/yolo "
+                "(AGPL-3.0, not adopted for commercial short-drama production)",
+                "runtime/model not pinned; no checksum; no real short-drama detection benchmark",
             ],
         }
     ),
@@ -139,29 +140,32 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
     ProviderPackage.model_validate(
         {
             "identity": {
-                "provider": "qwen-vl",
-                "implementation": "local-vlm",
-                "version": "pending-pin",
-                "license": "Apache-2.0-pending-verify",
+                "provider": "vlm-api",
+                "implementation": "hosted-vlm",
+                "version": "pending-vendor",
+                "license": "open-model-api-pending-vendor",
             },
             "capabilities": ["vlm"],
             "admission": "research",
-            "code_license": "Apache-2.0",
-            "weight_license": "Apache-2.0-pending-verify",
+            "code_license": "open-model-license-pending-vendor",
+            "weight_license": None,
             "commercial_use_allowed": False,
             "model_checksum": None,
             "data_policy": {
-                "execution_location": "local",
+                "execution_location": "external_cloud",
                 "allowed_residencies": ["CN", "LOCAL"],
-                "transmits_source_media": False,
-                "retains_input": False,
+                "transmits_source_media": True,
+                "retains_input": True,
+                "retention_days": 30,
             },
-            "supported_hardware": ["cpu", "metal"],
+            "supported_hardware": ["cloud"],
             "deterministic": False,
             "retry_safe": True,
             "max_batch_size": 4,
             "known_limitations": [
-                "local-vs-API deployment undecided; claims constrained by the VLM claim contract",
+                "project decision 2026-08-15: VLM via hosted API (open-model backend); "
+                "vendor/endpoint not yet selected, data residency and cost caps pending",
+                "claims constrained by the VLM claim contract; frames are transmitted to the API",
             ],
         }
     ),

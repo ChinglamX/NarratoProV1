@@ -34,17 +34,17 @@ E06 Acceptance Report（`quality/E06_ACCEPTANCE_REPORT.md`）、G05 probe、
 | 能力 | 候选 | 主要差距 | 决策依赖 |
 |---|---|---|---|
 | OCR | PaddleOCR 3.x / PP-OCRv5 | 无 pinned runtime/checksum；无真实短剧 OCR benchmark（字幕/道具文字） | 本地 runtime 可接受性（Mac mini CPU/Metal） |
-| Detection | Ultralytics YOLO（候选） | **AGPL license 姿态未决**；无 checksum/benchmark | ⚠️ 需决策：保持 blocked vs Enterprise license vs Apache 替代（如 YOLOv8 Apache fork、RT-DETR） |
+| Detection | ~~Ultralytics YOLO~~ → **PaddleDetection RT-DETR** | 无 pinned runtime/checksum；无真实短剧检测 benchmark | ✅ 已决：排除 YOLO（AGPL），选 RT-DETR（Apache-2.0） |
 | Tracking | ByteTrack / BoT-SORT | 无选择、无基准 | 依赖 detection 选择 |
 | Face/Appearance | insightface / OpenCV face | 无选择、隐私/权利边界需审 | 依赖真实项目需求 |
 | Visual Embedding | OpenCLIP / SigLIP | 无选择、无基准；embedding≠identity（ADR-033） | 检索召回基准需真实 Corpus |
-| VLM | Qwen-VL（本地）vs API | 本地 vs 外部云选择；ProviderDataPolicy 驻留；成本 | ⚠️ 需决策：本地推理 vs API（影响 data_policy/资源预算） |
+| VLM | Qwen-VL（本地）vs API | 本地 vs 外部云选择；ProviderDataPolicy 驻留；成本 | ✅ 已决：托管 API（厂商待选定） |
 
 ## 4. 决策点（需项目负责人/法务）
 
-1. **Ultralytics AGPL 姿态**：YOLO 在 AGPL 下对商业短剧生产不合规（除非 Enterprise）。选项：(a) 保持 blocked，评估 Apache-2.0 替代检测器；(b) 采购 Enterprise license（成本）。
-2. **OCR 运行时**：PaddleOCR（Apache-2.0）本地固定是否接受（CPU 吞吐 vs Metal 加速）。
-3. **VLM 部署**：本地（Qwen-VL，需硬件/内存）vs 外部 API（需数据驻留决策、ProviderDataPolicy=external_cloud、成本上限）。
+1. **Ultralytics AGPL 姿态**：✅ **已决 2026-08-15 —— 全开源路线，不采用商业化**。YOLO（AGPL）排除，Detection 候选切换为 **PaddleDetection RT-DETR**（Apache-2.0）。
+2. **OCR 运行时**：PaddleOCR（Apache-2.0）本地固定可接受？—— ✅ 符合开源路线（未决：具体 runtime 固定与性能验收）。
+3. **VLM 部署**：✅ **已决 2026-08-15 —— 走托管 API**（开源模型后端，`execution_location=external_cloud`，帧外传需数据驻留与成本上限决策）；具体厂商/endpoint 待选定。
 4. **容量目标**：Mac mini 长视频/多项目吞吐、峰值 RAM/Metal、成本每分钟——需定义目标值后才能做容量验收（G05 blocker #4）。
 5. **benchmark pack**：真实短剧（合法处理权）系列隔离的开发/验证/冻结集——素材与标注是硬前置。
 
