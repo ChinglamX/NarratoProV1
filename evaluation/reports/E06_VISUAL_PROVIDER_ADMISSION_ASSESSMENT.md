@@ -66,7 +66,7 @@ E06 Acceptance Report（`quality/E06_ACCEPTANCE_REPORT.md`）、G05 probe、
   - PaddleOCR 3.7.0 / PaddleX 3.7.2 / paddlepaddle 3.3.1（arm64 CPU）：PP-OCRv6_medium_det + PP-OCRv6_medium_rec 权重已固定（checksum 见注册表），demo 帧推理 1.46s，识别文本可用。
   - RT-DETR-L（PaddleX 内置）：权重已固定（checksum 见注册表），demo 帧 2 个检测（score 0.94/0.81）。
   - 依赖记录于 `pyproject.toml` `[research]` extra；模型缓存 `.paddlex-cache/`（workspace 内，已 gitignore）。
-  - **仍缺**：真实短剧按剧隔离 OCR/detection benchmark（素材前置）、Mac mini 长视频吞吐/容量验收、跟踪/embedding 链路验证。
+  - **VLM（火山引擎 Ark）**：model `doubao-seed-2-0-mini-260428`（endpoint `ep-m-20260716234644-hqltj`），API key 已配置（`.env`，gitignored）；**2026-08-15 真实帧验证通过**（HTTP 200、8.1s，准确描述人物/野兔/山野场景/被打码文字）；成本上限与真实短剧 VLM benchmark 仍待定。
 
 ## 7. 下一步建议（等你决定后执行）
 

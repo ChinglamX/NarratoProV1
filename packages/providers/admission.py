@@ -149,9 +149,9 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
         {
             "identity": {
                 "provider": "volcengine-ark",
-                "implementation": "doubao-vision-vlm",
-                "version": "Doubao-SeedDance-2.0-mini-pending-endpoint",
-                "license": "volcengine-ark-tos-pending-verify",
+                "implementation": "doubao-seed-2-0-mini",
+                "version": "doubao-seed-2-0-mini-260428",
+                "license": "volcengine-ark-tos",
             },
             "capabilities": ["vlm"],
             "admission": "research",
@@ -172,8 +172,10 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "max_batch_size": 4,
             "known_limitations": [
                 "project decision 2026-08-15: VLM via Volcengine Ark, model "
-                "Doubao-SeedDance-2.0-mini; exact endpoint, API key and cost caps pending, "
-                "capability class to be confirmed in the Ark console",
+                "doubao-seed-2-0-mini-260428, endpoint ep-m-20260716234644-hqltj; "
+                "verified 2026-08-15 on demo frame (HTTP 200, 8.1s; accurate scene/",
+                "person/animal/text description); cost caps and real short-drama VLM "
+                "benchmark still pending",
                 "claims constrained by the VLM claim contract; frames are transmitted to the API",
             ],
         }
