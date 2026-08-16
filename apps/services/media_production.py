@@ -78,7 +78,7 @@ class MediaProductionService:
         staged = self._store.stage(
             run_id, f"ass-{ass_artifact_id or uuid4()}", BytesIO(ass_content.encode())
         )
-        blob = self._blobs.register_staged(
+        blob = self._blobs.register_or_get_staged(
             connection, staged, content_type="text/plain; charset=utf-8"
         )
         self._store.commit(staged.uri, digest)

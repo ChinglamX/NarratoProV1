@@ -14,6 +14,12 @@ from workflows.intelligence import (
     build_event_set_activity,
 )
 from workflows.media import MediaIngestWorkflow, ingest_media_activity
+from workflows.production.activities import (
+    build_subtitle_activity,
+    plan_mix_activity,
+    render_ass_activity,
+)
+from workflows.production.workflow import MediaProductionPlanningWorkflow
 from workflows.project import ProjectRunWorkflow, execute_conformance_activity
 from workflows.speech import SpeechObservationWorkflow, process_speech_activity
 from workflows.timeline import TimelinePreviewWorkflow, render_preview_activity
@@ -48,6 +54,7 @@ async def serve() -> None:
             SpeechObservationWorkflow,
             VisualObservationWorkflow,
             StoryReasoningWorkflow,
+            MediaProductionPlanningWorkflow,
         ],
         activities=[
             execute_conformance_activity,
@@ -64,6 +71,9 @@ async def serve() -> None:
             build_character_state_activity,
             build_causal_graph_activity,
             assemble_story_graph_activity,
+            plan_mix_activity,
+            build_subtitle_activity,
+            render_ass_activity,
         ],
         build_id=WORKER_BUILD_ID,
         use_worker_versioning=False,
