@@ -110,15 +110,25 @@ def test_plan_render_final_mode_and_different_audio_changes_checksum() -> None:
     timeline = _timeline()
     mix = _mix_plan()
     plan_proxy = plan_render_contract(
-        timeline=timeline, timeline_ref=_ref("MasterTimeline"), mix_plan_ref=_ref("MixPlan"),
-        mix_plan=mix, ass_ref=_ref("ASSArtifact"), platform_profile_ref=_ref("ConfigArtifact"),
+        timeline=timeline,
+        timeline_ref=_ref("MasterTimeline"),
+        mix_plan_ref=_ref("MixPlan"),
+        mix_plan=mix,
+        ass_ref=_ref("ASSArtifact"),
+        platform_profile_ref=_ref("ConfigArtifact"),
     )
     plan_final = plan_render_contract(
-        timeline=timeline, timeline_ref=_ref("MasterTimeline"), mix_plan_ref=_ref("MixPlan"),
-        mix_plan=mix, ass_ref=_ref("ASSArtifact"), platform_profile_ref=_ref("ConfigArtifact"),
+        timeline=timeline,
+        timeline_ref=_ref("MasterTimeline"),
+        mix_plan_ref=_ref("MixPlan"),
+        mix_plan=mix,
+        ass_ref=_ref("ASSArtifact"),
+        platform_profile_ref=_ref("ConfigArtifact"),
         mode=RenderMode.FINAL,
     )
     assert plan_final.mode is RenderMode.FINAL
     assert plan_final.checksum != plan_proxy.checksum
-    assert any(op.operation_type == "mux-final" and op.parameters["mode"] == "final"
-               for op in plan_final.operations)
+    assert any(
+        op.operation_type == "mux-final" and op.parameters["mode"] == "final"
+        for op in plan_final.operations
+    )
