@@ -19,6 +19,11 @@ from workflows.production.activities import (
     plan_mix_activity,
     render_ass_activity,
 )
+from workflows.production.render_activities import (
+    execute_render_activity,
+    technical_qc_activity,
+)
+from workflows.production.render_workflow import RenderWorkflow
 from workflows.production.workflow import MediaProductionPlanningWorkflow
 from workflows.project import ProjectRunWorkflow, execute_conformance_activity
 from workflows.speech import SpeechObservationWorkflow, process_speech_activity
@@ -55,6 +60,7 @@ async def serve() -> None:
             VisualObservationWorkflow,
             StoryReasoningWorkflow,
             MediaProductionPlanningWorkflow,
+            RenderWorkflow,
         ],
         activities=[
             execute_conformance_activity,
@@ -74,6 +80,8 @@ async def serve() -> None:
             plan_mix_activity,
             build_subtitle_activity,
             render_ass_activity,
+            execute_render_activity,
+            technical_qc_activity,
         ],
         build_id=WORKER_BUILD_ID,
         use_worker_versioning=False,

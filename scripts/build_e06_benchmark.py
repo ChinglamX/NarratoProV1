@@ -89,7 +89,7 @@ def _sample_frames(video: Path, shots: list[tuple[float, float]], *, max_frames:
         mid = start + duration / 2
         out = FRAMES_ROOT / f"shot_{len(frames):04d}.jpg"
         out.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(  # nosec B603
+        subprocess.run(  # nosec B603 B607
             [
                 "ffmpeg",
                 "-y",

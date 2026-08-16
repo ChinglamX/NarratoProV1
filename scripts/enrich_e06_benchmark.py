@@ -71,7 +71,7 @@ def _sample_frames(video: Path, max_frames: int) -> list[Path]:
         mid = start + duration / 2
         out = FRAMES_ROOT / f"enrich_{len(frames):04d}.jpg"
         out.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(  # nosec B603
+        subprocess.run(  # nosec B603 B607
             [
                 "ffmpeg",
                 "-y",

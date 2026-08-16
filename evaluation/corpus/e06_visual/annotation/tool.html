@@ -32,6 +32,7 @@
     <button onclick="next()">下一帧 →</button>
   </div>
   <div style="flex:1"></div>
+  <span class="tag" id="srcFile">samples.json</span>
   <span class="tag">点击框选中 → 编辑标签/删除</span>
   <span class="tag">拖动画新框</span>
   <button class="primary" onclick="save()">保存本帧</button>
@@ -54,8 +55,11 @@ const CV = document.getElementById('cv'), ctx = CV.getContext('2d');
 let samples = [], idx = 0, selected = -1, drawing = null, scale = 1, offsetX = 0, offsetY = 0;
 
 async function init(){
-  samples = await (await fetch('samples.json')).json();
+  const params = new URLSearchParams(location.search);
+  const file = params.get('file') || 'samples.json';
+  samples = await (await fetch(file)).json();
   document.getElementById('counter').textContent = '1/' + samples.length;
+  document.getElementById('srcFile').textContent = file;
   render();
 }
 function current(){ return samples[idx]; }

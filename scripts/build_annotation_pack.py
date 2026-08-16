@@ -68,7 +68,7 @@ def _predict(capability: str, frame: Path) -> list[dict[str, object]]:
 def _sample_frame(video: Path, offset_seconds: float, index: int) -> Path:
     FRAMES.mkdir(parents=True, exist_ok=True)
     out = FRAMES / f"frozen_{index:03d}.jpg"
-    subprocess.run(  # nosec B603
+    subprocess.run(  # nosec B603 B607
         [
             "ffmpeg",
             "-y",

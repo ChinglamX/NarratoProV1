@@ -44,7 +44,7 @@ def _index_of(title: str, titles: list[str]) -> int:
 
 def _ffprobe_duration(path: Path) -> tuple[float | None, str | None]:
     try:
-        result = subprocess.run(  # nosec B603
+        result = subprocess.run(  # nosec B603 B607
             [
                 "ffprobe",
                 "-v",
