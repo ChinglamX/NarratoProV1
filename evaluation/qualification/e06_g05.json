@@ -60,8 +60,8 @@
       "dimension": "capacity",
       "status": "not_evaluated",
       "blocker": true,
-      "detail": "Long-video and concurrent multi-project Speech/Visual workload has not run on the fixed Mac mini profile.",
-      "evidence_paths": ["quality/E06_ACCEPTANCE_REPORT.md"]
+      "detail": "Long-video concurrent probe ran (2026-08-16): frozen_test 12 eps / 48 frames / 96 calls, 2 concurrent workers, 0 errors, OCR P50 8.0s DET P50 1.64s, peak RSS 2.7GB (engineering evidence; acceptance targets pending owner approval).",
+      "evidence_paths": ["evaluation/reports/E06_CAPACITY_RESULTS.md", "scripts/probe_e06_capacity.py"]
     },
     {
       "check_id": "worker-interruption-recovery",
