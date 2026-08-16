@@ -50,8 +50,9 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "known_limitations": [
                 "models pinned: PP-OCRv6_medium_det (checksum above) + PP-OCRv6_medium_rec "
                 f"({_PP_OCRV6_MEDIUM_REC_SHA}); verified 2026-08-15 on demo frame "
-                "(1.46s CPU); real short-drama OCR benchmark and subtitle/text-box "
-                "quality still pending",
+                "(1.46s CPU); real short-drama OCR benchmark v1 exists (2026-08-16, "
+                "1052 texts) but human-annotated CER, thresholds and capacity "
+                "acceptance still pending",
             ],
         }
     ),

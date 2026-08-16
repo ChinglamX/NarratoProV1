@@ -21,7 +21,7 @@ Split: `evaluation/corpus/e06_visual/manifest.json`（按剧隔离，DatasetSpli
 | **合计** | **36** | **720** | **1052** | **1268** | **144** | **0** |
 
 延迟（本地 CPU）：OCR 5.2–7.4s/帧（含模型常驻后实际推理更快，首次加载计入）；
-DET 2.9s/帧；VLM API 6.6s/帧。
+DET 均值 771ms/帧（JSON `avg_duration_ms`）；VLM API 6.6s/帧。
 
 ## 观察与已知项
 
