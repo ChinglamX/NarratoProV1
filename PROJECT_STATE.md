@@ -1,12 +1,12 @@
 # Project Current State
 
-State Version: 55
-Last Updated: 2026-08-17
+State Version: 56
+Last Updated: 2026-08-16
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained（语义视觉 Provider 准入阶段 B 本地 runtime 已安装验证，State v54）; E07/E08 engineering closed with real-data qualification pending; E09 active（认证链路人天签署完成，多 Variant replay 工程验证通过，剩余 blocker 见 §5）; E10/E11 advance baseline（不启动主实现）。
+- Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained（语义视觉 Provider 准入阶段 B 本地 runtime 已安装验证，State v54）; E07/E08 engineering closed with real-data qualification pending; E09 active（认证链路人天签署完成，多 Variant replay 工程验证通过，剩余 blocker 见 §5）; E10/E11 advance baseline（E10 planning workflow 与 E11 RenderWorkflow 编排已真实验证，见 §7 最新条目；主实现持续推进中）。
 - Active Release Slice：R4 Creative Production。
 - Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt（准入评估 + 本地 runtime 验证进行中）。
 - Active Backlog Entry：J05 Precise Multi-track Editing — 工程实现已审计修复（State v48）、渲染时间基 bug 修复并重跑认证（State v50）、项目负责人人工审核 approve（State v51）、多 Variant restart/replay 工程验证 + preview heartbeat 修复（State v52）、J05 debt 清理完成（/patches 合并、Web 接线、CI Postgres、revisions.py 经授权删除）；剩余 Epic 退出 blocker 见 §5。
@@ -63,6 +63,7 @@ State Owner: Project
 - E09/J06 Qualification harness：deterministic concurrency probe、versioned demo technical/shot benchmark、qualification matrix、runbook/dashboard 已实现；四个真实退出 blocker 未解决，`engineering_complete=false`。
 - E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。
 - E11 advance boundary baseline：Render/Release Contract、基础 preflight/executor/API 已提前建立；L01–L06 主实现未开始，不构成 E11 完成。
+- E11 RenderWorkflow advance：`workflows/production/render_activities.py`（execute_render_activity：从 ArtifactRepository 读 RenderPlanContract、libass fail-closed 检查、build_render_command→execute_ffmpeg_plan→RenderExecutionReport 落库；technical_qc_activity：ffprobe→TechnicalQCReport 落库）+ `workflows/production/render_workflow.py`（execute→qc 编排、RuntimeError non-retryable）已实现并注册 `apps/worker/main.py`；真实 Temporal 验证 fail-closed 路径（本机 ffmpeg 无 libass 时正确失败，单次 Activity task、无重试风暴）。工程 advance 不等于 E11 关闭。
 
 设计完成不等于代码完成；不得把上述项目报告为已实现能力。
 
@@ -85,7 +86,7 @@ State Owner: Project
 1. E09 真实数据认证已完成人工签署（State v51 / run `d8eb4cd5` / workflow succeeded）：项目负责人 2026-08-15 审核 30.27s 全片 preview（`tmp/e09-cert-d8eb4cd5-*-preview.mp4` + 带字幕播放页 `tmp/e09-cert-d8eb4cd5-preview.html`）后 approve，timeline checkpoint 关闭。**下一步**：(a) 补录带时间码的 demo craft 对比表（建议归档至 `evaluation/benchmarks/`）；(b) 处理 J05 bounded debt（`/patches` 双实现合并、`revisions.py` 处置、Review Web 接线局部预览、CI 加 Postgres service）；(c) 登记 ADR-051（渲染时间基 bug 阶段回溯）。
 2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
 3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
-4. E10/E11 现有代码只作为 advance baseline；在 E09 满足 Epic 退出条件（剩余 blocker 见 §5）前不得恢复为 active/completed。
+4. E10/E11 现有代码只作为 advance baseline（E10 planning workflow 与 E11 RenderWorkflow 编排已真实验证，见 §7 最新条目）；在 E09 满足 Epic 退出条件（剩余 blocker 见 §5）前不得恢复为 active/completed。
 
 包管理决定已确认：PEP 621/setuptools editable + pyenv Python 3.11.8 + .venv/pip 24.0（ADR-003）；Python resolution lock 仍为首个 Release Slice 退出前的 bounded debt（见 §6）。
 
@@ -128,6 +129,7 @@ State Owner: Project
 ## 7. 最近验证
 
 - 2026-08-17 E10/E11 生产链推进（State v55）：(1) E10 落库服务 `apps/services/media_production.py`（persist_mix_plan / persist_ass_artifact，ASS blob 幂等 register_or_get_staged）+ DB 集成测试；(2) E07 Facts 落库 `scripts/persist_e06_facts.py`——**36 FactSet / 571 Facts 入 PostgreSQL**（OCR→Fact 证据链成为 Story 可查询数据）；(3) E10 规划 workflow `MediaProductionPlanningWorkflow`（mix→subtitle→ASS）真实 Temporal 验证 succeeded、三产物落库、tts_pending=true，已注册 control worker；(4) E11 RenderPlan 生成 `packages/production/render_planning.py`（trim-clip/burn-ass/mix-audio/mux-final，确定性 operation id + checksum）。`make check` 376 tests、80.28% coverage 全绿。**待人工确认：E06 容量验收目标值（吞吐/延迟/内存/成本上限 + 素材范围）、VLM ToS 法务审查、E10 TTS Provider 选择。**
+- 2026-08-16 E11 RenderWorkflow 实现与真实 Temporal 验证（State v56 追加）：新增 `workflows/production/render_activities.py`（execute_render_activity——ArtifactRepository 读 RenderPlanContract、`libass_available()` fail-closed、build_render_command→execute_ffmpeg_plan→RenderExecutionReport 落库；technical_qc_activity——ffprobe→TechnicalQCReport 落库）与 `workflows/production/render_workflow.py`（execute→qc 编排、RetryPolicy RuntimeError non-retryable），已注册 `apps/worker/main.py`；**真实 Temporal 验证通过（fail-closed 路径）**：RenderPlanContract（7 operations，由 E10 真实产物 MasterTimeline/MixPlan/ASS 构造）落库后启动 RenderWorkflow，本机 ffmpeg 8.1.2 无 libass → `execute_render_activity` 抛 `libass-unavailable`，cause 链确认单次 Activity task 失败、无重试风暴、qc 未调度（编排顺序正确）。另修复 bandit nosec 注释格式（bandit 1.9.4 对 `B603,B607` 逗号格式只解析最后一个 ID，改空格分隔 `B603 B607`，5 处）；render_activities Temporal 主体按既有模式标 `# pragma: no cover`（真实运行验证），辅助纯函数 `_ref/_pointer/_int_measure` 补单测。`make check` 382 tests、80.15% coverage 全绿。
 - 2026-08-16 E06 真实短剧视觉 benchmark v1（State v56）：`scripts/build_e06_benchmark.py` 对 13 剧/36 episodes 真实语料（`data/corpus`，软链自桌面素材，rights approved）完成分镜+抽帧（720 帧）+ PaddleOCR/RT-DETR 全帧 + Ark VLM 子集（每剧 4 帧）——**1052 OCR 文本、1268 检测框、144 VLM claims、0 错误**，train/validation/frozen_test 按剧隔离（DatasetSplitManifest 校验）；`evaluation/benchmarks/e06_visual_v1.json` + 汇总报告 `E06_VISUAL_BENCHMARK_V1.md` 归档。OCR 识别真实字幕（1.2–1.6 文本/帧），DET label 多为 unknown（COCO 类不含短剧类别，后续映射/微调），VLM 描述质量高。research 证据基线（非生产准入）。`make check` 356 tests、80.05% coverage 全绿。
 - 2026-08-15 E06 VisualObservationWorkflow 接入（State v55）：`VisualWorkflowInput` 新增 `capability`（ocr/detection/vlm），`process_visual_activity` 经 `_provider_for` 选择 PaddleOCR/RT-DETR/Ark VLM adapter（替换固定 OpenCV detection），output 对齐 E06 normalize 契约（OCR→`ocr[{text,region,kind,score}]`、detection→`detections[{label,region,score}]`、VLM→`vlm_claims[{kind,statement,score}]`，region 归一化 BoundingBox）；**gateway→normalize 全链路 e2e 验证**：OCR 2.9s/1 文本、RT-DETR 2.9s/2 检测、VLM 5.5s/1 claim，均 `status=complete`（修复 RT-DETR box 字段 `coordinate` 数组解析）。**实测更正：PaddleX 同进程可共存 OCR+detection（此前"单进程单次初始化"结论是缓存 env 半初始化副作用，`_ensure_paddlex_cache` 修复后消除），无需进程隔离**。tests 补 helper/`_provider_for`/OpenCV/json_http 覆盖；`make check` 356 tests、80.05% coverage 全绿。
 - 2026-08-15 E06 typed adapter 接入（State v54 追加）：新增 `packages/providers/visual/paddle_ocr.py`（PP-OCRv6）、`paddle_detection.py`（RT-DETR-L）、`volcengine_ark_vlm.py`（Ark doubao-seed VLM）三个 ProviderPort adapter——package() 复用准入注册表（research 单一真相源）、validate/estimate/health/infer 完整、paddle 依赖 lazy import（无 research extra 也能 import 模块）、PaddleX 缓存自动重定向 workspace `.paddlex-cache`、模块级模型实例缓存（避免同 adapter 重复初始化）；**gateway e2e 实测**：OCR 3.7s/1 项、RT-DETR 2.9s/2 项、VLM 7.8s/1 claim。tests/providers/test_visual_adapters.py 8 个测试（注册表一致性、validate/estimate、fail-closed）。`make check` 350 tests、80.03% coverage 全绿。**已知限制：PaddleX 单进程只允许一次初始化——OCR 与 detection 同进程顺序调用会冲突（需按 activity/进程隔离，记入 E06 集成设计）。**
