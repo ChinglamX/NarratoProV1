@@ -50,7 +50,7 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 | identity.version 精确固定 | ✅ | `paddleocr-3.7.0-paddlex-3.7.2`（含 PaddleX 3.7.2 runtime） |
 | 本地 runtime 固定 | ✅ | 2026-08-15 安装验证：PaddleOCR 3.7.0/PaddleX 3.7.2/paddlepaddle 3.3.1（arm64 CPU），demo 帧 1.46s，依赖记录于 `pyproject.toml [research]` extra |
 | 真实按剧隔离 benchmark | ✅（工程证据） | v1：720 帧 1052 OCR 文本、0 错误；**质量证据缺人工标注** |
-| registry 声明一致性 | ⚠️ | `known_limitations` 仍写"real short-drama OCR benchmark … still pending"（2026-08-15 文案，未随 2026-08-16 benchmark v1 更新）；`supported_languages` 未声明（样本为中文短剧字幕） |
+| registry 声明一致性 | ✅ | 2026-08-16 已随 benchmark v1 更新：`known_limitations` 记录 v1 证据（1052 texts）+ CER/阈值/容量待补；`supported_languages=["zh"]` 已声明（中文短剧字幕样本） |
 
 代码级硬缺口（`production_readiness_gaps` 输出）：**仅 G3（commercial_use_allowed）1 项**。
 
@@ -66,7 +66,7 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 | 本地 runtime 固定 | ✅ | 2026-08-15 demo 帧 2 检测（score 0.94/0.81） |
 | 真实按剧隔离 benchmark | ✅（工程证据） | v1：1268 检测框、0 错误；**质量证据缺人工标注框（无 mAP）** |
 | 语义标签覆盖 | ⚠️ | v1 全部 `unknown`（COCO 80 类不含短剧专属类别）；enriched 仅 81/1268（6.4%）获 VLM 网格标签 |
-| registry 声明一致性 | ⚠️ | `known_limitations` 仍写"real short-drama detection benchmark still pending"（未更新）；`supported_languages` 未声明 |
+| registry 声明一致性 | ✅ | 2026-08-16 已随 benchmark v1 更新：`known_limitations` 记录 v1 证据（1268 boxes、COCO 80 类无短剧类别）+ mAP/阈值/容量待补；detection 语言无关，`supported_languages` 保持空（已注明） |
 
 代码级硬缺口：**仅 G3 1 项**。
 
@@ -83,7 +83,7 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 | 确定性 | ⚠️ | `deterministic=False`——同帧多次调用结果可能不同；生产需重试/一致性策略（`retry_safe=True`） |
 | 真实按剧隔离 benchmark | ✅（工程证据） | v1：144 VLM claims（每集 4 帧，全部 `kind=visible`）、0 错误；**质量证据缺 claim 对照标注** |
 | 成本 | ⚠️ | `max_cost_micros=10_000_000` 为 benchmark 调用策略值；**成本上限/预算未定**（registry 与 admission assessment 均列"cost caps still pending"） |
-| registry 声明一致性 | ⚠️ | `known_limitations` 仍写"real short-drama VLM benchmark still pending"（未更新）；`identity.model` 未声明（`enforce_admission_evidence` 因此不会在契约层拦截，靠 `production_readiness_gaps` 拦截） |
+| registry 声明一致性 | ✅ | 2026-08-16 已随 benchmark v1 更新：`known_limitations` 记录 v1 证据（144 claims）+ claim 对照/成本/容量待补；`supported_languages=["zh"]` 已声明；`identity.model` 未声明（`enforce_admission_evidence` 因此不会在契约层拦截，靠 `production_readiness_gaps` 拦截） |
 
 代码级硬缺口：**G1 + G2 + G3 共 3 项**（三个 Provider 中最多）。
 

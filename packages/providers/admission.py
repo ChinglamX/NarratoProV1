@@ -44,6 +44,9 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "retains_input": False,
             },
             "supported_hardware": ["cpu", "metal"],
+            "supported_languages": [
+                "zh"
+            ],  # real short-drama subtitle corpus (2026-08-16 benchmark v1)
             "deterministic": True,
             "retry_safe": True,
             "max_batch_size": 16,
@@ -77,13 +80,18 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "retains_input": False,
             },
             "supported_hardware": ["cpu", "metal"],
+            # detection is language-neutral; benchmark labels mostly unknown (COCO 80)
+            "supported_languages": [],
             "deterministic": True,
             "retry_safe": True,
             "max_batch_size": 16,
             "known_limitations": [
                 "model pinned: RT-DETR-L (checksum above); verified 2026-08-15 on demo "
                 "frame (2 detections); supersedes ultralytics/yolo (AGPL, not adopted); "
-                "real short-drama detection benchmark still pending",
+                "real short-drama detection benchmark v1 exists (2026-08-16, 1268 boxes) "
+                "but labels are mostly unknown (COCO 80 classes lack short-drama "
+                "categories), human-annotated mAP, thresholds and capacity acceptance "
+                "still pending",
             ],
         }
     ),
@@ -168,6 +176,7 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "retention_days": 30,
             },
             "supported_hardware": ["cloud"],
+            "supported_languages": ["zh"],  # real short-drama VLM subset (2026-08-16 benchmark v1)
             "deterministic": False,
             "retry_safe": True,
             "max_batch_size": 4,
@@ -175,8 +184,9 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "project decision 2026-08-15: VLM via Volcengine Ark, model "
                 "doubao-seed-2-0-mini-260428, endpoint ep-m-20260716234644-hqltj; "
                 "verified 2026-08-15 on demo frame (HTTP 200, 8.1s; accurate scene/",
-                "person/animal/text description); cost caps and real short-drama VLM "
-                "benchmark still pending",
+                "person/animal/text description); real short-drama VLM benchmark v1 "
+                "exists (2026-08-16, 144 claims) but human-annotated claim compliance, "
+                "cost caps and capacity acceptance still pending",
                 "claims constrained by the VLM claim contract; frames are transmitted to the API",
             ],
         }
