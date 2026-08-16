@@ -43,6 +43,19 @@ Status: Design draft — target values pending project-owner approval
   → PaddleOCR/RT-DETR 具备 production 升级完整证据链（新 Acceptance Report + 人工签名，ADR-032）
 - VLM 仍待：ToS 法务审查 + 成本上限确认
 
+## 5.1 工程基线（2026-08-16 probe，非验收）
+
+`scripts/probe_e06_capacity.py`（frozen_test 12 集/48 帧/96 次调用，OCR+detection 并发 2 workers，结果 `E06_CAPACITY_RESULTS.md`）：
+
+| 指标 | 实测（工程基线） | 建议验收目标（待批） |
+|---|---|---|
+| OCR P50 / P95 | 8.0s / 14.6s | ≤ 3s / 5s（模型常驻后） |
+| DET P50 / P95 | 1.64s / 7.5s | ≤ 1.5s / 3s |
+| 峰值 RSS | 2.7 GB（两模型常驻） | ≤ 6 GB |
+| 吞吐 | 0.27 calls/s（单机 CPU 并发） | —（验收需按目标值重测） |
+
+关键发现：**PaddleX 并发首次初始化不兼容**（"PDX has already been initialized"）——probe 采用**顺序预热后再并发**规避；这正是 E06 集成设计中"同进程共享 provider 实例 + 预热"的依据。OCR P95 明显高于 P50（复杂帧/资源争用），DET 相对稳定。本基线不作为验收结论。
+
 ## 6. 待项目负责人确认
 
 1. 上表验收目标值（或给替代值）

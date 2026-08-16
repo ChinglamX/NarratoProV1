@@ -133,7 +133,8 @@ async def main() -> None:
         )
         print("causal_graph:", result.causal_graph.artifact_id[:8] if result.causal_graph else None)
         print("story_graph:", result.story_graph.artifact_id[:8] if result.story_graph else None)
-        assert result.state == "succeeded", result
+        if result.state != "succeeded":
+            raise RuntimeError(f"unexpected story state: {result.state}")
         # Conservative fusion expectation: OCR-only facts (fact_type=ocr) are NOT
         # promoted to events (ADR-035 observable-only; event types are
         # dialogue/action/audio_signal/visual_signal). The chain must still run
