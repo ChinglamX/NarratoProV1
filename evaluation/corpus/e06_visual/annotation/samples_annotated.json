@@ -1,0 +1,1434 @@
+[
+  {
+    "sample_id": "frozen_000",
+    "series_id": "e06-1970",
+    "episode_id": "e01",
+    "offset_seconds": 19.7,
+    "frame": "frames/frozen_000.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.000498354434967041,
+          "x_max": 0.9997363620334201,
+          "y_max": 1
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.000498354434967041,
+            "x_max": 0.9997363620334201,
+            "y_max": 1
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_001",
+    "series_id": "e06-1970",
+    "episode_id": "e01",
+    "offset_seconds": 39.41,
+    "frame": "frames/frozen_001.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.36832898457845054,
+          "y_min": 0.43359942436218263,
+          "x_max": 0.6049402872721354,
+          "y_max": 0.7334497451782227
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.36832898457845054,
+            "y_min": 0.43359942436218263,
+            "x_max": 0.6049402872721354,
+            "y_max": 0.7334497451782227
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_002",
+    "series_id": "e06-1970",
+    "episode_id": "e01",
+    "offset_seconds": 59.11,
+    "frame": "frames/frozen_002.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "other",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.14881620407104493,
+          "x_max": 0.999619377983941,
+          "y_max": 0.9993528366088867
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "other",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.14881620407104493,
+            "x_max": 0.999619377983941,
+            "y_max": 0.9993528366088867
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_003",
+    "series_id": "e06-1970",
+    "episode_id": "e01",
+    "offset_seconds": 78.82,
+    "frame": "frames/frozen_003.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.10078567266464233,
+          "x_max": 0.9998236762152778,
+          "y_max": 0.998445701599121
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.10078567266464233,
+            "x_max": 0.9998236762152778,
+            "y_max": 0.998445701599121
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_004",
+    "series_id": "e06-1970",
+    "episode_id": "e02",
+    "offset_seconds": 18.44,
+    "frame": "frames/frozen_004.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "animal",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.20559418201446533,
+          "x_max": 0.874597676595052,
+          "y_max": 0.7566184520721435
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "animal",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.20559418201446533,
+            "x_max": 0.874597676595052,
+            "y_max": 0.7566184520721435
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_005",
+    "series_id": "e06-1970",
+    "episode_id": "e02",
+    "offset_seconds": 36.88,
+    "frame": "frames/frozen_005.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.3479198455810547,
+          "x_max": 0.99974611070421,
+          "y_max": 0.8883831024169921
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.3479198455810547,
+            "x_max": 0.99974611070421,
+            "y_max": 0.8883831024169921
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_006",
+    "series_id": "e06-1970",
+    "episode_id": "e02",
+    "offset_seconds": 55.32,
+    "frame": "frames/frozen_006.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.11287319395277236,
+          "y_min": 0.0004858970642089844,
+          "x_max": 0.9645223829481336,
+          "y_max": 0.6678624153137207
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.11287319395277236,
+            "y_min": 0.0004858970642089844,
+            "x_max": 0.9645223829481336,
+            "y_max": 0.6678624153137207
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_007",
+    "series_id": "e06-1970",
+    "episode_id": "e02",
+    "offset_seconds": 73.77,
+    "frame": "frames/frozen_007.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "hands",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.0002567172050476074,
+          "x_max": 0.9981909010145399,
+          "y_max": 1
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "hands",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.0002567172050476074,
+            "x_max": 0.9981909010145399,
+            "y_max": 1
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_008",
+    "series_id": "e06-1970",
+    "episode_id": "e03",
+    "offset_seconds": 21.06,
+    "frame": "frames/frozen_008.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      },
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "animal",
+          "region": {
+            "x_min": 0.02638888888888889,
+            "y_min": 0.7265625,
+            "x_max": 0.8375,
+            "y_max": 0.9921875
+          }
+        },
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.23472222222222222,
+            "y_min": 0.2234375,
+            "x_max": 0.8069444444444445,
+            "y_max": 0.721875
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_009",
+    "series_id": "e06-1970",
+    "episode_id": "e03",
+    "offset_seconds": 42.12,
+    "frame": "frames/frozen_009.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.05449497434828016,
+          "y_min": 0.08615773916244507,
+          "x_max": 0.8523829989963108,
+          "y_max": 1
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0.5856844584147135,
+          "y_min": 0.5291367053985596,
+          "x_max": 0.8115971883138021,
+          "y_max": 0.6126022815704346
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0.30320601993136936,
+          "y_min": 0.5279721260070801,
+          "x_max": 0.5233030954996745,
+          "y_max": 0.6030007362365722
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0.622914293077257,
+          "y_min": 0.6452887535095215,
+          "x_max": 0.9183267381456163,
+          "y_max": 0.8068702697753907
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0.5738142225477431,
+          "y_min": 0.6830877780914306,
+          "x_max": 0.9998490227593316,
+          "y_max": 0.9723214149475098
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.05449497434828016,
+            "y_min": 0.08615773916244507,
+            "x_max": 0.8523829989963108,
+            "y_max": 1
+          }
+        },
+        {
+          "label": "unknown",
+          "region": {
+            "x_min": 0.5856844584147135,
+            "y_min": 0.5291367053985596,
+            "x_max": 0.8115971883138021,
+            "y_max": 0.6126022815704346
+          }
+        },
+        {
+          "label": "unknown",
+          "region": {
+            "x_min": 0.30320601993136936,
+            "y_min": 0.5279721260070801,
+            "x_max": 0.5233030954996745,
+            "y_max": 0.6030007362365722
+          }
+        },
+        {
+          "label": "unknown",
+          "region": {
+            "x_min": 0.622914293077257,
+            "y_min": 0.6452887535095215,
+            "x_max": 0.9183267381456163,
+            "y_max": 0.8068702697753907
+          }
+        },
+        {
+          "label": "unknown",
+          "region": {
+            "x_min": 0.5738142225477431,
+            "y_min": 0.6830877780914306,
+            "x_max": 0.9998490227593316,
+            "y_max": 0.9723214149475098
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_010",
+    "series_id": "e06-1970",
+    "episode_id": "e03",
+    "offset_seconds": 63.18,
+    "frame": "frames/frozen_010.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.06870022349887424,
+          "y_min": 0.19501996040344238,
+          "x_max": 0.9599412706163194,
+          "y_max": 0.9411184310913085
+        }
+      },
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.4277437845865885,
+          "y_min": 0.4075005531311035,
+          "x_max": 0.6990534040662978,
+          "y_max": 0.46997766494750975
+        }
+      },
+      {
+        "label": "碗",
+        "region": {
+          "x_min": 0.000568091869354248,
+          "y_min": 0.037664055824279785,
+          "x_max": 0.4959089067247179,
+          "y_max": 1
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.06870022349887424,
+            "y_min": 0.19501996040344238,
+            "x_max": 0.9599412706163194,
+            "y_max": 0.9411184310913085
+          }
+        },
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.4277437845865885,
+            "y_min": 0.4075005531311035,
+            "x_max": 0.6990534040662978,
+            "y_max": 0.46997766494750975
+          }
+        },
+        {
+          "label": "碗",
+          "region": {
+            "x_min": 0.000568091869354248,
+            "y_min": 0.037664055824279785,
+            "x_max": 0.4959089067247179,
+            "y_max": 1
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_011",
+    "series_id": "e06-1970",
+    "episode_id": "e03",
+    "offset_seconds": 84.24,
+    "frame": "frames/frozen_011.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [],
+    "ground_truth": {
+      "ocr": [],
+      "detections": []
+    },
+    "reviewed": false,
+    "reviewer": null
+  },
+  {
+    "sample_id": "frozen_012",
+    "series_id": "e06-1970",
+    "episode_id": "hot",
+    "offset_seconds": 49.08,
+    "frame": "frames/frozen_012.jpg",
+    "ocr": [
+      {
+        "text": "又子劇場",
+        "region": {
+          "x_min": 0.4064814814814815,
+          "y_min": 0.9652777777777778,
+          "x_max": 0.6037037037037037,
+          "y_max": 1
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.3439732869466146,
+          "y_min": 0.000186920166015625,
+          "x_max": 0.7238689846462674,
+          "y_max": 0.712436760796441
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0.38666421395760997,
+          "y_min": 0.6220575120713976,
+          "x_max": 0.5601355658637153,
+          "y_max": 0.7056685129801432
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [
+        {
+          "text": "又子劇場",
+          "region": {
+            "x_min": 0.4064814814814815,
+            "y_min": 0.9652777777777778,
+            "x_max": 0.6037037037037037,
+            "y_max": 1
+          }
+        }
+      ],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.3439732869466146,
+            "y_min": 0.000186920166015625,
+            "x_max": 0.7238689846462674,
+            "y_max": 0.712436760796441
+          }
+        },
+        {
+          "label": "unknown",
+          "region": {
+            "x_min": 0.38666421395760997,
+            "y_min": 0.6220575120713976,
+            "x_max": 0.5601355658637153,
+            "y_max": 0.7056685129801432
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_013",
+    "series_id": "e06-1970",
+    "episode_id": "hot",
+    "offset_seconds": 98.16,
+    "frame": "frames/frozen_013.jpg",
+    "ocr": [
+      {
+        "text": "制情他及虚构请勿维估",
+        "region": {
+          "x_min": 0.13518518518518519,
+          "y_min": 0.0020833333333333333,
+          "x_max": 0.4638888888888889,
+          "y_max": 0.029166666666666667
+        }
+      },
+      {
+        "text": "不但将女儿卖了抵债",
+        "region": {
+          "x_min": 0.24537037037037038,
+          "y_min": 0.7951388888888888,
+          "x_max": 0.6759259259259259,
+          "y_max": 0.8423611111111111
+        }
+      },
+      {
+        "text": "叉子劇場",
+        "region": {
+          "x_min": 0.40370370370370373,
+          "y_min": 0.9645833333333333,
+          "x_max": 0.6018518518518519,
+          "y_max": 1
+        }
+      }
+    ],
+    "detections": [],
+    "ground_truth": {
+      "ocr": [],
+      "detections": []
+    },
+    "reviewed": false,
+    "reviewer": null
+  },
+  {
+    "sample_id": "frozen_014",
+    "series_id": "e06-1970",
+    "episode_id": "hot",
+    "offset_seconds": 147.23,
+    "frame": "frames/frozen_014.jpg",
+    "ocr": [
+      {
+        "text": "丝阶",
+        "region": {
+          "x_min": 0.21944444444444444,
+          "y_min": 0.2965277777777778,
+          "x_max": 0.33796296296296297,
+          "y_max": 0.4777777777777778
+        }
+      },
+      {
+        "text": "看看啊新鲜的野猪肉",
+        "region": {
+          "x_min": 0.2490740740740741,
+          "y_min": 0.7972222222222223,
+          "x_max": 0.6712962962962963,
+          "y_max": 0.8402777777777778
+        }
+      },
+      {
+        "text": "又子劇場",
+        "region": {
+          "x_min": 0.40925925925925927,
+          "y_min": 0.9673611111111111,
+          "x_max": 0.5981481481481481,
+          "y_max": 1
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0.0006729662418365479,
+          "y_min": 0.44501368204752606,
+          "x_max": 0.9919303611472801,
+          "y_max": 0.9999975416395399
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0,
+          "y_min": 0,
+          "x_max": 0.9996194344979745,
+          "y_max": 0.9994281344943576
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": []
+    },
+    "reviewed": false,
+    "reviewer": null
+  },
+  {
+    "sample_id": "frozen_015",
+    "series_id": "e06-1970",
+    "episode_id": "hot",
+    "offset_seconds": 196.31,
+    "frame": "frames/frozen_015.jpg",
+    "ocr": [
+      {
+        "text": "剧情纯属虚构请勿模仿",
+        "region": {
+          "x_min": 0.12962962962962962,
+          "y_min": 0.001388888888888889,
+          "x_max": 0.46944444444444444,
+          "y_max": 0.03125
+        }
+      },
+      {
+        "text": "计雅月月入国中",
+        "region": {
+          "x_min": 0.21296296296296297,
+          "y_min": 0.41180555555555554,
+          "x_max": 0.5648148148148148,
+          "y_max": 0.5111111111111111
+        }
+      },
+      {
+        "text": "X852280",
+        "region": {
+          "x_min": 0.11388888888888889,
+          "y_min": 0.5972222222222222,
+          "x_max": 0.28055555555555556,
+          "y_max": 0.6541666666666667
+        }
+      },
+      {
+        "text": "宁凯自庆",
+        "region": {
+          "x_min": 0.7416666666666667,
+          "y_min": 0.6298611111111111,
+          "x_max": 0.8712962962962963,
+          "y_max": 0.6645833333333333
+        }
+      },
+      {
+        "text": "更是将剩下的所有钱财",
+        "region": {
+          "x_min": 0.22685185185185186,
+          "y_min": 0.7958333333333333,
+          "x_max": 0.6990740740740741,
+          "y_max": 0.8409722222222222
+        }
+      },
+      {
+        "text": "又子劇場",
+        "region": {
+          "x_min": 0.40925925925925927,
+          "y_min": 0.9673611111111111,
+          "x_max": 0.6,
+          "y_max": 1
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "money",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.3461384455362956,
+          "x_max": 0.9031509399414063,
+          "y_max": 0.757598876953125
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0.1875949153193721,
+          "y_min": 0.5880948384602864,
+          "x_max": 0.9665549949363426,
+          "y_max": 0.7689772711859809
+        }
+      },
+      {
+        "label": "unknown",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.18119025760226778,
+          "x_max": 0.9996583161530671,
+          "y_max": 0.9952445983886719
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [
+        {
+          "text": "剧情纯属虚构请勿模仿",
+          "region": {
+            "x_min": 0.12962962962962962,
+            "y_min": 0.001388888888888889,
+            "x_max": 0.46944444444444444,
+            "y_max": 0.03125
+          }
+        },
+        {
+          "text": "计雅月月入国中",
+          "region": {
+            "x_min": 0.21296296296296297,
+            "y_min": 0.41180555555555554,
+            "x_max": 0.5648148148148148,
+            "y_max": 0.5111111111111111
+          }
+        },
+        {
+          "text": "X852280",
+          "region": {
+            "x_min": 0.11388888888888889,
+            "y_min": 0.5972222222222222,
+            "x_max": 0.28055555555555556,
+            "y_max": 0.6541666666666667
+          }
+        },
+        {
+          "text": "宁凯自庆",
+          "region": {
+            "x_min": 0.7416666666666667,
+            "y_min": 0.6298611111111111,
+            "x_max": 0.8712962962962963,
+            "y_max": 0.6645833333333333
+          }
+        },
+        {
+          "text": "更是将剩下的所有钱财",
+          "region": {
+            "x_min": 0.22685185185185186,
+            "y_min": 0.7958333333333333,
+            "x_max": 0.6990740740740741,
+            "y_max": 0.8409722222222222
+          }
+        },
+        {
+          "text": "又子劇場",
+          "region": {
+            "x_min": 0.40925925925925927,
+            "y_min": 0.9673611111111111,
+            "x_max": 0.6,
+            "y_max": 1
+          }
+        }
+      ],
+      "detections": [
+        {
+          "label": "money",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.3461384455362956,
+            "x_max": 0.9031509399414063,
+            "y_max": 0.757598876953125
+          }
+        },
+        {
+          "label": "unknown",
+          "region": {
+            "x_min": 0.1875949153193721,
+            "y_min": 0.5880948384602864,
+            "x_max": 0.9665549949363426,
+            "y_max": 0.7689772711859809
+          }
+        },
+        {
+          "label": "unknown",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.18119025760226778,
+            "x_max": 0.9996583161530671,
+            "y_max": 0.9952445983886719
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_016",
+    "series_id": "e06-1982",
+    "episode_id": "e01",
+    "offset_seconds": 22.46,
+    "frame": "frames/frozen_016.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.015104166666666667,
+          "x_max": 0.07962962962962963,
+          "y_max": 0.1015625
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "缸",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.32256460189819336,
+          "x_max": 0.9996527777777777,
+          "y_max": 0.9993301391601562
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "缸",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.32256460189819336,
+            "x_max": 0.9996527777777777,
+            "y_max": 0.9993301391601562
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_017",
+    "series_id": "e06-1982",
+    "episode_id": "e01",
+    "offset_seconds": 44.93,
+    "frame": "frames/frozen_017.jpg",
+    "ocr": [
+      {
+        "text": "我不会逼你嫁人",
+        "region": {
+          "x_min": 0.2898148148148148,
+          "y_min": 0.7515625,
+          "x_max": 0.7074074074074074,
+          "y_max": 0.79375
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.0018330514430999756,
+          "y_min": 0.10478195349375406,
+          "x_max": 0.9555078577112268,
+          "y_max": 0.9982912699381511
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [
+        {
+          "text": "我不会逼你嫁人",
+          "region": {
+            "x_min": 0.2898148148148148,
+            "y_min": 0.7515625,
+            "x_max": 0.7074074074074074,
+            "y_max": 0.79375
+          }
+        }
+      ],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.0018330514430999756,
+            "y_min": 0.10478195349375406,
+            "x_max": 0.9555078577112268,
+            "y_max": 0.9982912699381511
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_018",
+    "series_id": "e06-1982",
+    "episode_id": "e01",
+    "offset_seconds": 67.39,
+    "frame": "frames/frozen_018.jpg",
+    "ocr": [
+      {
+        "text": "我不会卖海霞",
+        "region": {
+          "x_min": 0.31574074074074077,
+          "y_min": 0.7515625,
+          "x_max": 0.6805555555555556,
+          "y_max": 0.7932291666666667
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0,
+          "y_min": 0.09718647797902426,
+          "x_max": 0.9994257043909144,
+          "y_max": 0.9973493576049804
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [
+        {
+          "text": "我不会卖海霞",
+          "region": {
+            "x_min": 0.31574074074074077,
+            "y_min": 0.7515625,
+            "x_max": 0.6805555555555556,
+            "y_max": 0.7932291666666667
+          }
+        }
+      ],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0,
+            "y_min": 0.09718647797902426,
+            "x_max": 0.9994257043909144,
+            "y_max": 0.9973493576049804
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_019",
+    "series_id": "e06-1982",
+    "episode_id": "e01",
+    "offset_seconds": 89.86,
+    "frame": "frames/frozen_019.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.05277777777777778,
+          "y_min": 0.5609375,
+          "x_max": 0.11666666666666667,
+          "y_max": 0.6234375
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.11726066448070385,
+          "y_min": 0.21304062207539876,
+          "x_max": 0.7246799610279224,
+          "y_max": 0.9964501698811848
+        }
+      },
+      {
+        "label": "对联",
+        "region": {
+          "x_min": 0.12295036315917969,
+          "y_min": 0.297373898824056,
+          "x_max": 0.2740201031720197,
+          "y_max": 0.5090222358703613
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.11726066448070385,
+            "y_min": 0.21304062207539876,
+            "x_max": 0.7246799610279224,
+            "y_max": 0.9964501698811848
+          }
+        },
+        {
+          "label": "对联",
+          "region": {
+            "x_min": 0.12295036315917969,
+            "y_min": 0.297373898824056,
+            "x_max": 0.2740201031720197,
+            "y_max": 0.5090222358703613
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_020",
+    "series_id": "e06-1982",
+    "episode_id": "e02",
+    "offset_seconds": 14.95,
+    "frame": "frames/frozen_020.jpg",
+    "ocr": [
+      {
+        "text": "丛林潜伏追踪术",
+        "region": {
+          "x_min": 0.28888888888888886,
+          "y_min": 0.75078125,
+          "x_max": 0.7083333333333334,
+          "y_max": 0.79453125
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.5363836924235026,
+          "y_min": 0.3122223377227783,
+          "x_max": 0.7893073187934028,
+          "y_max": 0.8312360763549804
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [
+        {
+          "text": "丛林潜伏追踪术",
+          "region": {
+            "x_min": 0.28888888888888886,
+            "y_min": 0.75078125,
+            "x_max": 0.7083333333333334,
+            "y_max": 0.79453125
+          }
+        }
+      ],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.5363836924235026,
+            "y_min": 0.3122223377227783,
+            "x_max": 0.7893073187934028,
+            "y_max": 0.8312360763549804
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_021",
+    "series_id": "e06-1982",
+    "episode_id": "e02",
+    "offset_seconds": 29.91,
+    "frame": "frames/frozen_021.jpg",
+    "ocr": [
+      {
+        "text": "",
+        "region": {
+          "x_min": 0.1,
+          "y_min": 0.85,
+          "x_max": 0.9,
+          "y_max": 0.95
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.09301353030734592,
+          "y_min": 0.42078523635864257,
+          "x_max": 0.9142685784233942,
+          "y_max": 0.9958246231079102
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.09301353030734592,
+            "y_min": 0.42078523635864257,
+            "x_max": 0.9142685784233942,
+            "y_max": 0.9958246231079102
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_022",
+    "series_id": "e06-1982",
+    "episode_id": "e02",
+    "offset_seconds": 44.86,
+    "frame": "frames/frozen_022.jpg",
+    "ocr": [
+      {
+        "text": "肉质肥美",
+        "region": {
+          "x_min": 0.37777777777777777,
+          "y_min": 0.753125,
+          "x_max": 0.6194444444444445,
+          "y_max": 0.7921875
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 3.406405448913574e-05,
+          "y_min": 0.21247947216033936,
+          "x_max": 0.9355630662706164,
+          "y_max": 0.9967336654663086
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [
+        {
+          "text": "肉质肥美",
+          "region": {
+            "x_min": 0.37777777777777777,
+            "y_min": 0.753125,
+            "x_max": 0.6194444444444445,
+            "y_max": 0.7921875
+          }
+        }
+      ],
+      "detections": [
+        {
+          "label": "animal",
+          "region": {
+            "x_min": 0.3263888888888889,
+            "y_min": 0.490625,
+            "x_max": 0.9652777777777778,
+            "y_max": 0.8046875
+          }
+        },
+        {
+          "label": "person",
+          "region": {
+            "x_min": 3.406405448913574e-05,
+            "y_min": 0.21247947216033936,
+            "x_max": 0.9355630662706164,
+            "y_max": 0.9967336654663086
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  },
+  {
+    "sample_id": "frozen_023",
+    "series_id": "e06-1982",
+    "episode_id": "e02",
+    "offset_seconds": 59.81,
+    "frame": "frames/frozen_023.jpg",
+    "ocr": [
+      {
+        "text": "估摸着得有四五斤重",
+        "region": {
+          "x_min": 0.2361111111111111,
+          "y_min": 0.7546875,
+          "x_max": 0.7625,
+          "y_max": 0.79140625
+        }
+      }
+    ],
+    "detections": [
+      {
+        "label": "person",
+        "region": {
+          "x_min": 0.14058479732937282,
+          "y_min": 0.1557932138442993,
+          "x_max": 0.9999923706054688,
+          "y_max": 0.9970901489257813
+        }
+      }
+    ],
+    "ground_truth": {
+      "ocr": [
+        {
+          "text": "估摸着得有四五斤重",
+          "region": {
+            "x_min": 0.2361111111111111,
+            "y_min": 0.7546875,
+            "x_max": 0.7625,
+            "y_max": 0.79140625
+          }
+        }
+      ],
+      "detections": [
+        {
+          "label": "person",
+          "region": {
+            "x_min": 0.14058479732937282,
+            "y_min": 0.1557932138442993,
+            "x_max": 0.9999923706054688,
+            "y_max": 0.9970901489257813
+          }
+        }
+      ]
+    },
+    "reviewed": true,
+    "reviewer": "owner"
+  }
+]
