@@ -11,7 +11,6 @@
 Writes an enriched copy: ``evaluation/benchmarks/e06_visual_v1_enriched.json``.
 """
 
-
 from __future__ import annotations
 
 import argparse
