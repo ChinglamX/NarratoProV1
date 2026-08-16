@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from packages.contracts.envelopes import JsonObject
-from packages.contracts.foundation import ArtifactRef, RationalTime, TimeRange
+from packages.contracts.foundation import ActorRef, ArtifactRef, RationalTime, TimeRange
 from packages.contracts.media_production import AlignmentArtifact, SubtitleCue, SubtitleCueSet
+from packages.contracts.timeline import PatchOperationType, TimelinePatch
 
 
 class ConformConflict(RuntimeError):
@@ -17,6 +18,49 @@ def duration_delta(estimated: RationalTime, actual: RationalTime) -> RationalTim
     if estimated.rate_num != actual.rate_num or estimated.rate_den != actual.rate_den:
         raise ConformConflict("duration comparison requires the same rational rate")
     return actual.model_copy(update={"value": actual.value - estimated.value})
+
+
+def plan_voice_conform_patch(
+    *,
+    timeline_ref: ArtifactRef,
+    narration_item_id: UUID,
+    current_range: TimeRange,
+    actual_duration: RationalTime,
+    author: ActorRef,
+) -> tuple[TimelinePatch, RationalTime]:
+    """Build an audit-safe RETIME patch that conforms one narration item.
+
+    Returns the patch and the signed duration delta. The patch is applied
+    through the normal TimelinePatch pipeline (versioned, CAS, append-only),
+    so a conform is a first-class timeline revision rather than a hidden FFmpeg
+    fix (Stage 5 rule).
+    """
+    delta = duration_delta(current_range.duration, actual_duration)
+    if delta.value == 0:
+        raise ConformConflict("voice duration matches estimate; nothing to conform")
+    patch = TimelinePatch.model_validate(
+        {
+            "patch_id": str(uuid4()),
+            "base_timeline": timeline_ref.model_dump(mode="json"),
+            "operations": [
+                {
+                    "operation_id": str(uuid4()),
+                    "op": PatchOperationType.RETIME.value,
+                    "target_item_id": str(narration_item_id),
+                    "expected_item_version": 1,
+                    "payload": {
+                        "timeline_range": {
+                            "start": current_range.start.model_dump(mode="json"),
+                            "duration": actual_duration.model_dump(mode="json"),
+                        }
+                    },
+                }
+            ],
+            "author": author.model_dump(mode="json"),
+            "reason": "voice duration conform",
+        }
+    )
+    return patch, delta
 
 
 def build_subtitle_cues(
