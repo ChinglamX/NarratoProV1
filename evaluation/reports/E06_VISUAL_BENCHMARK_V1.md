@@ -44,3 +44,11 @@ DET 2.9s/帧；VLM API 6.6s/帧。
 2. OCR kind 细化（字幕 vs 场景文字）
 3. 与 E07 Fact/Identity 融合验证（OCR 文本进 Fact、DET 框辅助 tracklet）
 4. Mac mini 容量验收（长视频吞吐基线）后可评估 production 升级
+
+## 增强（enriched，2026-08-16）
+
+`scripts/enrich_e06_benchmark.py` 产出 `e06_visual_v1_enriched.json`：
+
+1. **OCR kind 细化**（region 启发式）：scene_text 562 / burned_in_subtitle 461 / graphic_overlay 29（原全部 burned_in_subtitle）。
+2. **DET 语义标签**（Ark VLM 网格标注，每集 2 帧子集）：81 框获得标签（person 61、prop 6、building 3 等；其余保持 unknown，扩展子集可提升覆盖）。
+3. **E07 融合验证**：36 episodes × 每集 OCR→Fact 观测 8 条 = **288 个 observable Fact**（`fuse_observations`，FactType.OCR，evidence=字幕文本），证明 OCR→Fact 链路在真实语料上可用。
