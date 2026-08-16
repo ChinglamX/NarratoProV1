@@ -35,7 +35,7 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "admission": "research",
             "code_license": "Apache-2.0",
             "weight_license": "Apache-2.0",
-            "commercial_use_allowed": False,
+            "commercial_use_allowed": True,  # approved by project owner 2026-08-16 (Apache-2.0)
             "model_checksum": _PP_OCRV6_MEDIUM_DET_SHA,
             "data_policy": {
                 "execution_location": "local",
@@ -68,7 +68,7 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "admission": "research",
             "code_license": "Apache-2.0",
             "weight_license": "Apache-2.0",
-            "commercial_use_allowed": False,
+            "commercial_use_allowed": True,  # approved by project owner 2026-08-16 (Apache-2.0)
             "model_checksum": _RT_DETR_L_SHA,
             "data_policy": {
                 "execution_location": "local",

@@ -45,3 +45,4 @@ apps/review_web/dist/
 /.paddlex-cache/
 /data/corpus/
 /evaluation/corpus/e06_visual/frames/*.jpg
+/evaluation/corpus/e06_visual/annotation/frames/*.jpg
