@@ -1,7 +1,7 @@
 # Project Current State
 
-State Version: 54
-Last Updated: 2026-08-15
+State Version: 55
+Last Updated: 2026-08-17
 State Owner: Project
 
 ## 1. 当前阶段
@@ -127,6 +127,7 @@ State Owner: Project
 
 ## 7. 最近验证
 
+- 2026-08-17 E10/E11 生产链推进（State v55）：(1) E10 落库服务 `apps/services/media_production.py`（persist_mix_plan / persist_ass_artifact，ASS blob 幂等 register_or_get_staged）+ DB 集成测试；(2) E07 Facts 落库 `scripts/persist_e06_facts.py`——**36 FactSet / 571 Facts 入 PostgreSQL**（OCR→Fact 证据链成为 Story 可查询数据）；(3) E10 规划 workflow `MediaProductionPlanningWorkflow`（mix→subtitle→ASS）真实 Temporal 验证 succeeded、三产物落库、tts_pending=true，已注册 control worker；(4) E11 RenderPlan 生成 `packages/production/render_planning.py`（trim-clip/burn-ass/mix-audio/mux-final，确定性 operation id + checksum）。`make check` 376 tests、80.28% coverage 全绿。**待人工确认：E06 容量验收目标值（吞吐/延迟/内存/成本上限 + 素材范围）、VLM ToS 法务审查、E10 TTS Provider 选择。**
 - 2026-08-16 E06 真实短剧视觉 benchmark v1（State v56）：`scripts/build_e06_benchmark.py` 对 13 剧/36 episodes 真实语料（`data/corpus`，软链自桌面素材，rights approved）完成分镜+抽帧（720 帧）+ PaddleOCR/RT-DETR 全帧 + Ark VLM 子集（每剧 4 帧）——**1052 OCR 文本、1268 检测框、144 VLM claims、0 错误**，train/validation/frozen_test 按剧隔离（DatasetSplitManifest 校验）；`evaluation/benchmarks/e06_visual_v1.json` + 汇总报告 `E06_VISUAL_BENCHMARK_V1.md` 归档。OCR 识别真实字幕（1.2–1.6 文本/帧），DET label 多为 unknown（COCO 类不含短剧类别，后续映射/微调），VLM 描述质量高。research 证据基线（非生产准入）。`make check` 356 tests、80.05% coverage 全绿。
 - 2026-08-15 E06 VisualObservationWorkflow 接入（State v55）：`VisualWorkflowInput` 新增 `capability`（ocr/detection/vlm），`process_visual_activity` 经 `_provider_for` 选择 PaddleOCR/RT-DETR/Ark VLM adapter（替换固定 OpenCV detection），output 对齐 E06 normalize 契约（OCR→`ocr[{text,region,kind,score}]`、detection→`detections[{label,region,score}]`、VLM→`vlm_claims[{kind,statement,score}]`，region 归一化 BoundingBox）；**gateway→normalize 全链路 e2e 验证**：OCR 2.9s/1 文本、RT-DETR 2.9s/2 检测、VLM 5.5s/1 claim，均 `status=complete`（修复 RT-DETR box 字段 `coordinate` 数组解析）。**实测更正：PaddleX 同进程可共存 OCR+detection（此前"单进程单次初始化"结论是缓存 env 半初始化副作用，`_ensure_paddlex_cache` 修复后消除），无需进程隔离**。tests 补 helper/`_provider_for`/OpenCV/json_http 覆盖；`make check` 356 tests、80.05% coverage 全绿。
 - 2026-08-15 E06 typed adapter 接入（State v54 追加）：新增 `packages/providers/visual/paddle_ocr.py`（PP-OCRv6）、`paddle_detection.py`（RT-DETR-L）、`volcengine_ark_vlm.py`（Ark doubao-seed VLM）三个 ProviderPort adapter——package() 复用准入注册表（research 单一真相源）、validate/estimate/health/infer 完整、paddle 依赖 lazy import（无 research extra 也能 import 模块）、PaddleX 缓存自动重定向 workspace `.paddlex-cache`、模块级模型实例缓存（避免同 adapter 重复初始化）；**gateway e2e 实测**：OCR 3.7s/1 项、RT-DETR 2.9s/2 项、VLM 7.8s/1 claim。tests/providers/test_visual_adapters.py 8 个测试（注册表一致性、validate/estimate、fail-closed）。`make check` 350 tests、80.03% coverage 全绿。**已知限制：PaddleX 单进程只允许一次初始化——OCR 与 detection 同进程顺序调用会冲突（需按 activity/进程隔离，记入 E06 集成设计）。**
