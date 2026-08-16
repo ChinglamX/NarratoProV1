@@ -52,3 +52,12 @@ DET 均值 771ms/帧（JSON `avg_duration_ms`）；VLM API 6.6s/帧。
 1. **OCR kind 细化**（region 启发式）：scene_text 562 / burned_in_subtitle 461 / graphic_overlay 29（原全部 burned_in_subtitle）。
 2. **DET 语义标签**（Ark VLM 网格标注，每集 2 帧子集）：81 框获得标签（person 61、prop 6、building 3 等；其余保持 unknown，扩展子集可提升覆盖）。
 3. **E07 融合验证**：36 episodes × 每集 OCR→Fact 观测 8 条 = **288 个 observable Fact**（`fuse_observations`，FactType.OCR，evidence=字幕文本），证明 OCR→Fact 链路在真实语料上可用。
+
+## 独立 Quality Profile（人工 GT 抽查，2026-08-17）
+
+- 方法：`scripts/visual_metrics.py --ground-truth samples_annotated.json --predictions samples.json`（原始预测 vs 人工修正 GT，best-match 对齐）
+- 23/24 frozen_test 帧已 review（人工修正 2 帧 OCR、7 帧检测）
+- **OCR CER = 0.0**（15 条 GT 文本全部精确命中预测）
+- **Detection P = 0.872 / R = 0.85**（40 GT 框，IoU≥0.5）
+- 初始阈值建议：`ocr_max_cer ≤ 0.1`、`detection_min_recall ≥ 0.8` —— **当前均达标**
+- 说明：样本量小（23 帧）为初始 Quality Profile 证据；扩大标注可收紧/确认阈值。PaddleOCR 与 RT-DETR 具备 production 升级的质量侧证据（仍缺容量/故障注入验收，见 e06_g05 blockers）。

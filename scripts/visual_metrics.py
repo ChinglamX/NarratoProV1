@@ -71,14 +71,42 @@ def _match_boxes(
     return true_positive, len(predicted), len(reference)
 
 
+def _best_match_cer(predicted: list[str], reference: str) -> float:
+    """CER of the closest unused prediction for a reference text (dedup)."""
+    best = 1.0
+    best_index = -1
+    for index, prediction in enumerate(predicted):
+        score = 1.0 - _cer(prediction, reference)
+        if score > best:
+            best = score
+            best_index = index
+    if best_index >= 0:
+        del predicted[best_index]
+    return 1.0 - best
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--samples", type=Path, default=OUTPUT)
+    parser.add_argument(
+        "--ground-truth",
+        type=Path,
+        default=OUTPUT,
+        help="annotated samples file with ground_truth + reviewed",
+    )
+    parser.add_argument(
+        "--predictions",
+        type=Path,
+        help="pristine predictions file (samples.json); defaults to ground-truth file",
+    )
     parser.add_argument("--iou-threshold", type=float, default=0.5)
     args = parser.parse_args()
 
-    samples = json.loads(args.samples.read_text(encoding="utf-8"))
-    reviewed = [s for s in samples if s.get("reviewed")]
+    annotated = json.loads(args.ground_truth.read_text(encoding="utf-8"))
+    pristine = (
+        json.loads(args.predictions.read_text(encoding="utf-8")) if args.predictions else annotated
+    )
+    pristine_by_id = {s["sample_id"]: s for s in pristine}
+    reviewed = [s for s in annotated if s.get("reviewed")]
     if not reviewed:
         print("no reviewed samples yet; fill ground_truth + reviewed=true first")
         return 1
@@ -87,23 +115,25 @@ def main() -> int:
     matched_texts = 0
     tp = fp_total = fn_total = 0
     for sample in reviewed:
+        prediction = pristine_by_id.get(sample["sample_id"], sample)
         gt_ocr = [t["text"] for t in sample["ground_truth"]["ocr"]]
-        pred_ocr = [t["text"] for t in sample["ocr"]]
-        # greedy text match by order
-        for index, reference in enumerate(gt_ocr):
-            if index < len(pred_ocr):
-                cer_values.append(_cer(pred_ocr[index], reference))
-                matched_texts += 1
+        pred_ocr = [t["text"] for t in prediction.get("ocr", [])]
+        # best-match each GT text against unused predictions (dedup)
+        for reference in gt_ocr:
+            cer_values.append(_best_match_cer(pred_ocr, reference))
+            matched_texts += 1
         det_tp, det_pred, det_ref = _match_boxes(
-            sample["detections"], sample["ground_truth"]["detections"], args.iou_threshold
+            prediction.get("detections", []),
+            sample["ground_truth"]["detections"],
+            args.iou_threshold,
         )
         tp += det_tp
         fp_total += det_pred - det_tp
         fn_total += det_ref - det_tp
 
-    cer = sum(cer_values) / len(cer_values) if cer_values else None
-    precision = tp / (tp + fp_total) if (tp + fp_total) else None
-    recall = tp / (tp + fn_total) if (tp + fn_total) else None
+    cer = round(sum(cer_values) / len(cer_values), 4) if cer_values else None
+    precision = round(tp / (tp + fp_total), 4) if (tp + fp_total) else None
+    recall = round(tp / (tp + fn_total), 4) if (tp + fn_total) else None
     report = {
         "samples_reviewed": len(reviewed),
         "ocr": {"matched_texts": matched_texts, "cer": cer},
