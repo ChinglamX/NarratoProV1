@@ -11,7 +11,7 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 - `evaluation/qualification/e06_g05.json`、`quality/E06_ACCEPTANCE_REPORT.md`、`evaluation/reports/G04_VISUAL_BASELINE.md`、`evaluation/reports/G05_ENGINEERING_PROBE.md`、`evaluation/reports/PROJECT_GAP_ASSESSMENT.md`
 - `packages/evaluation/visual_metrics.py`、`packages/intelligence/facts.py`、`scripts/build_e06_benchmark.py`、`scripts/enrich_e06_benchmark.py`
 
-> 结论先行：**三个 Provider（PaddleOCR PP-OCRv6 / RT-DETR-L / Volcengine doubao-seed VLM）均不具备从 research 升级 production 的证据条件，全部维持 research，均属"需补材料"**。benchmark v1/enriched 是**工程稳定性与真实数据基线**的有效证据，但不是**质量达标证据**（无人工标注基线，无法计算 CER/mAP/claim 正确率，无阈值）。代码级硬缺口集中在 commercial_use_allowed（3/3 未批准）与 VLM 的 checksum/weight_license（2 项硬缺口）。
+> 结论先行：**三个 Provider（PaddleOCR PP-OCRv6 / RT-DETR-L / Volcengine doubao-seed VLM）均不具备从 research 升级 production 的证据条件，全部维持 research，均属"需补材料"**。benchmark v1/enriched 是**工程稳定性与真实数据基线**的有效证据，但不是**质量达标证据**（无人工标注基线，无法计算 CER/mAP/claim 正确率，无阈值）。代码级硬缺口：commercial_use_allowed 已 3/3 批准（2026-08-16 owner）；剩余为 VLM 的 checksum/weight_license（2 项硬缺口）。
 
 ---
 
@@ -45,14 +45,14 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 |---|---|---|
 | model_checksum | ✅ | det 权重 SHA-256 已 pin（`sha256:85218d…53960`）；rec 权重 SHA 仅记录在 `known_limitations` 文本（`sha256:1b01c7…c7319`），未单独入 `model_checksum` 字段（该字段单值，仅承载 det） |
 | weight_license | ✅ | Apache-2.0 |
-| commercial_use_allowed | ❌ | False——需项目负责人显式批准 |
+| commercial_use_allowed | ✅ | True——项目负责人 2026-08-16 批准（Apache-2.0） |
 | license pending 标记 | ✅ | 无 |
 | identity.version 精确固定 | ✅ | `paddleocr-3.7.0-paddlex-3.7.2`（含 PaddleX 3.7.2 runtime） |
 | 本地 runtime 固定 | ✅ | 2026-08-15 安装验证：PaddleOCR 3.7.0/PaddleX 3.7.2/paddlepaddle 3.3.1（arm64 CPU），demo 帧 1.46s，依赖记录于 `pyproject.toml [research]` extra |
 | 真实按剧隔离 benchmark | ✅（工程证据） | v1：720 帧 1052 OCR 文本、0 错误；**质量证据缺人工标注** |
 | registry 声明一致性 | ✅ | 2026-08-16 已随 benchmark v1 更新：`known_limitations` 记录 v1 证据（1052 texts）+ CER/阈值/容量待补；`supported_languages=["zh"]` 已声明（中文短剧字幕样本） |
 
-代码级硬缺口（`production_readiness_gaps` 输出）：**仅 G3（commercial_use_allowed）1 项**。
+代码级硬缺口（`production_readiness_gaps` 输出）：**G3 已批准（2026-08-16），当前无代码级硬缺口**。
 
 ### 2.2 RT-DETR-L（`paddle-detection` / `rt-detr-l` / `paddlex-3.7.2`）
 
@@ -60,7 +60,7 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 |---|---|---|
 | model_checksum | ✅ | `sha256:51200f…ba19a8` |
 | weight_license | ✅ | Apache-2.0 |
-| commercial_use_allowed | ❌ | False——需项目负责人显式批准 |
+| commercial_use_allowed | ✅ | True——项目负责人 2026-08-16 批准（Apache-2.0） |
 | license pending 标记 | ✅ | 无（YOLO/AGPL 已排除，2026-08-15 决策） |
 | identity.version 精确固定 | ✅ | `paddlex-3.7.2` |
 | 本地 runtime 固定 | ✅ | 2026-08-15 demo 帧 2 检测（score 0.94/0.81） |
@@ -76,7 +76,7 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 |---|---|---|
 | model_checksum | ❌ | None——API 托管模型，无权重 checksum；`production_readiness_gaps` 直接报硬缺口 |
 | weight_license | ❌ | None——API 服务条款（`volcengine-ark-tos`），无模型权重许可证；`production_readiness_gaps` 直接报硬缺口 |
-| commercial_use_allowed | ❌ | False——需项目负责人批准（含 TOS 商业条款审查） |
+| commercial_use_allowed | ✅ | True——项目负责人 2026-08-16 批准（法务审查通过，所有视频允许） |
 | license pending 标记 | ✅ | 无（code_license=`volcengine-ark-tos`，非 OSI 许可证但无 pending） |
 | identity.version 精确固定 | ✅ | `doubao-seed-2-0-mini-260428`（endpoint `ep-m-20260716234644-hqltj`） |
 | 数据驻留/传输 | ⚠️ | `external_cloud`、仅允许 CN 驻留、`transmits_source_media=True`、`retains_input=True`、`retention_days=30`——**帧外传 + 留存 30 天**，需法务/负责人确认与素材权利一致 |
@@ -134,7 +134,7 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 
 ### 4.1 PaddleOCR PP-OCRv6 缺口清单
 
-1. `commercial_use_allowed` 需项目负责人批准（Apache-2.0 权重允许商用，但批准须显式留痕）。
+1. ~~`commercial_use_allowed`~~（2026-08-16 已批准，Apache-2.0）。
 2. **人工标注 OCR 基线**（frozen_test 子集标注参考文本）→ 计算 CER → 定阈值（阈值来源于 Quality Profile）。
 3. Mac mini 容量验收（长视频吞吐、P50/P95、RAM/Metal、成本/分钟）——`e06_g05.json` `resource-cost-baseline` 仍 blocked、`long-series-concurrency` 仍 not_evaluated。
 4. `known_limitations` 更新（benchmark v1 已存在）；rec checksum 单独记录（或扩展 registry 以承载多权重 checksum）；`supported_languages` 声明中文。

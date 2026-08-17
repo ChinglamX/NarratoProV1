@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 56
+State Version: 57
 Last Updated: 2026-08-16
 State Owner: Project
 
@@ -61,7 +61,7 @@ State Owner: Project
 - E09/J04 Multi-track Assembly：Video/Original Audio/Narration/BGM/SFX/Subtitle/Overlay 共用唯一 MasterTimeline 的组装与 blocker 校验已实现；TimelineAssemblyService 落库、确定性原声音频/字幕 intent 投影、CreativeTimelineWorkflow（visual→rhythm→narration→assembly→media preview→人工 checkpoint，stage blocker 即停）、真实媒体 Preview（真实源文件 trim/scale/concat + ASS 安全区字幕）与 Worker 注册已完成。Registry 2.16.0→2.18.0。
 - E09/J05 Timeline Checkpoint integration baseline：exact-ref Review Package、读取 API、L1 人工决定、DB-first outbox、publication pointer 和可运行 Web checkpoint cockpit 已实现；精确多轨编辑（TimelineEditingService、版本列表/diff API、局部真实预览渲染）已完成；2026-08-13 对提交 `367066b` 逐项审计并修复（见 §7 最新条目与 ADR-050）；2026-08-15 人工审核证据发现渲染时间基 bug（intent_projection cursor rate=1 + assembly 兜底 duration rate=1 + AudioIntent 缺 source_range），已修复并重跑真实认证（见 §7 v50 条目与 §5）；正式认证集成待真实数据验证。Registry 2.17.0→2.18.0→2.19.0。
 - E09/J06 Qualification harness：deterministic concurrency probe、versioned demo technical/shot benchmark、qualification matrix、runbook/dashboard 已实现；四个真实退出 blocker 未解决，`engineering_complete=false`。
-- E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。**K02 语音 take 选择与 K05 字幕碰撞检测纯函数已实现（2026-08-16，Provider-neutral，见 §7 最新条目）**；K01/K03/K04 主实现待 TTS Provider/素材决策。
+- E10 advance contract baseline：Voice/Alignment/Mix/Subtitle/ASS 部分 Contract 已提前建立；K01–K06 主实现未开始，不构成 E10 完成。**K02 语音 take 选择与 K05 字幕碰撞检测纯函数已实现（2026-08-16，Provider-neutral，见 §7 最新条目）**；**TTS Provider 已选定 IndexTTS-2（开源本地，ref_7_clean 声源，真实合成验证通过，2026-08-16）**；K01 合成接入、K03 conform/reflow、K04 素材选择进入实现序列。
 - E11 advance boundary baseline：Render/Release Contract、基础 preflight/executor/API 已提前建立；L01–L06 主实现未开始，不构成 E11 完成。
 - E11 RenderWorkflow advance：`workflows/production/render_activities.py`（execute_render_activity：从 ArtifactRepository 读 RenderPlanContract、libass fail-closed 检查、build_render_command→execute_ffmpeg_plan→RenderExecutionReport 落库；technical_qc_activity：ffprobe→TechnicalQCReport 落库）+ `workflows/production/render_workflow.py`（execute→qc 编排、RuntimeError non-retryable）已实现并注册 `apps/worker/main.py`；真实 Temporal 验证 fail-closed 路径（本机 ffmpeg 无 libass 时正确失败，单次 Activity task、无重试风暴）。工程 advance 不等于 E11 关闭。
 
@@ -122,6 +122,12 @@ State Owner: Project
 - MinIO/S3 adapter 及共享多机 Object Store 切换条件；单机默认已由 ADR-024 固定为 LocalObjectStore。
 - FFmpeg 8.1.2 已作为首个 Timeline/Preview 验收 toolchain；E05 需验证真实 ingest/probe 的编解码覆盖，不得静默漂移版本。
 
+### 2026-08-16 已决策（owner 确认）
+
+- **E10 TTS Provider：IndexTTS-2（开源本地）**，参考声源 `~/Desktop/ref_7_clean.wav`（9.7s 24kHz 单声道）；本地服务 `127.0.0.1:8081`（NarratoPro 工具链），bilibili Model ULA 商用允许（<100M MAU/<¥10 亿营收）；真实合成已验证（2.05s 音频）。IndexTTS adapter + ProviderCapability.TTS + Registry 2.20.0 已实现。
+- **E06 容量验收目标值**：owner 授权按 Mac mini M1 16GB + 50GB 推荐——OCR P95 ≤10s（单 worker）/≤15s（并发）、DET P95 ≤1.5s/≤8s、峰值内存 ≤4GB（单）/≤8GB（并发）、吞吐 ≤5min/集（单）≤10min（并发）、VLM 成本 ≤¥0.5/集；验收素材推荐 frozen_test 12 集。
+- **VLM ToS 法务通过**：volcengine-ark `commercial_use_allowed=True`（owner 2026-08-16，所有视频允许）；连同本地两模型（2026-08-16 已批），三个视觉 Provider commercial 全部批准（`E06_ADMISSION_UPGRADE_ASSESSMENT.md` §2 已同步）。
+
 未决决策必须通过证据、兼容性和 ADR 解决，不能由 Agent 默认偏好静默决定。
 
 ---
@@ -129,6 +135,7 @@ State Owner: Project
 ## 7. 最近验证
 
 - 2026-08-17 E10/E11 生产链推进（State v55）：(1) E10 落库服务 `apps/services/media_production.py`（persist_mix_plan / persist_ass_artifact，ASS blob 幂等 register_or_get_staged）+ DB 集成测试；(2) E07 Facts 落库 `scripts/persist_e06_facts.py`——**36 FactSet / 571 Facts 入 PostgreSQL**（OCR→Fact 证据链成为 Story 可查询数据）；(3) E10 规划 workflow `MediaProductionPlanningWorkflow`（mix→subtitle→ASS）真实 Temporal 验证 succeeded、三产物落库、tts_pending=true，已注册 control worker；(4) E11 RenderPlan 生成 `packages/production/render_planning.py`（trim-clip/burn-ass/mix-audio/mux-final，确定性 operation id + checksum）。`make check` 376 tests、80.28% coverage 全绿。**待人工确认：E06 容量验收目标值（吞吐/延迟/内存/成本上限 + 素材范围）、VLM ToS 法务审查、E10 TTS Provider 选择。**
+- 2026-08-16 E10 TTS 接入与 Provider 批准（State v57）：(1) **IndexTTS-2 本地服务启动并 health+synthesis passed**（`http://127.0.0.1:8081`，参考声源 `ref_7_clean.wav`，NarratoPro 工具链）；(2) 新增 `packages/providers/speech/indextts.py` ProviderPort adapter（multipart text+prompt_audio→WAV，字段名按服务端 `prompt_audio` 修正）；**真实合成验证**：`我是林月的助手，今天天气不错。` → 98KB/2.05s/24kHz 单声道 WAV（CPU 17.7s）；(3) `ProviderCapability.TTS` 加入契约、Registry 2.19.0→**2.20.0** 生成物刷新；(4) admission 新增 indextts 条目（bilibili ULA，owner 批准商用）+ **volcengine-ark commercial_use_allowed=True**（owner 法务通过）；(5) E06 容量验收目标值按 Mac mini M1 16GB owner 授权推荐写入计划 §1；(6) `tests/providers/test_indextts.py` 6 单测（mock HTTP）。`make check` 399 tests、80.35% coverage 全绿。**E10 "能出带配音成片"的最后拼图（真实 TTS 合成）已打通。**
 - 2026-08-16 E10/K02+K05 纯函数工程（State v56 追加）：(1) `packages/production/take_selection.py`（`select_best_takes`）——Provider-neutral 语音 take 选择：有发音/QC findings 或缺音频的候选永不入选（fail-closed）、选 duration 最近目标者、tie 按 take_id 确定性破平、无合格候选的行标记 incomplete、保留既有 SELECTED take 作为行覆盖；7 单测。(2) `packages/production/subtitle_collision.py`（`detect_subtitle_collisions`）——字幕碰撞检测：对未校验 cue 流报告 `temporal-overlap`/`safe-area-violation` findings（SubtitleCueSet 契约拒绝重叠，故检测面向提交前源），确定性排序去重；4 单测。均 Provider-neutral、不依赖 TTS/素材，在真实 Provider 准入前即可实现并质检。`make check` 393 tests、80.37% coverage 全绿。
 - 2026-08-16 E06 容量并发 probe 工程基线（State v56 追加）：`scripts/probe_e06_capacity.py` 对 frozen_test 12 集/48 帧/96 次 provider 调用（OCR+detection 并发 2 workers）实测——**0 errors**，OCR P50 8.0s/P95 14.6s（96 文本项）、DET P50 1.64s/P95 7.5s（60 检测项）、峰值 RSS 2.7 GB、吞吐 0.27 calls/s；结果归档 `evaluation/reports/E06_CAPACITY_RESULTS.md` 并接入验收计划 §5.1。**关键发现：PaddleX 并发首次初始化不兼容（"PDX has already been initialized"），probe 用顺序预热后再并发规避**——这是 E06 集成设计中"同进程共享 provider 实例 + 预热"的实测依据。基线非验收结论（目标值待 owner 批准）。
 - 2026-08-16 E07 Story 推理真实数据验收（State v56 追加）：`scripts/accept_e07_story_real_data.py` 用真实落库 FactSet（run `b7b7eccd` 的 16-fact OCR 证据链样本 `edfae9dd`）+ 空 IdentityGraph（保守，无人工修正身份节点，ADR-033）跑真实 Temporal `StoryReasoningWorkflow`——**event_set→character_state→causal_graph→story_graph 四阶段全部 succeeded、四产物落库**。**正确性确认**：OCR-only facts（`fact_type=ocr`）按 ADR-035 observable-only 设计不被提升为 event（events=0 是预期保守行为，需 dialogue/action/audio_signal/visual_signal 类型才提升）——链在真实 Facts 上端到端工作，事件语义提升需 E06 detection/dialogue 融合证据。E07 qualification `typed-story-workflow` check 已引用该脚本。
