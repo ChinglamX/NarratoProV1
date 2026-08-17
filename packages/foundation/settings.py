@@ -37,6 +37,10 @@ class Settings(BaseSettings):
     volcengine_ark_endpoint: str = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
     volcengine_ark_model: str | None = None
 
+    # IndexTTS-2 local voice clone (E10 TTS provider; NarratoPro toolchain).
+    indextts_api_url: str = "http://127.0.0.1:8081/tts"
+    indextts_ref_audio: str = "/Users/chinglam/Desktop/ref_7_clean.wav"
+
     @field_validator("secret_api_key", "volcengine_ark_api_key", mode="before")
     @classmethod
     def empty_secret_is_unset(cls, value: object) -> object:
@@ -70,6 +74,8 @@ class Settings(BaseSettings):
             "volcengine_ark_configured": self.volcengine_ark_api_key is not None,
             "volcengine_ark_endpoint": self.volcengine_ark_endpoint,
             "volcengine_ark_model": self.volcengine_ark_model,
+            "indextts_api_url": self.indextts_api_url,
+            "indextts_ref_audio": self.indextts_ref_audio,
         }
 
 

@@ -166,7 +166,7 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
             "admission": "research",
             "code_license": "volcengine-ark-tos",
             "weight_license": None,
-            "commercial_use_allowed": False,
+            "commercial_use_allowed": True,  # owner-approved 2026-08-16 (legal review passed)
             "model_checksum": None,
             "data_policy": {
                 "execution_location": "external_cloud",
@@ -188,6 +188,44 @@ CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "exists (2026-08-16, 144 claims) but human-annotated claim compliance, "
                 "cost caps and capacity acceptance still pending",
                 "claims constrained by the VLM claim contract; frames are transmitted to the API",
+            ],
+        }
+    ),
+    ProviderPackage.model_validate(
+        {
+            "identity": {
+                "provider": "indextts",
+                "implementation": "index-tts-2",
+                "version": "index-tts2-bilibili-ula",
+                "license": "bilibili-model-ula-2025",
+            },
+            "capabilities": ["tts"],
+            "admission": "research",
+            "code_license": "bilibili-model-ula-2025",
+            "weight_license": "bilibili-model-ula-2025",
+            "commercial_use_allowed": True,  # owner-approved 2026-08-16 (ULA 2.2 ok)
+            "model_checksum": None,  # weights pinned at INDEXTTS_HOME; checksum pending
+            "data_policy": {
+                "execution_location": "local",
+                "allowed_residencies": ["CN", "LOCAL"],
+                "transmits_source_media": False,
+                "retains_input": False,
+            },
+            "supported_hardware": ["cpu"],
+            "supported_languages": [
+                "zh"
+            ],  # ref_7_clean.wav Mandarin voice clone verified 2026-08-16
+            "deterministic": False,
+            "retry_safe": True,
+            "max_batch_size": 1,
+            "known_limitations": [
+                "project decision 2026-08-16: open-source local TTS via IndexTTS-2 "
+                "(bilibili ULA; commercial allowed below 100M MAU / RMB1B revenue); "
+                "reference voice ref_7_clean.wav (9.7s 24kHz mono, verified on "
+                "NarratoPro Phase16 toolchain); local service at 127.0.0.1:8081; "
+                "model weight checksum and exact revision pinning pending",
+                "voice cloning quality depends on the reference audio; output is "
+                "deterministic=False (sampling) so takes must be QC'd before selection",
             ],
         }
     ),

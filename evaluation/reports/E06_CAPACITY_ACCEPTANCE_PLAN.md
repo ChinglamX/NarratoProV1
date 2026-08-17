@@ -5,16 +5,21 @@ Status: Design draft — target values pending project-owner approval
 对应 blocker（`evaluation/qualification/e06_g05.json`）：
 `long-series-concurrency`、`worker-interruption-recovery`、`resource-cost-baseline`
 
-## 1. 验收目标（建议值，待批准）
+## 1. 验收目标（2026-08-16 owner 授权按 Mac mini M1 16GB + 50GB 常态硬盘推荐）
 
-| 指标 | 建议目标 | 说明 |
+机型基线：Mac mini M1（8 核 CPU）/ 16 GB RAM / 50 GB 常态磁盘；Paddle 两模型常驻（实测峰值 RSS 2.7 GB）；目标值依据 2026-08-16 benchmark（顺序、模型常驻后）+ capacity probe（2 worker 并发）实测数据，非主观预设。
+
+| 指标 | 推荐目标 | 实测依据 |
 |---|---|---|
-| 长视频吞吐 | 1 集 90s 竖屏（720x1280）全观察（OCR+det 全帧 + VLM 子集）≤ 30 min 处理 | 以 13 剧 36 集语料实测 |
-| 单帧延迟 | OCR P95 ≤ 3s、det P95 ≤ 1.5s（模型常驻后） | 本地 CPU（Mac mini） |
-| 峰值内存 | 单 worker ≤ 6 GB（Paddle 两模型常驻） | 防 OOM |
-| 并发 | 2 项目并行无资源冲突 | 同进程 OCR+det 已验共存 |
-| 成本 | VLM API ≤ ¥0.5/集；本地 0 增量 | 按 4 帧/集计 |
+| 单帧延迟（单 worker 顺序，模型常驻后） | OCR P95 ≤ 10s、DET P95 ≤ 1.5s | benchmark：OCR P50 6.8s/P95 9.1s/max 9.1s；DET P50 0.78s/P95 0.88s/max 0.94s |
+| 单帧延迟（2 项目并发） | OCR P95 ≤ 15s、DET P95 ≤ 8s | probe：OCR P50 8.0s/P95 14.6s；DET P50 1.6s/P95 7.5s（并发争用 CPU） |
+| 峰值内存 | 单 worker ≤ 4 GB（16 GB 机型留 OS/其他服务余量）；2 项目并发 ≤ 8 GB | probe 峰值 RSS 2.7 GB（两模型常驻） |
+| 长视频吞吐 | 1 集 90s 竖屏（720x1280）全观察（OCR+det 全帧 ~20 帧 + VLM 子集 4 帧）≤ 5 min（单 worker）；≤ 10 min（2 项目并发） | 顺序理论 ~2.9 min/集；并发受 CPU 争用 |
+| 并发 | 2 项目并行无资源冲突、无 OOM | probe 2 workers 0 errors；PaddleX 需顺序预热后并发 |
+| 成本 | VLM API ≤ ¥0.5/集（按 4 帧/集计）；本地 0 增量 | 未实测成本，保留原建议 |
 | 故障恢复 | Worker kill 后 workflow 从 durable history 恢复 ≤ 60s | 复用 E09 replay 验证模式 |
+
+注：原草案建议（OCR P95 ≤ 3s）在 M1 CPU 上不可达（实测 P95 9.1s），已按机型与实测修正。磁盘 50 GB：36 集语料 + benchmark 抽帧 + Object Store 产物需在验收前核对占用（预估 < 20 GB）。
 
 ## 2. 长视频/多项目并发测试
 
@@ -58,6 +63,6 @@ Status: Design draft — target values pending project-owner approval
 
 ## 6. 待项目负责人确认
 
-1. 上表验收目标值（或给替代值）
-2. VLM API 成本上限
-3. 容量验收使用的素材范围（frozen_test 12 集 or 全 36 集）
+1. ~~上表验收目标值~~（2026-08-16 已由 owner 授权按 Mac mini M1 16GB 推荐，§1 采纳）
+2. VLM API 成本上限（保留建议 ¥0.5/集）
+3. 容量验收使用的素材范围（frozen_test 12 集 or 全 36 集——推荐 frozen_test 12 集作为验收输入，全 36 集作为压力扩展）
