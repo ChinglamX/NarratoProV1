@@ -20,6 +20,11 @@ with workflow.unsafe.imports_passed_through():
         MediaProductionPlanningInput,
         MediaProductionPlanningStatus,
     )
+    from workflows.production.tts_activities import (
+        SynthesizeVoiceInput,
+        SynthesizeVoiceResult,
+        synthesize_voice_activity,
+    )
 
 
 @workflow.defn
@@ -36,6 +41,30 @@ class MediaProductionPlanningWorkflow:
         self._status = MediaProductionPlanningStatus(request.run_id, "planning")
         retry = RetryPolicy(maximum_attempts=3, non_retryable_error_types=["ValueError"])
 
+        # E10/K01: synthesize voice when no pre-produced voice asset is given.
+        voice_asset = request.voice_asset
+        self._status.tts_pending = request.voice_asset is None
+        if request.voice_asset is None:
+            self._status.state = "tts"
+            synth: SynthesizeVoiceResult = await workflow.execute_activity(
+                synthesize_voice_activity,
+                SynthesizeVoiceInput(
+                    project_id=request.project_id,
+                    run_id=request.run_id,
+                    trace_id=request.trace_id,
+                    narration_line_set=request.narration_line_set,
+                    resource_profile=request.resource_profile,
+                    voice_profile=request.style_profile or request.resource_profile,
+                ),
+                start_to_close_timeout=timedelta(minutes=60),
+                heartbeat_timeout=timedelta(minutes=1),
+                retry_policy=retry,
+            )
+            voice_asset = synth.voice_asset
+            self._status.tts_pending = synth.incomplete
+            if synth.failed_lines:
+                self._status.blocked_codes = ("tts-synthesis-partial",)
+
         mix_plan = await workflow.execute_activity(
             plan_mix_activity,
             PlanMixInput(
@@ -43,7 +72,7 @@ class MediaProductionPlanningWorkflow:
                 run_id=request.run_id,
                 trace_id=request.trace_id,
                 timeline=request.timeline,
-                narration_source=request.voice_asset or request.narration_line_set,
+                narration_source=voice_asset or request.narration_line_set,
                 style_profile=request.style_profile or request.resource_profile,
                 resource_profile=request.resource_profile,
                 mix_plan_id=request.mix_plan_id,
@@ -89,7 +118,6 @@ class MediaProductionPlanningWorkflow:
             retry_policy=retry,
         )
         self._status.ass_artifact = ass
-        self._status.tts_pending = request.voice_asset is None
         self._status.state = "succeeded"
         return self._status
 

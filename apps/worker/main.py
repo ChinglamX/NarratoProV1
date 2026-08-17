@@ -24,6 +24,7 @@ from workflows.production.render_activities import (
     technical_qc_activity,
 )
 from workflows.production.render_workflow import RenderWorkflow
+from workflows.production.tts_activities import synthesize_voice_activity
 from workflows.production.workflow import MediaProductionPlanningWorkflow
 from workflows.project import ProjectRunWorkflow, execute_conformance_activity
 from workflows.speech import SpeechObservationWorkflow, process_speech_activity
@@ -82,6 +83,7 @@ async def serve() -> None:
             render_ass_activity,
             execute_render_activity,
             technical_qc_activity,
+            synthesize_voice_activity,
         ],
         build_id=WORKER_BUILD_ID,
         use_worker_versioning=False,
