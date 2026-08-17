@@ -118,9 +118,9 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 
 - `e9_demo_v1.json`（e09-demo-v1）：`human_annotation_status: pending`，`usage: reference comparison only`——demo benchmark 自身**无人工标注**，且是创意层对比样本（`e09_craft_compare_v1.json` 为成片 cut 密度对比，非 Provider 质量），因此**"与 demo 对比阈值"目前不存在**，只有 benchmark 报告的"与 e09_demo 视觉侧对照"意向（`E06_VISUAL_BENCHMARK_V1.md` 用途 2），尚无对照结论。
 
-### 3.4 数据一致性问题（需修正后作为准入证据）
+### 3.4 数据一致性（已核对）
 
-- `E06_VISUAL_BENCHMARK_V1.md` 写"DET 2.9s/帧"，但 `e06_visual_v1.json` 的 per-episode `avg_duration_ms` 为 detection 均值 771ms（min 692 / max 937）——**报告与 JSON 不一致**（OCR 报告 5.2–7.4s vs JSON 均值 6.16s、范围 0.84–9.08s，基本吻合；VLM 报告 6.6s vs JSON 均值 6.63s，吻合）。升级前需以 JSON 为准修正报告。
+- ~~`E06_VISUAL_BENCHMARK_V1.md` 写"DET 2.9s/帧"~~：已修正（2026-08-16）——报告当前写"DET 均值 771ms/帧（JSON `avg_duration_ms`）"，与 `e06_visual_v1.json` 一致（min 692 / max 937）。OCR 报告 5.2–7.4s vs JSON 均值 6.16s、VLM 报告 6.6s vs JSON 均值 6.63s 均吻合。
 
 ---
 

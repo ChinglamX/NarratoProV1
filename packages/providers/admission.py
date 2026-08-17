@@ -1,10 +1,10 @@
-"""Semantic visual provider admission registry and production-readiness gate.
+"""Provider admission registry and production-readiness gate.
 
 The G01 ProviderPackage contract already carries code/weight license,
 commercial-use posture, model checksum and admission state. This module
-centralises the *candidate* semantic visual providers (OCR / detection /
-tracking / embedding / VLM) so their admission state lives in code, and
-provides a fail-closed validator: a package may only be admitted as
+centralises the *candidate* providers (semantic visual OCR / detection /
+tracking / embedding / VLM, plus local TTS) so their admission state lives in
+code, and provides a fail-closed validator: a package may only be admitted as
 ``production`` when every production requirement is evidenced. This enforces
 ADR-032 (no synthetic production approval) at the data boundary.
 """
@@ -22,7 +22,7 @@ _RT_DETR_L_SHA = "sha256:51200fe6bb524263985c462d1a1ce5af48a3909136638e9d3ab13ed
 # Model/weight license facts below are stated as candidate values that MUST be
 # re-verified against the exact pinned revision before any production upgrade;
 # no package here is admitted as production.
-CANDIDATE_VISUAL_PROVIDERS: tuple[ProviderPackage, ...] = (
+CANDIDATE_PROVIDERS: tuple[ProviderPackage, ...] = (
     ProviderPackage.model_validate(
         {
             "identity": {

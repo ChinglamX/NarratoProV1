@@ -16,7 +16,7 @@ from packages.contracts import (
 )
 from packages.foundation.settings import get_settings
 from packages.providers import ProviderRawOutput
-from packages.providers.admission import CANDIDATE_VISUAL_PROVIDERS
+from packages.providers.admission import CANDIDATE_PROVIDERS
 
 _PROVIDER = "paddle-detection"
 _MODEL_INSTANCE: Any | None = None
@@ -30,9 +30,9 @@ def _ensure_paddlex_cache() -> None:
 
 
 def _registered_package() -> ProviderPackage:
-    return next(
-        p for p in CANDIDATE_VISUAL_PROVIDERS if p.identity.provider == _PROVIDER
-    ).model_copy(deep=True)
+    return next(p for p in CANDIDATE_PROVIDERS if p.identity.provider == _PROVIDER).model_copy(
+        deep=True
+    )
 
 
 class PaddleDetectionProvider:

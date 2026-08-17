@@ -13,7 +13,7 @@ Status: Design draft — target values pending project-owner approval
 |---|---|---|
 | 单帧延迟（单 worker 顺序，模型常驻后） | OCR P95 ≤ 10s、DET P95 ≤ 1.5s | benchmark：OCR P50 6.8s/P95 9.1s/max 9.1s；DET P50 0.78s/P95 0.88s/max 0.94s |
 | 单帧延迟（2 项目并发） | OCR P95 ≤ 15s、DET P95 ≤ 8s | probe：OCR P50 8.0s/P95 14.6s；DET P50 1.6s/P95 7.5s（并发争用 CPU） |
-| 峰值内存 | 单 worker ≤ 4 GB（16 GB 机型留 OS/其他服务余量）；2 项目并发 ≤ 8 GB | probe 峰值 RSS 2.7 GB（两模型常驻） |
+| 峰值内存 | 单 worker ≤ 4 GB；2 项目并发 ≤ 12 GB（含全部 worker；16 GB 减 OS+容器 ~4 GB） | probe 峰值 RSS 2.7 GB（两模型常驻） |
 | 长视频吞吐 | 1 集 90s 竖屏（720x1280）全观察（OCR+det 全帧 ~20 帧 + VLM 子集 4 帧）≤ 5 min（单 worker）；≤ 10 min（2 项目并发） | 顺序理论 ~2.9 min/集；并发受 CPU 争用 |
 | 并发 | 2 项目并行无资源冲突、无 OOM | probe 2 workers 0 errors；PaddleX 需顺序预热后并发 |
 | 成本 | VLM API ≤ ¥0.5/集（按 4 帧/集计）；本地 0 增量 | 未实测成本，保留原建议 |

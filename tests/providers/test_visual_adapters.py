@@ -10,7 +10,7 @@ from packages.contracts import (
     ProviderInvocationRequest,
     ProviderPackage,
 )
-from packages.providers.admission import CANDIDATE_VISUAL_PROVIDERS
+from packages.providers.admission import CANDIDATE_PROVIDERS
 from packages.providers.visual.paddle_detection import PaddleDetectionProvider
 from packages.providers.visual.paddle_ocr import PaddleOCRProvider
 from packages.providers.visual.volcengine_ark_vlm import VolcengineArkVLMProvider
@@ -39,7 +39,7 @@ def _make_frame(tmp_path: Path) -> Path:
 
 
 def _registered(provider: str) -> ProviderPackage:
-    return next(p for p in CANDIDATE_VISUAL_PROVIDERS if p.identity.provider == provider)
+    return next(p for p in CANDIDATE_PROVIDERS if p.identity.provider == provider)
 
 
 @pytest.mark.parametrize(

@@ -9,6 +9,8 @@ implemented and qualified before any real synthesis provider is admitted.
 
 from __future__ import annotations
 
+from uuid import UUID
+
 from packages.contracts import ArtifactRef
 from packages.contracts.media_production import (
     TakeDisposition,
@@ -33,8 +35,8 @@ def _take_blocks(take: VoiceTake) -> tuple[str, ...]:
     return tuple(blockers)
 
 
-def _candidates_by_line(takes: tuple[VoiceTake, ...]) -> dict[object, list[VoiceTake]]:
-    by_line: dict[object, list[VoiceTake]] = {}
+def _candidates_by_line(takes: tuple[VoiceTake, ...]) -> dict[UUID, list[VoiceTake]]:
+    by_line: dict[UUID, list[VoiceTake]] = {}
     for take in takes:
         if take.disposition is not TakeDisposition.CANDIDATE:
             continue
@@ -100,7 +102,7 @@ def select_best_takes(
 
     selected_ids = {take.take_id for take in selected}
     rest: list[VoiceTake] = []
-    preselected_line_ids: set[object] = set()
+    preselected_line_ids: set[UUID] = set()
     for take in takes:
         if take.take_id in selected_ids:
             continue
