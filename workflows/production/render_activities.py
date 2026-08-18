@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import TypeVar
 from uuid import UUID, uuid4
@@ -33,6 +34,7 @@ class RenderRequest:
     resource_profile: ArtifactPointer
     output_path: str
     ffmpeg_version: str
+    ffmpeg_binary: str = "ffmpeg"
     execution_report_id: str | None = None
     qc_report_id: str | None = None
 
@@ -42,6 +44,13 @@ class RenderResult:
     execution_report: ArtifactPointer
     qc_report: ArtifactPointer
     output_path: str
+    passed: bool
+    blocked_codes: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class TechnicalQcActivityResult:
+    report: ArtifactPointer
     passed: bool
     blocked_codes: tuple[str, ...] = ()
 
@@ -66,12 +75,12 @@ def _pointer(reference: ArtifactRef) -> ArtifactPointer:
     )
 
 
-def _run_sync(handler: object) -> object:
+def _run_sync(handler: Callable[[Connection], T]) -> T:
     settings = get_settings()
     engine = create_database_engine(settings.database_url)
     try:
         with engine.begin() as connection:
-            return handler(connection)  # type: ignore[operator]
+            return handler(connection)
     finally:
         engine.dispose()
 
@@ -98,25 +107,48 @@ def _source_paths(
     return paths
 
 
+def _artifact_blob_path(
+    connection: Connection,
+    repository: ArtifactRepository,
+    reference: ArtifactRef,
+    field: str,
+) -> object:
+    payload = repository.get_version(connection, reference)["payload_json"]
+    blob_ref = payload.get(field)
+    if not blob_ref:
+        raise RuntimeError(f"{reference.artifact_type} missing {field}")
+    return LocalObjectStore(get_settings().object_store_root).local_path(str(blob_ref))
+
+
 @activity.defn
 async def execute_render_activity(
     request: RenderRequest,
-) -> object:  # pragma: no cover - verified by real Temporal run
+) -> ArtifactPointer:  # pragma: no cover - verified by real Temporal run
     activity.heartbeat({"stage": "e11-execute", "trace_id": request.trace_id})
+    loop = asyncio.get_running_loop()
 
-    def work(connection: Connection) -> object:
+    def heartbeat(details: dict[str, object]) -> None:
+        loop.call_soon_threadsafe(activity.heartbeat, details)
+
+    def work(connection: Connection) -> ArtifactPointer:
         repository = ArtifactRepository()
         payload = repository.get_version(connection, _ref(request.plan))["payload_json"]
         plan = RenderPlanContract.model_validate(payload)
-        if not libass_available():
+        if not libass_available(request.ffmpeg_binary):
             # Fail-closed: ASS burn requires a libass-enabled ffmpeg (E11 baseline).
             raise RuntimeError("libass-unavailable: ffmpeg lacks the subtitles filter")
         source_paths = _source_paths(connection, repository, plan)
+        ass_path = _artifact_blob_path(connection, repository, plan.ass_artifact_ref, "blob_ref")
+        mixed_audio_path = _artifact_blob_path(
+            connection, repository, plan.mixed_audio_ref, "audio_blob_ref"
+        )
         command = build_render_command(
             plan=plan,
             source_paths=source_paths,  # type: ignore[arg-type]
-            ass_path=None,
+            ass_path=ass_path,  # type: ignore[arg-type]
+            mixed_audio_path=mixed_audio_path,  # type: ignore[arg-type]
             output_path=__import__("pathlib").Path(request.output_path),
+            ffmpeg_binary=request.ffmpeg_binary,
         )
         report = execute_ffmpeg_plan(
             plan=plan,
@@ -125,7 +157,7 @@ async def execute_render_activity(
             output_path=__import__("pathlib").Path(request.output_path),
             ffmpeg_version=request.ffmpeg_version,
             attempt=1,
-            heartbeat=lambda details: activity.heartbeat(details),
+            heartbeat=heartbeat,
         )
         report_ref = commit_contract_artifact(
             connection,
@@ -154,10 +186,10 @@ async def execute_render_activity(
 @activity.defn
 async def technical_qc_activity(
     request: RenderRequest,
-) -> object:  # pragma: no cover - verified by real Temporal run
+) -> TechnicalQcActivityResult:  # pragma: no cover - verified by real Temporal run
     activity.heartbeat({"stage": "e11-qc", "trace_id": request.trace_id})
 
-    def work(connection: Connection) -> object:
+    def work(connection: Connection) -> TechnicalQcActivityResult:
         import subprocess  # nosec B404
 
         from packages.contracts.render_release import TechnicalCheck, TechnicalQCReport
@@ -232,6 +264,8 @@ async def technical_qc_activity(
             rights_class="internal-preview",
             inputs=(_ref(request.plan),),
         )
-        return _pointer(qc_ref)
+        return TechnicalQcActivityResult(
+            report=_pointer(qc_ref), passed=qc.passed, blocked_codes=qc.blocker_codes
+        )
 
     return await asyncio.to_thread(_run_sync, work)

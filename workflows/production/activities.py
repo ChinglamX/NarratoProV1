@@ -144,6 +144,7 @@ async def plan_mix_activity(request: PlanMixInput) -> ArtifactPointer:  # pragma
         )
         mix_plan = plan_mix_stems(
             timeline,
+            conformed_timeline_ref=_ref(request.timeline),
             narration_source_ref=_ref(request.narration_source),
             target_loudness_lufs=request.target_loudness_lufs,
             true_peak_ceiling_dbtp=request.true_peak_ceiling_dbtp,

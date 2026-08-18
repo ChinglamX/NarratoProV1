@@ -84,6 +84,7 @@ def _plan() -> RenderPlanContract:
         timeline_ref=_ref("MasterTimeline"),
         mix_plan_ref=_ref("MixPlan"),
         mix_plan=mix,
+        mixed_audio_ref=_ref("MixedAudio"),
         ass_ref=_ref("ASSArtifact"),
         platform_profile_ref=_ref("ConfigArtifact"),
         mode=RenderMode.PROXY,
@@ -94,12 +95,15 @@ def test_build_render_command_structure(tmp_path: Path) -> None:
     plan = _plan()
     source = tmp_path / "source.mp4"
     source.write_bytes(b"fake")
+    mixed = tmp_path / "mixed.wav"
+    mixed.write_bytes(b"fake")
     ass = tmp_path / "out.ass"
     ass.write_text("[Script Info]\n")
     command = build_render_command(
         plan=plan,
         source_paths={str(plan.operations[0].input_refs[0].artifact_id): source},
         ass_path=ass,
+        mixed_audio_path=mixed,
         output_path=tmp_path / "out.mp4",
     )
     assert command[0] == "ffmpeg"
@@ -114,7 +118,38 @@ def test_build_render_command_missing_source_raises(tmp_path: Path) -> None:
     plan = _plan()
     with pytest.raises(RenderCommandError, match="source media unavailable"):
         build_render_command(
-            plan=plan, source_paths={}, ass_path=tmp_path / "x.ass", output_path=tmp_path / "o.mp4"
+            plan=plan,
+            source_paths={},
+            ass_path=tmp_path / "x.ass",
+            mixed_audio_path=tmp_path / "mixed.wav",
+            output_path=tmp_path / "o.mp4",
+        )
+
+
+def test_build_render_command_requires_ass_and_mixed_audio(tmp_path: Path) -> None:
+    plan = _plan()
+    source = tmp_path / "source.mp4"
+    source.write_bytes(b"fake")
+    mixed = tmp_path / "mixed.wav"
+    mixed.write_bytes(b"fake")
+    paths = {str(plan.operations[0].input_refs[0].artifact_id): source}
+    with pytest.raises(RenderCommandError, match="ASS subtitle"):
+        build_render_command(
+            plan=plan,
+            source_paths=paths,
+            ass_path=None,
+            mixed_audio_path=mixed,
+            output_path=tmp_path / "o.mp4",
+        )
+    ass = tmp_path / "out.ass"
+    ass.write_text("[Script Info]\n")
+    with pytest.raises(RenderCommandError, match="MixedAudio"):
+        build_render_command(
+            plan=plan,
+            source_paths=paths,
+            ass_path=ass,
+            mixed_audio_path=None,
+            output_path=tmp_path / "o.mp4",
         )
 
 

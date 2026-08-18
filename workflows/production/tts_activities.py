@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import wave
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from io import BytesIO
@@ -25,7 +26,13 @@ from sqlalchemy import Connection
 from temporalio import activity
 
 from packages.artifacts import LocalObjectStore
-from packages.contracts import ActorRef, ArtifactRef, ProviderCapability, ProviderInvocationRequest
+from packages.contracts import (
+    ActorRef,
+    ArtifactRef,
+    ProviderCapability,
+    ProviderInvocationRequest,
+    RationalTime,
+)
 from packages.contracts.media_production import (
     TakeDisposition,
     VoiceAsset,
@@ -111,6 +118,40 @@ def _synthesize_one(
     return raw.payload, digest
 
 
+def _wav_duration(payload: bytes) -> RationalTime:
+    with wave.open(BytesIO(payload), "rb") as source:
+        frame_rate = source.getframerate()
+        frame_count = source.getnframes()
+    if frame_rate <= 0 or frame_count <= 0:
+        raise ValueError("synthesized WAV has no measurable audio")
+    return RationalTime(value=frame_count, rate_num=frame_rate)
+
+
+def _concatenate_wavs(payloads: list[bytes]) -> bytes:
+    if not payloads:
+        raise ValueError("voice asset requires at least one WAV")
+    output = BytesIO()
+    expected: tuple[int, int, int] | None = None
+    frames: list[bytes] = []
+    for payload in payloads:
+        with wave.open(BytesIO(payload), "rb") as source:
+            current = (source.getnchannels(), source.getsampwidth(), source.getframerate())
+            if expected is None:
+                expected = current
+            elif current != expected:
+                raise ValueError("selected WAV formats do not match")
+            frames.append(source.readframes(source.getnframes()))
+    if expected is None:  # defensive; payloads is already checked above
+        raise ValueError("voice asset requires measurable WAV input")
+    with wave.open(output, "wb") as target:
+        target.setnchannels(expected[0])
+        target.setsampwidth(expected[1])
+        target.setframerate(expected[2])
+        for chunk in frames:
+            target.writeframes(chunk)
+    return output.getvalue()
+
+
 def _synthesize_takes(
     narration: NarrationLineSet,
     provider: IndexTTSProvider,
@@ -129,10 +170,12 @@ def _synthesize_takes(
     for line in narration.lines:
         try:
             wav, _digest = _synthesize_one(line.text, provider, config_ref)
+            actual_duration = _wav_duration(wav)
             wav_by_line[line.line_id] = wav
+            take_id = uuid4()
             takes.append(
                 VoiceTake(
-                    take_id=uuid4(),
+                    take_id=take_id,
                     narration_line_id=line.line_id,
                     raw_response_ref=ArtifactRef.model_validate(
                         {
@@ -142,7 +185,7 @@ def _synthesize_takes(
                         }
                     ),
                     audio_blob_ref=f"blob:{take_set_id}:{line.line_id}",
-                    duration=line.target_duration,
+                    duration=actual_duration,
                     provider_id="indextts",
                     provider_version="index-tts2-bilibili-ula",
                     voice_id="ref_7_clean",
@@ -152,7 +195,7 @@ def _synthesize_takes(
                     estimated_cost_micros=0,
                 )
             )
-            selected_ids.append(line.line_id)
+            selected_ids.append(take_id)
         except Exception:
             failed += 1
             takes.append(
@@ -208,11 +251,10 @@ def _work(connection: Connection, request: SynthesizeVoiceInput) -> SynthesizeVo
         wav = wav_by_line.get(take.narration_line_id)
         if wav is None:
             continue
-        digest = hashlib.sha256(wav).hexdigest()
         staged = store.stage(run_uuid, f"voice-{take.narration_line_id}", BytesIO(wav))
-        blob = blobs.register_or_get_staged(connection, staged, content_type="audio/wav")
-        store.commit(staged.uri, f"sha256:{digest}")
-        take.audio_blob_ref = str(blob.blob_id)
+        registered = blobs.register_or_get_staged(connection, staged, content_type="audio/wav")
+        committed = blobs.commit(connection, store, registered)
+        take.audio_blob_ref = committed.metadata.uri
 
     take_set = VoiceTakeSet(
         narration_line_set_ref=_ref(request.narration_line_set),
@@ -242,15 +284,21 @@ def _work(connection: Connection, request: SynthesizeVoiceInput) -> SynthesizeVo
     if not selected_ids:
         raise RuntimeError("all voice takes unavailable; no voice asset produced")
 
-    duration_us = sum((take.duration.value if take.duration else 0) for take in takes)
+    selected_wavs = [wav_by_line[take.narration_line_id] for take in takes if take.audio_blob_ref]
+    voice_wav = _concatenate_wavs(selected_wavs)
+    voice_digest = "sha256:" + hashlib.sha256(voice_wav).hexdigest()
+    voice_staged = store.stage(run_uuid, f"voice-asset-{asset_id}", BytesIO(voice_wav))
+    voice_registered = blobs.register_or_get_staged(
+        connection, voice_staged, content_type="audio/wav"
+    )
+    voice_committed = blobs.commit(connection, store, voice_registered)
+    voice_duration = _wav_duration(voice_wav)
     voice_asset = VoiceAsset(
         voice_take_set_ref=take_set_ref,
         selected_take_ids=tuple(selected_ids),
-        audio_blob_ref=f"voice:{take_set_id}",
-        duration=__import__("packages.contracts", fromlist=["RationalTime"]).RationalTime(
-            value=max(duration_us, 1), rate_num=1_000_000
-        ),
-        checksum=str(take_set_ref.checksum or "sha256:" + "0" * 64),
+        audio_blob_ref=voice_committed.metadata.uri,
+        duration=voice_duration,
+        checksum=voice_digest,
         rights=RightsMetadata(
             status=RightsStatus.CLEARED,
             source="owner-approved ref_7_clean.wav (2026-08-16)",

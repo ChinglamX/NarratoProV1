@@ -1,16 +1,17 @@
 # Project Current State
 
-State Version: 57
-Last Updated: 2026-08-16
+State Version: 82
+Last Updated: 2026-08-19
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained（语义视觉 Provider 准入阶段 B 本地 runtime 已安装验证，State v54）; E07/E08 engineering closed with real-data qualification pending; E09 active（认证链路人天签署完成，多 Variant replay 工程验证通过，剩余 blocker 见 §5）; E10/E11 advance baseline（E10 planning workflow 与 E11 RenderWorkflow 编排已真实验证，见 §7 最新条目；主实现持续推进中）。
+- Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active; E10/E11 First Usable Cut slice integrated（canonical Artifact lineage、Temporal render、libass 和 technical QC 已真实通过，见 §7 State v63；不代表 Epic 全面关闭或 Release）。
 - Active Release Slice：R4 Creative Production。
 - Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt（准入评估 + 本地 runtime 验证进行中）。
 - Active Backlog Entry：J05 Precise Multi-track Editing — 工程实现已审计修复（State v48）、渲染时间基 bug 修复并重跑认证（State v50）、项目负责人人工审核 approve（State v51）、多 Variant restart/replay 工程验证 + preview heartbeat 修复（State v52）、J05 debt 清理完成（/patches 合并、Web 接线、CI Postgres、revisions.py 经授权删除）；剩余 Epic 退出 blocker 见 §5。
 - Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
+- Product Control：First Usable Cut 与第二素材复跑均已闭环。Candidate v3 定位已纠正为 `director_assisted_reference`：证明 Codex 导演 + 执行工具可用，不证明自动声画规划。当前唯一主线为角色/决策溯源、声画语义锚定、TTS 后重排/缓存和 held-out 盲测；安全、权利、事实和人工 Release 底线不变。
 
 ---
 
@@ -71,8 +72,8 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- E09/J05 正式认证集成（TimelineEditingService、局部真实预览、undo/redo/jump API 已完成工程实现并通过审计修复，待真实数据验证）；J02–J04 生产 DoD 已补齐，但 E09 四个真实退出 blocker（语义视觉 Provider 准入、真实 Approved 项目全片 Preview、带时间码的 demo craft 对比、Worker restart/replay + 人工 checkpoint）仍待真实数据验证，`engineering_complete=false`。
-- J05 剩余接线（bounded）：`/patches` 端点与 TimelineEditingService 仍为双实现（都带 approved-intent 门禁，行为一致，待合并）；`packages/timeline/revisions.py`（RevisionHistory，纯内存截断语义）未接线且与 append-only 持久化语义不一致（待删除或改写，需人工批准）；Review Web 尚未调用版本/局部预览 API；CI 无 Postgres 服务（`tests/persistence/test_timeline_repository_db.py` 在 CI 跳过）。
+- First Usable Cut 产品效果与 canonical 技术链均已通过：v1 为 `useful_with_revision`，v2 七段解说获 `useful`；State v63 已完成 VoiceAsset/Alignment/Conform/MixedAudio/ASS 持久化及正式 libass RenderWorkflow success。尚未证明第二素材可重复使用，且未获 Release Gate 3。
+- E09 正式带时间码 craft 人工评分尚未签核；它继续作为质量增强/正式 E09 退出项，但不阻塞 First Usable Cut 的 E10/E11 技术与产品效果验证。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
 - 任何 L2/L3 自动化。
@@ -81,12 +82,12 @@ State Owner: Project
 
 ## 4. 下一步唯一恢复点
 
-按 `design/implementation/08_INITIAL_IMPLEMENTATION_BACKLOG.md` 开始：
+按 `PRODUCT_CONTROL_BOARD.md` 开始：
 
-1. E09 真实数据认证已完成人工签署（State v51 / run `d8eb4cd5` / workflow succeeded）：项目负责人 2026-08-15 审核 30.27s 全片 preview（`tmp/e09-cert-d8eb4cd5-*-preview.mp4` + 带字幕播放页 `tmp/e09-cert-d8eb4cd5-preview.html`）后 approve，timeline checkpoint 关闭。**下一步**：(a) 补录带时间码的 demo craft 对比表（建议归档至 `evaluation/benchmarks/`）；(b) 处理 J05 bounded debt（`/patches` 双实现合并、`revisions.py` 处置、Review Web 接线局部预览、CI 加 Postgres service）；(c) 登记 ADR-051（渲染时间基 bug 阶段回溯）。
-2. E06/G05 签署、真实 Corpus、模型 rights/checksum 与生产 load/fault/cost 验收保留为 bounded debt track，进入任何 production approval 前强制阻断。
-3. E07 工程建设不得宣称人物/剧情质量通过；Confidence 仍为 Shadow，Story Gate 仍为 L1 人工。
-4. E10/E11 现有代码只作为 advance baseline（E10 planning workflow 与 E11 RenderWorkflow 编排已真实验证，见 §7 最新条目）；在 E09 满足 Epic 退出条件（剩余 blocker 见 §5）前不得恢复为 active/completed。
+1. 下一必要人工节点：完整观看 `outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4`，只判断剧情、声画同步、三十万原声保护和结尾威胁是否 useful / useful_with_revision / reject。该片使用第 7–8 集十个 held-out 镜头；Codex Producer 提供镜头/事件/解说，但未填写任何 cue 绝对时间，七条解说由工具在真实 TTS 后自动排程且无 manual timing override。通过后再接 canonical E10/E11，不做逐句人工调时。
+2. 每个中间产物必须按 `product/MODULE_VALIDATION_CARDS.md` 展示；产品负责人给出 useful / useful_with_revision / reject 后才能扩大范围。
+3. E09 craft 正式签核、E06/G05 production qualification、E07/E08 真实质量验收保留为 bounded quality tracks；不再抢占 First Usable Cut 主线，但在任何 production approval 前仍强制检查。
+4. E10/E11 现有实现只按 M1/M2 advance baseline 计，不得以 qualification 中的 `engineering_complete=true` 宣称模块完成。
 
 包管理决定已确认：PEP 621/setuptools editable + pyenv Python 3.11.8 + .venv/pip 24.0（ADR-003）；Python resolution lock 仍为首个 Release Slice 退出前的 bounded debt（见 §6）。
 
@@ -133,6 +134,48 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 Visual–Narration Anchor held-out 验证（State v82）：新增运行级 `ProductionRunProvenance`，显式区分 TYPE/Active Role、辅助角色、导演决策、工具输出、人工修正与 Gate 3；新增证据约束的 `plan_narration_anchors`，计算 earliest/preferred/latest window，在真实 TTS 时长后排程，阻断 missing evidence、提前剧透、无理由 override、原声保护冲突和 slot overflow，并报告过长 gap。候选生成器改为内容寻址 TTS cache（文本+参考声音 checksum+provider endpoint+推理参数），旧 ordinal WAV 仅在既有 manifest 同时证明文本和 checksum 时迁移。Candidate v3 已用自动 anchor 重跑回归；held-out 第 7–8 集在 0/7 人工绝对时间、0 manual override、0 blocking finding 下生成 `outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4`：40.00s、720×1280 H.264/AAC、mean -20.3 dB、max -2.9 dB、checksum `sha256:77b5d770d6f2123f5fbb7e35f4ed6850dee7923ce4f84fa54d572c39340cf2c2`。`make check` 全绿（424 passed / 5 DB-env skipped，80.42% coverage）。当前等待一次完整产品听看；自动视觉事件/文本生成不在本次能力声明内，未执行 canonical E10/E11 或 Release Gate 3。
+
+- 2026-08-19 Director/tool 能力审计与执行重置（State v81）：确认 Candidate v3 的质量改善同时包含通用执行工具增强和 Codex 逐镜头/逐句导演配置，不能据此宣称自动声画规划或 M4/M5。新增 `product/DIRECTOR_TOOL_CAPABILITY_CHECKLIST.md`，将治理恢复、角色/决策溯源、Visual–Narration Anchor、TTS reflow/cache 和 held-out 盲测设为逐项关闭条件；Product Board、VC-009 和 State 已统一把 v3 标记为 `director_assisted_reference`。下一阶段不继续精修该 Demo，人工确认推迟到 held-out 最终候选或重大事实/方向/权利节点。
+
+- 2026-08-19 整剧跨集 Candidate v3（State v80）：负责人确认 v2 连贯性改善，但指出解说快于画面、产生剧透且尾部悬念不成立。v3 将 12 条解说重新锚定到 12 个视觉事件边界（坠崖→金光→人参→狼群→驱狼→赌债→承诺→进店→压价→五十万→抓妹→护妹），避免在对应画面出现前讲出结果；保留 0.45–1.41s 观察/原声空隙，不再追求全程无缝铺满。末句删除强行悬念，改为“兑现承诺、护住妹妹”的闭环回报。输出 `outputs/series_main_cut/candidate_v3/candidate_v3.mp4`：54.00s、720×1280、H.264/AAC、mean -20.0 dB、max -2.5 dB、checksum `sha256:11dc5297a7ad8377c6e4de6f427376813962c6496cd3233e889286f98ecabbf9`；九宫格确认字幕与坠崖/狼群/承诺/进店/现金/跪地画面顺序一致，CJK 正常且关键画面无遮挡。当前为内部候选，等待一次整片效果判断；未执行 canonical E10/E11、Gate 3 或公开发布。
+
+- 2026-08-19 整剧跨集 Candidate v2（State v79）：针对负责人指出的“解说按片段生成导致语义断裂、语音早于画面结束造成顿挫”，将候选生成器改为视频片段与解说 cue 两条独立时间线；13 条解说可跨镜头连续铺设，ASS 按标点拆分并依据真实 WAV 时长分配字幕。后半段 cue 起点重新收紧，除剧情章节转换处 1.605s 呼吸外，相邻间隔为 -0.171–0.800s；尾句延长为悬念式收束，语音至 53.265s，距 54s 片尾仅 0.735s。输出 `outputs/series_main_cut/candidate_v2/candidate_v2.mp4`：54.00s、720×1280、H.264/AAC、mean -19.3 dB、max -2.4 dB、checksum `sha256:3042a5dda1aad1ac3cf9d27c133be3f924db3157f794aa871598ed08cfc911dc`；九宫格确认 CJK 字幕正常、关键画面未被字幕遮挡。`make check` 全绿（412 passed / 5 DB-env skipped，80.24% coverage）。当前为内部候选，等待一次整片效果判断；未执行 canonical E10/E11、Gate 3 或公开发布。
+
+- 2026-08-18 整剧跨集 Candidate v1（State v78）：系统重启后 Desktop 原片读取恢复，12 个命中片段完成 workspace staging；Docker Desktop 恢复后成功渲染 `outputs/series_main_cut/candidate_v1/candidate_v1.mp4`。成片跨 1–6 集、12 段、54.00s、720×1280 H.264、AAC 48kHz stereo、mean -20.3 dB、max -3.2 dB。五十万段经过三次画面级自主迭代，最终明确出现现金箱与原片“这里面是五十万”；狼群、人参、掌印、讨债者跪地均有可见回报，CJK 字幕无乱码。Agent 内容审核 `useful_with_revision`：完整闭环和信息密度已成立，下一质量提升仅聚焦首 3 秒 Hook 与动作切点。`make check` 全绿（412 passed / 5 DB-env skipped，80.24% coverage）。当前等待一次整片人审，不执行 Gate 3、不允许公开发布。
+
+- 2026-08-18 跨源候选入口与运行阻断（State v77）：`scripts/build_m5_second_cut.py` 已从单源扩展为每 segment 独立 `source_path`，manifest 记录完整 sources/segment lineage；为避免 Docker Desktop 外部目录挂载卡死，新增仅提取命中镜头到工作区的小片段 staging，再由既有 libass/CJK Docker wrapper 合成。`product/series_main_cut.json` 固化 12 段、54 秒跨 1–6 集主片配置；12/12 IndexTTS WAV 已成功生成。实际渲染暴露外部环境 blocker：macOS 对原片目录的 `ls`、`stat`、`ffprobe`、FFmpeg 均无错误但持续 sleep，重启 Finder 后仍不恢复；已终止本轮挂起的只读进程，没有修改原片。1–3 集改用已入库 Object Store 副本；4–6 集没有入库且包含“五十万成交/护妹跪地”核心回报，禁止降级删减。Python compile、Ruff、shell syntax 和 JSON/input checks 通过；完整候选尚未生成，下一恢复动作是系统重启/将 4–6 集复制到可读本地目录后断点续跑。
+
+- 2026-08-18 跨集主片剪辑蓝图（State v76）：对主路线涉及的 1–6 集生成 4 秒间隔密集 contact sheets，并补看第 7 集尾钩画面；完成 `outputs/series_analysis/MAIN_CUT_BLUEPRINT.md`。蓝图将 15 个跨集镜头压缩为约 55–58 秒，锁定狼群退去、五十万报价、讨债者跪地三个不可删减视觉回报，并明确报价/威胁保留原声、跨集因果使用解说。下一步不是逐集生产，而是扩展现有单源个人入口为跨源 segment 后一次性生成整剧主片候选。
+
+- 2026-08-18 整剧批量理解与统一选题（State v75）：纠正“逐集处理、逐集确认”的生产粒度。对授权目录内 1–8 集和热门剪辑完成只读媒体索引、本地 FunASR research transcription 与关键集 contact-sheet 画面复核；为避免仅剩约 6.6 GiB 磁盘被全量复制耗尽，整剧阶段不写入 Object Store，仅对最终命中素材执行 canonical ingest。形成 `outputs/series_analysis/SERIES_STORY_STRATEGY_REVIEW.md`：主路线确定为“觉醒山神印→驱狼→至少五十年份野山参变现→守护妹妹”，备用为“药店压价→五十万截胡”；明确热门剪辑的“千年参王”属事实漂移，不得采用。整剧内部候选生产的 Agent Gate 1/2 review 通过，原第 3 集单集 checkpoint 被替代；Gate 3 仍为 human-only 且 Rights 仍 restricted/internal-only/no-public-release。下一步直接构建跨集 45–60 秒剪辑蓝图与候选片。
+
+- 2026-08-18 自主推进与第三素材 Gate checkpoint（State v74）：根据项目负责人“中间确认能免则免”的执行授权，工程/机器质量/可恢复性默认由 Agent 自主判定；仍保留 Rights、重大剧情/营销方向和 human-only Release Gate。修复个人入口的表面参数化缺口：配置现在直接包含源视频、参考声音、镜头区间和解说，candidate builder 动态支持任意段数，canonical 从配置引用的 ingest/candidate manifests 解析 source、时长和输出，不再绑定 `m5-second-source` profile。随后选择同授权目录 `3.mp4`（61.33s）完成 restricted/internal-only ingest（project `d86964cd-6cf1-4e31-b9c1-3e5bc8a864a1`、run `c8d95c98-da07-4590-b775-3f792b7ebcac`）、本地 FunASR research transcription 和固定帧核对，形成 `outputs/m5_third_source/story_strategy_checkpoint.md`。当前已推进到不可绕过的合并 Gate 1/2；ASR 仅给单一大时间段，姓名/关系不确定项已显式排除。`make check` 全绿（412 passed / 5 DB-env skipped，80.24% coverage）。
+
+- 2026-08-18 个人候选片透明入口（State v73）：新增单份严格 JSON 配置 `product/personal_cut.example.json`、中文指南 `product/PERSONAL_CUT_GUIDE.md`、可恢复入口 `scripts/personal_cut.py` 及 `make personal-cut-check` / `make personal-cut`。入口逐项展示权利与 Gate、素材导入、镜头/解说/WAV/ASS、runtime、canonical Render/QC、Gate 3 六阶段；缺失前置会中文 fail-closed，已有 canonical success 时不会重复渲染，并写 `personal_cut_status.json`。真实第二素材执行两入口均成功，状态可追踪且 Gate 3 明确未执行。`make check` 全绿（412 passed / 5 DB-env skipped，80.24% coverage）。这是 M5 操作入口工程证据，仍待产品负责人从非开发者视角确认可理解性；适用范围明确限制为已通过 Gate 1/2 且已有候选部件的项目，不冒充任意素材全自动创作。
+
+- 2026-08-18 第二素材 canonical 人工复核（State v72）：项目负责人完整观看 `outputs/m5_second_source/candidate_v1/canonical_e11.mp4` 后明确回复“通过”，登记为 `useful`。第二素材现已同时具备产品效果通过、canonical Artifact lineage、Temporal RenderWorkflow 和 Technical QC 通过证据；canonical 等效性检查点关闭。Rights 仍为 restricted/internal-only，未执行 Gate 3。M5 仅剩非开发者统一入口及一次可理解、可恢复的操作验证，不因本次看片通过提前宣布完成。
+
+- 2026-08-18 第二素材 canonical E10→E11（State v71）：`scripts/accept_first_usable_cut_canonical.py` 已参数化为双 profile。第二 profile 从已批准 manifest 构造唯一 MasterTimeline，并持久化 NarrationLineSet、VoiceTakeSet、VoiceAsset、Alignment、Conform、Mix、ASS 和 RenderPlan。真实 run `f3657489-d820-48e1-97b3-e733b9f3a8f4` 经 Temporal RenderWorkflow 成功，RenderExecutionReport `bc4a7edd-bf8d-4d01-8496-851ab6058f75`、TechnicalQCReport `a52fc140-9554-4901-a878-02185ae3568b`，QC passed/no blockers；输出 30.00s、720×1280 H.264/AAC、mean -21.2 dB、max -3.2 dB，七段字幕抽帧正常。`make check` 全绿（412 passed / 5 DB-env skipped，80.24% coverage）。当前入口仍是工程 profile，尚未完成非开发者操作验证，因此保持 M4，未执行 Gate 3。
+
+- 2026-08-18 M5 第二素材产品验收（State v70）：项目负责人观看 `outputs/m5_second_source/candidate_v1/candidate_v1.mp4` 后给出“可以接受”，按产品控制词汇登记为 `useful`。第二素材的剧情、Hook、节奏、声音/混音和字幕整体达到当前可接受线，证明跨集产品效果不是首片单点成功。该候选仍由第二素材专用脚本构建，尚未迁入 canonical E10/E11 和可参数化统一入口，因此只计 M4 第二样本通过，不计 M5；Rights 仍 internal-only，未执行 Release Gate 3。
+- 2026-08-18 M5 第二素材 Candidate v1（State v69）：项目负责人批准 Gate 1 剧情事实与 Gate 2“狼群威胁→首次驱兽”营销方向。按七段 30s 时间线生成 7 条真实 IndexTTS WAV（单句 2.176–2.987s），使用第 2 集 7 个新 source ranges、原声 gain 0.30、解说 gain 1.0、Heiti SC/libass 中文字幕输出 `outputs/m5_second_source/candidate_v1/candidate_v1.mp4`。机器检查：30.00s、720×1280 H.264、AAC 48kHz stereo、mean -21.1 dB、max -3.1 dB；七段抽帧中文正常、换行无越界，镜头覆盖 Hook/回溯/价值/升级/驱兽/结果。当前仅为 product candidate，不是 canonical E10/E11 success，也不是 M5 或 Release Gate 3；等待人工 useful/revise/reject。
+- 2026-08-18 M5 第二素材导入与 Story/Strategy 检查点（State v68）：项目负责人指定剧集目录并确认素材只用于内部、绝不公开。选用未参与首片的 `2.mp4`（82.965s、1080×1920、H.264/AAC）作为第二源，Rights 以 `restricted` 登记，允许 internal analysis/edit/test render，明确 `no-public-release`、`no-commercial-publication`。项目 `74458fd0-935f-4b51-918b-e9840bcf9d04`、run `952fc7c6-38d6-46a6-a616-29fe0d2ac6ce` 成功生成 SourceMedia/MediaProbe/ProxyMedia/AudioStem/FrameSamplePlan/SceneShotCatalog，manifest 位于 `outputs/m5_second_source/ingest_manifest.json`。恢复本地 FunASR，对第 2 集完成 research transcript；因时间戳仅为单一大段，未提升为精确 canonical speech evidence。结合 10 个固定时间抽帧形成 `story_strategy_checkpoint.md`，当前等待 Gate 1/2 人工决定，未进入 TTS/渲染。
+- 2026-08-18 第二素材准入盘点（State v67）：按 v66 恢复点检查 workspace 视频与 PostgreSQL `rights.asset_rights`。除同一 `youzijuchang_demo.mp4` 的输出和 E09 派生 clip/preview 外，没有独立第二源素材；`rights.asset_rights` 为 0 条。现有派生片段不能用来证明跨素材重复性，来源不明的 workspace 外视频也不得擅自纳入。M5 验证暂停在输入准入边界，等待项目负责人指定第二源视频并确认内部处理权利；未扩展架构或伪造验收。
+- 2026-08-18 canonical 中文字幕人工复核通过（State v66）：项目负责人完整复核修正版 `outputs/first_usable_cut_v2/canonical_e11.mp4` 后给出“目前可接受”。字幕乱码、中文字体回退、长句横向裁切三项问题关闭；VC-005/VC-006 对本样片的字幕 Effect 恢复为 `useful`。该决定只关闭 First Usable Cut 修正版字幕检查，不是 Release Gate 3；RightsGrant 仍为 internal/manual-test，下一恢复点仍是第二素材 M5 可重复性验证。
+- 2026-08-18 canonical 中文字幕全段复核（State v65）：对修复 run `da464df7-3c93-4a38-acde-fed53191acec` 的七个 narration cue 分别在有效显示区间抽帧。七段中文均正常、两行换行完整、无左右裁切；与原片字幕同时出现的帧保持上下层级可辨。第三段初次抽帧位于 cue 结束后的空档，按 ASS 精确时间 8.00–10.69s 改在 9.3s 复核后通过。机器侧字幕视觉抽样关闭，仍等待项目负责人整片人工确认。
+- 2026-08-18 canonical 中文字幕修复（State v64）：项目负责人发现 State v63 成片字幕乱码。复核确认 ASS 为 UTF-8，根因是 Docker 渲染镜像不含任何 CJK 字体，`PingFang SC`/`Arial` 均错误回退到 DejaVu Sans；此前抽帧误把原片字幕当作解说字幕，原验收结论撤回。`scripts/ffmpeg_libass_docker.sh` 现显式校验并挂载宿主 `STHeiti Medium.ttc`，缺字体 exit 78 fail-closed；canonical ASS 使用 `Heiti SC`。进一步抽帧发现长句横向裁切，`ass_renderer` 新增每行最多 12 字的确定性换行和测试。修复 run `da464df7-3c93-4a38-acde-fed53191acec` Render/QC passed，Artifact refs 见最新 `canonical_acceptance.json`；1s 抽帧确认中文无乱码、两行完整位于画面内。`make check` 全绿（412 passed / 5 DB-env skipped，80.24% coverage）。M4 结论恢复，但仍需产品负责人人工观看修正版确认。
+- 2026-08-18 First Usable Cut canonical E10→E11 acceptance（State v63，字幕结论被 v64 修正）：经项目负责人授权重启 Docker Desktop，使用 `deploy/compose/.env` 恢复 PostgreSQL/Temporal，并以现有 `narratoai:latest` 容器内 FFmpeg/libass 作为显式渲染 runtime。修复真实验收暴露的 RightsGrant 输入、历史 committed blob 对象缺失修复边界、Temporal task queue、线程 heartbeat、临时 MP4 扩展名、Activity 返回类型反序列化，以及 MixPlan/RenderPlan exact-ref 错接。run `531cf3dc-6858-4dd1-a578-3334477e42b9` 持久化完整 Artifact 链；机器 QC 通过，但由于容器缺 CJK 字体导致字幕乱码，不能作为字幕视觉通过证据。修复及替代 run 见 State v64。
+- 2026-08-17 E10 canonical persistence remediation（State v62）：继续执行 v61 恢复点时审计发现 K01 把 target_duration 当实际时长、selected_take_ids 写成 line_id、VoiceAsset audio ref 为占位；ASS/MixedAudio blob 未经 BlobRepository 完成 staging→committed 且 payload 指向已移动 staging URI；ConformReport Contract 存在但遗漏 Artifact Type。已修复真实 WAV header 时长、take_id、格式校验后的聚合 VoiceAsset WAV、Alignment/Conform/MixedAudio persistence、committed content-addressed URI 和 ArtifactVersion blob_id；ADR-052 登记，Registry 兼容升级 2.21.0。`make check` 全绿（409 passed / 5 DB-env skipped，80.22% coverage）。真实运行尚未完成：Docker Desktop backend 已运行约两天但 daemon API 无响应，`make infra-up`/docker query 均挂起；重启会影响本机所有容器，未获明确授权，未执行。宿主 FFmpeg 8.1.2 仍缺 libass。
+
+- 2026-08-17 First Usable Cut v2 人工通过（State v61）：产品负责人观看 30.28s v2 后明确回复“通过”。结合上一轮逐项反馈，当前确认声音可接受、原声/解说比例合适、字幕清晰且不影响画面，七段解说后的剧情表达与信息密度达到当前产品验证要求。产品结论为 `useful`，First Usable Cut 的 Effect checkpoint 关闭；正式 E10/E11 Artifact/workflow qualification 保持未完成，不以产品证明冒充工程完成。
+
+- 2026-08-17 First Usable Cut v2（State v60）：产品负责人对 v1 给出 `useful_with_revision`，明确声音、原声/解说比例、字幕通过，唯一主要修改为四段单句导致剧情表达不饱满。按制作工作流保留 v1，新增 v2：将解说从 4 个扩展至 7 个节点，覆盖绝境触发、外界误解、宗门处境、血脉传承、力量觊觎、杀机逼近和笔记悬念；七句 IndexTTS 实际时长 2.901/3.200/2.688/3.200/2.645/2.731/2.645s。成片 30.28s、720×1280 H.264、AAC 48kHz stereo、mean -20.3 dB、max -2.6 dB、无 ≥1s/-45dB 静音；七个节点抽帧确认字幕安全区与换行。当前 verdict 仍为 Awaiting Review，不替代正式 Gate 3。
+
+- 2026-08-17 First Usable Cut 产品证明（State v59）：基于 E09 approved 30.27s preview 真实生成四句 IndexTTS WAV（2.347/2.816/2.987/3.243s），按 beat start 混入原声并渲染安全区解说字幕，产出 `outputs/first_usable_cut/first_usable_cut.mp4`（30.28s，720×1280 H.264，AAC 48kHz stereo，sha256:b9ed120d…）。机器 QC：mean -21.2 dB、max -2.3 dB、无 ≥1s/-45dB 静音；1/5/15/27s 采样帧人工目视确认字幕存在，首次发现横向裁切后已增加自动换行并重渲染。E11 修复：真实 ASS/MixedAudio 路径 fail-closed 接线、atomic temp output、typed QC pass/blocked_codes 传播；`make check` 全绿（405 passed / 5 DB-env skipped，80.16% coverage，Ruff、strict mypy、Bandit、Context/Architecture、Registry）。边界：这是 pending human review 的产品证明，不是 E10/E11 qualification；本机 FFmpeg 无 libass，使用 PNG overlay；IndexTTS 连续合成曾退出，稳定性待验收。
+
+- 2026-08-17 产品掌控重构（State v58）：建立 `PRODUCT_CONTROL_BOARD.md`、`product/PRODUCT_CONTROL_SYSTEM.md` 和 `product/MODULE_VALIDATION_CARDS.md`；能力拆分为 Core Generation / Quality Enhancer / Scale and Automation，采用 M0–M5 产品成熟度并单独记录 Effect。当前唯一产品目标切换为 First Usable Cut；E06 完整生产准入、L2/L3、在线反馈等不再默认阻塞首个个人候选，事实/权利/技术可播放与人工 Release 底线保持不变。`git diff --check`、`make context-check` 通过。
 
 - 2026-08-16 成果审核与回溯补录（State v57 追加）：对 8 轮成果独立复跑审核（make check 399 tests/80.35% 真实复跑；benchmark 数据 13 剧/720 帧/1052 OCR/1268 DET/144 VLM/0 错误自洽；IndexTTS 真实合成 2.05s 复现）——修复 6 项（commit `51f5dae`）：① IndexTTS health URL 子串替换 bug（改 urlparse 解析式）；② 删除 indextts.py 未用常量；③ `CANDIDATE_VISUAL_PROVIDERS`→`CANDIDATE_PROVIDERS`（注册表现含 TTS 非纯视觉）；④ take_selection `dict[object]`→`dict[UUID]`；⑤ E06 并发内存目标 8GB→12GB（16GB 减 OS+容器 ~4GB）；⑥ 文档过时修正（评估报告 DET 一致性已解决、STATE v55 日期 8-17→8-16）。
 - **IndexTTS 运维恢复信息（新会话必读）**：服务代码在 `/Users/chinglam/Documents/Codex/2026-07-05/he-l/index-tts2`（模型 checkpoints/gpt.pth+bigvgan_generator.pth+bpe.model+dvae.pth 已就位）；启动 `bash /Users/chinglam/workspace/NarratoPro/scripts/start-indextts.sh`（需完整文件权限：写 NarratoPro/storage 日志 + nohup 8081 端口）；API `http://127.0.0.1:8081/tts`（multipart 字段 `prompt_audio`+`text`）；参考声源 `~/Desktop/ref_7_clean.wav`（9.7s 24kHz 单声道，owner 批准）；健康检查 `http://127.0.0.1:8081/health`；adapter 在 `packages/providers/speech/indextts.py`，配置 `NARRATOPRO_INDEXTTS_API_URL/REF_AUDIO`（settings 默认值硬编码本机路径，迁移需改）。

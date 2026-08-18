@@ -86,6 +86,9 @@ Media → Observation → Fact → Story → Strategy → Timeline
 
 - 项目使命：`PROJECT_CHARTER.md`
 - 产品能力：`PRODUCT_CAPABILITY.md`
+- 产品控制看板：`PRODUCT_CONTROL_BOARD.md`
+- 产品控制与模块成熟度：`product/PRODUCT_CONTROL_SYSTEM.md`
+- 模块验证卡：`product/MODULE_VALIDATION_CARDS.md`
 - 总体架构：`SYSTEM_ARCHITECTURE.md`
 - 全局规则：`PROJECT_RULES.md`
 - 路线图：`DEVELOPMENT_ROADMAP.md`
@@ -146,6 +149,10 @@ Media → Observation → Fact → Story → Strategy → Timeline
 
 必读：Quality Standard、Review Protocol、Producer Workflow、目标 Artifact lineage、Benchmark/Profile 和对应 Stage Acceptance。
 
+### 产品进度、范围或工具效果审查
+
+必读：`PRODUCT_CONTROL_BOARD.md`、`product/PRODUCT_CONTROL_SYSTEM.md`、`product/MODULE_VALIDATION_CARDS.md`；先回答 First Usable Cut 的可见产物和 blocker，再查看 Epic 工程状态。
+
 ### 修改核心契约或架构
 
 额外必读：Architecture Review、Package Dependency、Schema Catalog、Workflow Map、ADR；先给出兼容和迁移影响。
@@ -183,4 +190,3 @@ Media → Observation → Fact → Story → Strategy → Timeline
 - Canonical Contract/ADR 无未登记替代名。
 - 完成状态有测试/评测/审核证据。
 - 核心文档变更要求同步状态或明确 `state_impact: none`。
-

@@ -31,7 +31,9 @@ def build_render_command(
     plan: RenderPlanContract,
     source_paths: dict[str, Path],
     ass_path: Path | None,
+    mixed_audio_path: Path | None,
     output_path: Path,
+    ffmpeg_binary: str = FFMPEG,
 ) -> list[str]:
     """Build the ffmpeg argv for a proxy/final render.
 
@@ -47,9 +49,8 @@ def build_render_command(
     if not clips:
         raise RenderCommandError("render plan has no video clips")
 
-    command: list[str] = [FFMPEG, "-y"]
+    command: list[str] = [ffmpeg_binary, "-y"]
     video_inputs: list[str] = []
-    audio_inputs: list[str] = []
     for index, op in enumerate(clips):
         source = source_paths.get(str(op.input_refs[0].artifact_id))
         if source is None or not source.is_file():
@@ -61,15 +62,19 @@ def build_render_command(
             f"[{index}:v]trim=0:{_us_param(op, 'source_duration_us') / 1_000_000:.6f},"
             f"{_scale_filter()},setpts=PTS-STARTPTS[v{index}]"
         )
-        audio_inputs.append(f"[{index}:a]anull[a{index}]")
+
+    if audio_op is not None:
+        if mixed_audio_path is None or not mixed_audio_path.is_file():
+            raise RenderCommandError("MixedAudio path is unavailable")
+        command += ["-i", str(mixed_audio_path)]
 
     concat_inputs = "".join(f"[v{i}]" for i in range(len(clips)))
     filter_complex: list[str] = [
         *video_inputs,
         f"{concat_inputs}concat=n={len(clips)}:v=1:a=0[vcat]",
     ]
-    if ass_op is not None and ass_path is not None:
-        if not ass_path.is_file():
+    if ass_op is not None:
+        if ass_path is None or not ass_path.is_file():
             raise RenderCommandError("ASS subtitle path is unavailable")
         filter_complex.append(f"[vcat]subtitles={ass_path}[vs]")
         video_output = "[vs]"
@@ -77,12 +82,12 @@ def build_render_command(
         video_output = "[vcat]"
 
     if audio_op is not None:
-        audio_concat = "".join(f"[a{i}]" for i in range(len(clips)))
-        if len(clips) > 1:
-            filter_complex.append(f"{audio_concat}amix=inputs={len(clips)}:normalize=0[aout]")
-            audio_output = "[aout]"
-        else:
-            audio_output = "[a0]"
+        audio_index = len(clips)
+        filter_complex.append(
+            f"[{audio_index}:a]atrim=0:{float(plan.expected_duration.seconds):.6f},"
+            "asetpts=PTS-STARTPTS[aout]"
+        )
+        audio_output = "[aout]"
         command += ["-map", video_output, "-map", audio_output]
     else:
         command += ["-map", video_output]
@@ -96,13 +101,16 @@ def build_render_command(
     return command
 
 
-def libass_available() -> bool:
+def libass_available(ffmpeg_binary: str = FFMPEG) -> bool:
     """Detect whether the system ffmpeg supports the subtitles (libass) filter."""
     import subprocess  # nosec B404
 
     try:
         result = subprocess.run(  # nosec B603
-            [FFMPEG, "-hide_banner", "-filters"], capture_output=True, text=True, timeout=15
+            [ffmpeg_binary, "-hide_banner", "-filters"],
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         return any(
             line.strip().startswith("..") and "subtitles" in line

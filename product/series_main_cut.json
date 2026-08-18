@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.1",
+  "project_name": "山神印觉醒后满山风月皆归我-整剧主片",
+  "usage_scope": "internal-preview",
+  "rights_confirmed": true,
+  "gate_1_story_approved": true,
+  "gate_2_strategy_approved": true,
+  "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/1.mp4",
+  "reference_audio": "/Users/chinglam/Desktop/ref_7_clean.wav",
+  "segments": [
+    {
+      "source_path": "../data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+      "source_start_seconds": 20.0,
+      "duration_seconds": 4.0,
+      "narration": "他跌下山崖，醒来时，掌心竟多了一道山神印。"
+    },
+    {
+      "source_path": "../data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+      "source_start_seconds": 44.0,
+      "duration_seconds": 4.5,
+      "narration": "从此，山里每一株草木的位置，他都能感知。"
+    },
+    {
+      "source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 24.0,
+      "duration_seconds": 4.5,
+      "narration": "随手挖出的第一株，就是五十年份的野山参。"
+    },
+    {
+      "source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 44.0,
+      "duration_seconds": 4.0,
+      "narration": "可没等兄妹高兴，狼群已经封死退路。"
+    },
+    {
+      "source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 60.0,
+      "duration_seconds": 5.0,
+      "narration": "他只抬了一次手，整片山林便替他让路。"
+    },
+    {
+      "source_path": "../data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 4.5,
+      "narration": "偏偏家里的赌债，又吞掉了妹妹的大学学费。"
+    },
+    {
+      "source_path": "../data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+      "source_start_seconds": 36.0,
+      "duration_seconds": 4.0,
+      "narration": "他当场承诺，妹妹的大学，由自己来供。"
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/4.mp4",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 4.5,
+      "narration": "药店认出这是极品，嘴上却只肯出二十万。"
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 5.0,
+      "narration": "下一秒，真正识货的买家，直接把价格抬到五十万。"
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+      "source_start_seconds": 32.0,
+      "duration_seconds": 4.5,
+      "narration": "可钱刚到手，讨债的人就抓住了妹妹。"
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+      "source_start_seconds": 0.0,
+      "duration_seconds": 5.0,
+      "narration": "山神印一亮，刚才还叫嚣的人，全都跪了。"
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+      "source_start_seconds": 56.0,
+      "duration_seconds": 4.5,
+      "narration": "他终于有钱供妹妹读书，也有力量护她周全。"
+    }
+  ],
+  "ingest_manifest": "../outputs/m5_second_source/ingest_manifest.json",
+  "candidate_manifest": "../outputs/series_main_cut/candidate_v1/manifest.json",
+  "canonical_output": "../outputs/series_main_cut/candidate_v1/canonical_e11.mp4",
+  "acceptance_manifest": "../outputs/series_main_cut/candidate_v1/canonical_acceptance.json"
+}

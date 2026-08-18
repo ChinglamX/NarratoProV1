@@ -14,6 +14,7 @@ class MixPlanningConflict(RuntimeError):
 def plan_mix_stems(
     timeline: MasterTimeline,
     *,
+    conformed_timeline_ref: ArtifactRef,
     narration_source_ref: ArtifactRef,
     target_loudness_lufs: float,
     true_peak_ceiling_dbtp: float,
@@ -50,13 +51,7 @@ def plan_mix_stems(
         )
     )
     return MixPlan(
-        conformed_timeline_ref=ArtifactRef.model_validate(
-            {
-                "artifact_id": str(timeline.timeline_id),
-                "version": 1,
-                "artifact_type": "MasterTimeline",
-            }
-        ),
+        conformed_timeline_ref=conformed_timeline_ref,
         stems=tuple(stems),
         target_loudness_lufs=target_loudness_lufs,
         true_peak_ceiling_dbtp=true_peak_ceiling_dbtp,

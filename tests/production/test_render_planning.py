@@ -86,6 +86,7 @@ def test_plan_render_builds_deterministic_operations() -> None:
         timeline_ref=timeline_ref,
         mix_plan_ref=mix_ref,
         mix_plan=mix,
+        mixed_audio_ref=_ref("MixedAudio"),
         ass_ref=ass_ref,
         platform_profile_ref=profile,
     )
@@ -100,6 +101,7 @@ def test_plan_render_builds_deterministic_operations() -> None:
         timeline_ref=timeline_ref,
         mix_plan_ref=mix_ref,
         mix_plan=mix,
+        mixed_audio_ref=_ref("MixedAudio"),
         ass_ref=ass_ref,
         platform_profile_ref=profile,
     )
@@ -114,6 +116,7 @@ def test_plan_render_final_mode_and_different_audio_changes_checksum() -> None:
         timeline_ref=_ref("MasterTimeline"),
         mix_plan_ref=_ref("MixPlan"),
         mix_plan=mix,
+        mixed_audio_ref=_ref("MixedAudio"),
         ass_ref=_ref("ASSArtifact"),
         platform_profile_ref=_ref("ConfigArtifact"),
     )
@@ -122,6 +125,7 @@ def test_plan_render_final_mode_and_different_audio_changes_checksum() -> None:
         timeline_ref=_ref("MasterTimeline"),
         mix_plan_ref=_ref("MixPlan"),
         mix_plan=mix,
+        mixed_audio_ref=_ref("MixedAudio"),
         ass_ref=_ref("ASSArtifact"),
         platform_profile_ref=_ref("ConfigArtifact"),
         mode=RenderMode.FINAL,

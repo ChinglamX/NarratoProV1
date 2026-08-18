@@ -23,6 +23,7 @@ class SubtitleStyle:
         shadow: int = 1,
         play_res_x: int = 720,
         play_res_y: int = 1280,
+        max_chars_per_line: int = 12,
     ) -> None:
         self.font_name = font_name
         self.font_size = font_size
@@ -33,6 +34,7 @@ class SubtitleStyle:
         self.shadow = shadow
         self.play_res_x = play_res_x
         self.play_res_y = play_res_y
+        self.max_chars_per_line = max_chars_per_line
 
 
 def _ass_timestamp(seconds: Fraction) -> str:
@@ -56,6 +58,19 @@ def _safe_area_margin_v(safe_area: dict[str, Any], style: SubtitleStyle) -> int:
 
 def _escape_text(text: str) -> str:
     return text.replace("\\", "\\\\").replace("\n", "\\N")
+
+
+def _wrap_text(text: str, max_chars_per_line: int) -> str:
+    """Wrap CJK-heavy captions deterministically before ASS escaping."""
+    if max_chars_per_line < 1:
+        raise ValueError("max_chars_per_line must be positive")
+    wrapped: list[str] = []
+    for paragraph in text.splitlines() or [""]:
+        wrapped.extend(
+            paragraph[index : index + max_chars_per_line]
+            for index in range(0, len(paragraph), max_chars_per_line)
+        )
+    return "\n".join(wrapped)
 
 
 def _render_cue_text(text: str, highlighted: tuple[tuple[int, int], ...]) -> str:
@@ -107,6 +122,9 @@ def render_ass_content(
         start = _ass_timestamp(cue.timeline_range.start.seconds)
         end = _ass_timestamp(cue.timeline_range.end_seconds)
         margin_v = _safe_area_margin_v(cue.safe_area, style)
-        text = _render_cue_text(cue.text, cue.highlighted_ranges)
+        cue_text = cue.text
+        if not cue.highlighted_ranges:
+            cue_text = _wrap_text(cue_text, style.max_chars_per_line)
+        text = _render_cue_text(cue_text, cue.highlighted_ranges)
         lines.append(f"Dialogue: 0,{start},{end},Default,,0,0,{margin_v},,{text}")
     return "\n".join(lines) + "\n"

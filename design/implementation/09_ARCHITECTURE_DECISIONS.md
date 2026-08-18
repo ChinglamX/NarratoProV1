@@ -694,3 +694,20 @@ SUBTITLE 轨时间码写错。v48/v49 测试未发现：fixture 用 rate=1 durat
 ORIGINAL_AUDIO source_range（0/21.5/52.0417/99.625s）正确；355 tests、80.61% coverage 全绿。
 E09 "真实完整 Preview" 与 "人工 checkpoint 签署" blocker 关闭；语义视觉 Provider 准入、
 多 Variant replay、demo craft 对比表归档仍为剩余 blocker。
+
+## ADR-052 — E10 Binary Artifacts Use Measured Media and Committed Object URIs
+
+问题：E10/K01 把 NarrationLine 的目标时长写入 VoiceTake，selected_take_ids 实际保存 line_id，
+VoiceAsset 使用不可解析的占位 audio ref；ASS/MixedAudio 只调用 ObjectStore commit，未把 Blob
+数据库状态从 staging 转为 committed，且 payload 仍指向已移动的 staging URI。ConformReport
+虽然已有 Contract 和 Registry schema，却遗漏 Artifact Type，无法形成 canonical ArtifactRef。
+
+决策：VoiceTake 时长必须从真实 WAV header 测量，selected_take_ids 必须引用 take_id；选中
+WAV 以格式一致性校验后聚合为真实 VoiceAsset blob。所有二进制生产产物统一执行
+BlobRepository register→commit，并把 committed content-addressed URI 写入 payload、blob_id
+写入 ArtifactVersion。ConformReport 加入 Artifact Type Catalog；Registry 以兼容 minor 升级
+2.21.0，历史版本不变。
+
+后果：E10 可以生成可解析、可追踪和可供 E11 消费的 Voice/ASS/MixedAudio 引用；旧的占位或
+staging 引用不自动迁移，必须重新运行产生后继 Artifact。该修复不等于 E10/E11 qualification，
+仍需真实 PostgreSQL/Temporal 与 libass-enabled FFmpeg 成功证据。

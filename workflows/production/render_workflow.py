@@ -15,6 +15,7 @@ with workflow.unsafe.imports_passed_through():
         execute_render_activity,
         technical_qc_activity,
     )
+    from workflows.project.models import ArtifactPointer
 
 
 @workflow.defn
@@ -25,29 +26,26 @@ class RenderWorkflow:  # pragma: no cover - verified by real Temporal run
     @workflow.run
     async def run(self, request: RenderRequest) -> RenderResult:  # pragma: no cover
         retry = RetryPolicy(maximum_attempts=3, non_retryable_error_types=["RuntimeError"])
-        execution: object = await workflow.execute_activity(
+        execution: ArtifactPointer = await workflow.execute_activity(
             execute_render_activity,
             request,
             start_to_close_timeout=timedelta(minutes=60),
             heartbeat_timeout=timedelta(minutes=1),
             retry_policy=retry,
         )
-        qc: object = await workflow.execute_activity(
+        qc = await workflow.execute_activity(
             technical_qc_activity,
             request,
             start_to_close_timeout=timedelta(minutes=10),
             heartbeat_timeout=timedelta(minutes=1),
             retry_policy=retry,
         )
-        from typing import cast
-
-        from workflows.project.models import ArtifactPointer
-
         result = RenderResult(
-            execution_report=cast(ArtifactPointer, execution),
-            qc_report=cast(ArtifactPointer, qc),
+            execution_report=execution,
+            qc_report=qc.report,
             output_path=request.output_path,
-            passed=not getattr(qc, "blocked_codes", ()),
+            passed=qc.passed,
+            blocked_codes=qc.blocked_codes,
         )
         self._status = result
         return result

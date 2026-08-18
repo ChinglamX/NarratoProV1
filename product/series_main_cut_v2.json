@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.2",
+  "project_name": "山神印觉醒后满山风月皆归我-整剧连续解说主片",
+  "usage_scope": "internal-preview",
+  "rights_confirmed": true,
+  "gate_1_story_approved": true,
+  "gate_2_strategy_approved": true,
+  "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/1.mp4",
+  "reference_audio": "/Users/chinglam/Desktop/ref_7_clean.wav",
+  "candidate_filename": "candidate_v2.mp4",
+  "segments": [
+    {"source_path": "../data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03", "source_start_seconds": 20.0, "duration_seconds": 4.0},
+    {"source_path": "../data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03", "source_start_seconds": 44.0, "duration_seconds": 4.5},
+    {"source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d", "source_start_seconds": 24.0, "duration_seconds": 4.5},
+    {"source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d", "source_start_seconds": 44.0, "duration_seconds": 4.0},
+    {"source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d", "source_start_seconds": 60.0, "duration_seconds": 5.0},
+    {"source_path": "../data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f", "source_start_seconds": 12.0, "duration_seconds": 4.5},
+    {"source_path": "../data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f", "source_start_seconds": 36.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/4.mp4", "source_start_seconds": 12.0, "duration_seconds": 4.5},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4", "source_start_seconds": 12.0, "duration_seconds": 5.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4", "source_start_seconds": 32.0, "duration_seconds": 4.5},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4", "source_start_seconds": 0.0, "duration_seconds": 5.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4", "source_start_seconds": 56.0, "duration_seconds": 4.5}
+  ],
+  "narration_cues": [
+    {
+      "timeline_start_seconds": 0.0,
+      "slot_duration_seconds": 5.5,
+      "narration": "林大壮跌下山崖，本以为必死无疑，醒来后掌心却多了一道山神印。"
+    },
+    {
+      "timeline_start_seconds": 4.8,
+      "slot_duration_seconds": 4.0,
+      "narration": "从那一刻起，山里每一株草木的位置，他都能感知。"
+    },
+    {
+      "timeline_start_seconds": 8.0,
+      "slot_duration_seconds": 5.5,
+      "narration": "他随手挖出的第一株，就是五十年份的野山参，这下妹妹的学费有了着落。"
+    },
+    {
+      "timeline_start_seconds": 12.5,
+      "slot_duration_seconds": 6.7,
+      "narration": "可兄妹俩还没来得及高兴，狼群已经封死退路。为了护住妹妹，他第一次催动山神印。"
+    },
+    {
+      "timeline_start_seconds": 17.7,
+      "slot_duration_seconds": 5.8,
+      "narration": "整群野狼竟低头退去，可家里的赌债，又盯上了妹妹的大学学费。"
+    },
+    {
+      "timeline_start_seconds": 22.0,
+      "slot_duration_seconds": 6.5,
+      "narration": "为了兑现承诺，他只能带着人参进城变现，却刚进药店就被当成了穷鬼。"
+    },
+    {
+      "timeline_start_seconds": 28.0,
+      "slot_duration_seconds": 6.8,
+      "narration": "老板明明认出了极品，却欺负他不懂行情，只肯出二十万。"
+    },
+    {
+      "timeline_start_seconds": 31.7,
+      "slot_duration_seconds": 7.0,
+      "narration": "就在他准备离开时，真正识货的买家赶到，当场拿出五十万。"
+    },
+    {
+      "timeline_start_seconds": 36.1,
+      "slot_duration_seconds": 2.7,
+      "narration": "可钱刚到手，讨债的人已经抓住了妹妹。"
+    },
+    {
+      "timeline_start_seconds": 38.8,
+      "slot_duration_seconds": 3.2,
+      "narration": "他们还以为，林大壮是那个任人欺负的穷小子。"
+    },
+    {
+      "timeline_start_seconds": 41.5,
+      "slot_duration_seconds": 3.4,
+      "narration": "却不知道，如今站在面前的，是整座山选中的守山人。"
+    },
+    {
+      "timeline_start_seconds": 45.0,
+      "slot_duration_seconds": 2.8,
+      "narration": "山神印一亮，刚才还在叫嚣的人全部跪下。"
+    },
+    {
+      "timeline_start_seconds": 48.7,
+      "slot_duration_seconds": 5.3,
+      "narration": "直到这一刻，他终于有能力护妹妹周全，而这，只是整座山送给他的第一份礼物。"
+    }
+  ],
+  "ingest_manifest": "../outputs/m5_second_source/ingest_manifest.json",
+  "candidate_manifest": "../outputs/series_main_cut/candidate_v2/manifest.json",
+  "canonical_output": "../outputs/series_main_cut/candidate_v2/canonical_e11.mp4",
+  "acceptance_manifest": "../outputs/series_main_cut/candidate_v2/canonical_acceptance.json"
+}

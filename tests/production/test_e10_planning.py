@@ -75,6 +75,7 @@ def test_mix_plan_requires_narration_and_covers_original_audio() -> None:
     narration_source = _ref("VoiceAsset")
     plan = plan_mix_stems(
         timeline,
+        conformed_timeline_ref=_ref("MasterTimeline"),
         narration_source_ref=narration_source,
         target_loudness_lufs=-14.0,
         true_peak_ceiling_dbtp=-1.0,
@@ -104,6 +105,7 @@ def test_mix_plan_requires_narration_track() -> None:
     with pytest.raises(MixPlanningConflict, match="no narration track"):
         plan_mix_stems(
             empty,
+            conformed_timeline_ref=_ref("MasterTimeline"),
             narration_source_ref=_ref("VoiceAsset"),
             target_loudness_lufs=-14.0,
             true_peak_ceiling_dbtp=-1.0,

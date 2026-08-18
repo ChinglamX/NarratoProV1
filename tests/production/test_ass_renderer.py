@@ -98,3 +98,13 @@ def test_newlines_escaped_to_ass_overrides() -> None:
     )
     content = render_ass_content(cue_set)
     assert "第一行\\N第二行" in content
+
+
+def test_long_cjk_caption_wraps_within_portrait_safe_width() -> None:
+    cue_set = SubtitleCueSet(
+        alignment_ref=_ref("AlignmentArtifact"),
+        cues=(_cue("所有人只看见他的狼狈没人知道群山正在回应他", 0, 2_000_000),),
+        style_profile_ref=_ref("ConfigArtifact"),
+    )
+    content = render_ass_content(cue_set, style=SubtitleStyle(max_chars_per_line=12))
+    assert "所有人只看见他的狼狈没人\\N知道群山正在回应他" in content

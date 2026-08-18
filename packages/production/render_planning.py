@@ -117,6 +117,7 @@ def plan_render_contract(
     timeline_ref: ArtifactRef,
     mix_plan_ref: ArtifactRef,
     mix_plan: MixPlan,
+    mixed_audio_ref: ArtifactRef,
     ass_ref: ArtifactRef,
     platform_profile_ref: ArtifactRef,
     mode: RenderMode = RenderMode.PROXY,
@@ -129,7 +130,7 @@ def plan_render_contract(
     )
     return RenderPlanContract(
         conformed_timeline_ref=timeline_ref,
-        mixed_audio_ref=mix_plan_ref,
+        mixed_audio_ref=mixed_audio_ref,
         ass_artifact_ref=ass_ref,
         platform_profile_ref=platform_profile_ref,
         toolchain_version=TOOLCHAIN,
