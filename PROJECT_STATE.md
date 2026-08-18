@@ -136,6 +136,7 @@ State Owner: Project
 ## 7. 最近验证
 
 - 2026-08-19 Visual–Narration Anchor held-out 验证（State v82）：新增运行级 `ProductionRunProvenance`，显式区分 TYPE/Active Role、辅助角色、导演决策、工具输出、人工修正与 Gate 3；新增证据约束的 `plan_narration_anchors`，计算 earliest/preferred/latest window，在真实 TTS 时长后排程，阻断 missing evidence、提前剧透、无理由 override、原声保护冲突和 slot overflow，并报告过长 gap。候选生成器改为内容寻址 TTS cache（文本+参考声音 checksum+provider endpoint+推理参数），旧 ordinal WAV 仅在既有 manifest 同时证明文本和 checksum 时迁移。Candidate v3 已用自动 anchor 重跑回归；held-out 第 7–8 集在 0/7 人工绝对时间、0 manual override、0 blocking finding 下生成 `outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4`：40.00s、720×1280 H.264/AAC、mean -20.3 dB、max -2.9 dB、checksum `sha256:77b5d770d6f2123f5fbb7e35f4ed6850dee7923ce4f84fa54d572c39340cf2c2`。`make check` 全绿（424 passed / 5 DB-env skipped，80.42% coverage）。当前等待一次完整产品听看；自动视觉事件/文本生成不在本次能力声明内，未执行 canonical E10/E11 或 Release Gate 3。
+- 以上累计 E10/E11、产品治理、导演溯源、声画锚定、配置、测试与恢复文件已保存为 Git 基线 `f46854e`（branch `codex/director-anchor-baseline`）；大型媒体不进入 Git，由 `product/REFERENCE_CANDIDATE_INDEX.md` 保存路径与 checksum。当前仅 `outputs/` 保持未跟踪，源码/配置/状态可从该分支恢复。
 
 - 2026-08-19 Director/tool 能力审计与执行重置（State v81）：确认 Candidate v3 的质量改善同时包含通用执行工具增强和 Codex 逐镜头/逐句导演配置，不能据此宣称自动声画规划或 M4/M5。新增 `product/DIRECTOR_TOOL_CAPABILITY_CHECKLIST.md`，将治理恢复、角色/决策溯源、Visual–Narration Anchor、TTS reflow/cache 和 held-out 盲测设为逐项关闭条件；Product Board、VC-009 和 State 已统一把 v3 标记为 `director_assisted_reference`。下一阶段不继续精修该 Demo，人工确认推迟到 held-out 最终候选或重大事实/方向/权利节点。
 

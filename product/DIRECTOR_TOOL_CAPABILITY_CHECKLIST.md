@@ -14,7 +14,7 @@ Prevent a director-assisted demo improvement from being reported as an automated
 - [x] Candidate v3 classified as `director_assisted_reference`, not automatic production proof.
 - [x] VC-009 delivery/effect separated and M4 overstatement removed.
 - [x] Product Board, Project State, and validation card point to the same next capability target.
-- [ ] Effective source/config/test changes are committed in a recoverable Git baseline.
+- [x] Effective source/config/test changes are committed in recoverable baseline `f46854e` on `codex/director-anchor-baseline`.
 - [x] Large media outputs have a committed lightweight artifact index with checksums.
 
 ## 3. Role and Decision Provenance
@@ -23,7 +23,7 @@ Prevent a director-assisted demo improvement from being reported as an automated
 - [x] Auxiliary roles are explicit and cannot replace the active-role decision.
 - [x] Director decisions, tool outputs, manual overrides, and human corrections are separate fields.
 - [x] Release Gate 3 remains human-only and is represented separately from content approval.
-- [ ] Role/provenance records survive handoff and clean-checkout reconstruction.
+- [x] Role/provenance records survive handoff and clean-checkout reconstruction.
 
 ## 4. Visual–Narration Anchoring
 
