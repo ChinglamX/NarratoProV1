@@ -30,8 +30,8 @@ Version: 1.0
 - Human Review Question：摘要有没有关键事实错误？是否漏掉决定 Hook 的主要冲突？
 - Human Decision：unreviewed；当前 OCR-only 运行产生零事件，不能评价剧情理解效果。
 - Known Failure / Fallback：允许人工填写最小 Story Brief，并保留来源时间码。
-- Current Maturity：M2 Tool Verified（工作流），内容效果仍为 M0/M1。
-- Next Smallest Proof：选一个 3–5 分钟片段，提供人工 Story Brief 与系统 Story 输出并排审核。
+- Current Maturity：Workflow=M2 Tool Verified；Story Brief evidence gate=M1 Code Verified；内容效果仍为 unreviewed。Evidence gate 已阻断不存在的 transcript 摘录，并将语义蕴含保持 confidence unavailable，尚无真实 persisted Story Brief。
+- Next Smallest Proof：接入真实 SpeechObservation→FactSet exact refs，落库 StoryGraph；选一个 3–5 分钟片段，提供人工 Story Brief 与系统 Story 输出并排审核。
 - First Usable Cut Blocker：yes，但允许人工 Story Brief 兜底，不阻塞于完整 E06/E07 production qualification。
 
 ## VC-003 — E08 Marketing Strategy
