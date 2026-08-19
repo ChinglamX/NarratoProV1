@@ -28,5 +28,5 @@ Large media stays outside Git. This index is the lightweight recovery proof for 
 - Video SHA-256: `77b5d770d6f2123f5fbb7e35f4ed6850dee7923ce4f84fa54d572c39340cf2c2`
 - Timing: seven narration lines scheduled from evidence events after measured TTS; zero absolute director-authored cue starts; zero manual timing overrides; zero blocking anchor findings.
 - Technical: 40.00s, 720x1280 H.264/AAC, mean -20.3 dB, max -2.9 dB.
-- Boundary: product effect awaiting the next necessary human checkpoint; no Release Gate 3.
-
+- Human evidence: product owner decision=`useful` on 2026-08-19.
+- Boundary: Anchor scheduling reaches M3 Human Useful; no canonical held-out E10/E11 and no Release Gate 3.

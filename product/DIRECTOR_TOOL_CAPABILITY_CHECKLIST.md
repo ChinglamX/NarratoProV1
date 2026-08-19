@@ -48,8 +48,8 @@ Prevent a director-assisted demo improvement from being reported as an automated
 - [x] Candidate v3 remains a regression fixture without hard-coding drama-specific semantics in production code.
 - [x] Held-out episodes 7–8 are processed without director-authored absolute cue times.
 - [x] Early spoiler violations = 0; unsupported claims = 0; locked-dialogue overlaps = 0 at machine validation.
-- [ ] Obvious audiovisual mismatch <= 1; manual timing overrides <= 20%.
-- [ ] Product owner only reviews the final held-out candidate at the next necessary human checkpoint.
+- [x] Obvious audiovisual mismatch <= 1; manual timing overrides = 0/7; product decision=`useful`.
+- [x] Product owner only reviewed the final held-out candidate at the necessary human checkpoint and returned `useful`.
 
 ## 7. Stop Conditions
 

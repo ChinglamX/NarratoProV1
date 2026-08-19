@@ -140,8 +140,8 @@ Version: 1.0
 - Inspectable Output：`outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4`、`manifest.json`、七个 WAV、ASS、contact sheet；轻量索引见 `product/REFERENCE_CANDIDATE_INDEX.md`。
 - Machine Checks：40.00s、720×1280 H.264/AAC、mean -20.3 dB、max -2.9 dB；七条 cue 均在真实 TTS 后由工具排程；绝对时间人工覆盖 0/7；blocking anchor finding 0；角色、导演决策、工具输出与 Release 状态已分栏记录；`make check` 424 passed / 5 skipped，80.42% coverage。
 - Human Review Question：剧情是否清楚、声画是否匹配、三十万原声保护是否自然、结尾威胁是否成立？
-- Human Decision：pending；这是下一必要人工节点。
+- Human Decision：`useful`（2026-08-19，项目负责人完整成片判断）。剧情、声画、三十万原声保护和结尾威胁整体达到继续使用标准；未要求逐句调时。
 - Known Failure / Fallback：当前视觉事件与解说文本仍由 Codex Producer 生成；自动视觉事件提取不在本验证声明内。三处 gap warning 为保留画面/原声的非 blocker，需整片听感确认。
-- Current Maturity：Anchor scheduling Delivery=M2 Tool Verified；Effect=unreviewed。不是自动 Story/Strategy/Clip generation proof。
-- Next Smallest Proof：产品负责人只审核完整 40 秒 held-out 候选；不做逐句调时。通过后再接 canonical E10/E11 Artifact 链。
+- Current Maturity：Anchor scheduling Delivery=M2 Tool Verified；Effect=`useful`，达到 M3 Human Useful。不是自动 Story/Strategy/Clip generation proof。
+- Next Smallest Proof：将同一 held-out 配置和自动 Anchor Plan 接入 canonical E10/E11 Artifact 链，验证 exact refs、Temporal Render/QC 和可恢复复跑；无需重复内容方向确认。
 - Release Boundary：restricted/internal-only；Gate 3 未执行。
