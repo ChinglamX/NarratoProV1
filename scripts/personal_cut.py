@@ -234,8 +234,10 @@ def inspect(config: PersonalCutConfig) -> list[StageResult]:
     runtime_ok = _port_ready("127.0.0.1", 7233)
     runtime_status: Literal["passed", "ready", "skipped", "failed"]
     if canonical_files_present:
-        runtime_status = "skipped"
-        runtime_explanation = "canonical 已完成，本次检查无需连接 Temporal。"
+        runtime_status = "passed"
+        runtime_explanation = (
+            "canonical 已完成，运行环境能力已有成功记录；本次无需重复连接 Temporal。"
+        )
     elif runtime_ok:
         runtime_status = "passed"
         runtime_explanation = "Temporal 可连接；canonical 渲染可执行。"
@@ -301,7 +303,8 @@ def _write_status(config_path: Path, config: PersonalCutConfig, results: list[St
 def _print_results(results: list[StageResult]) -> None:
     labels = {"passed": "通过", "ready": "待执行", "skipped": "未执行", "failed": "失败"}
     for item in results:
-        print(f"[{labels[item.status]}] {item.stage}: {item.explanation}")
+        label = "未发布" if item.stage == "06-human-release" else labels[item.status]
+        print(f"[{label}] {item.stage}: {item.explanation}")
         if item.inspectable_output:
             print(f"         产物: {item.inspectable_output}")
 

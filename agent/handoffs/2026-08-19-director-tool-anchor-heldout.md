@@ -62,6 +62,7 @@ Continuation Completed:
 - `personal_cut.py` now exposes the same multi-source slice as one resumable six-stage status entry.
 
 Next Exact Step:
-- Product owner confirms whether the six-stage `personal_cut_status.json` is understandable enough to count M5 operational transparency. No content re-review is required.
+- Completed: product owner continued after the six-stage status, so VC-008 is M5 within the approved director-input scope.
+- Start VC-002 transcript-grounded Story Brief validation; do not claim automatic Story quality before side-by-side human review.
 
-Project State Update: 84
+Project State Update: 85

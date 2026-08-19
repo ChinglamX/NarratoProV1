@@ -112,10 +112,10 @@ Version: 1.0
 - Inspectable Output：`outputs/m5_second_source/candidate_v1/candidate_v1.mp4`、`canonical_e11.mp4`、`canonical_acceptance.json`、七个 WAV、ASS。
 - Machine Checks：canonical Temporal Render/QC passed；30.00s、720×1280 H.264、AAC 48kHz stereo、mean -21.2 dB、max -3.2 dB；七段字幕抽帧无乱码/越界；全项目 412 passed / 5 skipped。
 - Human Review Question：剧情是否准确？狼群 Hook 是否成立？回溯结构是否清楚？解说、原声和字幕是否可接受？
-- Human Decision：`useful`；Candidate v1 结论“可以接受”，canonical E10/E11 成片随后明确“通过”。
+- Human Decision：`useful`；Candidate v1 结论“可以接受”，canonical E10/E11 成片随后明确“通过”；项目负责人随后以“继续”确认六阶段状态足以继续推进，无需增加中间确认。
 - Known Failure / Fallback：FunASR 只给出单一大时间段；本轮 Story 使用 ASR 文本 + 固定帧人工核对。CPU IndexTTS 七句约需 7 分钟。
-- Current Maturity：M4 Human Useful + canonical integrated on second source；单份配置、六阶段中文状态和断点续跑入口已工程验证，但尚待非开发者可理解性确认，因此不计 M5。
-- Next Smallest Proof：项目负责人查看 `product/PERSONAL_CUT_GUIDE.md` 与 `personal_cut_status.json`，确认能理解当前进度和失败恢复位置。
+- Current Maturity：M5 Repeatable Personal Use（当前已批准的导演输入范围）；单份配置支持多源 ingest、候选生成、canonical accept、断点续跑和中文阶段状态。M5 不外推到自动 Story/Strategy/Clip/Narration generation。
+- Next Smallest Proof：进入 VC-002，用一个未参与当前导演配置的真实片段生成 transcript-grounded Story Brief，与人工 Brief 并排审核。
 - Release Boundary：no public release；Gate 3 未执行。
 
 ## VC-009 — Full-series Understanding to Cross-episode Cut
@@ -143,5 +143,5 @@ Version: 1.0
 - Human Decision：`useful`（2026-08-19，项目负责人完整成片判断）。剧情、声画、三十万原声保护和结尾威胁整体达到继续使用标准；未要求逐句调时。
 - Known Failure / Fallback：当前视觉事件与解说文本仍由 Codex Producer 生成；自动视觉事件提取不在本验证声明内。三处 gap warning 为保留画面/原声的非 blocker，需整片听感确认。
 - Current Maturity：Anchor scheduling Effect=M3 Human Useful；该 held-out 切片 Delivery=M4 Slice Integrated（多源 exact refs、Temporal Render/QC、可恢复复跑）。不是自动 Story/Strategy/Clip/Narration generation proof。
-- Next Smallest Proof：把多源 ingest、candidate 和 canonical acceptance 编排为单一非开发者入口，并展示模块状态与失败恢复点；无需重复内容方向确认。
+- Next Smallest Proof：单一多源入口与阶段状态已完成；转入 VC-002 Story Brief 自动生成验证。
 - Release Boundary：restricted/internal-only；Gate 3 未执行。

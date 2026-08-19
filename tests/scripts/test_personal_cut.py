@@ -73,7 +73,7 @@ def test_multi_source_entry_reports_completed_canonical_slice(tmp_path: Path) ->
         ("01-rights-and-human-gates", "passed"),
         ("02-media-ingest", "passed"),
         ("03-approved-cut-parts", "passed"),
-        ("04-runtime", "skipped"),
+        ("04-runtime", "passed"),
         ("05-canonical-render-and-qc", "passed"),
         ("06-human-release", "skipped"),
     ]

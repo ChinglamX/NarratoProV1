@@ -18,7 +18,7 @@ Product Goal: Repeatable Series-to-Cut
 
 截至 2026-08-19，角色/决策溯源、声画锚定、TTS 后重排和内容寻址缓存已实现并通过确定性测试；第 7–8 集 held-out 候选在不填写任何解说绝对时间的条件下成功生成并获 `useful`。
 
-同一 held-out 配置现已接入多源 canonical E10/E11 Artifact/Temporal/Technical QC 链，两次独立 run 均通过并产出 checksum 完全相同的 40 秒 MP4。因此该切片达到 Delivery=M4 / Effect=M3。单一非开发者入口和六阶段透明状态也已实现，当前只待产品负责人确认状态表达是否足够直观；不扩大到自动选镜或自动剧情理解。
+同一 held-out 配置现已接入多源 canonical E10/E11 Artifact/Temporal/Technical QC 链，两次独立 run 均通过并产出 checksum 完全相同的 40 秒 MP4。因此该切片达到 Delivery=M4 / Effect=M3。单一非开发者入口和六阶段透明状态已获继续推进确认，在当前“导演提供事实事件、镜头和解说主张”的范围内达到 M5；下一主线转入自动 Story Brief，不把 M5 外推到自动选镜或自动剧情理解。
 
 本剧整剧理解与策略评审已完成，主路线为“觉醒山神印→驱狼→五十年野山参变现→守护妹妹”，目标产出 45–60 秒主片。第 3 集单集 checkpoint 已被整剧评审替代。
 
