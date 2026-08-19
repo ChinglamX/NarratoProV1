@@ -8,6 +8,7 @@ import json
 import subprocess  # nosec B404
 import wave
 from array import array
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from io import BytesIO
@@ -94,6 +95,7 @@ class AcceptanceProfile:
     total_duration: float
     actor_id: str
     proof_video_name: str
+    source_media_by_path: tuple[tuple[str, ArtifactRef], ...] = ()
 
 
 FIRST_CUT = AcceptanceProfile(
@@ -135,7 +137,25 @@ def _personal_config_profile(path: Path) -> AcceptanceProfile:
         value = Path(str(raw_config[name]))
         return value if value.is_absolute() else (base / value).resolve()
 
-    ingest = json.loads(resolve("ingest_manifest").read_text(encoding="utf-8"))
+    ingest_paths: list[Path]
+    if "ingest_manifests" in raw_config:
+        raw_ingests = raw_config["ingest_manifests"]
+        if not isinstance(raw_ingests, list) or not raw_ingests:
+            raise ValueError("ingest_manifests must be a non-empty list")
+        ingest_paths = [
+            value if value.is_absolute() else (base / value).resolve()
+            for value in (Path(str(item)) for item in raw_ingests)
+        ]
+    else:
+        ingest_paths = [resolve("ingest_manifest")]
+    ingests = [json.loads(item.read_text(encoding="utf-8")) for item in ingest_paths]
+    source_media_by_path = tuple(
+        (
+            str(Path(str(ingest["source_path"])).resolve()),
+            ArtifactRef.model_validate(ingest["artifacts"]["source"]),
+        )
+        for ingest in ingests
+    )
     candidate_path = resolve("candidate_manifest")
     candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
     segments = candidate.get("segments")
@@ -146,10 +166,11 @@ def _personal_config_profile(path: Path) -> AcceptanceProfile:
     return AcceptanceProfile(
         name="personal-cut",
         output_dir=candidate_path.parent,
-        source_run_id=UUID(str(ingest["run_id"])),
+        source_run_id=UUID(str(ingests[0]["run_id"])),
         source_timeline=None,
         source_narration=None,
-        source_media=ArtifactRef.model_validate(ingest["artifacts"]["source"]),
+        source_media=source_media_by_path[0][1],
+        source_media_by_path=source_media_by_path,
         total_duration=duration,
         actor_id="personal-cut-approved",
         proof_video_name=proof_video.name,
@@ -163,6 +184,14 @@ def _pointer(reference: ArtifactRef) -> ArtifactPointer:
         reference.artifact_type,
         str(reference.checksum) if reference.checksum else None,
     )
+
+
+def _unique_refs(references: Iterable[ArtifactRef]) -> tuple[ArtifactRef, ...]:
+    unique: dict[tuple[str, int, str], ArtifactRef] = {}
+    for reference in references:
+        key = (str(reference.artifact_id), reference.version, reference.artifact_type)
+        unique.setdefault(key, reference)
+    return tuple(unique.values())
 
 
 def _duration(path: Path) -> RationalTime:
@@ -291,7 +320,9 @@ def _manual_narration(manifest: dict[str, object], source_ref: ArtifactRef) -> N
 
 
 def _manual_source_timeline(
-    manifest: dict[str, object], source_ref: ArtifactRef, narration: NarrationLineSet
+    manifest: dict[str, object],
+    source_refs_by_path: dict[str, ArtifactRef],
+    narration: NarrationLineSet,
 ) -> MasterTimeline:
     raw_segments = manifest["segments"]
     assert isinstance(raw_segments, list)  # nosec B101
@@ -304,6 +335,19 @@ def _manual_source_timeline(
         assert isinstance(raw, dict)  # nosec B101
         duration = float(raw["duration_seconds"])
         source_start = float(raw["source_start_seconds"])
+        raw_source_path = raw.get("source_path")
+        if raw_source_path is None:
+            if len(source_refs_by_path) != 1:
+                raise ValueError("multi-source manifest segment requires source_path")
+            source_path, source_ref = next(iter(source_refs_by_path.items()))
+        else:
+            source_path = str(Path(str(raw_source_path)).resolve())
+            try:
+                source_ref = source_refs_by_path[source_path]
+            except KeyError as error:
+                raise ValueError(
+                    f"segment source was not canonically ingested: {source_path}"
+                ) from error
         timeline_range = TimeRange(
             start=RationalTime(value=round(cursor * 1_000_000), rate_num=1_000_000),
             duration=RationalTime(value=round(duration * 1_000_000), rate_num=1_000_000),
@@ -318,7 +362,11 @@ def _manual_source_timeline(
             "timeline_range": timeline_range.model_dump(mode="json"),
             "source_ref": source_ref.model_dump(mode="json"),
             "source_range": source_range.model_dump(mode="json"),
-            "parameters": {"intent_state": "human-approved", "segment_index": index},
+            "parameters": {
+                "intent_state": "human-approved",
+                "segment_index": index,
+                "source_path": source_path,
+            },
             "generation_dependencies": [source_ref.model_dump(mode="json")],
             "locked": True,
         }
@@ -329,11 +377,17 @@ def _manual_source_timeline(
     subtitle_items = []
     for index, (line, start) in enumerate(zip(narration.lines, starts, strict=True)):
         end = starts[index + 1] if index + 1 < len(starts) else cursor
+        raw_line = raw_lines[index]
         base = {
             "item_version": 1,
             "item_type": TimelineItemType.TEXT.value,
             "content_ref": str(line.line_id),
-            "parameters": {"text": line.text, "intent_state": "human-approved"},
+            "parameters": {
+                "text": line.text,
+                "intent_state": "human-approved",
+                "anchor_source": raw_line.get("anchor_source"),
+                "required_event_ids": raw_line.get("required_event_ids", []),
+            },
             "evidence_refs": list(line.evidence_refs),
             "locked": True,
         }
@@ -395,8 +449,8 @@ def _manual_source_timeline(
                 items=tuple(subtitle_items),
             ),
         ),
-        dependencies=(source_ref,),
-        metadata_namespace_version="m5-second-source-v1",
+        dependencies=_unique_refs(source_refs_by_path.values()),
+        metadata_namespace_version="personal-cut-multi-source-v1",
     )
 
 
@@ -487,8 +541,19 @@ def prepare(profile: AcceptanceProfile = FIRST_CUT) -> dict[str, object]:
             narration = _new_narration(original_narration, manifest)
             source_narration_ref = profile.source_narration
         elif profile.source_media is not None:
+            source_refs_by_path = dict(profile.source_media_by_path)
+            if not source_refs_by_path:
+                raw_segments = cast(list[dict[str, object]], manifest["segments"])
+                paths = {
+                    str(Path(str(item["source_path"])).resolve())
+                    for item in raw_segments
+                    if item.get("source_path") is not None
+                }
+                if len(paths) > 1:
+                    raise ValueError("multi-source candidate requires ingest_manifests")
+                source_refs_by_path = {(next(iter(paths)) if paths else ""): profile.source_media}
             narration = _manual_narration(manifest, profile.source_media)
-            source_timeline = _manual_source_timeline(manifest, profile.source_media, narration)
+            source_timeline = _manual_source_timeline(manifest, source_refs_by_path, narration)
             source_narration_ref = profile.source_media
         else:
             raise ValueError("acceptance profile lacks canonical source inputs")
@@ -548,7 +613,7 @@ def prepare(profile: AcceptanceProfile = FIRST_CUT) -> dict[str, object]:
                 module_version="1",
                 resource_profile_ref=RESOURCE_PROFILE,
                 rights_class="restricted-internal-preview",
-                inputs=(cast(ArtifactRef, profile.source_media), narration_ref),
+                inputs=(*source_timeline.dependencies, narration_ref),
             )
         else:
             source_timeline_ref = profile.source_timeline

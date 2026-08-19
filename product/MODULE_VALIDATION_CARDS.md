@@ -137,11 +137,11 @@ Version: 1.0
 - Capability Class：Core narration/timeline repeatability。
 - User Question：Codex 只提供镜头、视觉事件和解说主张，不逐句填写绝对时间时，工具能否依据真实 TTS 时长生成不提前剧透的声画排程？
 - Input：同剧未参与 Candidate v3 的第 7–8 集；十个四秒镜头、十个视觉事件、七条解说主张；Rights restricted/internal-only。
-- Inspectable Output：`outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4`、`manifest.json`、七个 WAV、ASS、contact sheet；轻量索引见 `product/REFERENCE_CANDIDATE_INDEX.md`。
-- Machine Checks：40.00s、720×1280 H.264/AAC、mean -20.3 dB、max -2.9 dB；七条 cue 均在真实 TTS 后由工具排程；绝对时间人工覆盖 0/7；blocking anchor finding 0；角色、导演决策、工具输出与 Release 状态已分栏记录；`make check` 424 passed / 5 skipped，80.42% coverage。
+- Inspectable Output：`outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4`、`canonical_e11.mp4`、`canonical_acceptance.json`、两个 ingest manifest、候选 manifest、七个 WAV、ASS、contact sheet；轻量索引见 `product/REFERENCE_CANDIDATE_INDEX.md`。
+- Machine Checks：候选与 canonical 均为 40.00s、720×1280 H.264/AAC；canonical mean -20.3 dB、max -2.0 dB；七条 cue 均在真实 TTS 后由工具排程；绝对时间人工覆盖 0/7；blocking anchor finding 0；两次独立 canonical run 均 TechnicalQC passed、blocked_codes=[]，最终 MP4 checksum 完全相同；`make check` 427 passed / 5 skipped，80.42% coverage。
 - Human Review Question：剧情是否清楚、声画是否匹配、三十万原声保护是否自然、结尾威胁是否成立？
 - Human Decision：`useful`（2026-08-19，项目负责人完整成片判断）。剧情、声画、三十万原声保护和结尾威胁整体达到继续使用标准；未要求逐句调时。
 - Known Failure / Fallback：当前视觉事件与解说文本仍由 Codex Producer 生成；自动视觉事件提取不在本验证声明内。三处 gap warning 为保留画面/原声的非 blocker，需整片听感确认。
-- Current Maturity：Anchor scheduling Delivery=M2 Tool Verified；Effect=`useful`，达到 M3 Human Useful。不是自动 Story/Strategy/Clip generation proof。
-- Next Smallest Proof：将同一 held-out 配置和自动 Anchor Plan 接入 canonical E10/E11 Artifact 链，验证 exact refs、Temporal Render/QC 和可恢复复跑；无需重复内容方向确认。
+- Current Maturity：Anchor scheduling Effect=M3 Human Useful；该 held-out 切片 Delivery=M4 Slice Integrated（多源 exact refs、Temporal Render/QC、可恢复复跑）。不是自动 Story/Strategy/Clip/Narration generation proof。
+- Next Smallest Proof：把多源 ingest、candidate 和 canonical acceptance 编排为单一非开发者入口，并展示模块状态与失败恢复点；无需重复内容方向确认。
 - Release Boundary：restricted/internal-only；Gate 3 未执行。

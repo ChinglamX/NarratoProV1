@@ -54,7 +54,14 @@ Risks / Blockers / Open Decisions:
 - Three non-blocking excessive-gap findings intentionally preserve picture/original sound; final listening decides whether they are useful.
 - Rights restricted/internal-only; no public release.
 
-Next Exact Step:
-- Product owner watches `outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4` and returns useful / useful_with_revision / reject; no sentence-level timing review requested.
+Continuation Completed:
+- Product decision recorded as `useful`.
+- Episodes 7 and 8 canonically ingested as separate SourceMedia lineages.
+- Multi-source canonical timeline binds every segment to its exact SourceMedia ref and retains anchor provenance.
+- Temporal Render/Technical QC passed on two runs; both produced canonical MP4 checksum `sha256:e84c5d18bc4c180b95a93fbf46bca7ca39d120b6ec184e1837fa22b07eb68e5d`.
+- `personal_cut.py` now exposes the same multi-source slice as one resumable six-stage status entry.
 
-Project State Update: 82
+Next Exact Step:
+- Product owner confirms whether the six-stage `personal_cut_status.json` is understandable enough to count M5 operational transparency. No content re-review is required.
+
+Project State Update: 84

@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 83
+State Version: 84
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -72,7 +72,7 @@ State Owner: Project
 
 ## 3. 尚未开始
 
-- First Usable Cut 产品效果与 canonical 技术链均已通过：v1 为 `useful_with_revision`，v2 七段解说获 `useful`；State v63 已完成 VoiceAsset/Alignment/Conform/MixedAudio/ASS 持久化及正式 libass RenderWorkflow success。尚未证明第二素材可重复使用，且未获 Release Gate 3。
+- First Usable Cut 与 held-out 第 7–8 集的产品效果、canonical 技术链和可恢复复跑均已通过；这只证明“导演事件/解说主张→工具声画排程→E10/E11”切片，不证明自动 Story/Strategy/Clip/Narration generation，且未获 Release Gate 3。
 - E09 正式带时间码 craft 人工评分尚未签核；它继续作为质量增强/正式 E09 退出项，但不阻塞 First Usable Cut 的 E10/E11 技术与产品效果验证。
 - Speech/Visual Review Workspace 与真实多剧 Calibration Corpus 尚未实现。
 - Calibration Pack 的真实素材标注和 Baseline。
@@ -84,7 +84,7 @@ State Owner: Project
 
 按 `PRODUCT_CONTROL_BOARD.md` 开始：
 
-1. Held-out 产品效果已由项目负责人判定 `useful`。下一恢复点无需人工确认：将 `product/heldout_episode_7_8_anchor_validation.json` 产生的自动 Anchor Plan 接入 canonical E10/E11 Artifact/Temporal/Technical QC 链，验证 exact refs、可恢复复跑与 manifest 对账；不重新调整逐句 cue，不扩大到自动 Story/Strategy/Clip generation。下一人工节点仅在 canonical 等效性失败、重大内容变化或 Gate 3。
+1. Held-out 自动 Anchor→canonical E10/E11 已闭环且两次复跑生成相同 MP4；单一 `personal_cut.py` 入口现已支持多源 ingest，并输出六阶段中文状态与失败恢复点。当前到达下一次必要人工确认：产品负责人只需判断 `personal_cut_status.json`/终端六阶段是否足够直观、是否能明确看出哪里完成、哪里失败后续跑；不需要再次审核内容。通过后才计“个人可重复使用”M5 操作透明度。
 2. 每个中间产物必须按 `product/MODULE_VALIDATION_CARDS.md` 展示；产品负责人给出 useful / useful_with_revision / reject 后才能扩大范围。
 3. E09 craft 正式签核、E06/G05 production qualification、E07/E08 真实质量验收保留为 bounded quality tracks；不再抢占 First Usable Cut 主线，但在任何 production approval 前仍强制检查。
 4. E10/E11 现有实现只按 M1/M2 advance baseline 计，不得以 qualification 中的 `engineering_complete=true` 宣称模块完成。
@@ -135,6 +135,7 @@ State Owner: Project
 
 ## 7. 最近验证
 
+- 2026-08-19 Held-out canonical 与恢复复跑（State v84）：第 7、8 集分别经真实 MediaIngestService 生成 SourceMedia/Probe/Proxy/Audio/FramePlan/SceneShotCatalog exact refs；canonical acceptance 新增多源 ingest 解析和逐 segment SourceMedia 绑定，并保留 narration anchor 来源/事件。首跑 run `22f7f863-9647-4977-bc10-0b42f7ae6903`、恢复复跑 run `3c4e3c62-f396-41a7-bf17-5e8d8ec7754f` 均 passed、blocked_codes=[]；两次 `canonical_e11.mp4` checksum 均为 `sha256:e84c5d18bc4c180b95a93fbf46bca7ca39d120b6ec184e1837fa22b07eb68e5d`，40.00s、720×1280 H.264/AAC、mean -20.3 dB、max -2.0 dB。`personal_cut.py` 同步扩展为多源单配置入口，当前六阶段状态为 rights/gates passed、2-source ingest passed、7-line parts passed、runtime skipped（成片已存在）、canonical/QC passed、Gate 3 not executed。`make check` 全绿（427 passed / 5 DB-env skipped，80.42%）。Rights 仍 restricted/internal-only，未执行 Gate 3。
 - 2026-08-19 Held-out Anchor 产品验收（State v83）：项目负责人完整审核 `outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4` 后明确给出 `useful`。该候选使用第 7–8 集十个新镜头和七条解说，Codex Producer 只提供镜头、视觉事件与解说主张，绝对 cue 时间由工具在真实 TTS 后生成；人工绝对时间 0/7、manual override 0、blocking anchor finding 0。声画锚定模块因此记为 Delivery=M2 Tool Verified / Effect=M3 Human Useful；该结论不外推到自动 Story、Strategy、Clip 或 Narration 文本生成。下一步进入 held-out canonical E10/E11 等效性验证，Rights 仍 restricted/internal-only，未执行 Gate 3。
 
 - 2026-08-19 Visual–Narration Anchor held-out 验证（State v82）：新增运行级 `ProductionRunProvenance`，显式区分 TYPE/Active Role、辅助角色、导演决策、工具输出、人工修正与 Gate 3；新增证据约束的 `plan_narration_anchors`，计算 earliest/preferred/latest window，在真实 TTS 时长后排程，阻断 missing evidence、提前剧透、无理由 override、原声保护冲突和 slot overflow，并报告过长 gap。候选生成器改为内容寻址 TTS cache（文本+参考声音 checksum+provider endpoint+推理参数），旧 ordinal WAV 仅在既有 manifest 同时证明文本和 checksum 时迁移。Candidate v3 已用自动 anchor 重跑回归；held-out 第 7–8 集在 0/7 人工绝对时间、0 manual override、0 blocking finding 下生成 `outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4`：40.00s、720×1280 H.264/AAC、mean -20.3 dB、max -2.9 dB、checksum `sha256:77b5d770d6f2123f5fbb7e35f4ed6850dee7923ce4f84fa54d572c39340cf2c2`。`make check` 全绿（424 passed / 5 DB-env skipped，80.42% coverage）。当前等待一次完整产品听看；自动视觉事件/文本生成不在本次能力声明内，未执行 canonical E10/E11 或 Release Gate 3。

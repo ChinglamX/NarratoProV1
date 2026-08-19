@@ -21,7 +21,8 @@ class CutSegment(BaseModel):
 
     source_start_seconds: float = Field(ge=0)
     duration_seconds: float = Field(gt=0, le=30)
-    narration: str = Field(min_length=1, max_length=500)
+    narration: str | None = Field(default=None, min_length=1, max_length=500)
+    source_path: Path | None = None
 
 
 class PersonalCutConfig(BaseModel):
@@ -35,13 +36,21 @@ class PersonalCutConfig(BaseModel):
     rights_confirmed: bool
     gate_1_story_approved: bool
     gate_2_strategy_approved: bool
-    source_path: Path
+    source_path: Path | None = None
     reference_audio: Path
     segments: tuple[CutSegment, ...] = Field(min_length=1, max_length=20)
-    ingest_manifest: Path
+    ingest_manifest: Path | None = None
+    ingest_manifests: tuple[Path, ...] = ()
     candidate_manifest: Path
     canonical_output: Path
     acceptance_manifest: Path
+    candidate_filename: str | None = None
+    rights: str | None = None
+    gate_1: str | None = None
+    gate_2: str | None = None
+    visual_events: tuple[dict[str, object], ...] = ()
+    narration_anchors: tuple[dict[str, object], ...] = ()
+    run_provenance: dict[str, object] | None = None
 
     @model_validator(mode="after")
     def enforce_human_and_rights_boundary(self) -> PersonalCutConfig:
@@ -49,6 +58,18 @@ class PersonalCutConfig(BaseModel):
             raise ValueError("rights_confirmed must be true for internal processing")
         if not self.gate_1_story_approved or not self.gate_2_strategy_approved:
             raise ValueError("Gate 1 and Gate 2 must be approved before media production")
+        manifests = self.ingest_manifests or (
+            (self.ingest_manifest,) if self.ingest_manifest is not None else ()
+        )
+        if not manifests:
+            raise ValueError("ingest_manifest or ingest_manifests is required")
+        sources = {
+            segment.source_path for segment in self.segments if segment.source_path is not None
+        }
+        if self.source_path is not None:
+            sources.add(self.source_path)
+        if len(sources) != len(manifests):
+            raise ValueError("each source requires exactly one ingest manifest")
         return self
 
 
@@ -67,16 +88,53 @@ def _load_config(path: Path) -> PersonalCutConfig:
     base = path.parent.resolve()
     updates = {}
     for name in (
-        "ingest_manifest",
         "candidate_manifest",
         "canonical_output",
         "acceptance_manifest",
-        "source_path",
         "reference_audio",
     ):
         value = getattr(config, name)
         updates[name] = value if value.is_absolute() else base / value
+    if config.source_path is not None:
+        updates["source_path"] = (
+            config.source_path if config.source_path.is_absolute() else base / config.source_path
+        )
+    if config.ingest_manifest is not None:
+        updates["ingest_manifest"] = (
+            config.ingest_manifest
+            if config.ingest_manifest.is_absolute()
+            else base / config.ingest_manifest
+        )
+    updates["ingest_manifests"] = tuple(
+        item if item.is_absolute() else base / item for item in config.ingest_manifests
+    )
+    updates["segments"] = tuple(
+        segment.model_copy(
+            update={
+                "source_path": (
+                    segment.source_path
+                    if segment.source_path is None or segment.source_path.is_absolute()
+                    else base / segment.source_path
+                )
+            }
+        )
+        for segment in config.segments
+    )
     return config.model_copy(update=updates)
+
+
+def _source_ingest_pairs(config: PersonalCutConfig) -> tuple[tuple[Path, Path], ...]:
+    manifests = config.ingest_manifests or (
+        (config.ingest_manifest,) if config.ingest_manifest is not None else ()
+    )
+    sources = tuple(
+        dict.fromkeys(
+            segment.source_path for segment in config.segments if segment.source_path is not None
+        )
+    )
+    if not sources and config.source_path is not None:
+        sources = (config.source_path,)
+    return tuple(zip(sources, manifests, strict=True))
 
 
 def _sha256(path: Path) -> str:
@@ -103,28 +161,37 @@ def inspect(config: PersonalCutConfig) -> list[StageResult]:
             explanation="仅限内部预览；Gate 1 剧情与 Gate 2 策略均已人工批准。",
         )
     ]
-    if not config.ingest_manifest.is_file():
+    source_ingests = _source_ingest_pairs(config)
+    missing_ingests = [
+        (source, manifest) for source, manifest in source_ingests if not manifest.is_file()
+    ]
+    if missing_ingests:
+        sources_exist = all(source.is_file() for source, _ in missing_ingests)
         return [
             *results,
             StageResult(
                 stage="02-media-ingest",
-                status="ready" if config.source_path.is_file() else "failed",
+                status="ready" if sources_exist else "failed",
                 explanation=(
-                    "素材文件存在，可以执行导入。"
-                    if config.source_path.is_file()
-                    else "源视频不存在，请检查 source_path。"
+                    f"{len(missing_ingests)} 个素材文件存在，可以执行导入。"
+                    if sources_exist
+                    else "至少一个源视频不存在，请检查 segments.source_path。"
                 ),
-                inspectable_output=str(config.ingest_manifest),
+                inspectable_output=", ".join(str(item[1]) for item in missing_ingests),
             ),
         ]
-    ingest = json.loads(config.ingest_manifest.read_text(encoding="utf-8"))
-    source_ref = ingest.get("artifacts", {}).get("source")
+    ingests = [json.loads(manifest.read_text(encoding="utf-8")) for _, manifest in source_ingests]
+    source_refs_ok = all(ingest.get("artifacts", {}).get("source") for ingest in ingests)
     results.append(
         StageResult(
             stage="02-media-ingest",
-            status="passed" if source_ref else "failed",
-            explanation="素材和权利快照可追踪。" if source_ref else "导入清单缺少 SourceMedia。",
-            inspectable_output=str(config.ingest_manifest),
+            status="passed" if source_refs_ok else "failed",
+            explanation=(
+                f"{len(ingests)} 个素材和权利快照均可追踪。"
+                if source_refs_ok
+                else "至少一个导入清单缺少 SourceMedia。"
+            ),
+            inspectable_output=", ".join(str(item[1]) for item in source_ingests),
         )
     )
     if not config.candidate_manifest.is_file():
@@ -246,18 +313,23 @@ def main() -> int:
     args = parser.parse_args()
     try:
         config = _load_config(args.config)
-        if args.run and not config.ingest_manifest.is_file():
-            subprocess.run(  # nosec B603
-                [
-                    str(Path(".venv/bin/python").resolve()),
-                    str(Path("scripts/ingest_m5_second_source.py").resolve()),
-                    "--source",
-                    str(config.source_path),
-                    "--output",
-                    str(config.ingest_manifest),
-                ],
-                check=True,
-            )
+        if args.run:
+            for source_path, ingest_manifest in _source_ingest_pairs(config):
+                if ingest_manifest.is_file():
+                    continue
+                subprocess.run(  # nosec B603
+                    [
+                        str(Path(".venv/bin/python").resolve()),
+                        str(Path("scripts/ingest_m5_second_source.py").resolve()),
+                        "--source",
+                        str(source_path),
+                        "--output",
+                        str(ingest_manifest),
+                        "--project-name",
+                        f"{config.project_name} — {source_path.stem}",
+                    ],
+                    check=True,
+                )
         if args.run and not config.candidate_manifest.is_file():
             subprocess.run(  # nosec B603
                 [

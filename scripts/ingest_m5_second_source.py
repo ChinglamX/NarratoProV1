@@ -1,4 +1,4 @@
-"""Ingest the rights-restricted second source for M5 repeatability validation."""
+"""Ingest a rights-restricted local source for canonical validation."""
 
 from __future__ import annotations
 
@@ -42,6 +42,7 @@ def _ref_dict(reference: ArtifactRef | None) -> dict[str, object] | None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
+    parser.add_argument("--project-name")
     parser.add_argument(
         "--output",
         type=Path,
@@ -64,12 +65,13 @@ def main() -> int:
     )
     actor = ActorRef.model_validate({"kind": "human", "id": "project-owner"})
     checked_at = datetime.now(UTC)
+    project_name = args.project_name or f"Canonical validation — {source.stem}"
 
     with engine.begin() as connection:
         connection.execute(
             insert(schema.project).values(
                 id=project_id,
-                name="M5 repeatability — 山神印 episode 2",
+                name=project_name,
                 state="active",
             )
         )
@@ -80,7 +82,7 @@ def main() -> int:
                 workflow_id=f"m5-second-source/{run_id}",
                 state="running",
                 automation_policy_snapshot={"level": "L1"},
-                resource_profile_snapshot={"purpose": "m5-repeatability"},
+                resource_profile_snapshot={"purpose": "canonical-validation"},
             )
         )
         grant_ref = commit_contract_artifact(
@@ -100,7 +102,7 @@ def main() -> int:
             variant_id=None,
             trace_id=TRACE_ID,
             actor=actor,
-            producer_module="m5-second-source-ingest",
+            producer_module="canonical-source-ingest",
             module_version="1",
             resource_profile_ref=profile_ref,
             rights_class="internal-only",
@@ -128,7 +130,7 @@ def main() -> int:
         source_path=source,
         rights=rights,
         profile_ref=profile_ref,
-        profile_version="m5-second-source-v1",
+        profile_version="canonical-source-ingest-v1",
         trace_id=TRACE_ID,
     )
     with engine.begin() as connection:

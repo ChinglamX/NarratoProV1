@@ -50,6 +50,8 @@ Prevent a director-assisted demo improvement from being reported as an automated
 - [x] Early spoiler violations = 0; unsupported claims = 0; locked-dialogue overlaps = 0 at machine validation.
 - [x] Obvious audiovisual mismatch <= 1; manual timing overrides = 0/7; product decision=`useful`.
 - [x] Product owner only reviewed the final held-out candidate at the necessary human checkpoint and returned `useful`.
+- [x] Held-out episodes 7–8 use exact per-segment canonical SourceMedia refs across both source files.
+- [x] Temporal Render/QC passed twice from the same config; the recovered rerun produced the identical final MP4 checksum.
 
 ## 7. Stop Conditions
 

@@ -16,9 +16,9 @@ Product Goal: Repeatable Series-to-Cut
 
 《山神印》Candidate v3 已验证 Codex 导演辅助下的跨集候选生产，但镜头选择、解说文本和绝对 cue 时间主要由 Codex 写入配置。它是 `director_assisted_reference`，证明执行链可用，不证明新剧自动声画规划已具备。当前产品主线因此进入“导演决策沉淀为工具能力”：角色/决策来源落盘、声画语义锚定、TTS 后重排、内容寻址缓存和 held-out 盲测。
 
-截至 2026-08-19，角色/决策溯源、声画锚定、TTS 后重排和内容寻址缓存已实现并通过确定性测试；第 7–8 集 held-out 候选在不填写任何解说绝对时间的条件下成功生成。当前下一必要产品节点仅为完整观看该 40 秒候选并评价效果；自动视觉事件、自动解说文本和自动选镜仍不在本次通过声明内。
+截至 2026-08-19，角色/决策溯源、声画锚定、TTS 后重排和内容寻址缓存已实现并通过确定性测试；第 7–8 集 held-out 候选在不填写任何解说绝对时间的条件下成功生成并获 `useful`。
 
-项目负责人已对该 40 秒 held-out 候选给出 `useful`。因此声画锚定模块达到 Delivery=M2 / Effect=M3：在 Codex Producer 提供镜头、视觉事件和解说主张后，工具能够依据真实 TTS 自动排程并产生有用成片。下一主线是把同一 Anchor Plan 接入 canonical E10/E11 Artifact/Temporal/Technical QC 链；不扩大到自动选镜或自动剧情理解。
+同一 held-out 配置现已接入多源 canonical E10/E11 Artifact/Temporal/Technical QC 链，两次独立 run 均通过并产出 checksum 完全相同的 40 秒 MP4。因此该切片达到 Delivery=M4 / Effect=M3。单一非开发者入口和六阶段透明状态也已实现，当前只待产品负责人确认状态表达是否足够直观；不扩大到自动选镜或自动剧情理解。
 
 本剧整剧理解与策略评审已完成，主路线为“觉醒山神印→驱狼→五十年野山参变现→守护妹妹”，目标产出 45–60 秒主片。第 3 集单集 checkpoint 已被整剧评审替代。
 
@@ -32,7 +32,7 @@ Product Goal: Repeatable Series-to-Cut
 | Visual Observation | Enhancer | M2 | unreviewed | E06 720-frame benchmark | no | 12 帧人工工具效果 review |
 | Story Understanding | Core + Enhancer | M2 workflow | unreviewed | OCR Fact→Story run，零 event | yes，可人工兜底 | 同片段人工 Brief 对比 |
 | Strategy / Hook | Core | M1 | unreviewed | Candidate/Gate 2 contracts and UI | yes，可人工兜底 | 3 候选人工选择 |
-| Creative Timeline | Core | M3 | useful_with_revision | 30.27s Preview + Candidate v3 | yes，基础已具备 | 自动声画锚定 + held-out 盲测 |
+| Creative Timeline | Core | M4 slice | useful | held-out candidate + canonical repeat | yes，上游仍需导演 | 单一透明生产入口 |
 | TTS / Voice | Core | M4 slice | useful | 7 WAV + committed VoiceAsset/VoiceTakeSet | no | 第二素材重复验证 |
 | Conform / Mix | Core | M4 slice | useful | Alignment/ConformReport/MixedAudio + canonical MP4 | no | 第二素材重复验证 |
 | Subtitle / ASS | Core | M4 slice | useful | committed ASSArtifact + libass 实片 | no | 字体跨环境验证 |
@@ -50,7 +50,7 @@ First Usable Cut blocker 已全部关闭。进入“个人可重复使用”前�
 1. 单份配置入口已验证，但上游选题必须以整剧为单位。当前整剧 Story/Strategy 已由 Agent 完成内部候选生产审查，下一步直接生成跨集剪辑蓝图和主片候选。
 2. IndexTTS 连续合成稳定性和 Docker 字体环境仍需重复验证。
 3. 当前素材 RightsGrant 为 internal/manual-test，禁止把本次结果当作 Release Gate 3 或公开发布授权。
-4. Candidate v3 的效果主要来自 Codex 导演配置；自动声画锚定、防提前剧透、TTS 后重排和角色/人工覆盖溯源尚未通过 held-out 验证。
+4. 自动声画锚定、TTS 后重排和角色/人工覆盖溯源已通过 held-out；自动视觉事件、选镜和解说生成仍未验证。
 
 以下不是 First Usable Cut blocker：
 
@@ -105,7 +105,7 @@ First Usable Cut blocker 已全部关闭。进入“个人可重复使用”前�
 
 ## 5. 下一执行批次
 
-只做一个纵向批次：`Director Decision Provenance → Visual–Narration Anchor → TTS Reflow/Cache → held-out 跨集候选`。
+只做一个纵向批次：`单一配置 → 多源 ingest → candidate → canonical accept → 模块状态/恢复点`。
 
 明确不在本批次扩展：
 
