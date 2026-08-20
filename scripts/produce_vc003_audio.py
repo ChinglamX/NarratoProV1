@@ -147,15 +147,25 @@ def main() -> int:
         default="canonical_e11.mp4",
         help="final render filename inside the audio output dir",
     )
+    parser.add_argument(
+        "--narration-texts",
+        type=Path,
+        help="JSON file [{text}, ...] overriding the narration texts",
+    )
     args = parser.parse_args()
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     wav_paths: list[Path] = []
     manifest_lines: list[dict[str, object]] = []
     starts = [float(v) for v in json.loads(args.narration_starts)]
-    for index, (text, start) in enumerate(
-        zip((item[0] for item in NARRATION), starts, strict=True), 1
-    ):
+    if args.narration_texts is not None:
+        texts = [
+            str(item["text"])
+            for item in json.loads(args.narration_texts.read_text(encoding="utf-8"))
+        ]
+    else:
+        texts = [item[0] for item in NARRATION]
+    for index, (text, start) in enumerate(zip(texts, starts, strict=True), 1):
         digest = hashlib.sha256(text.encode()).hexdigest()[:8]
         wav = OUTPUT_DIR / f"narration_{index}_{digest}.wav"
         if not args.skip_tts or not wav.is_file():

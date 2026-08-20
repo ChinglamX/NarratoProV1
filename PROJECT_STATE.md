@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 121
+State Version: 122
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-20 全自动出片工作流首跑成功（State v122）：owner 授权「全自动工作流 + 移除版权校验 + 实现中不决策」。新增 `scripts/auto_produce.py`（8 阶段端到端编排：ingest → FunASR ASR → LLM 剧情提取（强制 交易/付款/威胁 三角色）→ 自动策略选择 → ASR 证据窗口+VLM 精修自动选镜 → LLM 解说+规则校验 → E09 Timeline（--auto-approve 不停点）→ E10/E11 成片+QC）。`produce_vc003_timeline.py` 新增 `--auto-approve`；`produce_vc003_audio.py` 新增 `--narration-texts/--source-run-id/--source-timeline-id/--narration-starts/--output-name`；`personal_cut.py` 移除 rights/Gate 阻断校验（owner 声明通过，保留 manifest 结构校验）；`accept_first_usable_cut_canonical.py` execute 输出名可配。**首跑 run `1c829b7b`（源=Episode 8）全 8 阶段零人工停点，成片 `outputs/vc003_episode_08/audio/auto_1c829b7b-….mp4`（13.47s、720×1280 H.264/AAC、TechnicalQC passed）**。自动内容：ASR 17 段、3 事件（角色齐全）、自动窗口 sale 15.89/payment 27.89/threat 41.88、3 句自动解说。`make check` 全绿。已知待加固：LLM 角色提取偶发失败（需重试）、窗口/时长更精细、timeline 泛化（当前 beat 语义仍绑定 Episode 8 驱动）。
 
 - 2026-08-19 Speech 基准扩展至 7 集（State v121）：`produce_speech_baseline.py` 支持 `--corpus-videos`（服务器内转音频），新增 e06-1982 系列 3 集真实 ASR——e01 42 段/68.7s/7 说话人、e02 19 段/58.2s/2、e03 19 段/40.3s/5；汇总更新 `speech_baseline_summary.json`（7 集：语音覆盖 51.9–72.7%、说话人 2–9）。**e06-1982/e01 现同时具备 D5 人工标注帧（OCR/DET/VLM）与真实 ASR 定时转写**——标注-语音关联证据就位（后续可做字幕时间码与 ASR 段落对齐验证）。ep8 ASR 单列于 `outputs/vc003_episode_08/asr_evidence/`。`make check` 全绿。下一步待 owner：D6/D4 决策、A 最终确认、Release Gate 3。
 

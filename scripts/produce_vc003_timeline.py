@@ -543,6 +543,7 @@ async def _produce(
     threat_start: float,
     threat_duration: float,
     windows_override: dict[str, list[float]] | None = None,
+    auto_approve: bool = False,
 ) -> None:
     settings = get_settings()
     engine = create_database_engine(settings.database_url)
@@ -605,6 +606,10 @@ async def _produce(
             print(f"  artifact[{name}] = {pointer.artifact_id} v{pointer.version}")
         print(f"  review_id = {status.active_review_id}")
     _write_review_card(run_id, workflow_id, status)
+    if auto_approve:
+        await _sign(run_id, "approve")
+        print(f"== auto-approved run {run_id} ==")
+        return
     print("== STOPPED at human timeline checkpoint ==")
     print("review the preview + ASS + card, then run:")
     print(
@@ -665,6 +670,11 @@ def main() -> int:
         type=Path,
         help="per-beat window overrides: {threat: [start, duration], sale: [...], payment: [...]}",
     )
+    parser.add_argument(
+        "--auto-approve",
+        action="store_true",
+        help="auto-sign the timeline checkpoint (no human stop)",
+    )
     args = parser.parse_args()
     windows_override = (
         json.loads(args.windows_json.read_text(encoding="utf-8"))
@@ -679,7 +689,12 @@ def main() -> int:
         asyncio.run(_card(UUID(args.run_id)))
     else:
         asyncio.run(
-            _produce(args.threat_start, args.threat_duration, windows_override=windows_override)
+            _produce(
+                args.threat_start,
+                args.threat_duration,
+                windows_override=windows_override,
+                auto_approve=args.auto_approve,
+            )
         )
     return 0
 

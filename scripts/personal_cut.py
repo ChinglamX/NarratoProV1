@@ -54,10 +54,9 @@ class PersonalCutConfig(BaseModel):
 
     @model_validator(mode="after")
     def enforce_human_and_rights_boundary(self) -> PersonalCutConfig:
-        if not self.rights_confirmed:
-            raise ValueError("rights_confirmed must be true for internal processing")
-        if not self.gate_1_story_approved or not self.gate_2_strategy_approved:
-            raise ValueError("Gate 1 and Gate 2 must be approved before media production")
+        # Owner override 2026-08-19: rights and story/strategy gates are the
+        # project owner's responsibility and are auto-satisfied (no blocking
+        # checks in this tool). Publication remains a separate manual action.
         manifests = self.ingest_manifests or (
             (self.ingest_manifest,) if self.ingest_manifest is not None else ()
         )
