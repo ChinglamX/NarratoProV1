@@ -181,6 +181,41 @@
           "text": "这是云纹。"
         }
       ]
+    },
+    {
+      "audio_stem": "episodes_e01",
+      "segment_count": 42,
+      "speech_seconds": 68.74,
+      "speaker_clusters": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "audio_stem": "episodes_e02",
+      "segment_count": 19,
+      "speech_seconds": 58.2,
+      "speaker_clusters": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "audio_stem": "episodes_e03",
+      "segment_count": 19,
+      "speech_seconds": 40.27,
+      "speaker_clusters": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     }
   ]
 }

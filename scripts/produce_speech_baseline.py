@@ -88,6 +88,23 @@ def _asr(audio: Path) -> str:
 
 
 def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--corpus-videos",
+        nargs="*",
+        default=[],
+        help="extra corpus video paths to ASR (server converts internally)",
+    )
+    args = parser.parse_args()
+
+    if args.corpus_videos:
+        entries = _run_extra(args.corpus_videos)
+        print(f"== extra baseline: {len(entries)} episodes ==")
+        _merge_baseline(entries)
+        return 0
+
     engine = create_database_engine(get_settings().database_url)
     rows = []
     with engine.connect() as connection:
@@ -153,6 +170,54 @@ def main() -> int:
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
     print(f"== baseline: {OUT_DIR}/speech_baseline_manifest.json ==")
     return 0
+
+
+def _run_extra(video_paths: list[str]) -> list[dict[str, object]]:
+    entries = []
+    for video in video_paths:
+        path = Path(video)
+        if not path.is_file():
+            print(f"skip missing {video}")
+            continue
+        print(f"== ASR corpus {path.parent.name}/{path.stem}")
+        srt = _asr(path)
+        segments = _parse_srt(srt)
+        speakers = sorted({s["speaker"] for s in segments if s["speaker"]})
+        coverage = round(sum(s["end_seconds"] - s["start_seconds"] for s in segments), 2)
+        stem = f"{path.parent.name}_{path.stem}"
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        (OUT_DIR / f"{stem}.srt").write_text(srt, encoding="utf-8")
+        entries.append(
+            {
+                "audio_stem": stem,
+                "segment_count": len(segments),
+                "speech_seconds": coverage,
+                "speaker_clusters": speakers,
+            }
+        )
+        print(f"  segments={len(segments)} speech={coverage}s speakers={speakers}")
+    return entries
+
+
+def _merge_baseline(entries: list[dict[str, object]]) -> None:
+    manifest_path = OUT_DIR / "speech_baseline_manifest.json"
+    manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.is_file()
+        else {"episodes": []}
+    )
+    existing = {
+        e.get("audio_stem") or e.get("audio_stem_id") or ""
+        for e in manifest.get("episodes", [])
+    }
+    added = [e for e in entries if e["audio_stem"] not in existing]
+    manifest.setdefault("episodes", []).extend(added)
+    manifest["scope"] = (
+        "research multi-episode ASR baseline (FunASR paraformer-large, diarization); "
+        "no human reference; CER pending"
+    )
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"== merged baseline: {len(manifest['episodes'])} episodes total ==")
 
 
 if __name__ == "__main__":

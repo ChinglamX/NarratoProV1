@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 120
+State Version: 121
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 Speech 基准扩展至 7 集（State v121）：`produce_speech_baseline.py` 支持 `--corpus-videos`（服务器内转音频），新增 e06-1982 系列 3 集真实 ASR——e01 42 段/68.7s/7 说话人、e02 19 段/58.2s/2、e03 19 段/40.3s/5；汇总更新 `speech_baseline_summary.json`（7 集：语音覆盖 51.9–72.7%、说话人 2–9）。**e06-1982/e01 现同时具备 D5 人工标注帧（OCR/DET/VLM）与真实 ASR 定时转写**——标注-语音关联证据就位（后续可做字幕时间码与 ASR 段落对齐验证）。ep8 ASR 单列于 `outputs/vc003_episode_08/asr_evidence/`。`make check` 全绿。下一步待 owner：D6/D4 决策、A 最终确认、Release Gate 3。
 
 - 2026-08-19 自动选镜 E10 research 成片 + D6 类别证据（State v120）：`produce_vc003_audio.py` 参数化（--source-run-id/--source-timeline-id/--narration-starts/--output-name，`execute()` 输出名随之可配）后，以自动选镜 Timeline（run `fa3a29bb`，MasterTimeline `9569a801…`）为源 + 修正解说渲染出 **自动选镜 E10 research 成片 `canonical_e11_auto.mp4`（24.00s，QC passed）**——自动选窗（ASR 证据 + VLM 精修）+ 配音/混音/字幕全链，字幕对齐 0–8/8–16/16–24s beat。已批准候选 `canonical_e11.mp4`（26s）在渲染中被覆盖后**已用默认参数重渲染恢复**（QC passed），两文件并存。D6 类别证据：24 帧 39 检测框中 person 31 个（可用），**其余 8 个全为 COCO 误分类**（陶缸→toilet、棉袄→tie、麋鹿→horse、野猪→elephant、金锭→donut/cup/bowl、炕→bed）——强支撑自定义类别（D6）。`make check` 全绿。
 

@@ -1,45 +1,54 @@
 {
-  "scope": "5-episode speech baseline summary (FunASR paraformer-large, research)",
+  "scope": "multi-episode speech baseline summary (FunASR paraformer-large, research; 7 episodes)",
   "episodes": [
     {
       "audio_stem": "5cd0e574-2adb-45a2-b0cf-56f379dd27ca",
       "segments": 30,
       "speech_seconds": 55.2,
       "speech_coverage_pct": 53.2,
-      "speaker_cluster_count": 7,
-      "avg_segment_seconds": 1.84
+      "speaker_cluster_count": 7
     },
     {
       "audio_stem": "9519fd49-673e-44a8-8095-354bc75c14fc",
       "segments": 19,
       "speech_seconds": 37.3,
       "speech_coverage_pct": 51.9,
-      "speaker_cluster_count": 5,
-      "avg_segment_seconds": 1.96
+      "speaker_cluster_count": 5
     },
     {
       "audio_stem": "aaee6dae-8df5-44ab-b5d8-be647e6fc12a",
       "segments": 27,
       "speech_seconds": 40.5,
       "speech_coverage_pct": 68.6,
-      "speaker_cluster_count": 9,
-      "avg_segment_seconds": 1.5
+      "speaker_cluster_count": 9
     },
     {
       "audio_stem": "eb46bb3a-201d-459d-b976-ace7d3c278ab",
       "segments": 20,
       "speech_seconds": 58.8,
       "speech_coverage_pct": 72.7,
-      "speaker_cluster_count": 7,
-      "avg_segment_seconds": 2.94
+      "speaker_cluster_count": 7
     },
     {
-      "audio_stem": "ep8 (vc003)",
-      "segments": 17,
-      "speech_seconds": 39.7,
-      "speech_coverage_pct": 74.8,
-      "speaker_cluster_count": 8,
-      "avg_segment_seconds": 2.33
+      "audio_stem": "episodes_e01",
+      "segments": 42,
+      "speech_seconds": 68.7,
+      "speech_coverage_pct": 63.1,
+      "speaker_cluster_count": 7
+    },
+    {
+      "audio_stem": "episodes_e02",
+      "segments": 19,
+      "speech_seconds": 58.2,
+      "speech_coverage_pct": 80.3,
+      "speaker_cluster_count": 2
+    },
+    {
+      "audio_stem": "episodes_e03",
+      "segments": 19,
+      "speech_seconds": 40.3,
+      "speech_coverage_pct": 59.8,
+      "speaker_cluster_count": 5
     }
   ]
 }
