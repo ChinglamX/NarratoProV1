@@ -1,6 +1,6 @@
 # E06 Provider 生产准入升级评估（research → production）
 
-Date: 2026-08-16
+Date: 2026-08-16（2026-08-19 状态刷新：见 §8）
 Type: 只读证据审查（不修改代码、不改变 admission 状态）
 Status: Draft for project-owner decisions（需项目负责人批准后才可执行升级）
 依据文件（事实来源，未引用外部数据）：
@@ -189,3 +189,30 @@ Status: Draft for project-owner decisions（需项目负责人批准后才可执
 ## 7. 一句话结论
 
 benchmark v1/enriched 把 E06 从"无数据"推进到"有真实按剧隔离的工程基线"（720 帧 0 错误、1052 OCR、1268 DET、144 VLM claims、288 Facts），但**三个 Provider 距离 production 都还差"人工标注基线 + 阈值 + commercial 批准 +（VLM）API 准入等价物与容量/成本目标"**——本轮评估结论：**三者均维持 research，需补材料**。
+
+---
+
+## 8. 2026-08-19 状态刷新（State v100 之后）
+
+### 8.1 已解决的决策点
+- **D1 已全部批准（2026-08-16 owner）**：PaddleOCR / RT-DETR（Apache-2.0）与 Volcengine doubao-seed VLM（法务审查通过、CN 驻留、所有视频允许）`commercial_use_allowed=True`。注册表已反映（`packages/providers/admission.py`）。
+- **E10 TTS 已实测**：IndexTTS-2 在 Episode 8 上完成 3 句真实合成（2026-08-19，owner 批准 ref_7_clean 声源 + bilibili ULA），经 E10/E11 canonical 链产出 26s 候选获 `useful`。
+
+### 8.2 新增真实准入证据（2026-08-19）
+- **IndexTTS-2 权重 checksum 已落地**：`INDEXTTS_HOME/checkpoints` 六文件 sha256 已实测并写入 `evaluation/evidence/indextts_weights_manifest.txt`；`model_checksum` = 该清单的 sha256（`294cea17…`，可机器复验 `shasum -a 256` 清单文件）。`production_readiness_gaps(indextts)` 现为 **0 项**（代码级缺口关闭；admission 仍 research，生产升级仍需人工标注 take 质量阈值与容量验收决策）。
+- **FunASR 已登记候选 Provider**：`packages/providers/admission.py` 新增 `funasr`（openai-compatible-http / 1.3.26 / sensevoice，capabilities vad/asr/alignment），admission=research，`production_readiness_gaps`=3 项（weight_license 未决、checksum 未录、commercial 未批准）——ASR 准入缺口正式化。
+
+### 8.3 仍待项目负责人决策
+| # | 决策点 | 当前状态 | 建议 |
+|---|---|---|---|
+| D2 | benchmark v1/enriched 证据地位 | 仅工程基线 | 接受为工程基线；质量达标另需人工标注 |
+| D3 | 容量/成本目标（Mac mini、VLM 成本上限） | 未定 | 定义目标值后容量验收 |
+| D4 | VLM checksum/weight_license 豁免等价物（API 型） | 硬缺口 2 项 | 决策是否用 endpoint+model id+TOS 版本替代 |
+| D5 | 人工标注基线投入（OCR/DET/VLM） | 未投入 | 最小可行 frozen_test 子集 |
+| D6 | DET 类别体系 | COCO 80 无短剧类 | 映射/微调/扩展 VLM 标注决策 |
+| D7 | 证据卫生（报告值、known_limitations、9 条 OCR score） | 部分完成 | 升级前置必做 |
+| **D8（新）** | **IndexTTS production 升级** | 代码级缺口已关 | 人工标注 take 质量阈值 + 容量验收后升级；或维持 research（当前 canonical 链以 research 调用，输出经人工 QC） |
+| **D9（新）** | **FunASR/SenseVoice 模型卡许可与商用批准** | 未决 | 模型卡许可审查 → checksum 录入 → G03 真实 Speech benchmark（按剧隔离 + CER/阈值） |
+
+### 8.4 升级前置路径（不变）
+见 §6：关闭 `e06_g05.json` 全部 blocker → 人工标注 frozen_test 子集 → 运行 CER/mAP/claim 指标 → Quality Profile 阈值 → 注册表更新 → 新 Acceptance Report（人工签名）→ ADR-032 全程遵守。

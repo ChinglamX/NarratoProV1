@@ -1,0 +1,410 @@
+{
+  "scope": "Episode 8 research auto clip selection; confidence unavailable; L1 review required",
+  "source_media": {
+    "artifact_id": "f98ca32a-a855-441b-b73e-fec9f324d1a8",
+    "version": 1,
+    "artifact_type": "SourceMedia",
+    "checksum": "sha256:bb45cd4221f9310c4a4bfd6ed29e92883a351b8596b05bebef5f839bc3e3c3f2"
+  },
+  "candidate_set_ref": {
+    "artifact_id": "99abc4f9-edf0-4419-87b8-cf665b887a8d",
+    "version": 1,
+    "artifact_type": "ClipCandidateSet",
+    "checksum": "sha256:d70a2085bc4540b6caf621db1739319587ef928197801691fdaf36d5f6537868"
+  },
+  "events": [
+    {
+      "event_id": "87f8ff89-54ec-42b1-8e46-c12cefba6e47",
+      "description": "另一方得知那小子一天得到三十万，因其有钱不还并曾动手，决定盯住并威胁杀死他。",
+      "human_verified_window": [
+        42.0,
+        50.0
+      ],
+      "raw_windows": [
+        [
+          40.5,
+          46.5
+        ]
+      ],
+      "refined_coarse_window": [
+        40.5,
+        46.5
+      ],
+      "refined_probe_window": [
+        42.5,
+        46.5
+      ],
+      "raw_vs_human_overlap": [
+        0.474
+      ],
+      "probe_vs_human_overlap": 0.5,
+      "relevance_ratio": 0.2,
+      "sampled_frames": 25,
+      "relevant_frames": 5,
+      "verdicts": [
+        {
+          "t": 0.5,
+          "relevant": false
+        },
+        {
+          "t": 2.5,
+          "relevant": false
+        },
+        {
+          "t": 4.5,
+          "relevant": false
+        },
+        {
+          "t": 6.5,
+          "relevant": false
+        },
+        {
+          "t": 8.5,
+          "relevant": false
+        },
+        {
+          "t": 10.5,
+          "relevant": false
+        },
+        {
+          "t": 12.5,
+          "relevant": false
+        },
+        {
+          "t": 14.5,
+          "relevant": false
+        },
+        {
+          "t": 16.5,
+          "relevant": false
+        },
+        {
+          "t": 18.5,
+          "relevant": false
+        },
+        {
+          "t": 20.5,
+          "relevant": false
+        },
+        {
+          "t": 22.5,
+          "relevant": false
+        },
+        {
+          "t": 24.5,
+          "relevant": true
+        },
+        {
+          "t": 26.5,
+          "relevant": false
+        },
+        {
+          "t": 28.5,
+          "relevant": false
+        },
+        {
+          "t": 30.5,
+          "relevant": false
+        },
+        {
+          "t": 32.5,
+          "relevant": false
+        },
+        {
+          "t": 34.5,
+          "relevant": false
+        },
+        {
+          "t": 36.5,
+          "relevant": false
+        },
+        {
+          "t": 38.5,
+          "relevant": false
+        },
+        {
+          "t": 40.5,
+          "relevant": true
+        },
+        {
+          "t": 42.5,
+          "relevant": true
+        },
+        {
+          "t": 44.5,
+          "relevant": true
+        },
+        {
+          "t": 46.5,
+          "relevant": true
+        },
+        {
+          "t": 48.5,
+          "relevant": false
+        }
+      ]
+    },
+    {
+      "event_id": "1df88e31-efac-44ac-8e73-8bcb5c8269ec",
+      "description": "对白表明有人以三十万购买两样货物，并完成交易。",
+      "human_verified_window": [
+        15.0,
+        28.0
+      ],
+      "raw_windows": [],
+      "refined_coarse_window": [
+        0.5,
+        49.5
+      ],
+      "refined_probe_window": [
+        15.0,
+        28.0
+      ],
+      "raw_vs_human_overlap": [],
+      "probe_vs_human_overlap": 1.0,
+      "relevance_ratio": 0.12,
+      "sampled_frames": 25,
+      "relevant_frames": 3,
+      "verdicts": [
+        {
+          "t": 0.5,
+          "relevant": false
+        },
+        {
+          "t": 2.5,
+          "relevant": false
+        },
+        {
+          "t": 4.5,
+          "relevant": false
+        },
+        {
+          "t": 6.5,
+          "relevant": false
+        },
+        {
+          "t": 8.5,
+          "relevant": false
+        },
+        {
+          "t": 10.5,
+          "relevant": false
+        },
+        {
+          "t": 12.5,
+          "relevant": true
+        },
+        {
+          "t": 14.5,
+          "relevant": false
+        },
+        {
+          "t": 16.5,
+          "relevant": true
+        },
+        {
+          "t": 18.5,
+          "relevant": false
+        },
+        {
+          "t": 20.5,
+          "relevant": false
+        },
+        {
+          "t": 22.5,
+          "relevant": false
+        },
+        {
+          "t": 24.5,
+          "relevant": true
+        },
+        {
+          "t": 26.5,
+          "relevant": false
+        },
+        {
+          "t": 28.5,
+          "relevant": false
+        },
+        {
+          "t": 30.5,
+          "relevant": false
+        },
+        {
+          "t": 32.5,
+          "relevant": false
+        },
+        {
+          "t": 34.5,
+          "relevant": false
+        },
+        {
+          "t": 36.5,
+          "relevant": false
+        },
+        {
+          "t": 38.5,
+          "relevant": false
+        },
+        {
+          "t": 40.5,
+          "relevant": false
+        },
+        {
+          "t": 42.5,
+          "relevant": false
+        },
+        {
+          "t": 44.5,
+          "relevant": false
+        },
+        {
+          "t": 46.5,
+          "relevant": false
+        },
+        {
+          "t": 48.5,
+          "relevant": false
+        }
+      ]
+    },
+    {
+      "event_id": "1c583c8c-7291-4f8f-91e9-b02181958c26",
+      "description": "交易方交出一张内有三十万、密码为六个八的卡。",
+      "human_verified_window": [
+        28.0,
+        33.0
+      ],
+      "raw_windows": [
+        [
+          26.5,
+          30.5
+        ]
+      ],
+      "refined_coarse_window": [
+        26.5,
+        30.5
+      ],
+      "refined_probe_window": [
+        28.5,
+        30.5
+      ],
+      "raw_vs_human_overlap": [
+        0.385
+      ],
+      "probe_vs_human_overlap": 0.4,
+      "relevance_ratio": 0.16,
+      "sampled_frames": 25,
+      "relevant_frames": 4,
+      "verdicts": [
+        {
+          "t": 0.5,
+          "relevant": false
+        },
+        {
+          "t": 2.5,
+          "relevant": false
+        },
+        {
+          "t": 4.5,
+          "relevant": false
+        },
+        {
+          "t": 6.5,
+          "relevant": false
+        },
+        {
+          "t": 8.5,
+          "relevant": false
+        },
+        {
+          "t": 10.5,
+          "relevant": false
+        },
+        {
+          "t": 12.5,
+          "relevant": false
+        },
+        {
+          "t": 14.5,
+          "relevant": false
+        },
+        {
+          "t": 16.5,
+          "relevant": false
+        },
+        {
+          "t": 18.5,
+          "relevant": false
+        },
+        {
+          "t": 20.5,
+          "relevant": false
+        },
+        {
+          "t": 22.5,
+          "relevant": false
+        },
+        {
+          "t": 24.5,
+          "relevant": false
+        },
+        {
+          "t": 26.5,
+          "relevant": true
+        },
+        {
+          "t": 28.5,
+          "relevant": true
+        },
+        {
+          "t": 30.5,
+          "relevant": true
+        },
+        {
+          "t": 32.5,
+          "relevant": false
+        },
+        {
+          "t": 34.5,
+          "relevant": false
+        },
+        {
+          "t": 36.5,
+          "relevant": false
+        },
+        {
+          "t": 38.5,
+          "relevant": false
+        },
+        {
+          "t": 40.5,
+          "relevant": true
+        },
+        {
+          "t": 42.5,
+          "relevant": false
+        },
+        {
+          "t": 44.5,
+          "relevant": false
+        },
+        {
+          "t": 46.5,
+          "relevant": false
+        },
+        {
+          "t": 48.5,
+          "relevant": false
+        }
+      ]
+    }
+  ],
+  "boundary_notes": [
+    "VLM verdicts are non-deterministic; relevance parse fails closed",
+    "on ambiguity.",
+    "Windows are research drafts, not approved edits; the human timeline",
+    "checkpoint still applies.",
+    "No production admission implied; provider stays research."
+  ]
+}

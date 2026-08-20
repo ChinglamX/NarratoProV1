@@ -1,0 +1,71 @@
+{
+  "project_id": "dd397853-79bc-4e6f-a540-bb1c296d6936",
+  "run_id": "096d5b55-3037-4e69-86cb-afab67c3c7cf",
+  "narration_line_set": {
+    "artifact_id": "982b4bca-18ba-4427-af04-0d61cad01305",
+    "version": 1,
+    "artifact_type": "NarrationLineSet",
+    "checksum": "sha256:3486e07df4d6cac9f1266a29838c7c19494c7b759245e75cba8bec43ecfbc80a"
+  },
+  "voice_take_set": {
+    "artifact_id": "07156163-58bc-4257-9b0c-e76b5eacbda8",
+    "version": 1,
+    "artifact_type": "VoiceTakeSet",
+    "checksum": "sha256:661e1006544dafcd849ab132d65fcad78fee170954c0d45fef47bef26383a4d1"
+  },
+  "voice_asset": {
+    "artifact_id": "7e3f5fd9-b748-4bae-b35c-caf8253362fa",
+    "version": 1,
+    "artifact_type": "VoiceAsset",
+    "checksum": "sha256:3a84e2592898031c2dbabc5bf755816ca67a56026b13165df76719f33d8dc91c"
+  },
+  "alignment": {
+    "artifact_id": "ca2dbc1b-1bbd-461e-b6ac-93dd399a6ba3",
+    "version": 1,
+    "artifact_type": "AlignmentArtifact",
+    "checksum": "sha256:4138aad9fd96216dbe002aacfbb20d00b12c6bf1235f77e0ebcd4db7e74a5b10"
+  },
+  "conformed_timeline": {
+    "artifact_id": "6a09e7a3-b67c-469d-9f6b-9e8df5a7e400",
+    "version": 1,
+    "artifact_type": "MasterTimeline",
+    "checksum": "sha256:954baaa84efbb8a690a92b4355a86d02272f8e6e49725d317835e4a32c7f9636"
+  },
+  "conform_report": {
+    "artifact_id": "b92e1904-a343-4041-82ac-97a3186245e4",
+    "version": 1,
+    "artifact_type": "ConformReport",
+    "checksum": "sha256:111c256b7dccd9c4425b7ab03edd19220681e33c9ce3977dda71c8e7c0bc6516"
+  },
+  "mix_plan": {
+    "artifact_id": "44b08640-fa75-41e3-8972-8a89a5262140",
+    "version": 1,
+    "artifact_type": "MixPlan",
+    "checksum": "sha256:798301fd0430798c55d48892a13a11a7ce025939a255482a873de14f09438a9b"
+  },
+  "mixed_audio": {
+    "artifact_id": "bf083816-ac0e-41d6-9b91-4a9efd347ece",
+    "version": 1,
+    "artifact_type": "MixedAudio",
+    "checksum": "sha256:dcfde2dec4c3db1cbb51c5690d3d09ab2a1e24a75f4dc3bb466f152e279a96bd"
+  },
+  "subtitle_cue_set": {
+    "artifact_id": "95e1a24d-401a-436f-ab87-10747ee5f26d",
+    "version": 1,
+    "artifact_type": "SubtitleCueSet",
+    "checksum": "sha256:d7565a40490a6f81d46e5b10d9f8cd5d8f08387532588b0eea26553a8cda5716"
+  },
+  "ass_artifact": {
+    "artifact_id": "75453fa4-7b7e-49bc-880e-8d893dbc3866",
+    "version": 1,
+    "artifact_type": "ASSArtifact",
+    "checksum": "sha256:e9bd0dcb5904abcbe00c4a7bcd487edd91eae00b96f6d0bdb3591f877bc2f99a"
+  },
+  "render_plan": {
+    "artifact_id": "54a87115-4d12-4b57-b4df-efa896fcf1f8",
+    "version": 1,
+    "artifact_type": "RenderPlan",
+    "checksum": "sha256:9baefd72eb7813712d18883b25ff5e9dedb7ab92c5bc6fa81abee2b1ad2c2c37"
+  },
+  "render_result": "RenderResult(execution_report=ArtifactPointer(artifact_id='66d6eb56-9c7b-4cae-a371-cc5956a8b464', version=1, artifact_type='RenderExecutionReport', checksum='sha256:89bf9a85afcb1b376d9fe5fe10acfe66e8f68f5e5d3aa38c7dd1069e23d91146'), qc_report=ArtifactPointer(artifact_id='0c3bd629-ffcc-45e7-acb8-db45585a45d4', version=1, artifact_type='TechnicalQCReport', checksum='sha256:68cf8651ecfd280c1549a2310c3caf387ecfc1e9f33f0969873a87fadfbb383e'), output_path='/Users/chinglam/workspace/NarratoProV1/outputs/vc003_episode_08/audio/canonical_e11.mp4', passed=True, blocked_codes=())"
+}

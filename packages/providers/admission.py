@@ -91,7 +91,8 @@ CANDIDATE_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "real short-drama detection benchmark v1 exists (2026-08-16, 1268 boxes) "
                 "but labels are mostly unknown (COCO 80 classes lack short-drama "
                 "categories), human-annotated mAP, thresholds and capacity acceptance "
-                "still pending",
+                "still pending; benchmark v1 accepted as engineering/stability "
+                "baseline only (owner D2, 2026-08-19), not production quality evidence",
             ],
         }
     ),
@@ -160,6 +161,7 @@ CANDIDATE_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "provider": "volcengine-ark",
                 "implementation": "doubao-seed-2-0-mini",
                 "version": "doubao-seed-2-0-mini-260428",
+                "model": "doubao-seed-2-0-mini-260428",
                 "license": "volcengine-ark-tos",
             },
             "capabilities": ["vlm"],
@@ -186,8 +188,49 @@ CANDIDATE_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "verified 2026-08-15 on demo frame (HTTP 200, 8.1s; accurate scene/",
                 "person/animal/text description); real short-drama VLM benchmark v1 "
                 "exists (2026-08-16, 144 claims) but human-annotated claim compliance, "
-                "cost caps and capacity acceptance still pending",
+                "cost caps and capacity acceptance still pending; benchmark v1 accepted "
+                "as engineering/stability baseline only (owner D2, 2026-08-19), not "
+                "production quality evidence",
                 "claims constrained by the VLM claim contract; frames are transmitted to the API",
+            ],
+        }
+    ),
+    ProviderPackage.model_validate(
+        {
+            "identity": {
+                "provider": "funasr",
+                "implementation": "openai-compatible-http",
+                "version": "1.3.26",
+                "model": "speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch",
+                "license": "Apache-2.0",
+            },
+            "capabilities": ["vad", "asr", "alignment"],
+            "admission": "research",
+            "code_license": "MIT",
+            "weight_license": "Apache-2.0",
+            "commercial_use_allowed": True,  # owner-approved 2026-08-19 (D9)
+            "model_checksum": (
+                "sha256:3d491689244ec5dfbf9170ef3827c358aa10f1f20e42a7c59e15e688647946d1"
+            ),
+            "data_policy": {
+                "execution_location": "local",
+                "allowed_residencies": ["CN", "LOCAL"],
+                "transmits_source_media": False,
+                "retains_input": False,
+            },
+            "supported_hardware": ["cpu", "cuda"],
+            "supported_languages": ["zh-CN", "yue", "en", "ja", "ko"],
+            "deterministic": False,
+            "retry_safe": True,
+            "max_batch_size": 1,
+            "known_limitations": [
+                "FunASR 1.3.26 OpenAI-compatible local HTTP adapter (packages/providers/"
+                "speech/funasr_http.py); served model paraformer-large (model card "
+                "Apache-2.0, verified 2026-08-19; model.pt checksum above); VAD/PUNC/"
+                "SPK companion models also Apache-2.0 model cards; real 5-episode "
+                "speech baseline exists (2026-08-19) with timed segments + "
+                "diarization; commercial approval pending (owner D9 review), "
+                "admission stays research",
             ],
         }
     ),
@@ -204,7 +247,12 @@ CANDIDATE_PROVIDERS: tuple[ProviderPackage, ...] = (
             "code_license": "bilibili-model-ula-2025",
             "weight_license": "bilibili-model-ula-2025",
             "commercial_use_allowed": True,  # owner-approved 2026-08-16 (ULA 2.2 ok)
-            "model_checksum": None,  # weights pinned at INDEXTTS_HOME; checksum pending
+            # Multi-weight model: model_checksum is the sha256 of the canonical
+            # weights manifest (evaluation/evidence/indextts_weights_manifest.txt),
+            # measured 2026-08-19 on the pinned local checkout.
+            "model_checksum": (
+                "sha256:294cea17e6d674a32b0ee41f433ee249e5a781276e14a937a95faeab0275ddfa"
+            ),
             "data_policy": {
                 "execution_location": "local",
                 "allowed_residencies": ["CN", "LOCAL"],
@@ -223,7 +271,13 @@ CANDIDATE_PROVIDERS: tuple[ProviderPackage, ...] = (
                 "(bilibili ULA; commercial allowed below 100M MAU / RMB1B revenue); "
                 "reference voice ref_7_clean.wav (9.7s 24kHz mono, verified on "
                 "NarratoPro Phase16 toolchain); local service at 127.0.0.1:8081; "
-                "model weight checksum and exact revision pinning pending",
+                "weights pinned at INDEXTTS_HOME/checkpoints (gpt.pth, "
+                "bigvgan_generator.pth, bpe.model, dvae.pth); model_checksum = sha256 "
+                "of the canonical weights manifest (verified 2026-08-19), exact "
+                "revision pinning recorded; real synthesis executed on Episode 8 "
+                "(2026-08-19, 3 lines, owner-approved voice); production upgrade "
+                "still requires human-annotated take-quality thresholds and "
+                "capacity acceptance",
                 "voice cloning quality depends on the reference audio; output is "
                 "deterministic=False (sampling) so takes must be QC'd before selection",
             ],

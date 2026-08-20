@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "episode": 8,
+  "transcript": "../outputs/series_analysis/transcripts/episode_08.srt",
+  "ingest_manifest": "../outputs/heldout_episode_7_8/ingest_episode_08.json",
+  "claims": [
+    {
+      "claim_id": "sale",
+      "description": "对白表明有人以三十万购买两样货物，并完成交易。",
+      "cue_ids": [1],
+      "excerpts": ["三十万这两样我都要了"]
+    },
+    {
+      "claim_id": "payment",
+      "description": "交易方交出一张内有三十万、密码为六个八的卡。",
+      "cue_ids": [1],
+      "excerpts": ["这张卡里有三十万，密码，六个八"]
+    },
+    {
+      "claim_id": "threat",
+      "description": "另一方得知那小子一天得到三十万，因其有钱不还并曾动手，决定盯住并威胁杀死他。",
+      "cue_ids": [1],
+      "excerpts": ["那小子一天就弄到了三十万。妈的，那小子手里有钱，却藏着掖着，不还还敢对我动手给我盯住。那小子，上次让那小子躲过了，这次我就不信，弄不死他"]
+    }
+  ],
+  "unresolved": [
+    "仅凭本段研究 ASR 无法可靠确认交易双方姓名及两样货物的具体名称。",
+    "单段 ASR 没有说话人分离，威胁者与虎哥是否为同一人需要画面或人工确认。"
+  ],
+  "manual_reference": {
+    "status": "producer_draft_pending_human_review",
+    "summary": "主角带着两样货物成交三十万并拿到银行卡；虎哥一方得知他有钱后，因欠债和此前冲突派人盯住，准备再次下手。",
+    "known_extra_interpretation": [
+      "“主角”身份来自人工观看上下文，不由本段无说话人 ASR 单独证明。",
+      "“虎哥一方”需要画面和角色身份链确认。"
+    ]
+  }
+}

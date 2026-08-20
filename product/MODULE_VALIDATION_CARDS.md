@@ -25,13 +25,13 @@ Version: 1.0
 - User Question：系统给出的角色、事件和冲突摘要是否足以支持营销方向选择？
 - Input：真实 FactSet；当前已验证输入主要为 OCR facts。
 - Tool：StoryReasoningWorkflow。
-- Inspectable Output：真实运行 Artifact lineage；`scripts/accept_e07_story_real_data.py`。
-- Machine Checks：四阶段 Workflow 和 Artifact 持久化成功。
+- Inspectable Output：`outputs/vc002_episode_08/comparison_card.md`、`comparison_card.json`、`evidence_manifest.json`、完整原片证据段、三个纠正后独立 Claim 原声片段和九张关键帧；真实 Artifact lineage。
+- Machine Checks：Episode 8 `RawProviderResponse→SpeechObservation→FactSet→StoryGraph` exact refs 全部落库可读，payload checksum 重算一致；纠正后三个证据片段均由输出侧 accurate seek 生成并含 video/audio，时间窗、关键帧、文件和 checksum 已验证；430 passed / 5 skipped。
 - Human Review Question：摘要有没有关键事实错误？是否漏掉决定 Hook 的主要冲突？
-- Human Decision：unreviewed；当前 OCR-only 运行产生零事件，不能评价剧情理解效果。
+- Human Decision：`approved`（2026-08-19，项目负责人）。系统列出的 Episode 8 三条事实信息均确认正确；首版证据片段 seek 错位经纠正后，Claim 2 已再次人工确认正确。Gate 1 Review `46165292-cb25-4f2e-a756-06196607ac50` 已正式批准 exact StoryGraph，范围仅为 transcript-grounded factual summary。
 - Known Failure / Fallback：允许人工填写最小 Story Brief，并保留来源时间码。
-- Current Maturity：Workflow=M2 Tool Verified；Story Brief evidence gate=M1 Code Verified；内容效果仍为 unreviewed。Evidence gate 已阻断不存在的 transcript 摘录，并将语义蕴含保持 confidence unavailable，尚无真实 persisted Story Brief。
-- Next Smallest Proof：接入真实 SpeechObservation→FactSet exact refs，落库 StoryGraph；选一个 3–5 分钟片段，提供人工 Story Brief 与系统 Story 输出并排审核。
+- Current Maturity：Delivery=M4 Slice Integrated；Episode 8 factual-summary Effect=M3 Human Useful。语义蕴含保持 confidence unavailable、L1 review required，不外推为通用 Story Understanding。
+- Next Smallest Proof：使用该 Approved Story 执行 VC-003 的三候选 Gate 2 人工选择。
 - First Usable Cut Blocker：yes，但允许人工 Story Brief 兜底，不阻塞于完整 E06/E07 production qualification。
 
 ## VC-003 — E08 Marketing Strategy
@@ -40,13 +40,13 @@ Version: 1.0
 - User Question：候选 Hook 和营销方向是否比人工从零构思更快、更好比较？
 - Input：一个真实、人工确认的 Story Brief。
 - Tool：Selling Point、Hook、Strategy Candidate、Gate 2。
-- Inspectable Output：Strategy comparison package 和 Review Web。
+- Inspectable Output：`outputs/vc003_episode_08/gate2_candidates.json`；持久化 Strategy comparison package `164a0d02-c265-4c3d-bbed-5af2ef52fc9e@1`。
 - Machine Checks：契约、候选边界、Gate 2 已测试。
 - Human Review Question：至少有一个方向值得制作吗？Hook 是否真实且有吸引力？
-- Human Decision：unreviewed。
+- Human Decision：`approved`（2026-08-19，项目负责人）——Gate 2 Review `7734969e-1caa-4a3c-9831-a43c66798cd3` 正式批准 **选项 1「威胁倒叙」**（Decision `972be1c1-d867-48bf-b0b2-77f368547ed5`），选择 Strategy `82f2cdc4-bdf6-4e91-915c-c3e04fd95a3b` / Hook `9cddcf54-e497-4db0-b516-b59eb6e25786`，发布 `approved_creative_brief`（CreativeBrief `bc2c693e-8768-40fc-84d5-fcc00946f80a@1`）与 `approved_variant_plan`（VariantPlan `58a7c392-64f3-4d81-b1df-fbcfedb10c1b@1`）双 pointer。范围仅批准 Episode 8 营销方向，不证明人物身份或通用自动策略理解。
 - Known Failure / Fallback：人工直接指定方向、Hook 和目标时长。
-- Current Maturity：M1 Code Verified。
-- Next Smallest Proof：用 VC-002 的同一片段生成 3 个候选，由产品负责人选择或全部拒绝。
+- Current Maturity：Delivery=M2 Tool Verified；Effect=M3 Human Useful（Episode 8 单方向人工选择，不外推通用策略生成）。
+- Next Smallest Proof：**已完成（2026-08-19）**——以 approved CreativeBrief/VariantPlan 为输入边界执行 Episode 8 Clip、Narration、Timeline 生产，经人工 checkpoint 批准后走通 E10/E11 canonical 全链（IndexTTS 配音 + 混音 + CJK 字幕），候选 `outputs/vc003_episode_08/audio/canonical_e11.mp4` 获项目负责人 `useful`（State v99）。这是首次在真实 approved Story→Brief→Timeline→E10/E11 全链上人工验收。
 - First Usable Cut Blocker：yes，但支持人工策略兜底。
 
 ## VC-004 — E09 Creative Timeline

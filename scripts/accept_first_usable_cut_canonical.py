@@ -253,10 +253,19 @@ def _commit_blob(
     return committed.metadata.uri, committed.metadata.checksum
 
 
-def _new_narration(original: NarrationLineSet, manifest: dict[str, object]) -> NarrationLineSet:
+def _new_narration(
+    original: NarrationLineSet,
+    manifest: dict[str, object],
+    source_indexes: tuple[int, ...] | None = None,
+) -> NarrationLineSet:
     raw_lines = manifest["narration_lines"]
     assert isinstance(raw_lines, list)  # nosec B101
-    source_indexes = (0, 0, 1, 2, 2, 2, 3)
+    if source_indexes is None:
+        source_indexes = (
+            tuple(range(len(raw_lines)))
+            if len(raw_lines) == len(original.lines)
+            else (0, 0, 1, 2, 2, 2, 3)
+        )
     lines = []
     for raw, source_index in zip(raw_lines, source_indexes, strict=True):
         assert isinstance(raw, dict)  # nosec B101
@@ -507,7 +516,12 @@ def _conformed_timeline(
     )
 
 
-def prepare(profile: AcceptanceProfile = FIRST_CUT) -> dict[str, object]:
+def prepare(
+    profile: AcceptanceProfile = FIRST_CUT,
+    mixed_audio_path: Path | None = None,
+    loudness_lufs: float = -20.3,
+    true_peak_dbtp: float = -2.6,
+) -> dict[str, object]:
     settings = get_settings()
     output_dir = profile.output_dir
     manifest = json.loads((output_dir / "manifest.json").read_text(encoding="utf-8"))
@@ -821,22 +835,25 @@ def prepare(profile: AcceptanceProfile = FIRST_CUT) -> dict[str, object]:
             rights_class="internal-preview",
         )
         mixed_path = output_dir / "mixed_audio.wav"
-        subprocess.run(  # nosec B603 B607
-            [
-                "ffmpeg",
-                "-hide_banner",
-                "-loglevel",
-                "error",
-                "-y",
-                "-i",
-                str(output_dir / profile.proof_video_name),
-                "-vn",
-                "-c:a",
-                "pcm_s16le",
-                str(mixed_path),
-            ],
-            check=True,
-        )
+        if mixed_audio_path is None:
+            subprocess.run(  # nosec B603 B607
+                [
+                    "ffmpeg",
+                    "-hide_banner",
+                    "-loglevel",
+                    "error",
+                    "-y",
+                    "-i",
+                    str(output_dir / profile.proof_video_name),
+                    "-vn",
+                    "-c:a",
+                    "pcm_s16le",
+                    str(mixed_path),
+                ],
+                check=True,
+            )
+        else:
+            mixed_path = mixed_audio_path
         mixed_ref = service.persist_mixed_audio(
             connection,
             audio=mixed_path.read_bytes(),
@@ -844,8 +861,8 @@ def prepare(profile: AcceptanceProfile = FIRST_CUT) -> dict[str, object]:
                 mix_plan_ref=mix_ref,
                 audio_blob_ref="pending-commit",
                 duration=conformed.duration,
-                integrated_loudness_lufs=-20.3,
-                true_peak_dbtp=-2.6,
+                integrated_loudness_lufs=loudness_lufs,
+                true_peak_dbtp=true_peak_dbtp,
             ),
             project_id=project_id,
             run_id=run_id,

@@ -1,0 +1,746 @@
+{
+  "scope": "D5 minimal annotation set (3 episodes x 8 frames); owner-approved 2026-08-19",
+  "instructions": {
+    "ocr_reference_text": "逐字写出画面中可见文本（字幕/招牌/证件）；无文本留空",
+    "det_reference_boxes": "列出人物/关键物体（如 person: 2人, 左上；card: 中央）——先文本描述，精确框可选",
+    "vlm_claim_verdict": "一句话：画面是否与剧情相关（related/not）+ 是否含幻觉信息（hallucinated yes/no）",
+    "machine_prefill_note": "以下 machine_prefill 为 research 机器输出，仅供提示，不作为参考标准；请以画面实际内容为准填写/修正三栏标注。"
+  },
+  "frames": [
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f01_07.02s.jpg",
+      "time_seconds": 7.02,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "别赶我走好不好",
+            "score": 0.9564089179039001
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9595434665679932
+          },
+          {
+            "label": "unknown",
+            "score": 0.939805805683136
+          }
+        ],
+        "vlm_description": "夜晚的简陋小屋内，一名裹着灰布、穿粉色碎花睡衣的女子神情凄然恳求地看向身旁闭眼的男子，画面下方配文“别赶我走 好不好”，窗外月色透过窗格照进屋内，墙面贴有旧报纸，地面铺着竹编凉席，是带有情感冲突的剧情场景。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f02_21.06s.jpg",
+      "time_seconds": 21.06,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.898309588432312
+          },
+          {
+            "label": "unknown",
+            "score": 0.547992467880249
+          }
+        ],
+        "vlm_description": "一只手握着带柄的木盖，准备盖在内部底部有谷物状物质的老旧深色陶制大缸上，背景是带有裂缝的墙面，呈现出传统制作相关的室内场景。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f03_35.10s.jpg",
+      "time_seconds": 35.1,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "赵海霞",
+            "score": 0.9999580979347229
+          },
+          {
+            "text": "陈云小姨子",
+            "score": 0.9992548227310181
+          },
+          {
+            "text": "卖给家暴男李二狗",
+            "score": 0.9998877644538879
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9808579087257385
+          }
+        ],
+        "vlm_description": "画面中，被标注为陈云小姨子的赵海霞身处贴满旧报纸的昏暗室内，身着碎花粉色背心的她满脸泪水、神情悲痛，画面下方文字显示剧情内容为她被卖给家暴男李二狗。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f04_49.14s.jpg",
+      "time_seconds": 49.14,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "呜呜",
+            "score": 0.9880423545837402
+          },
+          {
+            "text": "(门外哭声)",
+            "score": 0.9987756609916687
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.976814329624176
+          }
+        ],
+        "vlm_description": "神色凝重的短发男子身着破旧的内搭与外套，身处带有木格窗的室内，画面下方标注着“呜呜（门外哭声）”的剧情文本，整体氛围压抑。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f05_63.18s.jpg",
+      "time_seconds": 63.18,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "别蹲在这儿哭了",
+            "score": 0.9685965180397034
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9694920778274536
+          },
+          {
+            "label": "unknown",
+            "score": 0.9178122282028198
+          }
+        ],
+        "vlm_description": "夜晚的乡村户外场景中，身着蓝色旧式上衣的男子站在一旁，面对蹲着、以手捂嘴哭泣的穿带花浅色裙装的女子，画面下方配有剧情文本“别蹲在这儿哭了”，背景可见破旧房屋与枯树。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f06_77.22s.jpg",
+      "time_seconds": 77.22,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "我就算再浑",
+            "score": 0.999208927154541
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9781161546707153
+          }
+        ],
+        "vlm_description": "该画面为影视片段截图，展现了一名留寸头、皮肤黝黑带汗渍、身穿衣领破损毛边深色旧衣的男子，他神情略带激动，下方配有文字“我就算再浑”，背景偏暗蓝色，右侧露出另一人物的头部边缘。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f07_91.26s.jpg",
+      "time_seconds": 91.26,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9553227424621582
+          },
+          {
+            "label": "unknown",
+            "score": 0.7808656096458435
+          }
+        ],
+        "vlm_description": "昏暗的环境里，一名穿着藏蓝色中式粗布对襟上衣的男子，低头看向身前的竹编筐，神情沉凝，所处空间看起来像是简陋的石砌室内。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-1982",
+      "episode": "e01",
+      "frame": "e06-1982_e01_f08_105.30s.jpg",
+      "time_seconds": 105.3,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "F",
+            "score": 0.8854724168777466
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9746006727218628
+          }
+        ],
+        "vlm_description": "昏暗的室内场景里，一位身着带细小图案粉色吊带的长发女性，面露极度惊恐的神情，双眼圆睁、脸上挂着泪痕、嘴巴微张。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f01_14.07s.jpg",
+      "time_seconds": 14.07,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "剧情纯属虚构请勿模仿",
+            "score": 0.9835923910140991
+          },
+          {
+            "text": "内容由A生成",
+            "score": 0.9996299743652344
+          },
+          {
+            "text": "空间难道是我的金手指啊",
+            "score": 0.9999174475669861
+          },
+          {
+            "text": "又子劇場",
+            "score": 0.9961212873458862
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9809499382972717
+          }
+        ],
+        "vlm_description": "这是AI生成的剧情相关画面，一名表情兴奋的年轻男子，画面标注有“剧情纯属虚构请勿模仿”“内容由AI生成”的字样，底部配文“空间难道是我的金手指啊”。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f02_42.20s.jpg",
+      "time_seconds": 42.2,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "剧情纯属虚构请勿模仿",
+            "score": 0.9600958824157715
+          },
+          {
+            "text": "内容由A生成",
+            "score": 0.9716122150421143
+          },
+          {
+            "text": "便遇到一头200多斤的麋鹿",
+            "score": 0.999190092086792
+          },
+          {
+            "text": "又子劇場",
+            "score": 0.994084894657135
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9815315008163452
+          }
+        ],
+        "vlm_description": "这是AI生成的虚构剧情相关画面，为神情凝重、身着灰色衣物的年轻男性的面部特写，画面配有“剧情纯属虚构请勿模仿”“内容由AI生成”“便遇到一头200多斤的麋鹿”“叉子劇場”的文字，剧情内容涉及该人物遇到一头200多斤的麋鹿。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f03_70.33s.jpg",
+      "time_seconds": 70.33,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "情纯",
+            "score": 0.9992817640304565
+          },
+          {
+            "text": "内容由A生成",
+            "score": 0.9731984734535217
+          },
+          {
+            "text": "当场晕死了过去",
+            "score": 0.999850332736969
+          },
+          {
+            "text": "又子劇場",
+            "score": 0.9785047769546509
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.8855433464050293
+          },
+          {
+            "label": "unknown",
+            "score": 0.7193512916564941
+          }
+        ],
+        "vlm_description": "雪地松树林中，一头鹿用鹿角将一名后仰的男子挑起，画面下方配文“当场晕死了过去”，右侧标注“内容由AI生成”，属于叉子剧场的AI生成内容。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f04_98.47s.jpg",
+      "time_seconds": 98.47,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "内容由A生成",
+            "score": 0.9993566870689392
+          },
+          {
+            "text": "你们家穷的叮当响",
+            "score": 0.9990986585617065
+          },
+          {
+            "text": "又子劇場",
+            "score": 0.9983303546905518
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9825656414031982
+          }
+        ],
+        "vlm_description": "该画面为AI生成的内容，展示了人物的嘴部及上身局部，人物穿着带有盘扣的深灰色旧中式棉衣，画面底部配有台词文字“你们家穷的叮当响”，右侧标注“内容由AI生成”，底部有“又子劇場”字样。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f05_126.60s.jpg",
+      "time_seconds": 126.6,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "剧情",
+            "score": 0.8361405730247498
+          },
+          {
+            "text": "内容由A生成",
+            "score": 0.9989268183708191
+          },
+          {
+            "text": "但是上面根本没有拿嫂子抵债这一说",
+            "score": 0.9996429681777954
+          },
+          {
+            "text": "又子劇場",
+            "score": 0.9142548441886902
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.982646644115448
+          }
+        ],
+        "vlm_description": "该画面为AI生成的剧情类内容，呈现了一位身着灰绿色中式旧立领上衣、神情悲伤的女性，画面下方配有文字“但是上面根本没有拿嫂子抵债这一说”，右侧标注有“内容由AI生成”字样。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f06_154.74s.jpg",
+      "time_seconds": 154.74,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "剧情纯属虚构",
+            "score": 0.9971281886100769
+          },
+          {
+            "text": "内容由A生成",
+            "score": 0.9997637271881104
+          },
+          {
+            "text": "大可来找我呀",
+            "score": 0.9996898770332336
+          },
+          {
+            "text": "又子劇場",
+            "score": 0.8700062036514282
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.978308379650116
+          }
+        ],
+        "vlm_description": "这是一张AI生成的人物面部特写图，场景昏暗，图中男性面部神情略带挑衅，下方配有字幕“大可来找我呀”，画面还标注有“剧情纯属虚构”“内容由AI生成”“叉子劇場”的字样。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f07_182.87s.jpg",
+      "time_seconds": 182.87,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "剧情纯衣构请勿模仿",
+            "score": 0.9137871265411377
+          },
+          {
+            "text": "内容由A生成",
+            "score": 0.9320968985557556
+          },
+          {
+            "text": "嫂子将自己唯一一件棉袄脱给小伙",
+            "score": 0.9919090270996094
+          },
+          {
+            "text": "又子劇場",
+            "score": 0.9711119532585144
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.6009286642074585
+          }
+        ],
+        "vlm_description": "这是由AI生成的剧情画面，画面中两只手正在处理一件深色棉袄，配文说明剧情为“嫂子将自己唯一一件棉袄脱给小伙”，画面还带有“剧情纯属虚构请勿模仿”“内容由AI生成”“叉子劇場”的文字标注。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-07",
+      "episode": "hot",
+      "frame": "e06-series-07_hot_f08_211.00s.jpg",
+      "time_seconds": 211.0,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "出",
+            "score": 0.9028590321540833
+          },
+          {
+            "text": "容由A生成",
+            "score": 0.9964787364006042
+          },
+          {
+            "text": "子劇場",
+            "score": 0.8134511113166809
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9384990930557251
+          },
+          {
+            "label": "unknown",
+            "score": 0.9084654450416565
+          },
+          {
+            "label": "unknown",
+            "score": 0.9028781056404114
+          }
+        ],
+        "vlm_description": "日落黄昏的雪地木屋前，两名男子拖拽着一名赤脚女子，画面右侧标注“内容由AI生成”，底部有“父子劇場”字样，是AI生成的剧情类场景。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f01_08.98s.jpg",
+      "time_seconds": 8.98,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9815127849578857
+          }
+        ],
+        "vlm_description": "画面里是一位身处雪地环境的年轻男子，他脸上和深色中式盘扣上衣沾着雪渍与污渍，手持带雪的木棍，神情紧绷，背景为朦胧的雪景。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f02_26.93s.jpg",
+      "time_seconds": 26.93,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9806792736053467
+          }
+        ],
+        "vlm_description": "雪天的荒野中，一名身着破旧深色棉衣的年轻男子蹲在地上，手持沾有积雪的步枪，身旁麻袋的开口处露出数块金块，背景可见枯树与积雪的山峦。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f03_44.88s.jpg",
+      "time_seconds": 44.88,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "这么大一头野猪",
+            "score": 0.9993215799331665
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9609299302101135
+          }
+        ],
+        "vlm_description": "画面中，一名身着破旧深色衣物的年轻男子身处带有残雪的昏暗树林里，持枪瞄准，下方配有文字“这么大一头野猪”，呈现出准备狩猎野猪的场景。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f04_62.83s.jpg",
+      "time_seconds": 62.83,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "爹、娘！家里谁在呢？",
+            "score": 0.9993335008621216
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.8280647993087769
+          },
+          {
+            "label": "unknown",
+            "score": 0.5329529047012329
+          }
+        ],
+        "vlm_description": "身着中式棉衣的男子在落有残雪的乡村院子里，将一头野猪扛在肩上，对着农舍方向呼喊“爹、娘！家里谁在呢？”。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f05_80.78s.jpg",
+      "time_seconds": 80.78,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "这大野猪一路扛回来",
+            "score": 0.9994825720787048
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.958173394203186
+          },
+          {
+            "label": "unknown",
+            "score": 0.9409374594688416
+          }
+        ],
+        "vlm_description": "冬季带残雪的乡村农家院内，一位穿深灰棉衣、系皮带、蹬高筒靴的年轻男子背身朝木屋走去，身旁穿深蓝色棉服的年长女子望着他，背景有土坯房、秸秆堆、柴火垛与木栅栏，画面下方配文“这大野猪一路扛回来”，呈现男子刚扛回野猪在农家院的场景。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f06_98.74s.jpg",
+      "time_seconds": 98.74,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "你跟爹交个实底",
+            "score": 0.999933660030365
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.976292610168457
+          },
+          {
+            "label": "unknown",
+            "score": 0.9642025232315063
+          }
+        ],
+        "vlm_description": "简陋土墙室内，一位身着带补丁旧衣的年长父亲对着背对镜头的年轻男子，表情严肃且攥紧拳头，配文“你跟爹交个实底”，呈现父子间要求说实话的对话场景。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f07_116.69s.jpg",
+      "time_seconds": 116.69,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [
+          {
+            "text": "底下挖出来的",
+            "score": 0.9635191559791565
+          }
+        ],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9567635655403137
+          },
+          {
+            "label": "unknown",
+            "score": 0.9277701377868652
+          },
+          {
+            "label": "unknown",
+            "score": 0.82371985912323
+          },
+          {
+            "label": "unknown",
+            "score": 0.5754520893096924
+          }
+        ],
+        "vlm_description": "简陋破旧的土屋内，穿深色旧棉衣的年轻男子坐于放着步枪的木桌前，表情惊讶地与对面站着的老年妇女交谈，画面下方配有文字“底下挖出来的”。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    },
+    {
+      "series": "e06-series-12",
+      "episode": "e01",
+      "frame": "e06-series-12_e01_f08_134.64s.jpg",
+      "time_seconds": 134.64,
+      "ocr_reference_text": "",
+      "det_reference_boxes": "",
+      "vlm_claim_verdict": "",
+      "machine_prefill": {
+        "ocr_detected_texts": [],
+        "detection_objects": [
+          {
+            "label": "unknown",
+            "score": 0.9644697904586792
+          },
+          {
+            "label": "unknown",
+            "score": 0.8204028606414795
+          },
+          {
+            "label": "unknown",
+            "score": 0.6749687790870667
+          }
+        ],
+        "vlm_description": "画面中，一只手置于老旧木桌之上，掌心托着一枚金锭，手旁摆放着筷子与带茶托的瓷碗，手腕露出深蓝色旧衣袖，配文“爹，我有这么差劲吗？”，呈现出晚辈向父亲展示金锭时流露自我怀疑的剧情。",
+        "note": "machine research prefill; owner must verify/correct before use as reference"
+      }
+    }
+  ]
+}
