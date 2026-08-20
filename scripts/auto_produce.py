@@ -66,7 +66,13 @@ ACTOR = ActorRef.model_validate({"kind": "model", "id": "auto-produce"})
 TRACE_ID = "8e009000000000000000000000000009"
 PROJECT_ID = UUID("dd397853-79bc-4e6f-a540-bb1c296d6936")
 WORK_ROOT = ROOT / "tmp" / "auto_produce"
-MIN_BEAT_SECONDS = 4.0
+MIN_BEAT_SECONDS = 7.0
+MAX_BEAT_SECONDS = 10.0
+ROLE_KEYWORDS = {
+    "威胁": ("盯住", "弄死", "威胁", "杀", "盯", "扬言", "不还", "动手"),
+    "交易": ("成交", "购买", "买", "卖", "交易", "这两样"),
+    "付款": ("密码", "卡", "付款", "交付", "存有", "余额"),
+}
 
 
 def _seconds(timestamp: str) -> float:
@@ -135,46 +141,80 @@ def _asr(audio: Path) -> list[dict[str, object]]:
     ]
 
 
-def _extract_story(transcript: str) -> list[dict[str, object]]:
-    prompt = (
-        "你是短剧剧情分析师。从以下对白转写中提取恰好 3 个剧情事件，"
-        "角色必须分别是：交易（有人花钱买东西）、付款（交钱/交卡/密码）、"
-        "威胁（盯住/威胁/报复）。输出 JSON 数组，每项："
-        "{role: '交易'|'付款'|'威胁', description: 一句客观描述, dialogue: 对应原对白片段}。"
-        "三个角色各一个，顺序按对白出现先后。只写转写中确实发生的事，"
-        "不推断心理，不写人物姓名（用'对方/买方'等替代）。"
-        f"转写：{transcript[:2000]}"
+def _extract_story(transcript: str, segments: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Deterministically build the three story events from the ASR segments.
+
+    Each role is located by its dialogue keywords (交易/付款/威胁); the event
+    description and dialogue come from the matched ASR segment, so the pipeline
+    does not depend on non-deterministic LLM event extraction. The LLM is still
+    used later for narration.
+    """
+    roles = (
+        ("交易", ("成交", "购买", "买", "卖", "这两样")),
+        ("付款", ("密码", "卡", "付款", "存有", "余额")),
+        ("威胁", ("盯住", "弄死", "威胁", "扬言", "不还", "动手")),
     )
-    raw = _llm(prompt)
-    start = raw.find("[")
-    end = raw.rfind("]") + 1
-    if start < 0 or end <= start:
-        raise RuntimeError(f"story extraction returned no JSON: {raw[:200]}")
-    events = json.loads(raw[start:end])
-    if not isinstance(events, list) or not events:
-        raise RuntimeError("story extraction produced empty events")
-    roles = {str(e.get("role")) for e in events}
-    if {"交易", "付款", "威胁"} - roles:
-        raise RuntimeError(f"story roles incomplete: {roles}")
-    return events[:3]
+    events: list[dict[str, object]] = []
+    for role, keywords in roles:
+        matched = None
+        for seg in segments:
+            seg_text = str(seg["text"])
+            if any(k in seg_text for k in keywords):
+                matched = seg
+                break
+        if matched is None:
+            raise RuntimeError(f"ASR has no segment for role {role}")
+        events.append(
+            {
+                "role": role,
+                "description": str(matched["text"])[:120],
+                "dialogue": str(matched["text"]),
+            }
+        )
+    return events
 
 
 def _map_windows(
-    events: list[dict[str, object]], segments: list[dict[str, object]]
+    events: list[dict[str, object]],
+    segments: list[dict[str, object]],
+    source_duration: float,
 ) -> list[dict[str, object]]:
-    """Map each story event to an ASR evidence window by dialogue keyword overlap."""
+    """Assign each role a non-overlapping scene window.
+
+    The three role anchors (交易/付款/威胁) split the timeline: each role gets
+    the span from its anchor start to the next role's anchor start (the last
+    role ends at the source end). No merging, so beats never overlap. Windows
+    are later expanded/capped by the beat-sizing step.
+    """
+    anchors: dict[str, float] = {}
     for event in events:
+        role = str(event.get("role") or "")
         dialogue = str(event.get("dialogue") or "")
         norm = "".join(ch for ch in dialogue if ch.isalnum())
-        hits = []
+        anchor = None
         for seg in segments:
             seg_norm = "".join(ch for ch in str(seg["text"]) if ch.isalnum())
             if norm and norm[:6] in seg_norm:
-                hits.append(seg)
-        if hits:
-            event["window"] = [hits[0]["start"], hits[-1]["end"]]
-        else:
-            event["window"] = None
+                anchor = float(seg["start"])
+                break
+        if anchor is None:
+            for seg in segments:
+                seg_text = str(seg["text"])
+                if any(k in seg_text for k in ROLE_KEYWORDS.get(role, ())):
+                    anchor = float(seg["start"])
+                    break
+        if anchor is None:
+            raise RuntimeError(f"no ASR anchor for role {role}")
+        anchors[role] = anchor
+        event["anchor"] = anchor
+    order = ["交易", "付款", "威胁"]
+    starts = [anchors[r] for r in order]
+    for _idx, event in enumerate(events):
+        role = str(event.get("role") or "")
+        position = order.index(role)
+        window_start = starts[position]
+        window_end = starts[position + 1] if position + 1 < len(starts) else source_duration
+        event["window"] = [round(window_start, 2), round(window_end, 2)]
     return events
 
 
@@ -328,8 +368,25 @@ def main() -> int:
     print(f"  2/8 asr ok: {len(segments)} segments")
 
     # Phase 3: story events from the transcript.
-    events = _extract_story(transcript)
-    events = _map_windows(events, segments)
+    events = _extract_story(transcript, segments)
+    source_duration = float(
+        subprocess.run(  # nosec B603 B607
+            [
+                "ffprobe",
+                "-v",
+                "error",
+                "-show_entries",
+                "format=duration",
+                "-of",
+                "csv=p=0",
+                str(source),
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+    )
+    events = _map_windows(events, segments, source_duration)
     (WORK_ROOT / f"{run_id}_story.json").write_text(
         json.dumps(events, ensure_ascii=False, indent=2), encoding="utf-8"
     )
@@ -383,8 +440,8 @@ def main() -> int:
         if not window:
             continue
         start, end = float(window[0]), float(window[1])
-        # Expand a too-narrow ASR window symmetrically (bounded by the source)
-        # so beats stay at or above MIN_BEAT_SECONDS.
+        # Expand a too-narrow ASR scene window symmetrically (bounded by the
+        # source) so beats stay at or above MIN_BEAT_SECONDS.
         if end - start < MIN_BEAT_SECONDS:
             need = MIN_BEAT_SECONDS - (end - start)
             pad_l = need / 2
@@ -392,42 +449,46 @@ def main() -> int:
             end = min(source_duration, end + (need - (pad_l - (start - (start - pad_l)))))
             if end - start < MIN_BEAT_SECONDS:
                 start = max(0.0, end - MIN_BEAT_SECONDS)
-        frames = []
-        t = start + 0.5
-        while t <= end - 0.5:
-            frame_path = WORK_ROOT / f"{run_id}_ev{index}_{t:06.2f}.jpg"
-            subprocess.run(  # nosec B603 B607
-                [
-                    "ffmpeg",
-                    "-v",
-                    "error",
-                    "-ss",
-                    f"{t:.2f}",
-                    "-i",
-                    str(source),
-                    "-frames:v",
-                    "1",
-                    "-q:v",
-                    "2",
-                    "-y",
-                    str(frame_path),
-                ],
-                check=True,
-            )
-            frames.append(
-                FrameRelevance(t, _vlm_verdict(frame_path, str(event["description"])), "")
-            )
-            t = round(t + 1.0, 2)
-        refined = refine_evidence_window(frames, (start, end))
-        # Floor the beat duration at MIN_BEAT_SECONDS so short VLM verdicts do
-        # not collapse a beat below a usable clip length.
-        duration = max(MIN_BEAT_SECONDS, round(refined[1] - refined[0], 3))
-        end = min(refined[0] + duration, end)
+        # Only refine with VLM verdicts when the scene window exceeds the max
+        # beat length; otherwise keep the full scene (relevance verdicts often
+        # only fire on the spoken frames and would over-narrow a short scene).
+        if end - start > MAX_BEAT_SECONDS:
+            frames = []
+            t = start + 0.5
+            while t <= end - 0.5:
+                frame_path = WORK_ROOT / f"{run_id}_ev{index}_{t:06.2f}.jpg"
+                subprocess.run(  # nosec B603 B607
+                    [
+                        "ffmpeg",
+                        "-v",
+                        "error",
+                        "-ss",
+                        f"{t:.2f}",
+                        "-i",
+                        str(source),
+                        "-frames:v",
+                        "1",
+                        "-q:v",
+                        "2",
+                        "-y",
+                        str(frame_path),
+                    ],
+                    check=True,
+                )
+                frames.append(
+                    FrameRelevance(t, _vlm_verdict(frame_path, str(event["description"])), "")
+                )
+                t = round(t + 1.0, 2)
+            refined = refine_evidence_window(frames, (start, end))
+            if refined[1] - refined[0] >= MIN_BEAT_SECONDS:
+                start, end = refined
+        duration = min(MAX_BEAT_SECONDS, max(MIN_BEAT_SECONDS, end - start))
+        end = min(start + duration, source_duration)
         key = _beat_key(event) or f"beat{index}"
-        windows_json[key] = [refined[0], round(end - refined[0], 3)]
+        windows_json[key] = [start, round(end - start, 3)]
         print(
-            f"     beat{index}: ASR {start:.2f}-{end:.2f} -> "
-            f"refined {refined[0]:.2f}-{refined[1]:.2f}"
+            f"     beat{index}: ASR {float(window[0]):.2f}-{float(window[1]):.2f} -> "
+            f"final {start:.2f}-{end:.2f} ({end - start:.2f}s)"
         )
     if not windows_json:
         raise SystemExit("no clip windows could be derived from ASR")

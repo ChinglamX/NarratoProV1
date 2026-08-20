@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 122
+State Version: 123
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-20 全自动流水线加固：稳定产出 28s 成片（State v123）：`auto_produce.py` 加固——① LLM 剧情提取改**确定性 ASR 角色锚点**（交易/付款/威胁按对白关键词定位，LLM 仅写解说）；② beat 窗口改**锚点分段**（三角色锚点切时间轴，天然不重叠）；③ 时长上下限（MIN 7s / MAX 10s）+ 终点钳制源时长（修复 clip index 拒绝越界窗口导致的 coverage-incomplete）；④ 场景合并封顶。run `35c0e059`（Episode 8 源）全 8 阶段零停点：sale 16.09–26.09 / payment 28.59–38.59 / threat 45.09–53.06，**成片 27.97s**（720×1280 H.264/AAC，6.5MB，TechnicalQC passed）。`make check` 全绿。自动内容：ASR 17 段确定性分角色、3 句 LLM 解说。下一步待加固：全流程幂等（每阶段产物缓存防重复）、跨素材验证、timeline 驱动泛化。
 
 - 2026-08-20 全自动出片工作流首跑成功（State v122）：owner 授权「全自动工作流 + 移除版权校验 + 实现中不决策」。新增 `scripts/auto_produce.py`（8 阶段端到端编排：ingest → FunASR ASR → LLM 剧情提取（强制 交易/付款/威胁 三角色）→ 自动策略选择 → ASR 证据窗口+VLM 精修自动选镜 → LLM 解说+规则校验 → E09 Timeline（--auto-approve 不停点）→ E10/E11 成片+QC）。`produce_vc003_timeline.py` 新增 `--auto-approve`；`produce_vc003_audio.py` 新增 `--narration-texts/--source-run-id/--source-timeline-id/--narration-starts/--output-name`；`personal_cut.py` 移除 rights/Gate 阻断校验（owner 声明通过，保留 manifest 结构校验）；`accept_first_usable_cut_canonical.py` execute 输出名可配。**首跑 run `1c829b7b`（源=Episode 8）全 8 阶段零人工停点，成片 `outputs/vc003_episode_08/audio/auto_1c829b7b-….mp4`（13.47s、720×1280 H.264/AAC、TechnicalQC passed）**。自动内容：ASR 17 段、3 事件（角色齐全）、自动窗口 sale 15.89/payment 27.89/threat 41.88、3 句自动解说。`make check` 全绿。已知待加固：LLM 角色提取偶发失败（需重试）、窗口/时长更精细、timeline 泛化（当前 beat 语义仍绑定 Episode 8 驱动）。
 
