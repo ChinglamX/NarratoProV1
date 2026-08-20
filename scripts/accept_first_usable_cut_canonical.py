@@ -969,7 +969,7 @@ async def execute(
         trace_id=TRACE_ID,
         plan=plan,
         resource_profile=_pointer(RESOURCE_PROFILE),
-        output_path=str((profile.output_dir / "canonical_e11.mp4").resolve()),
+        output_path=str((profile.output_dir / profile.proof_video_name).resolve()),
         ffmpeg_version="narratoai-image-ffmpeg-libass",
         ffmpeg_binary=str((Path("scripts/ffmpeg_libass_docker.sh")).resolve()),
     )

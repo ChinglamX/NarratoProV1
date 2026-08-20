@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 119
+State Version: 120
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 自动选镜 E10 research 成片 + D6 类别证据（State v120）：`produce_vc003_audio.py` 参数化（--source-run-id/--source-timeline-id/--narration-starts/--output-name，`execute()` 输出名随之可配）后，以自动选镜 Timeline（run `fa3a29bb`，MasterTimeline `9569a801…`）为源 + 修正解说渲染出 **自动选镜 E10 research 成片 `canonical_e11_auto.mp4`（24.00s，QC passed）**——自动选窗（ASR 证据 + VLM 精修）+ 配音/混音/字幕全链，字幕对齐 0–8/8–16/16–24s beat。已批准候选 `canonical_e11.mp4`（26s）在渲染中被覆盖后**已用默认参数重渲染恢复**（QC passed），两文件并存。D6 类别证据：24 帧 39 检测框中 person 31 个（可用），**其余 8 个全为 COCO 误分类**（陶缸→toilet、棉袄→tie、麋鹿→horse、野猪→elephant、金锭→donut/cup/bowl、炕→bed）——强支撑自定义类别（D6）。`make check` 全绿。
 
 - 2026-08-19 OCR 分层评估 + D4 设计注记（State v119）：工作表拆 `dialogue_text`/`watermark_text`，`accept_d5_metrics.py` 新增 `dialogue_only_cer`（水印剥离正则含乱码变体「纯衣构请勿模仿」）——**对白专用 CER = 0.0 / 0.0 / 0.1667**（e06-1982/s07/s12；唯一真实对白错误=s12_f08 漏识别；水印噪声完全可分离）。新增 `evaluation/evidence/d4_vlm_api_admission_design.md`：API 型 Provider 准入等价物设计（`ProviderApiIdentity` 可选字段：endpoint/model/api_schema_version/tos_version/invocation_checksum；`production_readiness_gaps` 对 external_cloud 走 API 分支豁免权重 checksum；Registry minor 升级 + 测试 + volcengine-ark 补 api_identity）。下一步待 owner：D6 类别决策、D4 设计采用与否、A 最终候选确认。
 

@@ -126,12 +126,36 @@ def main() -> int:
         action="store_true",
         help="reuse existing WAVs in the output dir instead of re-synthesizing",
     )
+    parser.add_argument("--source-run-id", default=str(APPROVED_RUN))
+    parser.add_argument(
+        "--source-timeline-id",
+        default="c537a05d-4c0c-4b69-9f57-83c7abe9c42a",
+        help="MasterTimeline artifact id to conform from",
+    )
+    parser.add_argument(
+        "--source-narration-id",
+        default="77def861-de71-4fec-80bb-0dca4bfac825",
+        help="NarrationLineSet artifact id for beat/ref mapping",
+    )
+    parser.add_argument(
+        "--narration-starts",
+        default="[0.0, 8.5, 16.0]",
+        help="JSON list of narration timeline_start_seconds",
+    )
+    parser.add_argument(
+        "--output-name",
+        default="canonical_e11.mp4",
+        help="final render filename inside the audio output dir",
+    )
     args = parser.parse_args()
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     wav_paths: list[Path] = []
     manifest_lines: list[dict[str, object]] = []
-    for index, (text, start) in enumerate(NARRATION, 1):
+    starts = [float(v) for v in json.loads(args.narration_starts)]
+    for index, (text, start) in enumerate(
+        zip((item[0] for item in NARRATION), starts, strict=True), 1
+    ):
         digest = hashlib.sha256(text.encode()).hexdigest()[:8]
         wav = OUTPUT_DIR / f"narration_{index}_{digest}.wav"
         if not args.skip_tts or not wav.is_file():
@@ -198,16 +222,29 @@ def main() -> int:
     lufs, peak = _measure_loudness(mixed)
     print(f"== mixed audio: {mixed}  I={lufs:.1f} LUFS  peak={peak:.1f} dBFS")
 
+    source_run_id = UUID(args.source_run_id)
     profile = AcceptanceProfile(
         name="vc003-episode8-audio",
         output_dir=OUTPUT_DIR,
-        source_run_id=APPROVED_RUN,
-        source_timeline=SOURCE_TIMELINE,
-        source_narration=SOURCE_NARRATION,
+        source_run_id=source_run_id,
+        source_timeline=ArtifactRef.model_validate(
+            {
+                "artifact_id": args.source_timeline_id,
+                "version": 1,
+                "artifact_type": "MasterTimeline",
+            }
+        ),
+        source_narration=ArtifactRef.model_validate(
+            {
+                "artifact_id": args.source_narration_id,
+                "version": 1,
+                "artifact_type": "NarrationLineSet",
+            }
+        ),
         source_media=None,
         total_duration=TOTAL_DURATION,
         actor_id="vc003-episode8-approved",
-        proof_video_name="canonical_e11.mp4",
+        proof_video_name=args.output_name,
     )
     prepared = prepare(profile, mixed_audio_path=mixed, loudness_lufs=lufs, true_peak_dbtp=peak)
     print("== E10 prepared ==")
