@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 114
+State Version: 115
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 Speech 基准汇总 + D5 指标计算器（State v115）：`evaluation/evidence/speech_baseline/speech_baseline_summary.json` 汇总 5 集定时 ASR——语音覆盖 51.9–72.7%、说话人簇 5–9、平均段长 1.5–2.9s（E09 demo 53.2%/7、ep7 51.9%/5、ep3 68.6%/9、ep2 72.7%/7、ep8 ~59%/17 段）；新增 `scripts/accept_d5_metrics.py`（owner 标注完成后一键计算：OCR CER / DET label 级 precision-recall（试标代理，非 IoU mAP）/ VLM claim 合规率，未标注时优雅跳过并提示）。下一步仍待 owner：D5 试标 1 集（标完即跑指标）、A 最终候选确认、Release Gate 3。
 
 - 2026-08-19 Git 归档 + D5 预标注（State v114）：提交 `7f37c98`（85 文件，+7236/−155，branch `codex/director-anchor-baseline`）——含 Episode 8 全链证据（Gate1→2→E09→E10→E11）、自动内容生成 research（VLM 选镜/ASR 证据/LLM 解说）、准入证据（IndexTTS checksum/FunASR 许可+checksum/5 集 Speech 基准/D5 标注包）、决策文档与 State v100–v113；媒体（MP4/WAV）不进入 Git，路径与 checksum 记录于 State/evidence。D5 标注包已机器预标注：新增 `scripts/prefill_d5_annotation.py` 对 24 帧跑 OCR/DET/VLM，`annotation_worksheet.json` 每帧含 `machine_prefill`（OCR 0–4 文本、DET 1–4 物体、VLM 描述全部成功）——owner 只需修正而非从零标注。下一步待 owner：D5 试标 1 集（e06-1982/e01 8 帧）、A 最终候选确认、Release Gate 3（另行确认）。
 
