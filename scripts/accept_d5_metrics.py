@@ -19,6 +19,7 @@ during annotation. Output: evaluation/evidence/d5_annotation_kit/metrics_report.
 from __future__ import annotations
 
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -32,6 +33,19 @@ def _normalize_ocr_text(value: str) -> str:
     space-insensitive trial OCR CER (documented; exact CER can re-introduce
     punctuation later)."""
     return "".join(ch for ch in value if ch not in _CJK_PUNCT and not ch.isspace())
+
+
+# Known fixed watermarks on the s07 (AI-generated) series, including the
+# truncation variants observed in machine output.
+_WATERMARK_PATTERN = re.compile(
+    r"剧情纯属虚构请勿模仿|剧情纯属虚构|纯衣构请勿模仿|衣构请勿模仿|情纯|"
+    r"内容由AI生成|内容由A生成|容由A生成|由AI生成|由A生成|又子劇場|子劇場|剧場|剧情"
+)
+
+
+def strip_watermarks(value: str) -> str:
+    """Remove known fixed-watermark substrings (and observed truncations)."""
+    return _WATERMARK_PATTERN.sub("", value)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -78,6 +92,8 @@ def main() -> int:
             "vlm_checked": 0,
             "vlm_ok": 0,
             "ocr_false_positive": 0,
+            "dialogue_ocr_total": 0,
+            "dialogue_cer_sum": 0.0,
         }
     )
     skipped = 0
@@ -87,6 +103,13 @@ def main() -> int:
         prefill = row.get("machine_prefill", {})
         owner_ocr = (row.get("ocr_reference_text") or "").strip()
         machine_text = "".join(item["text"] for item in prefill.get("ocr_detected_texts", []))
+        dialogue_ref = (row.get("dialogue_text") or "").strip()
+        if dialogue_ref:
+            stats["dialogue_ocr_total"] += 1
+            stats["dialogue_cer_sum"] += ocr_character_error_rate(
+                _normalize_ocr_text(dialogue_ref),
+                _normalize_ocr_text(strip_watermarks(machine_text)),
+            )
         if owner_ocr:
             stats["ocr_total"] += 1
             stats["cer_sum"] += ocr_character_error_rate(
@@ -130,6 +153,11 @@ def main() -> int:
                 "episode": ep,
                 "ocr_frames_annotated": stats["ocr_total"],
                 "ocr_false_positive_frames": stats["ocr_false_positive"],
+                "dialogue_only_cer": (
+                    round(stats["dialogue_cer_sum"] / stats["dialogue_ocr_total"], 4)
+                    if stats["dialogue_ocr_total"]
+                    else None
+                ),
                 "ocr_mean_cer": (
                     round(stats["cer_sum"] / stats["ocr_total"], 4) if stats["ocr_total"] else None
                 ),
