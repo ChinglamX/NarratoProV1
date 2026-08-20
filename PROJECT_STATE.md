@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 117
+State Version: 118
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 D5 全集标注完成（State v118）：owner 标注 24/24 帧（3 集），修复后 adapter 重跑全部检测——**逐集 OCR 平均 CER 0.167–0.193、DET person recall 全 1.0（precision 0.6–0.9）、VLM 合规 24/24=1.0**。OCR 错误定位：对白字幕基本全对（仅 s12_f08 漏识别对白「爹，我有这么差劲吗？」+ s07 f01/f02「AI」→「A」截断）；**主要误差来自固定水印**（顶部「剧情纯属虚构」遮挡/「又子劇場」水印/「AI 生成」截断）——支持 owner 预判「水印 vs 对白需分两层评估」。DET person 已可用（支撑 E07）；麋鹿/野猪/金锭等短剧类别仍缺（D6）。报告 `trial_report.md`。下一步建议：工作表拆分 dialogue/watermark 字段（正式 CER 只针对对白）、D6 类别决策、D4 VLM 准入证据。
 
 - 2026-08-19 DET adapter 解析 bug 修复（State v117）：试标发现 DET 全 unknown 的根因是 `paddle_detection.py` 误读 `page.get("labels")`（PaddleX DetResult 标签实际在 `boxes[].label`）——已修复并重跑 8 帧：**DET label 级 precision 0.8 / recall 1.0**（person 检出正常；1 误报为 f02「toilet」=陶缸被 COCO 误判）。OCR 与 VLM 指标不变（CER 0.1667/误报 1、合规 1.0）。D6 范围修正：person 等 COCO 类已可用（支撑 E07 identity 人物计数），卡/钱等短剧类别仍需自定义（`d6_class_system_options.md` 三方案更新）。`make check` 全绿。下一步：owner 标注剩余 2 集 16 帧（预填汇总已备于聊天/工作簿），或 D6 类别决策。
 
