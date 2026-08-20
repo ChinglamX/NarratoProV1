@@ -144,10 +144,12 @@ def _asr(audio: Path) -> list[dict[str, object]]:
 def _extract_story(transcript: str, segments: list[dict[str, object]]) -> list[dict[str, object]]:
     """Deterministically build the three story events from the ASR segments.
 
-    Each role is located by its dialogue keywords (交易/付款/威胁); the event
-    description and dialogue come from the matched ASR segment, so the pipeline
-    does not depend on non-deterministic LLM event extraction. The LLM is still
-    used later for narration.
+    Episode-8 role keywords (威胁/交易/付款) are honored when present so the
+    approved beat semantics keep working; otherwise the top-3 longest dialogue
+    segments become beat1/beat2/beat3, so any source can be planned without
+    keyword knowledge. Descriptions come from the matched ASR segment, so the
+    pipeline does not depend on non-deterministic LLM event extraction. The LLM
+    is still used later for narration.
     """
     roles = (
         ("交易", ("成交", "购买", "买", "卖", "这两样")),
@@ -156,21 +158,39 @@ def _extract_story(transcript: str, segments: list[dict[str, object]]) -> list[d
     )
     events: list[dict[str, object]] = []
     for role, keywords in roles:
-        matched = None
-        for seg in segments:
-            seg_text = str(seg["text"])
-            if any(k in seg_text for k in keywords):
-                matched = seg
-                break
-        if matched is None:
-            raise RuntimeError(f"ASR has no segment for role {role}")
-        events.append(
-            {
-                "role": role,
-                "description": str(matched["text"])[:120],
-                "dialogue": str(matched["text"]),
-            }
+        matched = next(
+            (seg for seg in segments if any(k in str(seg["text"]) for k in keywords)),
+            None,
         )
+        if matched is not None:
+            events.append(
+                {
+                    "role": role,
+                    "description": str(matched["text"])[:120],
+                    "dialogue": str(matched["text"]),
+                }
+            )
+    if len(events) < 3:
+        # Content-agnostic fallback: top-3 longest dialogue segments, skipping
+        # any segment already claimed by a keyword role.
+        claimed = {str(e["dialogue"]) for e in events}
+        ranked = sorted(segments, key=lambda seg: len(str(seg["text"])), reverse=True)
+        for seg in ranked:
+            text = str(seg["text"])
+            if text in claimed:
+                continue
+            events.append(
+                {
+                    "role": f"beat{len(events) + 1}",
+                    "description": text[:120],
+                    "dialogue": text,
+                }
+            )
+            claimed.add(text)
+            if len(events) == 3:
+                break
+    if len(events) < 3:
+        raise RuntimeError(f"ASR produced too few dialogue segments ({len(segments)}) for 3 beats")
     return events
 
 
@@ -179,14 +199,14 @@ def _map_windows(
     segments: list[dict[str, object]],
     source_duration: float,
 ) -> list[dict[str, object]]:
-    """Assign each role a non-overlapping scene window.
+    """Assign each beat a non-overlapping scene window.
 
-    The three role anchors (交易/付款/威胁) split the timeline: each role gets
-    the span from its anchor start to the next role's anchor start (the last
-    role ends at the source end). No merging, so beats never overlap. Windows
-    are later expanded/capped by the beat-sizing step.
+    Each event is anchored to the ASR segment that matches its dialogue (or its
+    role keywords); events are then ordered by anchor time and each gets the
+    span from its own anchor to the next event's anchor (the last ends at the
+    source end). No merging, so beats never overlap. Windows are later
+    expanded/capped by the beat-sizing step.
     """
-    anchors: dict[str, float] = {}
     for event in events:
         role = str(event.get("role") or "")
         dialogue = str(event.get("dialogue") or "")
@@ -205,16 +225,12 @@ def _map_windows(
                     break
         if anchor is None:
             raise RuntimeError(f"no ASR anchor for role {role}")
-        anchors[role] = anchor
         event["anchor"] = anchor
-    order = ["交易", "付款", "威胁"]
-    starts = [anchors[r] for r in order]
-    for _idx, event in enumerate(events):
-        role = str(event.get("role") or "")
-        position = order.index(role)
-        window_start = starts[position]
-        window_end = starts[position + 1] if position + 1 < len(starts) else source_duration
-        event["window"] = [round(window_start, 2), round(window_end, 2)]
+    events.sort(key=lambda e: float(e["anchor"]))
+    for idx, event in enumerate(events):
+        start = float(event["anchor"])
+        end = float(events[idx + 1]["anchor"]) if idx + 1 < len(events) else source_duration
+        event["window"] = [round(start, 2), round(end, 2)]
     return events
 
 
@@ -492,9 +508,9 @@ def main() -> int:
         )
     if not windows_json:
         raise SystemExit("no clip windows could be derived from ASR")
-    # The timeline driver consumes threat/sale/payment beat keys; if any of the
-    # auto events did not map to a known key, fall back to index keys for the
-    # remaining timeline expectations.
+    # Known Episode-8 events map to threat/sale/payment keys (approved
+    # semantics); any other event falls back to an index key (beat1/...), which
+    # the generalized timeline driver accepts for any source.
     print(f"     mapped windows: {windows_json}")
     windows_file = WORK_ROOT / f"{run_id}_windows.json"
     windows_file.write_text(json.dumps(windows_json), encoding="utf-8")
@@ -547,12 +563,19 @@ def main() -> int:
     timeline_map = {r[0]: r[1] for r in rows}
     if "MasterTimeline" not in timeline_map or "NarrationLineSet" not in timeline_map:
         raise SystemExit(f"timeline run artifacts incomplete: {timeline_map}")
+    # The timeline driver lays beats out in threat/sale/payment order first,
+    # then any extra keys in window order. Align narration texts and their
+    # timeline starts to that same beat order so each line plays over its own
+    # beat segment (windows_json insertion order mirrors the events order).
     ordered_keys = [k for k in ("threat", "sale", "payment") if k in windows_json]
+    ordered_keys.extend(k for k in windows_json if k not in ordered_keys)
     starts = [0.0]
     for key in ordered_keys[:-1]:
         starts.append(starts[-1] + windows_json[key][1])
-    if len(starts) != len(narrations):
+    if len(ordered_keys) != len(narrations):
         raise SystemExit("narration count does not match beat count")
+    key_index = {key: index for index, key in enumerate(windows_json)}
+    narrations = [narrations[key_index[key]] for key in ordered_keys]
 
     # Phase 8: E10/E11 audio with the auto narration texts and timeline.
     audio_cmd = [

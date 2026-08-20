@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+from hashlib import sha256
 from pathlib import Path
 from uuid import UUID, uuid4
 
@@ -147,16 +148,53 @@ def _ref(artifact_id: UUID, kind: str) -> ArtifactRef:
     )
 
 
+def _key_specs(
+    windows: dict[str, tuple[float, float]],
+) -> tuple[list[str], dict[str, tuple[UUID, UUID, BeatFunction, float, str]]]:
+    """Deterministic beat ordering + per-key spec for arbitrary window keys.
+
+    Episode-8 keys keep their approved story/evidence refs, function, tension
+    and continuity location; any other key gets deterministic refs derived from
+    the key and a function assigned by position (hook/context/payoff), so the
+    driver can plan arbitrary sources without changing the workflow.
+    """
+    known = {
+        "threat": (THREAT_EVENT, THREAT_EVIDENCE, BeatFunction.HOOK, 0.9, "room"),
+        "sale": (SALE_EVENT, SALE_EVIDENCE, BeatFunction.CONTEXT, 0.5, "stall"),
+        "payment": (PAYMENT_EVENT, PAYMENT_EVIDENCE, BeatFunction.PAYOFF, 0.3, "stall"),
+    }
+    functions = (BeatFunction.HOOK, BeatFunction.CONTEXT, BeatFunction.PAYOFF)
+    locations = ("room", "stall", "stall")
+    ordered = [k for k in ("threat", "sale", "payment") if k in windows]
+    ordered.extend(k for k in windows if k not in ordered)
+    specs: dict[str, tuple[UUID, UUID, BeatFunction, float, str]] = {}
+    for position, key in enumerate(ordered):
+        if key in known:
+            specs[key] = known[key]
+        else:
+            event_id = UUID(bytes=sha256(f"auto-story:{key}".encode()).digest()[:16], version=4)
+            evidence_id = UUID(
+                bytes=sha256(f"auto-evidence:{key}".encode()).digest()[:16], version=4
+            )
+            function = functions[position % len(functions)]
+            tension = 0.9 - 0.3 * (position % len(functions))
+            specs[key] = (
+                event_id,
+                evidence_id,
+                function,
+                tension,
+                locations[position % len(locations)],
+            )
+    return ordered, specs
+
+
 def _build_beats(windows: dict[str, tuple[float, float]]) -> list[NarrativeBeat]:
-    """Three beats in the approved 威胁倒叙 order: threat -> sale -> payment."""
-    specs = (
-        (THREAT_EVENT, THREAT_EVIDENCE, BeatFunction.HOOK, "threat", 0.9),
-        (SALE_EVENT, SALE_EVIDENCE, BeatFunction.CONTEXT, "sale", 0.5),
-        (PAYMENT_EVENT, PAYMENT_EVIDENCE, BeatFunction.PAYOFF, "payment", 0.3),
-    )
+    """One beat per window key, in the deterministic order from _key_specs."""
+    ordered, specs = _key_specs(windows)
     beats: list[NarrativeBeat] = []
-    for event_id, _evidence_id, function, key, tension in specs:
+    for key in ordered:
         _start, duration = windows[key]
+        event_id, _evidence_id, function, tension, _location = specs[key]
         beats.append(
             NarrativeBeat.model_validate(
                 {
@@ -166,7 +204,7 @@ def _build_beats(windows: dict[str, tuple[float, float]]) -> list[NarrativeBeat]
                     "target_duration": _rational(duration),
                     "minimum_duration": _rational(duration * 0.6),
                     "maximum_duration": _rational(duration * 1.1),
-                    "required_information": [f"episode-08:{key}:human-verified-window"],
+                    "required_information": [f"auto:{key}:window"],
                     "emotional_intent": {
                         "tension": tension,
                         "entry_energy": 0.4 + 0.2 * tension,
@@ -183,15 +221,12 @@ def _build_beats(windows: dict[str, tuple[float, float]]) -> list[NarrativeBeat]
 def _build_candidates(
     beats: list[NarrativeBeat], windows: dict[str, tuple[float, float]]
 ) -> list[ClipCandidate]:
-    """One evidence-grounded candidate per beat at its human-verified window."""
-    specs = (
-        (beats[0], THREAT_EVENT, THREAT_EVIDENCE, "threat", "room"),
-        (beats[1], SALE_EVENT, SALE_EVIDENCE, "sale", "stall"),
-        (beats[2], PAYMENT_EVENT, PAYMENT_EVIDENCE, "payment", "stall"),
-    )
+    """One evidence-grounded candidate per beat at its verified window."""
+    ordered, specs = _key_specs(windows)
     candidates: list[ClipCandidate] = []
-    for beat, event_id, evidence_id, key, location in specs:
+    for beat, key in zip(beats, ordered, strict=True):
         start, duration = windows[key]
+        event_id, evidence_id, _function, _tension, location = specs[key]
         candidates.append(
             ClipCandidate.model_validate(
                 {
@@ -216,41 +251,45 @@ def _build_candidates(
     return candidates
 
 
-def _build_narration(beats: list[NarrativeBeat]) -> NarrationLineSet:
-    """Factual narration draft over the three beats (human approval required).
+KNOWN_NARRATION = {
+    "threat": (
+        "有人得知对方一天到手三十万，嫌他有钱不还又敢动手，下令盯住，扬言要他的命。",
+        "danger-hook",
+    ),
+    "sale": ("这三十万，是有人当场买下两样货物的成交价。", "transaction-context"),
+    "payment": ("一张卡、三十万、密码六个八，就这样交到买主手里。", "value-proof"),
+}
+GENERIC_NARRATION = {
+    BeatFunction.HOOK: ("画面里的关键事件，是整段叙事的起点。", "danger-hook"),
+    BeatFunction.CONTEXT: ("这是事件展开的现场经过。", "transaction-context"),
+    BeatFunction.PAYOFF: ("最终结果就在这段画面里揭晓。", "value-proof"),
+}
+
+
+def _build_narration(
+    beats: list[NarrativeBeat], windows: dict[str, tuple[float, float]]
+) -> NarrationLineSet:
+    """Factual narration draft, one line per beat (draft only; the audio stage
+    replaces the text with the LLM narration).
 
     No invented identity (人物身份未证明 -> do-not-name), no dialogue
     repetition, no unsupported psychology.
     """
-    lines_data = (
-        (
-            "有人得知对方一天到手三十万，嫌他有钱不还又敢动手，下令盯住，扬言要他的命。",
-            THREAT_EVENT,
-            THREAT_EVIDENCE,
-            "danger-hook",
-        ),
-        (
-            "这三十万，是有人当场买下两样货物的成交价。",
-            SALE_EVENT,
-            SALE_EVIDENCE,
-            "transaction-context",
-        ),
-        (
-            "一张卡、三十万、密码六个八，就这样交到买主手里。",
-            PAYMENT_EVENT,
-            PAYMENT_EVIDENCE,
-            "value-proof",
-        ),
-    )
+    ordered, specs = _key_specs(windows)
     lines: list[NarrationLine] = []
-    for beat, (text, event_id, evidence_id, function) in zip(beats, lines_data, strict=True):
+    for beat, key in zip(beats, ordered, strict=True):
+        event_id, evidence_id, function, _tension, _location = specs[key]
+        if key in KNOWN_NARRATION:
+            text, narration_function = KNOWN_NARRATION[key]
+        else:
+            text, narration_function = GENERIC_NARRATION[function]
         lines.append(
             NarrationLine.model_validate(
                 {
                     "line_id": str(uuid4()),
                     "beat_id": str(beat.beat_id),
                     "text": text,
-                    "function": function,
+                    "function": narration_function,
                     "story_refs": [str(event_id)],
                     "evidence_refs": [str(evidence_id)],
                     "target_duration": beat.target_duration.model_dump(mode="json"),
@@ -565,14 +604,13 @@ async def _produce(
         repository = ArtifactRepository()
         windows = _windows(threat_start, threat_duration)
         if windows_override:
+            # Arbitrary beat keys accepted; each must be a [start, duration] pair.
             windows = {
-                key: (float(value[0]), float(value[1]))
-                for key, value in windows_override.items()
-                if key in windows
+                key: (float(value[0]), float(value[1])) for key, value in windows_override.items()
             }
         beats = _build_beats(windows)
         candidates = _build_candidates(beats, windows)
-        narration = _build_narration(beats)
+        narration = _build_narration(beats, windows)
         pointers = _commit_inputs(
             connection,
             repository,
