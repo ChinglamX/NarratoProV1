@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 115
+State Version: 116
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 D5 第一集试标完成（State v116）：owner 标注 e06-1982/e01 8 帧（OCR 参考文本 / DET 描述 / VLM 判定），`accept_d5_metrics.py` 计算——**OCR 文本帧 CER=0.000（5/5 零错误）**、误报 1 帧（f08「F」，计入后平均 CER=0.1667）、**VLM claim 合规率 1.0（8/8）**、DET label 级 precision/recall=0/0（RT-DETR 标签全 unknown，**实证 D6 类别体系问题**）。owner 三项发现均已处置：f08 误识别计入、f03 漏识别核实为未漏（仅标点差异）、f01 空格差异归一化。报告 `evaluation/evidence/d5_annotation_kit/trial_report.md`；工作表已填 owner 标注。下一步：扩展标注剩余 2 集 16 帧 + D6 类别体系决策（DET 在类别未定时不作为准入依据）。
 
 - 2026-08-19 Speech 基准汇总 + D5 指标计算器（State v115）：`evaluation/evidence/speech_baseline/speech_baseline_summary.json` 汇总 5 集定时 ASR——语音覆盖 51.9–72.7%、说话人簇 5–9、平均段长 1.5–2.9s（E09 demo 53.2%/7、ep7 51.9%/5、ep3 68.6%/9、ep2 72.7%/7、ep8 ~59%/17 段）；新增 `scripts/accept_d5_metrics.py`（owner 标注完成后一键计算：OCR CER / DET label 级 precision-recall（试标代理，非 IoU mAP）/ VLM claim 合规率，未标注时优雅跳过并提示）。下一步仍待 owner：D5 试标 1 集（标完即跑指标）、A 最终候选确认、Release Gate 3。
 

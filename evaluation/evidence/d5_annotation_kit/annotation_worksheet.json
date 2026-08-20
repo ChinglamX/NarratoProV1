@@ -12,9 +12,9 @@
       "episode": "e01",
       "frame": "e06-1982_e01_f01_07.02s.jpg",
       "time_seconds": 7.02,
-      "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "ocr_reference_text": "别赶我走 好不好",
+      "det_reference_boxes": "2人",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [
           {
@@ -34,7 +34,8 @@
         ],
         "vlm_description": "夜晚的简陋小屋内，一名裹着灰布、穿粉色碎花睡衣的女子神情凄然恳求地看向身旁闭眼的男子，画面下方配文“别赶我走 好不好”，窗外月色透过窗格照进屋内，墙面贴有旧报纸，地面铺着竹编凉席，是带有情感冲突的剧情场景。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-1982",
@@ -42,8 +43,8 @@
       "frame": "e06-1982_e01_f02_21.06s.jpg",
       "time_seconds": 21.06,
       "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "det_reference_boxes": "0人，关键物体陶缸",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [],
         "detection_objects": [
@@ -58,16 +59,17 @@
         ],
         "vlm_description": "一只手握着带柄的木盖，准备盖在内部底部有谷物状物质的老旧深色陶制大缸上，背景是带有裂缝的墙面，呈现出传统制作相关的室内场景。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-1982",
       "episode": "e01",
       "frame": "e06-1982_e01_f03_35.10s.jpg",
       "time_seconds": 35.1,
-      "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "ocr_reference_text": "赵海霞 陈云小姨子 卖给家暴男李二狗",
+      "det_reference_boxes": "1人",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [
           {
@@ -91,16 +93,17 @@
         ],
         "vlm_description": "画面中，被标注为陈云小姨子的赵海霞身处贴满旧报纸的昏暗室内，身着碎花粉色背心的她满脸泪水、神情悲痛，画面下方文字显示剧情内容为她被卖给家暴男李二狗。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-1982",
       "episode": "e01",
       "frame": "e06-1982_e01_f04_49.14s.jpg",
       "time_seconds": 49.14,
-      "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "ocr_reference_text": "呜呜（门外哭声）",
+      "det_reference_boxes": "1人",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [
           {
@@ -120,16 +123,17 @@
         ],
         "vlm_description": "神色凝重的短发男子身着破旧的内搭与外套，身处带有木格窗的室内，画面下方标注着“呜呜（门外哭声）”的剧情文本，整体氛围压抑。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-1982",
       "episode": "e01",
       "frame": "e06-1982_e01_f05_63.18s.jpg",
       "time_seconds": 63.18,
-      "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "ocr_reference_text": "别蹲在这儿哭了",
+      "det_reference_boxes": "2人",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [
           {
@@ -149,16 +153,17 @@
         ],
         "vlm_description": "夜晚的乡村户外场景中，身着蓝色旧式上衣的男子站在一旁，面对蹲着、以手捂嘴哭泣的穿带花浅色裙装的女子，画面下方配有剧情文本“别蹲在这儿哭了”，背景可见破旧房屋与枯树。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-1982",
       "episode": "e01",
       "frame": "e06-1982_e01_f06_77.22s.jpg",
       "time_seconds": 77.22,
-      "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "ocr_reference_text": "我就算再浑",
+      "det_reference_boxes": "1人",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [
           {
@@ -174,7 +179,8 @@
         ],
         "vlm_description": "该画面为影视片段截图，展现了一名留寸头、皮肤黝黑带汗渍、身穿衣领破损毛边深色旧衣的男子，他神情略带激动，下方配有文字“我就算再浑”，背景偏暗蓝色，右侧露出另一人物的头部边缘。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-1982",
@@ -182,8 +188,8 @@
       "frame": "e06-1982_e01_f07_91.26s.jpg",
       "time_seconds": 91.26,
       "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "det_reference_boxes": "1人，关键物体竹编筐",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [],
         "detection_objects": [
@@ -198,7 +204,8 @@
         ],
         "vlm_description": "昏暗的环境里，一名穿着藏蓝色中式粗布对襟上衣的男子，低头看向身前的竹编筐，神情沉凝，所处空间看起来像是简陋的石砌室内。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-1982",
@@ -206,8 +213,8 @@
       "frame": "e06-1982_e01_f08_105.30s.jpg",
       "time_seconds": 105.3,
       "ocr_reference_text": "",
-      "det_reference_boxes": "",
-      "vlm_claim_verdict": "",
+      "det_reference_boxes": "1人",
+      "vlm_claim_verdict": "related, hallucinated no",
       "machine_prefill": {
         "ocr_detected_texts": [
           {
@@ -223,7 +230,8 @@
         ],
         "vlm_description": "昏暗的室内场景里，一位身着带细小图案粉色吊带的长发女性，面露极度惊恐的神情，双眼圆睁、脸上挂着泪痕、嘴巴微张。",
         "note": "machine research prefill; owner must verify/correct before use as reference"
-      }
+      },
+      "annotated_by": "project-owner"
     },
     {
       "series": "e06-series-07",

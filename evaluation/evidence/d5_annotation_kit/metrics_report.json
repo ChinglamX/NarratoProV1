@@ -1,26 +1,23 @@
 {
   "scope": "D5 trial metrics (owner-annotated worksheet); label-level DET proxy, not IoU mAP; CER and claim compliance as defined in visual_metrics.py",
-  "frames_total": 24,
-  "frames_with_any_annotation": 0,
-  "frames_skipped": 24,
+  "frames_total": 8,
+  "frames_with_any_annotation": 8,
+  "frames_skipped": 0,
+  "notes": [
+    "OCR CER is punctuation/space-insensitive (CJK punctuation and whitespace normalized).",
+    "Empty-reference frames where the machine emitted text count as false positives and contribute 1.0 to mean CER.",
+    "DET is label-level proxy (presence), not IoU mAP."
+  ],
   "episodes": [
     {
-      "episode": "e01",
-      "ocr_frames_annotated": 0,
-      "ocr_mean_cer": null,
-      "det_label_precision": null,
-      "det_label_recall": null,
-      "vlm_frames_checked": 0,
-      "vlm_compliance": null
-    },
-    {
-      "episode": "hot",
-      "ocr_frames_annotated": 0,
-      "ocr_mean_cer": null,
-      "det_label_precision": null,
-      "det_label_recall": null,
-      "vlm_frames_checked": 0,
-      "vlm_compliance": null
+      "episode": "e06-1982/e01",
+      "ocr_frames_annotated": 6,
+      "ocr_false_positive_frames": 1,
+      "ocr_mean_cer": 0.1667,
+      "det_label_precision": 0.0,
+      "det_label_recall": 0.0,
+      "vlm_frames_checked": 8,
+      "vlm_compliance": 1.0
     }
   ]
 }

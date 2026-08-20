@@ -24,12 +24,36 @@ from pathlib import Path
 
 from packages.evaluation.visual_metrics import ocr_character_error_rate
 
+_CJK_PUNCT = "、，。！？；：（）《》「」【】()"  # noqa: RUF001 - punctuation set is intentional
+
+
+def _normalize_ocr_text(value: str) -> str:
+    """Strip whitespace and CJK/half-width punctuation for a punctuation/
+    space-insensitive trial OCR CER (documented; exact CER can re-introduce
+    punctuation later)."""
+    return "".join(ch for ch in value if ch not in _CJK_PUNCT and not ch.isspace())
+
+
 ROOT = Path(__file__).resolve().parents[1]
 WORKSHEET = ROOT / "evaluation/evidence/d5_annotation_kit/annotation_worksheet.json"
 OUTPUT = ROOT / "evaluation/evidence/d5_annotation_kit/metrics_report.json"
 
-# Machine detection labels that carry meaning for short-drama scenes.
-KNOWN_LABELS = ("person", "people", "card", "vehicle", "car", "money", "phone")
+# Machine detection labels that carry meaning for short-drama scenes, plus the
+# common Chinese tokens the owner naturally writes in the worksheet.
+KNOWN_LABELS = (
+    "person",
+    "people",
+    "人",
+    "card",
+    "卡",
+    "vehicle",
+    "car",
+    "车",
+    "money",
+    "钱",
+    "phone",
+    "手机",
+)
 
 
 def parse_owner_labels(description: str) -> list[str]:
@@ -40,7 +64,7 @@ def parse_owner_labels(description: str) -> list[str]:
 
 def main() -> int:
     worksheet = json.loads(WORKSHEET.read_text(encoding="utf-8"))
-    rows = worksheet["frames"]
+    rows = [row for row in worksheet["frames"] if row.get("annotated_by") == "project-owner"]
     per_episode: dict[str, dict[str, object]] = defaultdict(
         lambda: {
             "ocr_total": 0,
@@ -50,18 +74,28 @@ def main() -> int:
             "det_fn": 0,
             "vlm_checked": 0,
             "vlm_ok": 0,
+            "ocr_false_positive": 0,
         }
     )
     skipped = 0
     for row in rows:
-        ep = row["episode"]
+        ep = f"{row['series']}/{row['episode']}"
         stats = per_episode[ep]
         prefill = row.get("machine_prefill", {})
         owner_ocr = (row.get("ocr_reference_text") or "").strip()
+        machine_text = "".join(item["text"] for item in prefill.get("ocr_detected_texts", []))
         if owner_ocr:
-            machine_text = "".join(item["text"] for item in prefill.get("ocr_detected_texts", []))
             stats["ocr_total"] += 1
-            stats["cer_sum"] += ocr_character_error_rate(owner_ocr, machine_text)
+            stats["cer_sum"] += ocr_character_error_rate(
+                _normalize_ocr_text(owner_ocr), _normalize_ocr_text(machine_text)
+            )
+        elif machine_text:
+            # Empty reference but machine emitted text: a false positive.
+            # CER with an empty reference is undefined; count the frame as
+            # 100% error and track it separately.
+            stats["ocr_total"] += 1
+            stats["cer_sum"] += 1.0
+            stats["ocr_false_positive"] += 1
         owner_det = (row.get("det_reference_boxes") or "").strip()
         if owner_det:
             reference_labels = set(parse_owner_labels(owner_det))
@@ -91,6 +125,7 @@ def main() -> int:
             {
                 "episode": ep,
                 "ocr_frames_annotated": stats["ocr_total"],
+                "ocr_false_positive_frames": stats["ocr_false_positive"],
                 "ocr_mean_cer": (
                     round(stats["cer_sum"] / stats["ocr_total"], 4) if stats["ocr_total"] else None
                 ),
@@ -110,6 +145,12 @@ def main() -> int:
         "frames_total": len(rows),
         "frames_with_any_annotation": len(rows) - skipped,
         "frames_skipped": skipped,
+        "notes": [
+            "OCR CER is punctuation/space-insensitive (CJK punctuation and whitespace normalized).",
+            "Empty-reference frames where the machine emitted text count as "
+            "false positives and contribute 1.0 to mean CER.",
+            "DET is label-level proxy (presence), not IoU mAP.",
+        ],
         "episodes": episodes,
     }
     OUTPUT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
