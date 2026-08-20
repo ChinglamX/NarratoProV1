@@ -1,0 +1,87 @@
+{
+  "project_id": "74458fd0-935f-4b51-918b-e9840bcf9d04",
+  "run_id": "f3657489-d820-48e1-97b3-e733b9f3a8f4",
+  "narration_line_set": {
+    "artifact_id": "163b6575-3bd0-4c22-81bb-e16bba4b2c38",
+    "version": 1,
+    "artifact_type": "NarrationLineSet",
+    "checksum": "sha256:feb519e4634001b1ff7e87c01814f9c071488b44ce5b9d0917bded193e0677f8"
+  },
+  "voice_take_set": {
+    "artifact_id": "bb195bf0-75ad-49f3-94e5-f14a410f3bf7",
+    "version": 1,
+    "artifact_type": "VoiceTakeSet",
+    "checksum": "sha256:d93cb324d91517bbd31e023ce7ac8b61baacd8fc5d5cfb8ced32096c51ea03d5"
+  },
+  "voice_asset": {
+    "artifact_id": "218f2543-1fb6-4caf-8a05-7474bf6afb03",
+    "version": 1,
+    "artifact_type": "VoiceAsset",
+    "checksum": "sha256:1c0402881208dcdd9154ce70320b097cae5c5d683876a4d1eb1f3106edf0897e"
+  },
+  "alignment": {
+    "artifact_id": "870a8e5b-3acd-429a-ad66-d6887b340129",
+    "version": 1,
+    "artifact_type": "AlignmentArtifact",
+    "checksum": "sha256:43cbae56018b9573dd983571a0f725c8f9fedac74313c06f218edd0c10b533e7"
+  },
+  "conformed_timeline": {
+    "artifact_id": "913362d8-8a1c-4798-abbd-177ca2126b6d",
+    "version": 1,
+    "artifact_type": "MasterTimeline",
+    "checksum": "sha256:5fd07e5a78dd505a7432c8b1687db1aa403cf50ab62ca89d9c5ae7b97da3d118"
+  },
+  "conform_report": {
+    "artifact_id": "848adb50-e9dc-4db0-8761-8a0a16bac22e",
+    "version": 1,
+    "artifact_type": "ConformReport",
+    "checksum": "sha256:67b0ec4c57c6beb0c629390432fd08e552dff52b36903df0fc27130258a1e212"
+  },
+  "mix_plan": {
+    "artifact_id": "fa65786e-7431-407b-8f8f-7ca8f7af77ab",
+    "version": 1,
+    "artifact_type": "MixPlan",
+    "checksum": "sha256:25f66d6f0627bdc3cb6c9193b4410d01f3d774148849472433d5c484dcfa94a6"
+  },
+  "mixed_audio": {
+    "artifact_id": "30712062-1874-4a2c-a683-1ccb8e1f830b",
+    "version": 1,
+    "artifact_type": "MixedAudio",
+    "checksum": "sha256:84403857cbba5e7e0360b3b78d31f181a7404643246a88bea08a865610b8c461"
+  },
+  "subtitle_cue_set": {
+    "artifact_id": "18b0d6ec-5483-4e61-b4ec-299bb1de6afa",
+    "version": 1,
+    "artifact_type": "SubtitleCueSet",
+    "checksum": "sha256:c883d7367cc8163e306757d430e0de299e35bba7c287180f31fc0d7c2af29637"
+  },
+  "ass_artifact": {
+    "artifact_id": "449d847b-ff9f-48f2-985f-4f6b54755050",
+    "version": 1,
+    "artifact_type": "ASSArtifact",
+    "checksum": "sha256:4099a5170fe402962edf84bbab4165411760a15f3d9e59f9c2a1ffe8f3d7faec"
+  },
+  "render_plan": {
+    "artifact_id": "7aca04ca-1126-4d28-92a0-d494c64c75a6",
+    "version": 1,
+    "artifact_type": "RenderPlan",
+    "checksum": "sha256:5e7aa6e68ff50fd2ee6f3387b334a99e060a25c039ba2c8e31564639786178f7"
+  },
+  "render_result": {
+    "execution_report": {
+      "artifact_id": "bc4a7edd-bf8d-4d01-8496-851ab6058f75",
+      "version": 1,
+      "artifact_type": "RenderExecutionReport",
+      "checksum": "sha256:c5785d38e5d5d52e54cd69602b3cd0505c60fd4e85201de02125571ceb830206"
+    },
+    "qc_report": {
+      "artifact_id": "a52fc140-9554-4901-a878-02185ae3568b",
+      "version": 1,
+      "artifact_type": "TechnicalQCReport",
+      "checksum": "sha256:36b8f8c51f57bb71666a1679c6250002c75685491d2d65c89dcec3b32b08413d"
+    },
+    "output_path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/canonical_e11.mp4",
+    "passed": true,
+    "blocked_codes": []
+  }
+}

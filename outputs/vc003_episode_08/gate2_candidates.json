@@ -1,0 +1,100 @@
+{
+  "review_id": "7734969e-1caa-4a3c-9831-a43c66798cd3",
+  "state": "awaiting_review",
+  "comparison_ref": {
+    "artifact_id": "164a0d02-c265-4c3d-bbed-5af2ef52fc9e",
+    "version": 1,
+    "artifact_type": "StrategyComparisonPackage",
+    "checksum": "sha256:480e62304271057e0184c0eb972d6a3a95abe99fc7a13fae222757285dc0671a"
+  },
+  "approved_story_ref": {
+    "artifact_id": "c378ba51-da33-4049-baf0-538ca637e9a5",
+    "version": 1,
+    "artifact_type": "StoryGraph",
+    "checksum": "sha256:8b34ae0d15d81126a1907366e27efcb4ce113e5bea0e1d2fae0ec146d0c7aad2"
+  },
+  "candidates": [
+    {
+      "option": 1,
+      "label": "威胁倒叙",
+      "strategy_id": "82f2cdc4-bdf6-4e91-915c-c3e04fd95a3b",
+      "hook_id": "9cddcf54-e497-4db0-b516-b59eb6e25786",
+      "description": "先抛出追杀威胁，再倒叙三十万交易，主打危险悬念。",
+      "opening": "另一方得知那小子一天得到三十万，因其有钱不还并曾动手，决定盯住并威胁杀死他。",
+      "order": [
+        "另一方得知那小子一天得到三十万，因其有钱不还并曾动手，决定盯住并威胁杀死他。",
+        "对白表明有人以三十万购买两样货物，并完成交易。",
+        "交易方交出一张内有三十万、密码为六个八的卡。"
+      ],
+      "brief_ref": {
+        "artifact_id": "bc2c693e-8768-40fc-84d5-fcc00946f80a",
+        "version": 1,
+        "artifact_type": "CreativeBrief",
+        "checksum": "sha256:a20c2f1639d5ceb3ce2772dbc3b98d97e14830400b9b0e48d3de73ee8f38e0e8"
+      },
+      "variant_plan_ref": {
+        "artifact_id": "58a7c392-64f3-4d81-b1df-fbcfedb10c1b",
+        "version": 1,
+        "artifact_type": "VariantPlan",
+        "checksum": "sha256:c337552207507ddd7f49a0c413b25c5ef45e3699868c48a0acdf8e5991d968bd"
+      },
+      "blockers": []
+    },
+    {
+      "option": 2,
+      "label": "三十万交易",
+      "strategy_id": "bf524154-3bdf-4c08-8016-f191bd848da5",
+      "hook_id": "8c94f814-d3e3-4d2a-985e-b089efd7a964",
+      "description": "按交易成交、银行卡交付、消息泄露到威胁的顺序，主打清晰升级。",
+      "opening": "对白表明有人以三十万购买两样货物，并完成交易。",
+      "order": [
+        "对白表明有人以三十万购买两样货物，并完成交易。",
+        "交易方交出一张内有三十万、密码为六个八的卡。",
+        "另一方得知那小子一天得到三十万，因其有钱不还并曾动手，决定盯住并威胁杀死他。"
+      ],
+      "brief_ref": {
+        "artifact_id": "3a9279f0-89d4-4771-82fb-275bb08d5130",
+        "version": 1,
+        "artifact_type": "CreativeBrief",
+        "checksum": "sha256:3089041645c7eb0a5ea5bd56eea1e139a2df8aaa2c8e7d5017156b7baf550dce"
+      },
+      "variant_plan_ref": {
+        "artifact_id": "7048862d-7698-452f-81d4-4b0de8d9b570",
+        "version": 1,
+        "artifact_type": "VariantPlan",
+        "checksum": "sha256:437028886b811f6ccfe324ac68139fe6c751f83a15ad345c233ba42da498d8e8"
+      },
+      "blockers": []
+    },
+    {
+      "option": 3,
+      "label": "财富引爆危机",
+      "strategy_id": "e2a81f6d-fa83-40d7-9dff-996a0e67da2f",
+      "hook_id": "87364753-692c-4d10-add4-1ea414c7d598",
+      "description": "先用三十万与六个八密码制造具体记忆点，再揭示财富触发报复。",
+      "opening": "交易方交出一张内有三十万、密码为六个八的卡。",
+      "order": [
+        "交易方交出一张内有三十万、密码为六个八的卡。",
+        "另一方得知那小子一天得到三十万，因其有钱不还并曾动手，决定盯住并威胁杀死他。",
+        "对白表明有人以三十万购买两样货物，并完成交易。"
+      ],
+      "brief_ref": {
+        "artifact_id": "c39e6aff-1fb5-4b49-b8a4-7691453fcd5c",
+        "version": 1,
+        "artifact_type": "CreativeBrief",
+        "checksum": "sha256:34df4b4b4a8a7b19c081849b24a7cbca6570c80ebe7583023624bdaa415b2a78"
+      },
+      "variant_plan_ref": {
+        "artifact_id": "d3ba541c-30f5-4713-a22d-81658f666582",
+        "version": 1,
+        "artifact_type": "VariantPlan",
+        "checksum": "sha256:2c0268faed4c35ca68dcecf327e9d3c27ebfdc60f35fe244a8355289b30a7a87"
+      },
+      "blockers": []
+    }
+  ],
+  "shared_risks": [
+    "人物身份未证明，候选均不得给角色命名。",
+    "无真实发布效果数据，吸引力未校准，必须由 Gate 2 人工选择。"
+  ]
+}

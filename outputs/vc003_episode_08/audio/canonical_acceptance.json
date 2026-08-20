@@ -1,71 +1,71 @@
 {
   "project_id": "dd397853-79bc-4e6f-a540-bb1c296d6936",
-  "run_id": "096d5b55-3037-4e69-86cb-afab67c3c7cf",
+  "run_id": "043abc4b-2cd2-460e-a4b5-fb0ea08663f3",
   "narration_line_set": {
-    "artifact_id": "982b4bca-18ba-4427-af04-0d61cad01305",
+    "artifact_id": "0cab6068-1ac4-4e33-9876-df4ef2cc26af",
     "version": 1,
     "artifact_type": "NarrationLineSet",
-    "checksum": "sha256:3486e07df4d6cac9f1266a29838c7c19494c7b759245e75cba8bec43ecfbc80a"
+    "checksum": "sha256:1a147958ba0b422d837ec4b873691c84d0a6bfecd7f6fb039adb220438e0a48c"
   },
   "voice_take_set": {
-    "artifact_id": "07156163-58bc-4257-9b0c-e76b5eacbda8",
+    "artifact_id": "4799143e-b185-43c8-9ac6-7e20b2938059",
     "version": 1,
     "artifact_type": "VoiceTakeSet",
-    "checksum": "sha256:661e1006544dafcd849ab132d65fcad78fee170954c0d45fef47bef26383a4d1"
+    "checksum": "sha256:fced4780ad499078665773078b151ff9fb0c13edf21f8c22cdda95e7b167aad3"
   },
   "voice_asset": {
-    "artifact_id": "7e3f5fd9-b748-4bae-b35c-caf8253362fa",
+    "artifact_id": "eae5f41d-35c2-4eb6-a590-85a17bca1598",
     "version": 1,
     "artifact_type": "VoiceAsset",
-    "checksum": "sha256:3a84e2592898031c2dbabc5bf755816ca67a56026b13165df76719f33d8dc91c"
+    "checksum": "sha256:d73611eb5b24c506eaa630a0a172184cbbe03da79e7d47a1e4febdd8c7c2973d"
   },
   "alignment": {
-    "artifact_id": "ca2dbc1b-1bbd-461e-b6ac-93dd399a6ba3",
+    "artifact_id": "79311f75-229c-4b29-9d8c-12035d0a018c",
     "version": 1,
     "artifact_type": "AlignmentArtifact",
-    "checksum": "sha256:4138aad9fd96216dbe002aacfbb20d00b12c6bf1235f77e0ebcd4db7e74a5b10"
+    "checksum": "sha256:482547f71bf4d2bbb0bb52ff389c470ce07ce6d87995c88addc173e69e63baf0"
   },
   "conformed_timeline": {
-    "artifact_id": "6a09e7a3-b67c-469d-9f6b-9e8df5a7e400",
+    "artifact_id": "47b8f668-e679-43cf-a4f2-ad31cabea269",
     "version": 1,
     "artifact_type": "MasterTimeline",
-    "checksum": "sha256:954baaa84efbb8a690a92b4355a86d02272f8e6e49725d317835e4a32c7f9636"
+    "checksum": "sha256:6e46f5dddc9ab59481112669efb8d676a3228912dac91d8ee974f39da1df14c4"
   },
   "conform_report": {
-    "artifact_id": "b92e1904-a343-4041-82ac-97a3186245e4",
+    "artifact_id": "419e9bb7-bc82-45a1-b780-ea75732beff7",
     "version": 1,
     "artifact_type": "ConformReport",
-    "checksum": "sha256:111c256b7dccd9c4425b7ab03edd19220681e33c9ce3977dda71c8e7c0bc6516"
+    "checksum": "sha256:3f3024656dea01891d0e8e4214155687411c977e4a3523782f2f1193515a648c"
   },
   "mix_plan": {
-    "artifact_id": "44b08640-fa75-41e3-8972-8a89a5262140",
+    "artifact_id": "145a306c-e4f4-43cd-b74e-38322f72e59e",
     "version": 1,
     "artifact_type": "MixPlan",
-    "checksum": "sha256:798301fd0430798c55d48892a13a11a7ce025939a255482a873de14f09438a9b"
+    "checksum": "sha256:47b94135b3594366b9eaf32102ff869fbbd18ddbc54d0f047ba21ee22be43c88"
   },
   "mixed_audio": {
-    "artifact_id": "bf083816-ac0e-41d6-9b91-4a9efd347ece",
+    "artifact_id": "07d3be7f-d3d1-4f96-a388-c8b28fbb184d",
     "version": 1,
     "artifact_type": "MixedAudio",
-    "checksum": "sha256:dcfde2dec4c3db1cbb51c5690d3d09ab2a1e24a75f4dc3bb466f152e279a96bd"
+    "checksum": "sha256:36d6f52b6a16fe607601a0284089e1ca6a714413c40c1aa2d058c794215b8201"
   },
   "subtitle_cue_set": {
-    "artifact_id": "95e1a24d-401a-436f-ab87-10747ee5f26d",
+    "artifact_id": "cf14e8b0-0dcd-4dd9-895b-a06a4679a0a5",
     "version": 1,
     "artifact_type": "SubtitleCueSet",
-    "checksum": "sha256:d7565a40490a6f81d46e5b10d9f8cd5d8f08387532588b0eea26553a8cda5716"
+    "checksum": "sha256:839aba5702accc55966691904e4bf4d62b7fd91463ed68c93652c770f8544ae4"
   },
   "ass_artifact": {
-    "artifact_id": "75453fa4-7b7e-49bc-880e-8d893dbc3866",
+    "artifact_id": "70aac34b-1be5-4264-8955-bc0682acb1c3",
     "version": 1,
     "artifact_type": "ASSArtifact",
-    "checksum": "sha256:e9bd0dcb5904abcbe00c4a7bcd487edd91eae00b96f6d0bdb3591f877bc2f99a"
+    "checksum": "sha256:63631ad6a7468bb96baf8a0ef5b3ede6bfe4e63bfc93ef3cd773295140246127"
   },
   "render_plan": {
-    "artifact_id": "54a87115-4d12-4b57-b4df-efa896fcf1f8",
+    "artifact_id": "ebdd9991-d6c7-491f-a068-b5bc29f7978b",
     "version": 1,
     "artifact_type": "RenderPlan",
-    "checksum": "sha256:9baefd72eb7813712d18883b25ff5e9dedb7ab92c5bc6fa81abee2b1ad2c2c37"
+    "checksum": "sha256:f4a97b04563ee4a08b363f8731213002b5cb62e74fd38b2f72fa8bb6543cc357"
   },
-  "render_result": "RenderResult(execution_report=ArtifactPointer(artifact_id='66d6eb56-9c7b-4cae-a371-cc5956a8b464', version=1, artifact_type='RenderExecutionReport', checksum='sha256:89bf9a85afcb1b376d9fe5fe10acfe66e8f68f5e5d3aa38c7dd1069e23d91146'), qc_report=ArtifactPointer(artifact_id='0c3bd629-ffcc-45e7-acb8-db45585a45d4', version=1, artifact_type='TechnicalQCReport', checksum='sha256:68cf8651ecfd280c1549a2310c3caf387ecfc1e9f33f0969873a87fadfbb383e'), output_path='/Users/chinglam/workspace/NarratoProV1/outputs/vc003_episode_08/audio/canonical_e11.mp4', passed=True, blocked_codes=())"
+  "render_result": "RenderResult(execution_report=ArtifactPointer(artifact_id='82e14474-677e-4e8c-8a73-de305291debf', version=1, artifact_type='RenderExecutionReport', checksum='sha256:b79e5a48568f0b427b922b1151234b935e086419f26fb5dedef19fdba5327605'), qc_report=ArtifactPointer(artifact_id='a6ee8d97-154e-4491-8413-1fe62752f328', version=1, artifact_type='TechnicalQCReport', checksum='sha256:b1941ce3e142af73b82d46252d864088e8835dd989245a75b940c672101c83e3'), output_path='/Users/chinglam/workspace/NarratoProV1/outputs/vc003_episode_08/audio/canonical_e11.mp4', passed=True, blocked_codes=())"
 }

@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 720
+PlayResY: 1280
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Default,Heiti SC,48,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,3,1,2,40,40,100,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.00,0:00:04.00,Default,,0,0,100,,他跌下山崖，醒来时，掌心\N竟多了一道山神印。
+Dialogue: 0,0:00:04.00,0:00:08.50,Default,,0,0,100,,从此，山里每一株草木的位\N置，他都能感知。
+Dialogue: 0,0:00:08.50,0:00:13.00,Default,,0,0,100,,随手挖出的第一株，就是五\N十年份的野山参。
+Dialogue: 0,0:00:13.00,0:00:17.00,Default,,0,0,100,,可没等兄妹高兴，狼群已经\N封死退路。
+Dialogue: 0,0:00:17.00,0:00:22.00,Default,,0,0,100,,他只抬了一次手，整片山林\N便替他让路。
+Dialogue: 0,0:00:22.00,0:00:26.50,Default,,0,0,100,,偏偏家里的赌债，又吞掉了\N妹妹的大学学费。
+Dialogue: 0,0:00:26.50,0:00:30.50,Default,,0,0,100,,他当场承诺，妹妹的大学，\N由自己来供。
+Dialogue: 0,0:00:30.50,0:00:35.00,Default,,0,0,100,,药店认出这是极品，嘴上却\N只肯出二十万。
+Dialogue: 0,0:00:35.00,0:00:40.00,Default,,0,0,100,,下一秒，真正识货的买家，\N直接把价格抬到五十万。
+Dialogue: 0,0:00:40.00,0:00:44.50,Default,,0,0,100,,可钱刚到手，讨债的人就抓\N住了妹妹。
+Dialogue: 0,0:00:44.50,0:00:49.50,Default,,0,0,100,,山神印一亮，刚才还叫嚣的\N人，全都跪了。
+Dialogue: 0,0:00:49.50,0:00:54.00,Default,,0,0,100,,他终于有钱供妹妹读书，也\N有力量护她周全。

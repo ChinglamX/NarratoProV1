@@ -13,11 +13,12 @@ ProviderPackage 的 `model_checksum`（权重 sha256）与 `weight_license` 假�
 ```python
 # 契约层新增（packages/contracts/providers.py）
 class ProviderApiIdentity(StrictContract):
-    endpoint: str                    # 如 https://ark.cn-beijing.volces.com/api/v3/chat/completions
-    model: str                       # 如 doubao-seed-2-0-mini-260428
-    api_schema_version: str          # 如 ark-openapi-v1
-    tos_version: str                 # 如 volcengine-ark-tos-2026-08（记录审查时点）
-    invocation_checksum: Checksum    # 抽样调用的规范化请求/响应 checksum（防漂移证据）
+    endpoint: str  # 如 https://ark.cn-beijing.volces.com/api/v3/chat/completions
+    model: str  # 如 doubao-seed-2-0-mini-260428
+    api_schema_version: str  # 如 ark-openapi-v1
+    tos_version: str  # 如 volcengine-ark-tos-2026-08（记录审查时点）
+    invocation_checksum: Checksum  # 抽样调用的规范化请求/响应 checksum（防漂移证据）
+
 
 # ProviderPackage 新增可选字段
 api_identity: ProviderApiIdentity | None = None

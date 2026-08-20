@@ -1,0 +1,62 @@
+{
+  "review_id": "46165292-cb25-4f2e-a756-06196607ac50",
+  "decision_id": "aa6170c3-b0f0-4e98-ba3f-054afc4834d1",
+  "decision": "approve",
+  "approved_story_ref": {
+    "artifact_id": "c378ba51-da33-4049-baf0-538ca637e9a5",
+    "version": 1,
+    "artifact_type": "StoryGraph",
+    "checksum": "sha256:8b34ae0d15d81126a1907366e27efcb4ce113e5bea0e1d2fae0ec146d0c7aad2"
+  },
+  "review_package": {
+    "fact_ref": {
+      "artifact_id": "17140235-dc00-4851-b3c1-5d819290fe9f",
+      "version": 1,
+      "artifact_type": "FactSet",
+      "checksum": "sha256:220ed1b89a7d6e6032c0a989b57b8990871ddb85e6c25a09349897a060eed776"
+    },
+    "identity_ref": {
+      "artifact_id": "287e1884-5139-42e6-b08c-083e03760ea0",
+      "version": 1,
+      "artifact_type": "IdentityGraph",
+      "checksum": "sha256:f9e8c1e735081f92651380a453ccbd9f30bed7c831792248cc290bf7a22d984f"
+    },
+    "event_set_ref": {
+      "artifact_id": "483b9844-e448-40e9-abdf-65b27a672781",
+      "version": 1,
+      "artifact_type": "EventSet",
+      "checksum": "sha256:d2ce28242d28c55d2d02a5f472bc4762e871333718239690260047c93e69502e"
+    },
+    "character_state_ref": {
+      "artifact_id": "6454f606-d3cd-4145-bb1e-dfd19a70e40d",
+      "version": 1,
+      "artifact_type": "CharacterStateGraph",
+      "checksum": "sha256:884a25289a46e01f2152629a1bfb285c8a5c1511b1a5b53bc23dd1859a11e5b9"
+    },
+    "causal_graph_ref": {
+      "artifact_id": "aa6e9a7e-ac63-4cd0-a5da-779235ff6568",
+      "version": 1,
+      "artifact_type": "CausalGraph",
+      "checksum": "sha256:cc73def9d0641dfb4a9c43752741d7b0919375f681d64c32e70ada16cf75b33f"
+    },
+    "story_graph_ref": {
+      "artifact_id": "c378ba51-da33-4049-baf0-538ca637e9a5",
+      "version": 1,
+      "artifact_type": "StoryGraph",
+      "checksum": "sha256:8b34ae0d15d81126a1907366e27efcb4ce113e5bea0e1d2fae0ec146d0c7aad2"
+    },
+    "config_refs": [
+      {
+        "artifact_id": "4a293ec6-4623-4043-8d83-c8378a7d7da5",
+        "version": 1,
+        "artifact_type": "ConfigArtifact",
+        "checksum": "sha256:469954a879eae602821b78ab7635114d90e39a4ce38a1a7b86f74145b1ba975c"
+      }
+    ],
+    "model_refs": [],
+    "blocker_codes": [],
+    "unresolved_count": 2,
+    "incomplete": false
+  },
+  "scope": "Episode 8 factual summary only"
+}

@@ -207,8 +207,7 @@ def _merge_baseline(entries: list[dict[str, object]]) -> None:
         else {"episodes": []}
     )
     existing = {
-        e.get("audio_stem") or e.get("audio_stem_id") or ""
-        for e in manifest.get("episodes", [])
+        e.get("audio_stem") or e.get("audio_stem_id") or "" for e in manifest.get("episodes", [])
     }
     added = [e for e in entries if e["audio_stem"] not in existing]
     manifest.setdefault("episodes", []).extend(added)

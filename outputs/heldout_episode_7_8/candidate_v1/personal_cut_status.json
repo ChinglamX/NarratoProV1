@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "project_name": "山神印觉醒后满山风月皆归我-第7至8集声画锚定验证",
+  "updated_at": "2026-08-19T01:52:54.323891+00:00",
+  "config": "/Users/chinglam/workspace/NarratoProV1/product/heldout_episode_7_8_anchor_validation.json",
+  "overall_status": "passed",
+  "stages": [
+    {
+      "stage": "01-rights-and-human-gates",
+      "status": "passed",
+      "explanation": "仅限内部预览；Gate 1 剧情与 Gate 2 策略均已人工批准。",
+      "inspectable_output": null
+    },
+    {
+      "stage": "02-media-ingest",
+      "status": "passed",
+      "explanation": "2 个素材和权利快照均可追踪。",
+      "inspectable_output": "/Users/chinglam/workspace/NarratoProV1/product/../outputs/heldout_episode_7_8/ingest_episode_07.json, /Users/chinglam/workspace/NarratoProV1/product/../outputs/heldout_episode_7_8/ingest_episode_08.json"
+    },
+    {
+      "stage": "03-approved-cut-parts",
+      "status": "passed",
+      "explanation": "7 段解说、镜头表、WAV 和 ASS 均可单独查看。",
+      "inspectable_output": "/Users/chinglam/workspace/NarratoProV1/product/../outputs/heldout_episode_7_8/candidate_v1/manifest.json"
+    },
+    {
+      "stage": "04-runtime",
+      "status": "passed",
+      "explanation": "canonical 已完成，运行环境能力已有成功记录；本次无需重复连接 Temporal。",
+      "inspectable_output": null
+    },
+    {
+      "stage": "05-canonical-render-and-qc",
+      "status": "passed",
+      "explanation": "canonical 成片存在，Temporal Render 与 Technical QC 已通过。",
+      "inspectable_output": "/Users/chinglam/workspace/NarratoProV1/product/../outputs/heldout_episode_7_8/candidate_v1/canonical_e11.mp4"
+    },
+    {
+      "stage": "06-human-release",
+      "status": "skipped",
+      "explanation": "Gate 3 未执行；本入口不会公开发布。",
+      "inspectable_output": null
+    }
+  ],
+  "canonical_checksum": "sha256:e84c5d18bc4c180b95a93fbf46bca7ca39d120b6ec184e1837fa22b07eb68e5d",
+  "release_gate_3": "not-executed"
+}

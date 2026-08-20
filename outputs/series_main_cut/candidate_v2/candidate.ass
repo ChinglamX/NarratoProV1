@@ -1,0 +1,49 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 720
+PlayResY: 1280
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Default,Heiti SC,48,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,3,1,2,40,40,100,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.00,0:00:01.22,Default,,0,0,100,,林大壮跌下山崖，
+Dialogue: 0,0:00:01.22,0:00:02.45,Default,,0,0,100,,本以为必死无疑，
+Dialogue: 0,0:00:02.45,0:00:04.59,Default,,0,0,100,,醒来后掌心却多了一道山神\N印。
+Dialogue: 0,0:00:04.80,0:00:05.72,Default,,0,0,100,,从那一刻起，
+Dialogue: 0,0:00:05.72,0:00:07.40,Default,,0,0,100,,山里每一株草木的位置，
+Dialogue: 0,0:00:07.40,0:00:08.32,Default,,0,0,100,,他都能感知。
+Dialogue: 0,0:00:08.00,0:00:09.34,Default,,0,0,100,,他随手挖出的第一株，
+Dialogue: 0,0:00:09.34,0:00:10.81,Default,,0,0,100,,就是五十年份的野山参，
+Dialogue: 0,0:00:10.81,0:00:12.42,Default,,0,0,100,,这下妹妹的学费有了着落。
+Dialogue: 0,0:00:12.50,0:00:14.20,Default,,0,0,100,,可兄妹俩还没来得及高兴，
+Dialogue: 0,0:00:14.20,0:00:15.48,Default,,0,0,100,,狼群已经封死退路。
+Dialogue: 0,0:00:15.48,0:00:16.48,Default,,0,0,100,,为了护住妹妹，
+Dialogue: 0,0:00:16.48,0:00:17.90,Default,,0,0,100,,他第一次催动山神印。
+Dialogue: 0,0:00:17.70,0:00:19.15,Default,,0,0,100,,整群野狼竟低头退去，
+Dialogue: 0,0:00:19.15,0:00:20.16,Default,,0,0,100,,可家里的赌债，
+Dialogue: 0,0:00:20.16,0:00:21.90,Default,,0,0,100,,又盯上了妹妹的大学学费。
+Dialogue: 0,0:00:22.00,0:00:22.99,Default,,0,0,100,,为了兑现承诺，
+Dialogue: 0,0:00:22.99,0:00:24.70,Default,,0,0,100,,他只能带着人参进城变现，
+Dialogue: 0,0:00:24.70,0:00:26.54,Default,,0,0,100,,却刚进药店就被当成了穷鬼\N。
+Dialogue: 0,0:00:28.00,0:00:29.44,Default,,0,0,100,,老板明明认出了极品，
+Dialogue: 0,0:00:29.44,0:00:30.73,Default,,0,0,100,,却欺负他不懂行情，
+Dialogue: 0,0:00:30.73,0:00:31.73,Default,,0,0,100,,只肯出二十万。
+Dialogue: 0,0:00:31.70,0:00:33.02,Default,,0,0,100,,就在他准备离开时，
+Dialogue: 0,0:00:33.02,0:00:34.48,Default,,0,0,100,,真正识货的买家赶到，
+Dialogue: 0,0:00:34.48,0:00:35.65,Default,,0,0,100,,当场拿出五十万。
+Dialogue: 0,0:00:36.10,0:00:37.02,Default,,0,0,100,,可钱刚到手，
+Dialogue: 0,0:00:37.02,0:00:38.85,Default,,0,0,100,,讨债的人已经抓住了妹妹。
+Dialogue: 0,0:00:38.80,0:00:39.59,Default,,0,0,100,,他们还以为，
+Dialogue: 0,0:00:39.59,0:00:41.55,Default,,0,0,100,,林大壮是那个任人欺负的穷\N小子。
+Dialogue: 0,0:00:41.50,0:00:42.22,Default,,0,0,100,,却不知道，
+Dialogue: 0,0:00:42.22,0:00:43.38,Default,,0,0,100,,如今站在面前的，
+Dialogue: 0,0:00:43.38,0:00:44.98,Default,,0,0,100,,是整座山选中的守山人。
+Dialogue: 0,0:00:45.00,0:00:45.96,Default,,0,0,100,,山神印一亮，
+Dialogue: 0,0:00:45.96,0:00:48.05,Default,,0,0,100,,刚才还在叫嚣的人全部跪下\N。
+Dialogue: 0,0:00:48.70,0:00:49.49,Default,,0,0,100,,直到这一刻，
+Dialogue: 0,0:00:49.49,0:00:51.06,Default,,0,0,100,,他终于有能力护妹妹周全，
+Dialogue: 0,0:00:51.06,0:00:51.45,Default,,0,0,100,,而这，
+Dialogue: 0,0:00:51.45,0:00:53.42,Default,,0,0,100,,只是整座山送给他的第一份\N礼物。

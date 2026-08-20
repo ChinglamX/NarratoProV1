@@ -1,0 +1,96 @@
+{
+  "module": "VC-002 — E07 Story Understanding",
+  "input": {
+    "episode": 8,
+    "transcript": "/Users/chinglam/workspace/NarratoProV1/outputs/series_analysis/transcripts/episode_08.srt",
+    "ingest_manifest": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/ingest_episode_08.json"
+  },
+  "artifact_chain": [
+    {
+      "artifact_id": "b54e8ece-951b-4021-b853-ed1bb848aa40",
+      "version": 1,
+      "artifact_type": "RawProviderResponse",
+      "checksum": "sha256:3c0a530fef8afc88808a9de558c1c78e25d5cccab021674793444f60eeecc714"
+    },
+    {
+      "artifact_id": "d54f3bb7-ff62-4ee0-824c-f0126328ba24",
+      "version": 1,
+      "artifact_type": "SpeechObservation",
+      "checksum": "sha256:a989cfb5304a8dde24c8a75622eeed18c8c67d1f195ecda17b4e80cf11cce0a6"
+    },
+    {
+      "artifact_id": "17140235-dc00-4851-b3c1-5d819290fe9f",
+      "version": 1,
+      "artifact_type": "FactSet",
+      "checksum": "sha256:220ed1b89a7d6e6032c0a989b57b8990871ddb85e6c25a09349897a060eed776"
+    },
+    {
+      "artifact_id": "c378ba51-da33-4049-baf0-538ca637e9a5",
+      "version": 1,
+      "artifact_type": "StoryGraph",
+      "checksum": "sha256:8b34ae0d15d81126a1907366e27efcb4ce113e5bea0e1d2fae0ec146d0c7aad2"
+    }
+  ],
+  "database_verification": {
+    "all_refs_resolved": true,
+    "payload_checksums_verified": true
+  },
+  "system_story_brief": {
+    "events": [
+      "对白表明有人以三十万购买两样货物，并完成交易。",
+      "交易方交出一张内有三十万、密码为六个八的卡。",
+      "另一方得知那小子一天得到三十万，因其有钱不还并曾动手，决定盯住并威胁杀死他。"
+    ],
+    "unresolved_questions": [
+      "仅凭本段研究 ASR 无法可靠确认交易双方姓名及两样货物的具体名称。",
+      "单段 ASR 没有说话人分离，威胁者与虎哥是否为同一人需要画面或人工确认。"
+    ],
+    "confidence": "unavailable"
+  },
+  "manual_reference": {
+    "status": "producer_draft_pending_human_review",
+    "summary": "主角带着两样货物成交三十万并拿到银行卡；虎哥一方得知他有钱后，因欠债和此前冲突派人盯住，准备再次下手。",
+    "known_extra_interpretation": [
+      "“主角”身份来自人工观看上下文，不由本段无说话人 ASR 单独证明。",
+      "“虎哥一方”需要画面和角色身份链确认。"
+    ]
+  },
+  "human_review_question": [
+    "系统摘要是否存在关键事实错误?",
+    "是否漏掉决定 Hook 的主要冲突?",
+    "是否足以支持后续营销方向选择?"
+  ],
+  "human_decision": "useful_with_revision",
+  "human_review": {
+    "reviewer": "project-owner",
+    "reviewed_at": "2026-08-19",
+    "decision": "useful_with_revision",
+    "confirmed": "系统列出的三条事实信息均正确。",
+    "scope": "Episode 8 transcript-grounded factual summary only",
+    "remaining_revision": "补充原片播放器、逐条独立时间码和说话人分离证据。",
+    "not_proven": [
+      "自动角色身份识别",
+      "完整 Story Understanding",
+      "Strategy、Clip 或 Narration generation"
+    ]
+  },
+  "review_evidence": {
+    "manifest": "/Users/chinglam/workspace/NarratoProV1/outputs/vc002_episode_08/evidence_manifest.json",
+    "source_review_clip": "/Users/chinglam/workspace/NarratoProV1/outputs/vc002_episode_08/source_review_00m00s520_00m51s025.mp4",
+    "claim_windows": [
+      {"claim_id": "sale", "start_seconds": 15.0, "end_seconds": 28.0},
+      {"claim_id": "payment", "start_seconds": 28.0, "end_seconds": 33.0},
+      {"claim_id": "threat", "start_seconds": 39.0, "end_seconds": 53.056}
+    ],
+    "range_status": "review_window_not_word_alignment",
+    "speaker_status": "visual-role-evidence-without-canonical-identity",
+    "correction_status": "corrected-claim-2-confirmed-by-project-owner",
+    "correction_review": {
+      "reviewer": "project-owner",
+      "reviewed_at": "2026-08-19",
+      "decision": "correct",
+      "target": "claim_02_payment_28s_33s.mp4"
+    }
+  },
+  "current_maturity": "M3 Human Useful with revision for Episode 8 factual summary"
+}

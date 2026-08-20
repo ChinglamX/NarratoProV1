@@ -1,0 +1,189 @@
+{
+  "source": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/1.mp4",
+  "sources": [
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/4.mp4",
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+    "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+    "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+    "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d"
+  ],
+  "rights": "internal-only; no-public-release",
+  "gate_1": "approved",
+  "gate_2": "approved",
+  "segments": [
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+      "source_start_seconds": 20.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+      "source_start_seconds": 44.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 24.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 44.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 60.0,
+      "duration_seconds": 5.0
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+      "source_start_seconds": 36.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/4.mp4",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 5.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+      "source_start_seconds": 32.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+      "source_start_seconds": 0.0,
+      "duration_seconds": 5.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+      "source_start_seconds": 56.0,
+      "duration_seconds": 4.5
+    }
+  ],
+  "narration_lines": [
+    {
+      "index": 1,
+      "text": "他跌下山崖，醒来时，掌心竟多了一道山神印。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_01.wav",
+      "timeline_start_seconds": 0,
+      "duration_seconds": 3.371,
+      "slot_duration_seconds": 4.0,
+      "checksum": "sha256:8d761357c0489833c17ee6d6d87d824a53eeb0b35e80438a802ceb57a4b8590a"
+    },
+    {
+      "index": 2,
+      "text": "从此，山里每一株草木的位置，他都能感知。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_02.wav",
+      "timeline_start_seconds": 4.0,
+      "duration_seconds": 2.517,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:3b91ef566adaa690d2ba322db0152c31ea10cb7be55ccbdaaff514b64e2e997d"
+    },
+    {
+      "index": 3,
+      "text": "随手挖出的第一株，就是五十年份的野山参。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_03.wav",
+      "timeline_start_seconds": 8.5,
+      "duration_seconds": 2.688,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:344a5db6a0f96357b825e82a794fcd5f42ecd9e0bedd35f28274d069dfe391c7"
+    },
+    {
+      "index": 4,
+      "text": "可没等兄妹高兴，狼群已经封死退路。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_04.wav",
+      "timeline_start_seconds": 13.0,
+      "duration_seconds": 2.56,
+      "slot_duration_seconds": 4.0,
+      "checksum": "sha256:00e25c9041f045c350dc088d81ac7fa05af1f8a2e9e6565f984e1260bdef22c4"
+    },
+    {
+      "index": 5,
+      "text": "他只抬了一次手，整片山林便替他让路。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_05.wav",
+      "timeline_start_seconds": 17.0,
+      "duration_seconds": 2.56,
+      "slot_duration_seconds": 5.0,
+      "checksum": "sha256:4440938e5748412412c4d3290b3d869e0df104c9ace123b32ec131ff5400eec9"
+    },
+    {
+      "index": 6,
+      "text": "偏偏家里的赌债，又吞掉了妹妹的大学学费。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_06.wav",
+      "timeline_start_seconds": 22.0,
+      "duration_seconds": 2.816,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:3034492b83503a86fc54acf05e9ab9f0e649b9e5d65a83251794e33664b7e26f"
+    },
+    {
+      "index": 7,
+      "text": "他当场承诺，妹妹的大学，由自己来供。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_07.wav",
+      "timeline_start_seconds": 26.5,
+      "duration_seconds": 2.56,
+      "slot_duration_seconds": 4.0,
+      "checksum": "sha256:e6edfdad3c1a84215fd9e422e79b8bfef2d30b4047d526a0290f878c15ac1c85"
+    },
+    {
+      "index": 8,
+      "text": "药店认出这是极品，嘴上却只肯出二十万。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_08.wav",
+      "timeline_start_seconds": 30.5,
+      "duration_seconds": 2.773,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:2b5e7ba435a5e280c3a2b8aa107f8b102688c7bf84488e2fefffc2462724d6a0"
+    },
+    {
+      "index": 9,
+      "text": "下一秒，真正识货的买家，直接把价格抬到五十万。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_09.wav",
+      "timeline_start_seconds": 35.0,
+      "duration_seconds": 3.072,
+      "slot_duration_seconds": 5.0,
+      "checksum": "sha256:35bda8a46717fdb62a8b25abe2bd92497f7c3bbb557f6ee5c649c505177d0f5e"
+    },
+    {
+      "index": 10,
+      "text": "可钱刚到手，讨债的人就抓住了妹妹。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_10.wav",
+      "timeline_start_seconds": 40.0,
+      "duration_seconds": 2.56,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:fddaed29096f8bf1c7025c47153648f30b514a83afff2ea2a34ffb49175aff70"
+    },
+    {
+      "index": 11,
+      "text": "山神印一亮，刚才还叫嚣的人，全都跪了。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_11.wav",
+      "timeline_start_seconds": 44.5,
+      "duration_seconds": 2.731,
+      "slot_duration_seconds": 5.0,
+      "checksum": "sha256:a93384c49ed80fcff1baba1acc7d342bff02547bb96f3794941297ce5d4ee067"
+    },
+    {
+      "index": 12,
+      "text": "他终于有钱供妹妹读书，也有力量护她周全。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/narration_12.wav",
+      "timeline_start_seconds": 49.5,
+      "duration_seconds": 2.773,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:79ec1b8f4a5a6a4e0b7626a1ade446be32b5fa5583a0dbd7d68bf49d138cfa9d"
+    }
+  ],
+  "ass": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/candidate.ass",
+  "output": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v1/candidate_v1.mp4",
+  "output_checksum": "sha256:266a994f2fb8c6c0149ce08f907695841cab6dfd8713017eaf278166d6562752"
+}
