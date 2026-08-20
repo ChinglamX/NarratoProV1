@@ -85,14 +85,20 @@ class PaddleDetectionProvider:
         detections: list[dict[str, object]] = []
         for page in output:
             boxes = page.get("boxes") or page.get("det_boxes") or []
-            labels = page.get("labels") or page.get("det_labels") or []
+            page_labels = page.get("labels") or page.get("det_labels") or []
             for index, box in enumerate(boxes):
                 region = _pixel_box_to_bbox(box, width, height)
                 if region is None:
                     continue
+                # PaddleX DetResult carries the label inside each box dict
+                # (e.g. {"cls_id": 0, "label": "person", "score": ..., ...});
+                # page-level labels are a legacy fallback.
+                label = box.get("label") if isinstance(box, dict) else None
+                if not label and index < len(page_labels):
+                    label = page_labels[index]
                 detections.append(
                     {
-                        "label": labels[index] if index < len(labels) else "unknown",
+                        "label": label or "unknown",
                         "score": box.get("score"),
                         "region": region,
                     }

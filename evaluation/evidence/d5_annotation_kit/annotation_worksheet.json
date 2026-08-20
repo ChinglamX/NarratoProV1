@@ -24,11 +24,11 @@
         ],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.9595434665679932
           },
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.939805805683136
           }
         ],
@@ -49,11 +49,11 @@
         "ocr_detected_texts": [],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "toilet",
             "score": 0.898309588432312
           },
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.547992467880249
           }
         ],
@@ -87,7 +87,7 @@
         ],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.9808579087257385
           }
         ],
@@ -117,7 +117,7 @@
         ],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.976814329624176
           }
         ],
@@ -143,11 +143,11 @@
         ],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.9694920778274536
           },
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.9178122282028198
           }
         ],
@@ -173,7 +173,7 @@
         ],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.9781161546707153
           }
         ],
@@ -194,11 +194,11 @@
         "ocr_detected_texts": [],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.9553227424621582
           },
           {
-            "label": "unknown",
+            "label": "tie",
             "score": 0.7808656096458435
           }
         ],
@@ -224,7 +224,7 @@
         ],
         "detection_objects": [
           {
-            "label": "unknown",
+            "label": "person",
             "score": 0.9746006727218628
           }
         ],

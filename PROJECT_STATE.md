@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 116
+State Version: 117
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 DET adapter 解析 bug 修复（State v117）：试标发现 DET 全 unknown 的根因是 `paddle_detection.py` 误读 `page.get("labels")`（PaddleX DetResult 标签实际在 `boxes[].label`）——已修复并重跑 8 帧：**DET label 级 precision 0.8 / recall 1.0**（person 检出正常；1 误报为 f02「toilet」=陶缸被 COCO 误判）。OCR 与 VLM 指标不变（CER 0.1667/误报 1、合规 1.0）。D6 范围修正：person 等 COCO 类已可用（支撑 E07 identity 人物计数），卡/钱等短剧类别仍需自定义（`d6_class_system_options.md` 三方案更新）。`make check` 全绿。下一步：owner 标注剩余 2 集 16 帧（预填汇总已备于聊天/工作簿），或 D6 类别决策。
 
 - 2026-08-19 D5 第一集试标完成（State v116）：owner 标注 e06-1982/e01 8 帧（OCR 参考文本 / DET 描述 / VLM 判定），`accept_d5_metrics.py` 计算——**OCR 文本帧 CER=0.000（5/5 零错误）**、误报 1 帧（f08「F」，计入后平均 CER=0.1667）、**VLM claim 合规率 1.0（8/8）**、DET label 级 precision/recall=0/0（RT-DETR 标签全 unknown，**实证 D6 类别体系问题**）。owner 三项发现均已处置：f08 误识别计入、f03 漏识别核实为未漏（仅标点差异）、f01 空格差异归一化。报告 `evaluation/evidence/d5_annotation_kit/trial_report.md`；工作表已填 owner 标注。下一步：扩展标注剩余 2 集 16 帧 + D6 类别体系决策（DET 在类别未定时不作为准入依据）。
 

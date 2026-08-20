@@ -39,27 +39,30 @@ WORKSHEET = ROOT / "evaluation/evidence/d5_annotation_kit/annotation_worksheet.j
 OUTPUT = ROOT / "evaluation/evidence/d5_annotation_kit/metrics_report.json"
 
 # Machine detection labels that carry meaning for short-drama scenes, plus the
-# common Chinese tokens the owner naturally writes in the worksheet.
-KNOWN_LABELS = (
-    "person",
-    "people",
-    "人",
-    "card",
-    "卡",
-    "vehicle",
-    "car",
-    "车",
-    "money",
-    "钱",
-    "phone",
-    "手机",
-)
+# common Chinese tokens the owner naturally writes in the worksheet. Matching
+# normalizes Chinese tokens to their English label.
+LABEL_NORMALIZE = {
+    "人": "person",
+    "people": "person",
+    "卡": "card",
+    "车": "vehicle",
+    "car": "vehicle",
+    "钱": "money",
+    "手机": "phone",
+}
 
 
-def parse_owner_labels(description: str) -> list[str]:
-    """Extract known labels mentioned in the owner's box description (trial proxy)."""
+def parse_owner_labels(description: str) -> set[str]:
+    """Extract normalized labels mentioned in the owner's box description."""
     lowered = (description or "").lower()
-    return [label for label in KNOWN_LABELS if label in lowered]
+    found = set()
+    for token, normalized in LABEL_NORMALIZE.items():
+        if token in lowered:
+            found.add(normalized)
+    # also accept the English label itself
+    if "person" in lowered or "people" in lowered:
+        found.add("person")
+    return found
 
 
 def main() -> int:
@@ -100,8 +103,9 @@ def main() -> int:
         if owner_det:
             reference_labels = set(parse_owner_labels(owner_det))
             machine_labels = {
-                str(item.get("label") or "").lower()
+                LABEL_NORMALIZE.get(raw, raw)
                 for item in prefill.get("detection_objects", [])
+                if (raw := str(item.get("label") or "").lower())
             }
             for label in reference_labels:
                 if label in machine_labels:
