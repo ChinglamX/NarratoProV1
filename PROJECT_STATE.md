@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 113
+State Version: 114
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-19 Git 归档 + D5 预标注（State v114）：提交 `7f37c98`（85 文件，+7236/−155，branch `codex/director-anchor-baseline`）——含 Episode 8 全链证据（Gate1→2→E09→E10→E11）、自动内容生成 research（VLM 选镜/ASR 证据/LLM 解说）、准入证据（IndexTTS checksum/FunASR 许可+checksum/5 集 Speech 基准/D5 标注包）、决策文档与 State v100–v113；媒体（MP4/WAV）不进入 Git，路径与 checksum 记录于 State/evidence。D5 标注包已机器预标注：新增 `scripts/prefill_d5_annotation.py` 对 24 帧跑 OCR/DET/VLM，`annotation_worksheet.json` 每帧含 `machine_prefill`（OCR 0–4 文本、DET 1–4 物体、VLM 描述全部成功）——owner 只需修正而非从零标注。下一步待 owner：D5 试标 1 集（e06-1982/e01 8 帧）、A 最终候选确认、Release Gate 3（另行确认）。
 
 - 2026-08-19 裁决验证 + D9 商用批准（State v113）：owner 复核三项执行通过。**B 自动选镜 research 草稿正式 approve**（run `fa3a29bb`，24.00s，workflow succeeded；作为 research 验证证据，不替代人工 approved Timeline `d3690d71`）。**D9 商用批准 `commercial_use_allowed=True`**（Apache-2.0 模型卡，注册表已更新；`production_readiness_gaps(funasr)=0`，admission 仍 research——正式 production 仍需 D5 CER 阈值 + Speech 基准验收）。**A 最终解说对照卡** `outputs/vc003_episode_08/audio/narration_final_comparison.md`（修正解说 vs 人工批准 Timeline 解说，供最终确认）。D5 标注建议：先试标 e06-1982/e01 的 8 帧。下一步待 owner：D5 试标、A 最终候选确认、是否 Git 归档（多处未提交文件）。
 
