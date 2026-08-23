@@ -219,7 +219,9 @@ def _build_beats(windows: dict[str, tuple[float, float]]) -> list[NarrativeBeat]
 
 
 def _build_candidates(
-    beats: list[NarrativeBeat], windows: dict[str, tuple[float, float]]
+    beats: list[NarrativeBeat],
+    windows: dict[str, tuple[float, float]],
+    source_ref: ArtifactRef,
 ) -> list[ClipCandidate]:
     """One evidence-grounded candidate per beat at its verified window."""
     ordered, specs = _key_specs(windows)
@@ -232,7 +234,7 @@ def _build_candidates(
                 {
                     "candidate_id": str(uuid4()),
                     "beat_id": str(beat.beat_id),
-                    "source_ref": SOURCE_REF.model_dump(mode="json"),
+                    "source_ref": source_ref.model_dump(mode="json"),
                     "source_range": _time_range(start, duration).model_dump(mode="json"),
                     "story_refs": [str(event_id)],
                     "evidence_refs": [str(evidence_id)],
@@ -404,6 +406,8 @@ def _request(
     project_id: UUID,
     pointers: dict[str, ArtifactPointer],
     beats: list[NarrativeBeat],
+    source_ref: ArtifactRef,
+    source_duration: float,
 ) -> CreativeTimelineRequest:
     planning = PlanningIdSpec(
         candidate_set_id=str(uuid4()),
@@ -440,7 +444,7 @@ def _request(
         track_ids={},
         item_ids=(),
         output_path=str(Path(get_settings().temp_root) / f"vc003-e08-{run_id}-preview.mp4"),
-        source_durations={str(SOURCE_ARTIFACT_ID): SOURCE_DURATION_SECONDS},
+        source_durations={str(source_ref.artifact_id): f"{source_duration:.6f}"},
     )
 
 
@@ -583,7 +587,13 @@ async def _produce(
     threat_duration: float,
     windows_override: dict[str, list[float]] | None = None,
     auto_approve: bool = False,
+    source_ref: ArtifactRef | None = None,
+    source_duration: float | None = None,
 ) -> None:
+    source_ref = source_ref or SOURCE_REF
+    source_duration = (
+        source_duration if source_duration is not None else float(SOURCE_DURATION_SECONDS)
+    )
     settings = get_settings()
     engine = create_database_engine(settings.database_url)
     run_id = uuid4()
@@ -609,7 +619,7 @@ async def _produce(
                 key: (float(value[0]), float(value[1])) for key, value in windows_override.items()
             }
         beats = _build_beats(windows)
-        candidates = _build_candidates(beats, windows)
+        candidates = _build_candidates(beats, windows, source_ref)
         narration = _build_narration(beats, windows)
         pointers = _commit_inputs(
             connection,
@@ -621,10 +631,13 @@ async def _produce(
             candidates=candidates,
             narration=narration,
         )
-        request = _request(run_id, PROJECT_ID, pointers, beats)
+        request = _request(run_id, PROJECT_ID, pointers, beats, source_ref, source_duration)
 
-    print("== Episode 8 creative timeline production (威胁倒叙) ==")
-    print(f"run_id={run_id}  source={SOURCE_ARTIFACT_ID}  beats=3")
+    print("== auto creative timeline production ==")
+    print(
+        f"run_id={run_id}  source={source_ref.artifact_id} "
+        f"({source_duration:.2f}s)  beats={len(beats)}"
+    )
     for name, pointer in pointers.items():
         print(f"  {name}: {pointer.artifact_id} v{pointer.version}")
 
@@ -706,7 +719,19 @@ def main() -> int:
     parser.add_argument(
         "--windows-json",
         type=Path,
-        help="per-beat window overrides: {threat: [start, duration], sale: [...], payment: [...]}",
+        help="per-beat window overrides: {threat: [start, duration], sale: [...], payment: [...]} "
+        "or arbitrary keys {beat1: [...], ...}",
+    )
+    parser.add_argument(
+        "--source-artifact-id",
+        default=str(SOURCE_ARTIFACT_ID),
+        help="SourceMedia artifact id the windows/candidates reference",
+    )
+    parser.add_argument(
+        "--source-duration",
+        type=float,
+        default=float(SOURCE_DURATION_SECONDS),
+        help="source media duration in seconds (clamp bound for windows)",
     )
     parser.add_argument(
         "--auto-approve",
@@ -726,12 +751,21 @@ def main() -> int:
     elif args.run_id is not None:
         asyncio.run(_card(UUID(args.run_id)))
     else:
+        source_ref = ArtifactRef.model_validate(
+            {
+                "artifact_id": args.source_artifact_id,
+                "version": 1,
+                "artifact_type": "SourceMedia",
+            }
+        )
         asyncio.run(
             _produce(
                 args.threat_start,
                 args.threat_duration,
                 windows_override=windows_override,
                 auto_approve=args.auto_approve,
+                source_ref=source_ref,
+                source_duration=args.source_duration,
             )
         )
     return 0

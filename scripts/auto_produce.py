@@ -51,6 +51,7 @@ from packages.intelligence.vlm_clip_retrieval import (  # noqa: E402
 from packages.providers.visual.volcengine_ark_vlm import VolcengineArkVLMProvider  # noqa: E402
 
 FUNASR_URL = "http://127.0.0.1:7860"
+SPEAKER_TAG = re.compile(r"说话人\s*\d+\s*[:：]\s*")
 SRT_PATTERN = re.compile(
     r"\d+\s*\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})\s*\n(.+?)(?=\n\n|\Z)",
     re.DOTALL,
@@ -135,10 +136,16 @@ def _asr(audio: Path) -> list[dict[str, object]]:
             payload = json.loads(resp.read())
     except urllib.error.HTTPError as error:
         raise RuntimeError(f"FunASR HTTP {error.code}") from error
-    return [
-        {"start": _seconds(a), "end": _seconds(b), "text": t.strip().replace("\n", " ")}
-        for a, b, t in SRT_PATTERN.findall(str(payload.get("srt") or ""))
-    ]
+    segments: list[dict[str, object]] = []
+    for start, end, raw in SRT_PATTERN.findall(str(payload.get("srt") or "")):
+        start_sec, end_sec = _seconds(start), _seconds(end)
+        # enable_spk embeds 说话人N: tags inside a block (speaker turns are
+        # grouped); split them into clean single-speaker utterances so prompts
+        # and keyword matching never see the tags.
+        chunks = [part.strip() for part in SPEAKER_TAG.split(raw) if part.strip()]
+        for chunk in chunks:
+            segments.append({"start": start_sec, "end": end_sec, "text": chunk.replace("\n", " ")})
+    return segments
 
 
 def _extract_story(transcript: str, segments: list[dict[str, object]]) -> list[dict[str, object]]:
@@ -361,7 +368,8 @@ def main() -> int:
         raise SystemExit("ingest produced no AudioStem")
     print(f"  1/8 ingest ok: AudioStem {audio_stem.artifact_id}")
 
-    # Phase 2: ASR on the AudioStem.
+    # Phase 2: ASR on the AudioStem (cached per AudioStem id — identity reuse
+    # means the same source blob always yields the same stem).
     blob_path = None
     from sqlalchemy import text as _text
 
@@ -378,10 +386,16 @@ def main() -> int:
         blob_path = ROOT / "data/local/object_store" / uri.removeprefix("local-object://")
     if blob_path is None or not blob_path.is_file():
         raise SystemExit("AudioStem blob unavailable")
-    segments = _asr(blob_path)
+    asr_cache = WORK_ROOT / f"asr_{audio_stem.artifact_id}.json"
+    if asr_cache.is_file():
+        segments = json.loads(asr_cache.read_text(encoding="utf-8"))
+        print(f"  2/8 asr ok (cached): {len(segments)} segments")
+    else:
+        segments = _asr(blob_path)
+        asr_cache.write_text(json.dumps(segments, ensure_ascii=False), encoding="utf-8")
+        print(f"  2/8 asr ok: {len(segments)} segments")
     transcript = " ".join(str(s["text"]) for s in segments)
     (WORK_ROOT / f"{run_id}_transcript.txt").write_text(transcript, encoding="utf-8")
-    print(f"  2/8 asr ok: {len(segments)} segments")
 
     # Phase 3: story events from the transcript.
     events = _extract_story(transcript, segments)
@@ -470,6 +484,12 @@ def main() -> int:
         # only fire on the spoken frames and would over-narrow a short scene).
         if end - start > MAX_BEAT_SECONDS:
             frames = []
+            vlm_cache_path = WORK_ROOT / f"vlm_{audio_stem.artifact_id}.json"
+            vlm_cache: dict[str, bool] = (
+                json.loads(vlm_cache_path.read_text(encoding="utf-8"))
+                if vlm_cache_path.is_file()
+                else {}
+            )
             t = start + 0.5
             while t <= end - 0.5:
                 frame_path = WORK_ROOT / f"{run_id}_ev{index}_{t:06.2f}.jpg"
@@ -491,9 +511,16 @@ def main() -> int:
                     ],
                     check=True,
                 )
-                frames.append(
-                    FrameRelevance(t, _vlm_verdict(frame_path, str(event["description"])), "")
-                )
+                vlm_key = f"ev{index}_{t:06.2f}"
+                if vlm_key in vlm_cache:
+                    verdict = vlm_cache[vlm_key]
+                else:
+                    verdict = _vlm_verdict(frame_path, str(event["description"]))
+                    vlm_cache[vlm_key] = verdict
+                    vlm_cache_path.write_text(
+                        json.dumps(vlm_cache, ensure_ascii=False), encoding="utf-8"
+                    )
+                frames.append(FrameRelevance(t, verdict, ""))
                 t = round(t + 1.0, 2)
             refined = refine_evidence_window(frames, (start, end))
             if refined[1] - refined[0] >= MIN_BEAT_SECONDS:
@@ -533,6 +560,10 @@ def main() -> int:
         str(ROOT / "scripts/produce_vc003_timeline.py"),
         "--windows-json",
         str(windows_file),
+        "--source-artifact-id",
+        str(outcome.source.artifact_id),
+        "--source-duration",
+        f"{source_duration:.3f}",
         "--auto-approve",
     ]
     print("  7/8 timeline...")
@@ -572,6 +603,7 @@ def main() -> int:
     starts = [0.0]
     for key in ordered_keys[:-1]:
         starts.append(starts[-1] + windows_json[key][1])
+    total_duration = starts[-1] + windows_json[ordered_keys[-1]][1]
     if len(ordered_keys) != len(narrations):
         raise SystemExit("narration count does not match beat count")
     key_index = {key: index for index, key in enumerate(windows_json)}
@@ -593,10 +625,16 @@ def main() -> int:
         json.dumps(starts),
         "--output-name",
         f"auto_{run_id}.mp4",
+        "--output-dir",
+        str(out_dir / "audio"),
+        "--preview-mp4",
+        str(ROOT / "tmp" / f"vc003-e08-{timeline_run}-preview.mp4"),
+        "--total-duration",
+        f"{total_duration:.3f}",
     ]
-    print("  8/8 audio/render...")
+    print(f"  8/8 audio/render (total {total_duration:.1f}s)...")
     subprocess.run(audio_cmd, check=True)  # nosec B603 B607
-    print(f"== DONE run {run_id}; see outputs/vc003_episode_08/audio/auto_{run_id}.mp4 ==")
+    print(f"== DONE run {run_id}; see {out_dir}/audio/auto_{run_id}.mp4 ==")
     return 0
 
 

@@ -1,6 +1,6 @@
 # Project Current State
 
-State Version: 123
+State Version: 124
 Last Updated: 2026-08-19
 State Owner: Project
 
@@ -134,6 +134,8 @@ State Owner: Project
 ---
 
 ## 7. 最近验证
+
+- 2026-08-21 全自动流水线跨素材泛化 + ep2 跨源验证 7/8 阶段（State v124）：① `produce_vc003_timeline.py` 泛化——新增 `_key_specs`：任意 beat 键（beat1/2/3）得确定性 story/evidence refs + 按位置 hook/context/payoff；threat/sale/payment 保留已批准 ep8 语义；`--source-artifact-id/--source-duration` 参数化（候选指向真实源素材，不再绑定 ep8 SourceMedia）。② `auto_produce.py` 内容无关化——`_extract_story` 在 ep8 关键词缺失时回退 top-3 最长对白段（beat1/2/3）；`_map_windows` 按锚点时间排序（窗口连续不重叠）；修复 Phase 7 解说文本与 starts 顺序不一致 bug；ASR 说话人标签拆分（`说话人N:` 不再污染提示词）；ASR/VLM 结果按 AudioStem id 幂等缓存。③ `produce_vc003_audio.py` 新增 `--output-dir/--preview-mp4/--total-duration`（自动产物落独立目录、垫底音用正确源素材、对齐时长匹配成片）。**跨源验证 run `7f00d8a6`（M5 ep2 源）**：内容无关路径 7/8 阶段零停点——3 自动 beat（野山参 25.26–33.26 / 学费 34.07–44.07 / 山神之力 61.58–71.58，窗口连续不重叠）→ timeline `e8fc8a71` 自动批准（MasterTimeline `e818a59e`）→ 预览渲染完成；3 句 LLM 解说全过规则校验（「罕见超大野山参现世，错过这波亏到跺脚！」等）。**Phase 8 渲染被本地基础设施阻塞**：PostgreSQL（docker-compose postgres:16.4）随 Docker Desktop VM 宕机连接拒绝，libass 字幕渲染亦依赖 Docker；TTS 三条与混音已完成落盘 `outputs/ep2_auto/audio/`，Docker 恢复后 `--skip-tts` 续跑即可。`make check` 全绿（448 passed / 5 skipped）。下一步：恢复 Docker → 续跑 ep2 Phase 8 验证成片 + QC → 提交。待加固：更长/更精良成片。
 
 - 2026-08-20 全自动流水线加固：稳定产出 28s 成片（State v123）：`auto_produce.py` 加固——① LLM 剧情提取改**确定性 ASR 角色锚点**（交易/付款/威胁按对白关键词定位，LLM 仅写解说）；② beat 窗口改**锚点分段**（三角色锚点切时间轴，天然不重叠）；③ 时长上下限（MIN 7s / MAX 10s）+ 终点钳制源时长（修复 clip index 拒绝越界窗口导致的 coverage-incomplete）；④ 场景合并封顶。run `35c0e059`（Episode 8 源）全 8 阶段零停点：sale 16.09–26.09 / payment 28.59–38.59 / threat 45.09–53.06，**成片 27.97s**（720×1280 H.264/AAC，6.5MB，TechnicalQC passed）。`make check` 全绿。自动内容：ASR 17 段确定性分角色、3 句 LLM 解说。下一步待加固：全流程幂等（每阶段产物缓存防重复）、跨素材验证、timeline 驱动泛化。
 

@@ -126,6 +126,24 @@ def main() -> int:
         action="store_true",
         help="reuse existing WAVs in the output dir instead of re-synthesizing",
     )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=OUTPUT_DIR,
+        help="directory for narration WAVs, mixed audio, manifests and the final render",
+    )
+    parser.add_argument(
+        "--preview-mp4",
+        type=Path,
+        default=PREVIEW_MP4,
+        help="preview MP4 whose audio track becomes the dialogue under-mix",
+    )
+    parser.add_argument(
+        "--total-duration",
+        type=float,
+        default=TOTAL_DURATION,
+        help="aligned narration span / timeline total duration in seconds",
+    )
     parser.add_argument("--source-run-id", default=str(APPROVED_RUN))
     parser.add_argument(
         "--source-timeline-id",
@@ -154,8 +172,10 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    wav_paths: list[Path] = []
+    output_dir = args.output_dir
+    output_dir.mkdir(parents=True, exist_ok=True)
+    preview_mp4 = args.preview_mp4
+    total_duration = args.total_duration
     manifest_lines: list[dict[str, object]] = []
     starts = [float(v) for v in json.loads(args.narration_starts)]
     if args.narration_texts is not None:
@@ -167,24 +187,23 @@ def main() -> int:
         texts = [item[0] for item in NARRATION]
     for index, (text, start) in enumerate(zip(texts, starts, strict=True), 1):
         digest = hashlib.sha256(text.encode()).hexdigest()[:8]
-        wav = OUTPUT_DIR / f"narration_{index}_{digest}.wav"
+        wav = output_dir / f"narration_{index}_{digest}.wav"
         if not args.skip_tts or not wav.is_file():
             print(f"== TTS line {index}: {text[:24]}…")
             _synthesize(text, wav)
-        wav_paths.append(wav)
         manifest_lines.append(
             {"text": text, "path": str(wav.resolve()), "timeline_start_seconds": start}
         )
     manifest = {"narration_lines": manifest_lines}
-    (OUTPUT_DIR / "manifest.json").write_text(
+    (output_dir / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
     )
 
-    aligned = OUTPUT_DIR / "narration_aligned.wav"
-    _aligned_voice(manifest, aligned, total_duration=TOTAL_DURATION)
+    aligned = output_dir / "narration_aligned.wav"
+    _aligned_voice(manifest, aligned, total_duration=total_duration)
     print(f"== aligned narration WAV: {aligned}")
 
-    original = OUTPUT_DIR / "original_track.wav"
+    original = output_dir / "original_track.wav"
     subprocess.run(  # nosec B603 B607
         [
             "ffmpeg",
@@ -193,7 +212,7 @@ def main() -> int:
             "error",
             "-y",
             "-i",
-            str(PREVIEW_MP4),
+            str(preview_mp4),
             "-vn",
             "-c:a",
             "pcm_s16le",
@@ -201,7 +220,7 @@ def main() -> int:
         ],
         check=True,
     )
-    mixed = OUTPUT_DIR / "mixed_audio.wav"
+    mixed = output_dir / "mixed_audio.wav"
     subprocess.run(  # nosec B603 B607
         [
             "ffmpeg",
@@ -235,7 +254,7 @@ def main() -> int:
     source_run_id = UUID(args.source_run_id)
     profile = AcceptanceProfile(
         name="vc003-episode8-audio",
-        output_dir=OUTPUT_DIR,
+        output_dir=output_dir,
         source_run_id=source_run_id,
         source_timeline=ArtifactRef.model_validate(
             {
@@ -252,7 +271,7 @@ def main() -> int:
             }
         ),
         source_media=None,
-        total_duration=TOTAL_DURATION,
+        total_duration=total_duration,
         actor_id="vc003-episode8-approved",
         proof_video_name=args.output_name,
     )
@@ -263,7 +282,7 @@ def main() -> int:
 
     result = asyncio.run(execute(prepared, profile))
     payload = {**prepared, "render_result": result}
-    (OUTPUT_DIR / "canonical_acceptance.json").write_text(
+    (output_dir / "canonical_acceptance.json").write_text(
         json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
     )
     print("== E11 render result ==")
