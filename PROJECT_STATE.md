@@ -1,21 +1,41 @@
 # Project Current State
 
-State Version: 124
-Last Updated: 2026-08-19
+State Version: 133
+Last Updated: 2026-09-02
 State Owner: Project
 
 ## 1. 当前阶段
 
-- Lifecycle：Implementation active; E00–E05 completed; E06 production qualification debt retained; E07/E08 engineering closed with real-data qualification pending; E09 active; E10/E11 First Usable Cut slice integrated（canonical Artifact lineage、Temporal render、libass 和 technical QC 已真实通过，见 §7 State v63；不代表 Epic 全面关闭或 Release）。
-- Active Release Slice：R4 Creative Production。
-- Active Epics：E09 Creative Timeline；E06/G05 production qualification retained as bounded debt（准入评估 + 本地 runtime 验证进行中）。
-- Active Backlog Entry：I04 Strategy Review / VC-003 真实内容资格验证；Episode 8 Gate 1 已正式批准，当前停在 Gate 2 人工策略选择。
-- Automation：L1；Confidence 仅 Shadow。未授权任何 L2/L3 自动放行。
-- Product Control：Episode 8 exact StoryGraph 已由项目负责人批准并写入 `approved_story` pointer；VC-003 Gate 2 已于 2026-08-19 正式批准**选项 1「威胁倒叙」**，`approved_creative_brief` / `approved_variant_plan` 双 pointer 已发布。Clip/Narration/Timeline 必须以 approved CreativeBrief 为输入边界；安全、权利、事实和人工 Release 底线不变。
+- Lifecycle：Product redirection active；旧 E00–E11 设计与实现证据保留，当前不继续横向扩展平台能力。First Usable Cut、held-out 与 canonical E10/E11 切片继续作为复用基线，不代表复杂多集自动成片完成。
+- Active Release Slice：R4 Creative Production（重定向为 3–5 分钟多集纵向成片验证）。
+- Active Epics：E09 Creative Timeline（主执行壳）；E07 Story Intelligence、E08 Marketing Strategy、E10/E11 成片能力按需复用，不分别扩 Epic 范围。
+- Active Product Goal：基于多集完整剧情理解，生成 3–5 分钟、冲突闭环明确、解说与画面匹配、节奏连续的高质量解说营销候选。
+- Active Direction：`PRODUCT_REDIRECTION.md` v2.0；只新增 Series Story Evidence Index、Marketing Arc Planner、Long-form Chapter Timeline Planner，其他完整成片能力复用现有实现。
+- Active Plan：`NEXT_PHASE_EXECUTION_PLAN.md` v1.0。
+- Active Backlog Entry：I04 Strategy Review（兼容执行壳）；`NP-LF-001–012` 纵向工程和两剧 internal-preview 验证已完成；《海渊契约》最终修复候选获项目负责人 `useful`，当前转入全 22 集覆盖挑战与第三剧 held-out 重复性验证；不是 Release Gate。
+- Automation：生产过程目标为少人工干预；事实与技术 blocker fail closed；营销命题进入高成本生产前保留一次人工选择；Release 始终人工，当前输出仅 internal preview。
+- Bounded Tracks：E06 Provider production qualification、真实跨集 Identity/Story corpus、E09 craft 正式评分和旧 E10/E11 Epic closure 保留为质量债，不抢占当前纵向成片主线。
 
 ---
 
 ## 2. 已完成且已审计
+
+- 多集长成片里程碑与海渊人工验收（State v133）：项目负责人实际听看修复解说混音后的《海渊契约》v4，并明确评价“这版本不错”，按产品控制词汇登记为 `useful`。该候选已同时通过剧情/章节纵向链、A/V Sync、Narration Mix、字幕、响度与编码机器检查，关闭 `NEXT_PHASE_EXECUTION_PLAN.md`“至少一条 3–5 分钟候选获人工 useful”的阶段成功条件。当前流程、实现、两剧证据、缺陷防线、人机边界和剩余差距汇总于 `product/LONGFORM_PRODUCTION_MILESTONE.md`。该结论不代表 22 集最佳内容已证明、山神印最新修复版已人工通过或 Release Gate 获批。
+
+- 最终混音解说丢失修复（State v132）：项目负责人确认《海渊契约》同步修复版所有解说窗口只有原声、没有解说音频，推翻 Agent 先前依据“对齐音轨非静音/控制组差分”作出的错误判断；该差分实际混入了 sidechain 原声压低效应，不能证明 narration 到达最终 Mix。根因是 FFmpeg filter graph 的同一 `[narr]` 标签同时作为 sidechain 输入和最终 amix 输入，缺少显式分支。现使用 `asplit=2[narr_sidechain][narr_mix]`，并在 loudnorm 后以独立 PCM pad pass 保证 240.000s；新增逐解说窗口的 aligned-vs-mixed 零延迟相关度及 `narration_mix_compliant` TechnicalQC blocker。《海渊契约》v4 的 14 个窗口相关度为 0.706–0.976，《山神印》v3 的 13 个窗口为 0.645–0.974；两者 A/V Sync、Narration Mix、响度及编码 QC 全部 passed。新候选分别为 `outputs/longform/haiyuan/final_preview_v4_narrationfix/haiyuan_longform_final_preview_v4_narrationfix.mp4` 与 `outputs/longform/shanshen_real/final_preview_v3_narrationfix/shanshen_longform_final_preview_v3_narrationfix.mp4`。旧 syncfix 最终候选 superseded；仍需项目负责人实际听看，不是 Release Gate。
+
+- 音画同步人工验收（State v131）：项目负责人完整针对先前《海渊契约》约 52 秒后声音滞后问题复看同步修复候选，并明确确认“音画同步问题解决了”。因此共享渲染器的全局帧边界、PCM 整轨拼接、loudnorm PTS/尾长修复及 `av_sync_compliant` blocker 由工程验证提升为该真实缺陷场景的人工作用品质验收；结论只覆盖同步问题，不等同于整片内容或 Release Gate 通过。
+
+- 长成片音画同步修复（State v130）：负责人发现《海渊契约》约 52 秒起声音滞后。严格审计定位为共享 `render_media_preview` 将每镜视频独立量化至 25fps、音频按采样时长独立裁切并分别 concat，误差从第 25/30 个片段的 124/151ms 累积至片尾 280ms；最终 loudnorm 另有约 71ms 尾长/时间戳缺口。渲染器现按全局时间线边界统一分配帧数，原声使用 48kHz PCM 精确裁切/补静音并整轨单次 AAC 编码，loudnorm 后重置 PTS、补齐/裁切到目标时长；新增碎片化 A/V drift 回归测试、preview 一帧容差 fail-closed 和最终 `av_sync_compliant` TechnicalQC blocker。《海渊契约》修复候选 `outputs/longform/haiyuan/final_preview_v3_syncfix/haiyuan_longform_final_preview_v3_syncfix.mp4` 与《山神印》修复候选 `outputs/longform/shanshen_real/final_preview_v2_syncfix/shanshen_longform_final_preview_v2_syncfix.mp4` 均为视频/音频 240.000s、6000 帧、A/V 累计差 0、TechnicalQC passed；仍为 internal preview。
+
+- 《海渊契约》奇观冷开场 v2（State v129）：ChapterBlueprint 新增通用、fail-closed 的 `hook_event_ref` 覆盖能力，只允许选中 Arc 内已有证据事件；以第 5 集已核验 `rare-fish` 替换前 12 秒 Hook，七个正文章节、因果顺序和 14 条解说文本保持不变。唯一镜头覆盖仍精确 240.000s，输出 `outputs/longform/haiyuan/final_preview_v2/haiyuan_longform_final_preview_v2.mp4`（240.00s、720x1280 H.264/AAC 48kHz、-14.8 LUFS、-1.5 dBTP），TechnicalQC passed。Codex 并排审核 v1/v2 开头及 14 个字幕锚点后 verdict=`useful`：新版由海底异动/冲击推进到稀有红鱼和主角反应，奇观承诺更明确；仍为 internal preview，完整看片与 Release 决策属于人工。
+
+- 多集 3–5 分钟完整流水线与第二剧集泛化（State v128）：《山神印》基于 16 个跨 1–6 集双证据事件、105 个唯一选镜和 13 条真实 IndexTTS-2 解说，完成 measured NarrationAnchor、动态原声 ducking、Heiti SC/ASS、唯一 canonical MasterTimeline conform 与最终渲染；候选 `outputs/longform/shanshen_real/final_preview_v1/shanshen_longform_final_preview.mp4` 为 239.92s、720x1280 H.264/AAC 48kHz、-13.8 LUFS、-1.5 dBTP，TechnicalQC passed，Codex internal verdict=`useful`。恢复官方 IndexTTS-2 runtime/权重于 workspace 外隔离目录，音色参考仅由 owner 既有批准 Voice Asset 派生并保留 internal-only lineage。修复剪辑排序因果倒置、<0.5s 闪帧、章节重复 Hook 原声保护冲突、精确时长误判、libass 缺失、CJK 字体回退及混音过响。
+- 《海渊契约》真实泛化（State v128）：22 集 1,722.1s 使用 whisper.cpp small 中文 ASR，1–8 集 14 个 Goal/Conflict/Turn/Payoff 事件经 42 帧 Codex 视觉窗口复核；生成 3 个 Arc、8 章蓝图、299 个候选/514.943s 唯一覆盖和精确 240.000s/134 镜头方案。14 条证据约束解说真实合成并锚定，输出 `outputs/longform/haiyuan/final_preview_v1/haiyuan_longform_final_preview.mp4`（240.00s、720x1280 H.264/AAC 48kHz、-14.9 LUFS、-1.5 dBTP，TechnicalQC passed），Codex verdict=`useful_with_revision`。对应 320.041s 热门剪辑更偏后期深海奇观/拍卖；本候选保留债务病母动机、能力来源、首次变现、清债回报和拍卖升级，因果更完整。全仓 474 tests（5 DB-env skipped）、Ruff/mypy/Bandit/Context/Architecture/Registry 通过。
+
+- 《山神印》240 秒纵向 Preview（State v127）：基于当前 1–6 集 source hash 的 16 个对白+视觉双证据事件，生成 3 个 Marketing Arc、推荐 Arc 的 7 章/240 秒 ChapterBlueprint、187 个唯一镜头候选（458.995s）与 240/240s 选镜。修复评分排序直接成为剪辑顺序导致的跨事件/源时间倒序，并阻止 <0.5s 闪帧；选中镜头现按章节因果事件与源时间排序。通过既有 canonical adapter 组装唯一 MasterTimeline，真实渲染 `outputs/longform/shanshen_real/canonical_preview_v2/preview_original_audio.mp4`（240.021s、720x1280 H.264/AAC）；Codex 对 14 个时间点抽检，宏观链为五十万 Hook→悬崖/觉醒→山参/狼群→学费/药店→成交/付款→讨债/反制→兑现承诺。13 句证据约束解说草稿预检通过，估算 73.095s、各章未超预算；真实 TTS/字幕/混音/QC 尚未完成，Preview verdict=`revise`，不是内容或 Release 通过。专项 21 tests；全仓 469 passed / 5 DB-env skipped、coverage 80.86%，Ruff/mypy/Bandit/Context/Architecture/Registry 全部通过。
+
+- 多集长成片纵向基线（State v126）：新增 `packages/longform`，实现只读媒体清单、证据约束的 SeriesStoryIndex、冲突/回报 Marketing Arc、180–300 秒 ChapterBlueprint、唯一镜头覆盖与原声保护、解说事实/声画/TTS 预算审核，以及到既有 `NarrativeBeatGraph` / `ClipCandidateSet` / `ClipSelectionPlan` 的 fail-closed adapter（不建立平行 Timeline）。专项 15 tests 通过；全仓 463 passed / 5 DB-env skipped，coverage 80.78%，Ruff/mypy/Bandit 通过。恢复 Python 3.11 与 FFmpeg 9.0.1；修复可选 Paddle import mypy ignore code 和 partial-preview API 的错误预检查顺序。真实 WP0：完成《山神印》20 视频/1,517.2s、《海渊契约》22 视频/1,722.1s、《神龟有灵》39 视频/3,683.0s inventory；主/泛化选择与热门成片配对见 `evaluation/evidence/longform/TEST_SERIES_SELECTION.md`。已有《山神印》结构化证据回归生成 240s 蓝图；旧 v3 只有 54/240s 唯一镜头覆盖，正确产生 8 个 blocker，未用重复镜头伪造完成。当前 FunASR 服务未运行；下一步启动现有 research provider，对当前《山神印》目录重新取得逐集时间码证据。
 
 - 项目纲领、能力、五域架构、工程与质量规范。
 - Stage 1–6 的生产级详细设计。
@@ -82,18 +102,21 @@ State Owner: Project
 
 ## 4. 下一步唯一恢复点
 
-按 `PRODUCT_CONTROL_BOARD.md` 开始：
+按 `NEXT_PHASE_EXECUTION_PLAN.md` 进入看片结论：
 
-1. Gate 1 已于 2026-08-19 正式批准：Review `46165292-cb25-4f2e-a756-06196607ac50` / Decision `aa6170c3-b0f0-4e98-ba3f-054afc4834d1`，精确指向 StoryGraph `c378ba51-da33-4049-baf0-538ca637e9a5@1`。**Gate 2 已于 2026-08-19 批准选项 1「威胁倒叙」**：Review `7734969e-1caa-4a3c-9831-a43c66798cd3` / Decision `972be1c1-d867-48bf-b0b2-77f368547ed5`，`approved_creative_brief` = CreativeBrief `bc2c693e-8768-40fc-84d5-fcc00946f80a@1`、`approved_variant_plan` = VariantPlan `58a7c392-64f3-4d81-b1df-fbcfedb10c1b@1`。**Episode 8 全链候选已人工验收通过（State v99）**：Gate 1（Story）→ Gate 2（威胁倒叙）→ E09 Timeline（人工 checkpoint）→ E10/E11 canonical 全链跑通，`outputs/vc003_episode_08/audio/canonical_e11.mp4`（26.00s，IndexTTS 解说 + 原声混音 + CJK 字幕）获 `useful`。下一唯一恢复点：**Release Gate 3（永远人工，另行确认；当前 Rights restricted/internal-only，无公开发布）**，或扩展其他集/方向。
-2. 每个中间产物必须按 `product/MODULE_VALIDATION_CARDS.md` 展示；产品负责人给出 useful / useful_with_revision / reject 后才能扩大范围。
-3. E09 craft 正式签核、E06/G05 production qualification、E07/E08 真实质量验收保留为 bounded quality tracks；不再抢占 First Usable Cut 主线，但在任何 production approval 前仍强制检查。
-4. E10/E11 现有实现只按 M1/M2 advance baseline 计，不得以 qualification 中的 `engineering_complete=true` 宣称模块完成。
+1. 项目负责人观看《山神印》与《海渊契约》两条 4 分钟 internal preview，分别给出 `useful / useful_with_revision / reject`。
+2. 若需修改，只处理每条候选影响最大的三个内容问题并局部重算；不要扩建平台或重复实现 Story/Timeline/E10/E11。
+3. Release 仍为 human-only；当前 Rights 仅 internal preview，禁止公开发布。
 
 包管理决定已确认：PEP 621/setuptools editable + pyenv Python 3.11.8 + .venv/pip 24.0（ADR-003）；Python resolution lock 仍为首个 Release Slice 退出前的 bounded debt（见 §6）。
 
 ---
 
 ## 5. 当前阻断与风险
+
+- 官方 IndexTTS-2 与 whisper.cpp ASR 已恢复并完成两剧真实运行；外部 runtime 位于 `/Users/chinglam/workspace/NarratoProRuntime`，不属于仓库锁定依赖，换机时需按 manifest/版本重新准备。
+- Codex 的 `useful` / `useful_with_revision` 是 internal reviewer 结论，不替代项目负责人的看片结论或 Human Release Gate。
+- 两条候选均未加入独立 BGM；这是避免使用未授权音乐的有意边界，可能限制营销情绪上限。
 
 - 初始设计基线 tag `architecture-baseline-v1.0.0` 指向 `de4e31c`；A01–A06 当前 checkpoint 以本 State 所在 Git revision 为准。
 - Python resolution lock 尚未建立；Web 已生成 `pnpm-lock.yaml`。
@@ -262,7 +285,7 @@ State Owner: Project
 - 2026-08-16 E06 真实短剧视觉 benchmark v1（State v56）：`scripts/build_e06_benchmark.py` 对 13 剧/36 episodes 真实语料（`data/corpus`，软链自桌面素材，rights approved）完成分镜+抽帧（720 帧）+ PaddleOCR/RT-DETR 全帧 + Ark VLM 子集（每剧 4 帧）——**1052 OCR 文本、1268 检测框、144 VLM claims、0 错误**，train/validation/frozen_test 按剧隔离（DatasetSplitManifest 校验）；`evaluation/benchmarks/e06_visual_v1.json` + 汇总报告 `E06_VISUAL_BENCHMARK_V1.md` 归档。OCR 识别真实字幕（1.2–1.6 文本/帧），DET label 多为 unknown（COCO 类不含短剧类别，后续映射/微调），VLM 描述质量高。research 证据基线（非生产准入）。`make check` 356 tests、80.05% coverage 全绿。
 - 2026-08-15 E06 VisualObservationWorkflow 接入（State v55）：`VisualWorkflowInput` 新增 `capability`（ocr/detection/vlm），`process_visual_activity` 经 `_provider_for` 选择 PaddleOCR/RT-DETR/Ark VLM adapter（替换固定 OpenCV detection），output 对齐 E06 normalize 契约（OCR→`ocr[{text,region,kind,score}]`、detection→`detections[{label,region,score}]`、VLM→`vlm_claims[{kind,statement,score}]`，region 归一化 BoundingBox）；**gateway→normalize 全链路 e2e 验证**：OCR 2.9s/1 文本、RT-DETR 2.9s/2 检测、VLM 5.5s/1 claim，均 `status=complete`（修复 RT-DETR box 字段 `coordinate` 数组解析）。**实测更正：PaddleX 同进程可共存 OCR+detection（此前"单进程单次初始化"结论是缓存 env 半初始化副作用，`_ensure_paddlex_cache` 修复后消除），无需进程隔离**。tests 补 helper/`_provider_for`/OpenCV/json_http 覆盖；`make check` 356 tests、80.05% coverage 全绿。
 - 2026-08-15 E06 typed adapter 接入（State v54 追加）：新增 `packages/providers/visual/paddle_ocr.py`（PP-OCRv6）、`paddle_detection.py`（RT-DETR-L）、`volcengine_ark_vlm.py`（Ark doubao-seed VLM）三个 ProviderPort adapter——package() 复用准入注册表（research 单一真相源）、validate/estimate/health/infer 完整、paddle 依赖 lazy import（无 research extra 也能 import 模块）、PaddleX 缓存自动重定向 workspace `.paddlex-cache`、模块级模型实例缓存（避免同 adapter 重复初始化）；**gateway e2e 实测**：OCR 3.7s/1 项、RT-DETR 2.9s/2 项、VLM 7.8s/1 claim。tests/providers/test_visual_adapters.py 8 个测试（注册表一致性、validate/estimate、fail-closed）。`make check` 350 tests、80.03% coverage 全绿。**已知限制：PaddleX 单进程只允许一次初始化——OCR 与 detection 同进程顺序调用会冲突（需按 activity/进程隔离，记入 E06 集成设计）。**
-- 2026-08-15 E06 VLM 火山引擎验证通过（State v54 追加）：`doubao-seed-2-0-mini-260428`（endpoint `ep-m-20260716234644-hqltj`）API key 与模型已配置（`.env` gitignored + typed settings，secret-safe）；**真实 demo 帧 VLM 调用 HTTP 200（8.1s）**，准确描述人物/野兔/山野场景/被打码文字（与 OCR "KEALN" 对应）；settings 新增 `NARRATOPRO_VOLCENGINE_ARK_API_KEY/MODEL/ENDPOINT`（public_summary 只暴露 configured 布尔）。注册表 VLM 条目 pin 模型与 endpoint。成本上限与真实短剧 VLM benchmark 仍待定。
+- 2026-08-15 E06 VLM 火山引擎验证通过（State v54 追加）：`doubao-seed-2-0-mini-260428`（endpoint 配置已验证）API key 与模型已配置（`.env` gitignored + typed settings，secret-safe）；**真实 demo 帧 VLM 调用 HTTP 200（8.1s）**，准确描述人物/野兔/山野场景/被打码文字（与 OCR "KEALN" 对应）；settings 新增 `NARRATOPRO_VOLCENGINE_ARK_API_KEY/MODEL/ENDPOINT`（public_summary 只暴露 configured 布尔）。注册表 VLM 条目 pin 模型与 endpoint。成本上限与真实短剧 VLM benchmark 仍待定。
 - 2026-08-15 E06 语义视觉 Provider 本地 runtime 安装验证（State v54）：经项目负责人授权安装 paddlepaddle 3.3.1（arm64 CPU）+ paddleocr 3.7.0/paddlex 3.7.2，新增 `pyproject.toml` `[research]` extra；**PaddleOCR PP-OCRv6_medium_det+rec 与 RT-DETR-L 权重已下载、固定并记录完整 sha256 checksum**（注册表 `packages/providers/admission.py`）；demo 帧实测——OCR 推理 1.46s 识别文本、RT-DETR-L 检测 2 对象（score 0.94/0.81）；PaddleX 缓存重定向 workspace `.paddlex-cache/`（已 gitignore + ruff exclude）。`make check` 342 tests、80.38% coverage 全绿。**仍缺：真实短剧 benchmark 素材、Mac mini 容量验收、跟踪/embedding 链路验证。**
 - 2026-08-15 E06 语义视觉 Provider 准入准备阶段 A + 决策（State v53）：评估报告 `evaluation/reports/E06_VISUAL_PROVIDER_ADMISSION_ASSESSMENT.md`；`packages/providers/admission.py` 候选注册表 + production 完整性校验器（fail-closed）；gateway 强制 `assert_production_ready`；tests/providers 5 新测试。**项目决策 2026-08-15：全开源路线不采用商业化**——Detection 排除 Ultralytics YOLO（AGPL）改选 PaddleDetection RT-DETR（Apache-2.0）；**VLM 走火山引擎（Volcengine Ark）豆包视觉模型 API（Doubao-SeedDance-2.0-mini，external_cloud、CN 驻留、帧外传，endpoint/API key/成本上限待定）**。
 - 2026-08-15 E10 时间基防御与 qualification 测试维护（State v52 追加）：(1) `test_conform.py` 新增微秒基多行 subtitle cue 回归测试（E09 ADR-051 教训固化——cue 时间按 seconds 语义，rate 混合被拒）；(2) E10/E11 runbook 各增补时间基纪律条目（轨道微秒基 vs duration 低 rate，消费按 seconds 比较）；(3) `test_timeline_qualification.py` 更新 E09 blocker 断言 4→2（人工签署与多 Variant replay 关闭两个退出 blocker，剩余 semantic-visual-providers 与 craft 评分签核）；(4) `make check` 356 tests、80.56% coverage 全绿。

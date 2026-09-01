@@ -1,5 +1,6 @@
 """Media-grounded preview tests: real source files, trim/scale/concat pipeline."""
 
+import json
 import shutil
 import subprocess
 from pathlib import Path
@@ -50,6 +51,7 @@ def _clip_item(
     timeline_start: int,
     timeline_duration: int,
     kind: TimelineTrackKind,
+    time_rate: int = 25,
 ) -> TimelineItem:
     item_type = "clip"
     payload: dict[str, object] = {
@@ -57,13 +59,13 @@ def _clip_item(
         "item_version": 1,
         "item_type": item_type,
         "timeline_range": {
-            "start": rational(timeline_start),
-            "duration": rational(timeline_duration),
+            "start": rational(timeline_start, time_rate),
+            "duration": rational(timeline_duration, time_rate),
         },
         "source_ref": source_ref.model_dump(mode="json"),
         "source_range": {
-            "start": rational(source_start),
-            "duration": rational(source_duration),
+            "start": rational(source_start, time_rate),
+            "duration": rational(source_duration, time_rate),
         },
     }
     if kind == TimelineTrackKind.SUBTITLE:
@@ -198,3 +200,69 @@ def test_media_preview_fails_closed_when_source_missing(
             {first.artifact_id: sources["path_a"]},  # type: ignore[dict-item]
             tmp_path / "preview.mp4",
         )
+
+
+def test_media_preview_does_not_accumulate_audio_video_drift(
+    sources: dict[str, object], tmp_path: Path
+) -> None:
+    first = sources["first"]
+    segment_us = 137_000
+    segment_count = 8
+    items = [
+        _clip_item(
+            first,  # type: ignore[arg-type]
+            source_start=index * segment_us,
+            source_duration=segment_us,
+            timeline_start=index * segment_us,
+            timeline_duration=segment_us,
+            kind=kind,
+            time_rate=1_000_000,
+        ).model_dump(mode="json")
+        for kind in (TimelineTrackKind.VIDEO, TimelineTrackKind.ORIGINAL_AUDIO)
+        for index in range(segment_count)
+    ]
+    timeline = MasterTimeline.model_validate(
+        {
+            "timeline_id": uuid4(),
+            "lifecycle": "draft",
+            "rate_num": 25,
+            "global_start": rational(0, 1_000_000),
+            "duration": rational(segment_us * segment_count, 1_000_000),
+            "tracks": [
+                {
+                    "track_id": uuid4(),
+                    "kind": kind.value,
+                    "order": order,
+                    "items": items[order * segment_count : (order + 1) * segment_count],
+                }
+                for order, kind in enumerate(
+                    (TimelineTrackKind.VIDEO, TimelineTrackKind.ORIGINAL_AUDIO)
+                )
+            ],
+            "metadata_namespace_version": "av-sync-regression-v1",
+        }
+    )
+    output = tmp_path / "drift" / "preview.mp4"
+    render_media_preview(
+        timeline,
+        {first.artifact_id: sources["path_a"]},  # type: ignore[attr-defined,dict-item]
+        output,
+    )
+    probe = subprocess.run(  # nosec B603
+        [
+            shutil.which("ffprobe") or "ffprobe",
+            "-v",
+            "error",
+            "-show_streams",
+            "-of",
+            "json",
+            str(output),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    streams = {
+        item["codec_type"]: float(item["duration"]) for item in json.loads(probe.stdout)["streams"]
+    }
+    assert abs(streams["audio"] - streams["video"]) <= 1 / 25

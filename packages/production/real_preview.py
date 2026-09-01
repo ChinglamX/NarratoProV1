@@ -66,6 +66,32 @@ def _seconds_text(value: Fraction) -> str:
     return f"{float(value):.6f}"
 
 
+def _frame_boundary(value: Fraction, frame_rate: int) -> int:
+    """Resolve a timeline boundary once so per-clip rounding cannot accumulate."""
+
+    return round(value * frame_rate)
+
+
+def _assert_av_sync(probe: dict[str, Any], *, expected_duration: Fraction, frame_rate: int) -> None:
+    streams = {item["codec_type"]: item for item in probe["streams"]}
+    if "audio" not in streams:
+        return
+    expected = _frame_boundary(expected_duration, frame_rate) / frame_rate
+    video_duration = float(streams["video"]["duration"])
+    audio_duration = float(streams["audio"]["duration"])
+    tolerance = 1 / frame_rate
+    if (
+        abs(video_duration - expected) > tolerance
+        or abs(audio_duration - expected) > tolerance
+        or abs(video_duration - audio_duration) > tolerance
+    ):
+        raise PreviewRenderError(
+            "audio/video drift exceeds one frame: "
+            f"expected={expected:.6f}s video={video_duration:.6f}s "
+            f"audio={audio_duration:.6f}s"
+        )
+
+
 def _write_concat_file(path: Path, entries: list[str]) -> None:
     path.write_text("".join(f"file '{entry}'\n" for entry in entries), encoding="utf-8")
 
@@ -139,6 +165,13 @@ def render_media_preview(
     audio_items = _audio_items(timeline)
     if not video_items:
         raise PreviewRenderError("timeline has no grounded video items")
+    render_end_frame = max(
+        _frame_boundary(
+            item.timeline_range.start.seconds + item.timeline_range.duration.seconds,
+            frame_rate,
+        )
+        for item in video_items
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     work = output_path.parent / f".{output_path.stem}.work"
     work.mkdir(parents=True, exist_ok=True)
@@ -154,23 +187,33 @@ def render_media_preview(
             raise PreviewRenderError(f"source media unavailable: {item.source_ref.artifact_id}")
         clip = work / f"clip_{index:04d}.mp4"
         part = work / f"clip_{index:04d}.tmp.mp4"
+        start_frame = _frame_boundary(item.timeline_range.start.seconds, frame_rate)
+        end_frame = _frame_boundary(
+            item.timeline_range.start.seconds + item.timeline_range.duration.seconds,
+            frame_rate,
+        )
+        frame_count = end_frame - start_frame
+        if frame_count <= 0:
+            raise PreviewRenderError("video item resolves to zero frames")
         _run(
             [
                 ffmpeg,
                 "-y",
-                "-i",
-                str(source),
                 "-ss",
                 _seconds_text(item.source_range.start.seconds),
-                "-t",
-                _seconds_text(item.source_range.duration.seconds),
+                "-i",
+                str(source),
                 "-vf",
                 (
+                    f"trim=duration={_seconds_text(item.source_range.duration.seconds)},"
+                    "setpts=PTS-STARTPTS,"
                     f"scale={target_width}:{target_height}:force_original_aspect_ratio=decrease,"
                     f"pad={target_width}:{target_height}:(ow-iw)/2:(oh-ih)/2,"
-                    f"fps={frame_rate},setsar=1"
+                    f"fps={frame_rate},setsar=1,tpad=stop_mode=clone:stop_duration=1"
                 ),
                 "-an",
+                "-frames:v",
+                str(frame_count),
                 "-c:v",
                 "libx264",
                 "-pix_fmt",
@@ -208,6 +251,7 @@ def render_media_preview(
     os.replace(video_part, video_path)
 
     audio_clips: list[Path] = []
+    audio_cursor_frame = 0
     for index, item in enumerate(audio_items):
         if item.source_ref is None:
             raise PreviewRenderError("audio item has no source ref")
@@ -216,26 +260,51 @@ def render_media_preview(
         source = source_paths.get(item.source_ref.artifact_id)
         if source is None or not source.is_file():
             raise PreviewRenderError(f"source media unavailable: {item.source_ref.artifact_id}")
-        clip = work / f"audio_{index:04d}.m4a"
-        part = work / f"audio_{index:04d}.tmp.m4a"
+        start_frame = _frame_boundary(item.timeline_range.start.seconds, frame_rate)
+        end_frame = _frame_boundary(
+            item.timeline_range.start.seconds + item.timeline_range.duration.seconds,
+            frame_rate,
+        )
+        if start_frame < audio_cursor_frame:
+            raise PreviewRenderError("overlapping original-audio items are unsupported")
+        if start_frame > audio_cursor_frame:
+            gap = work / f"audio_gap_{index:04d}.wav"
+            _render_silence(
+                ffmpeg,
+                gap,
+                Fraction(start_frame - audio_cursor_frame, frame_rate),
+            )
+            audio_clips.append(gap)
+        clip = work / f"audio_{index:04d}.wav"
+        part = work / f"audio_{index:04d}.tmp.wav"
         _run(
             [
                 ffmpeg,
                 "-y",
-                "-i",
-                str(source),
                 "-ss",
                 _seconds_text(item.source_range.start.seconds),
+                "-i",
+                str(source),
                 "-t",
-                _seconds_text(item.source_range.duration.seconds),
+                _seconds_text(Fraction(end_frame - start_frame, frame_rate)),
                 "-vn",
+                "-af",
+                (
+                    f"atrim=duration={_seconds_text(item.source_range.duration.seconds)},"
+                    "asetpts=PTS-STARTPTS,aresample=48000,apad"
+                ),
                 "-c:a",
-                "aac",
+                "pcm_s16le",
+                "-ar",
+                "48000",
+                "-ac",
+                "2",
                 str(part),
             ]
         )
         os.replace(part, clip)
         audio_clips.append(clip)
+        audio_cursor_frame = end_frame
         if progress is not None:
             progress(len(video_items) + index + 1, len(video_items) + len(audio_items))
 
@@ -251,7 +320,16 @@ def render_media_preview(
     if audio_clips:
         audio_concat = work / "audio_concat.txt"
         _write_concat_file(audio_concat, [str(Path(path).resolve()) for path in audio_clips])
-        audio_path = work / "audio.m4a"
+        if audio_cursor_frame < render_end_frame:
+            gap = work / "audio_gap_final.wav"
+            _render_silence(
+                ffmpeg,
+                gap,
+                Fraction(render_end_frame - audio_cursor_frame, frame_rate),
+            )
+            audio_clips.append(gap)
+            _write_concat_file(audio_concat, [str(Path(path).resolve()) for path in audio_clips])
+        audio_path = work / "audio.wav"
         _run(
             [
                 ffmpeg,
@@ -278,8 +356,11 @@ def render_media_preview(
                 "-c:v",
                 "copy",
                 "-c:a",
-                "copy",
-                "-shortest",
+                "aac",
+                "-ar",
+                "48000",
+                "-ac",
+                "2",
                 str(part),
             ]
         )
@@ -288,6 +369,11 @@ def render_media_preview(
     os.replace(part, output_path)
 
     probe = _probe(ffprobe, output_path)
+    _assert_av_sync(
+        probe,
+        expected_duration=Fraction(render_end_frame, frame_rate),
+        frame_rate=frame_rate,
+    )
     streams = {item["codec_type"]: item for item in probe["streams"]}
     version = subprocess.run(  # nosec B603
         [ffmpeg, "-version"], check=True, capture_output=True, text=True
@@ -302,6 +388,26 @@ def render_media_preview(
         height=int(streams["video"]["height"]),
         ffmpeg_version=version,
     )
+
+
+def _render_silence(ffmpeg: str, path: Path, duration: Fraction) -> None:
+    part = path.with_suffix(".tmp.wav")
+    _run(
+        [
+            ffmpeg,
+            "-y",
+            "-f",
+            "lavfi",
+            "-i",
+            "anullsrc=r=48000:cl=stereo",
+            "-t",
+            _seconds_text(duration),
+            "-c:a",
+            "pcm_s16le",
+            str(part),
+        ]
+    )
+    os.replace(part, path)
 
 
 @dataclass(frozen=True, slots=True)

@@ -1,0 +1,19 @@
+{
+  "series_id": "haiyuan-generalization-20260901",
+  "events": [
+    {"event_id":"debt-desperation","episode":1,"order_in_episode":1,"cue":"为了这三千块","description":"陆涛为偿债和照顾病母被逼到冒险下海。","function":"context","character_refs":["temporary-protagonist","temporary-mother"],"causes":[]},
+    {"event_id":"save-dragon","episode":1,"order_in_episode":2,"cue":"死前要是能救一条生灵","description":"主角在自身绝境中仍决定救下海中生灵。","function":"goal","character_refs":["temporary-protagonist"],"causes":["debt-desperation"]},
+    {"event_id":"dragon-soul","episode":1,"order_in_episode":3,"cue":"海兽进行契约","description":"获救龙魂赋予主角与海兽契约并获得能力的规则。","function":"turn","character_refs":["temporary-protagonist"],"causes":["save-dragon"]},
+    {"event_id":"first-contract","episode":1,"order_in_episode":4,"cue":"契约成功","description":"主角完成第一次海兽契约，伤势恢复并获得鱼群感知。","function":"escalation","character_refs":["temporary-protagonist"],"causes":["dragon-soul"]},
+    {"event_id":"lobster-catch","episode":1,"order_in_episode":5,"cue":"少说上千块","description":"能力立即转化为高价值波龙，现实困境出现解法。","function":"payoff","character_refs":["temporary-protagonist"],"causes":["first-contract"]},
+    {"event_id":"market-contempt","episode":2,"order_in_episode":1,"cue":"你这两条破鱼能卖几个钱","description":"主角带货到市场先遭到商贩轻视。","function":"conflict","character_refs":["temporary-protagonist","temporary-vendor"],"causes":["lobster-catch"]},
+    {"event_id":"lobster-bid","episode":2,"order_in_episode":2,"cue":"四千块","description":"稀有波龙引发竞价并以四千元成交。","function":"turn","character_refs":["temporary-protagonist","temporary-buyer"],"causes":["market-contempt"]},
+    {"event_id":"collectors-demand","episode":3,"order_in_episode":1,"cue":"欠了八千塊","description":"讨债者上门威胁病母，家庭债务冲突正面爆发。","function":"conflict","character_refs":["temporary-protagonist","temporary-mother","temporary-collector"],"causes":["lobster-bid"]},
+    {"event_id":"debt-paid","episode":3,"order_in_episode":2,"cue":"八千一分不少","description":"主角用捕捞收入当场清偿债务并保护母亲。","function":"payoff","character_refs":["temporary-protagonist","temporary-mother"],"causes":["collectors-demand"]},
+    {"event_id":"large-order","episode":4,"order_in_episode":1,"cue":"预估两万左右","description":"宋总给出两万元海鲜订单，主角迎来更高目标。","function":"goal","character_refs":["temporary-protagonist","temporary-buyer"],"causes":["debt-paid"]},
+    {"event_id":"sea-snake-threat","episode":5,"order_in_episode":1,"cue":"打蛇打七寸","description":"主角下海捕捞遭遇凶猛海蛇并正面对抗。","function":"conflict","character_refs":["temporary-protagonist"],"causes":["large-order"]},
+    {"event_id":"rare-fish","episode":5,"order_in_episode":2,"cue":"海能星石斑鱼之王","description":"战胜并利用海兽能力后，主角捕获顶级稀有鱼。","function":"escalation","character_refs":["temporary-protagonist"],"causes":["sea-snake-threat"]},
+    {"event_id":"cargo-payoff","episode":7,"order_in_episode":1,"cue":"一万九千八百八十三块","description":"订单海鲜验收并结算近两万元，能力持续兑现。","function":"payoff","character_refs":["temporary-protagonist","temporary-buyer"],"causes":["rare-fish"]},
+    {"event_id":"auction-plan","episode":8,"order_in_episode":1,"cue":"必须要做个拍卖会","description":"稀有鱼价值升级到拍卖会层级，打开下一阶段更大冲突。","function":"climax","character_refs":["temporary-protagonist","temporary-buyer"],"causes":["cargo-payoff"]}
+  ]
+}

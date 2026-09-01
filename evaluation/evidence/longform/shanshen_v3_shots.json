@@ -1,0 +1,14 @@
+[
+  {"shot_id":"s01","source_path":"episode-1.mp4","episode":1,"start_seconds":20,"duration_seconds":4,"event_refs":["fall-and-awaken"],"visual_score":0.9,"continuity_group":"awakening"},
+  {"shot_id":"s02","source_path":"episode-1.mp4","episode":1,"start_seconds":44,"duration_seconds":4.5,"event_refs":["fall-and-awaken"],"visual_score":0.9,"continuity_group":"awakening"},
+  {"shot_id":"s03","source_path":"episode-2.mp4","episode":2,"start_seconds":24,"duration_seconds":4.5,"event_refs":["valuable-ginseng"],"visual_score":0.8,"continuity_group":"mountain"},
+  {"shot_id":"s04","source_path":"episode-2.mp4","episode":2,"start_seconds":44,"duration_seconds":4,"event_refs":["wolf-threat"],"visual_score":0.9,"continuity_group":"wolves","contains_protected_audio":true},
+  {"shot_id":"s05","source_path":"episode-2.mp4","episode":2,"start_seconds":60,"duration_seconds":5,"event_refs":["drive-wolves"],"visual_score":0.9,"continuity_group":"wolves"},
+  {"shot_id":"s06","source_path":"episode-3.mp4","episode":3,"start_seconds":12,"duration_seconds":4.5,"event_refs":["family-debt"],"visual_score":0.7,"continuity_group":"family"},
+  {"shot_id":"s07","source_path":"episode-3.mp4","episode":3,"start_seconds":36,"duration_seconds":4,"event_refs":["family-debt"],"visual_score":0.7,"continuity_group":"family"},
+  {"shot_id":"s08","source_path":"episode-4.mp4","episode":4,"start_seconds":12,"duration_seconds":4.5,"event_refs":["valuable-ginseng"],"visual_score":0.8,"continuity_group":"ginseng"},
+  {"shot_id":"s09","source_path":"episode-5.mp4","episode":5,"start_seconds":12,"duration_seconds":5,"event_refs":["shop-lowball"],"visual_score":0.8,"continuity_group":"pharmacy","contains_protected_audio":true},
+  {"shot_id":"s10","source_path":"episode-5.mp4","episode":5,"start_seconds":32,"duration_seconds":4.5,"event_refs":["cash-offer"],"visual_score":1.0,"continuity_group":"pharmacy","contains_protected_audio":true},
+  {"shot_id":"s11","source_path":"episode-6.mp4","episode":6,"start_seconds":0,"duration_seconds":5,"event_refs":["protect-sister"],"visual_score":0.8,"continuity_group":"sister"},
+  {"shot_id":"s12","source_path":"episode-6.mp4","episode":6,"start_seconds":56,"duration_seconds":4.5,"event_refs":["protect-sister"],"visual_score":0.9,"continuity_group":"sister","contains_protected_audio":true}
+]

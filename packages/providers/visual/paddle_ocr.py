@@ -76,7 +76,7 @@ class PaddleOCRProvider:
         global _MODEL_INSTANCE
         _ensure_paddlex_cache()  # must precede any paddle import
         import cv2
-        from paddleocr import PaddleOCR  # type: ignore[import-untyped]  # lazy: research extra
+        from paddleocr import PaddleOCR  # type: ignore[import-not-found]  # lazy: research extra
 
         started = time.perf_counter()
         path = self._frame_path(request)

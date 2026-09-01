@@ -1,0 +1,21 @@
+{
+  "series_id": "shanshen-real-20260831",
+  "events": [
+    {"event_id":"cliff-danger","episode":1,"order_in_episode":1,"cue":"前面是悬崖","description":"兄妹在山中走到悬崖绝境。","function":"context","character_refs":["temporary-protagonist","temporary-sister"],"causes":[]},
+    {"event_id":"seal-awakening","episode":1,"order_in_episode":2,"cue":"传承山神印记","description":"主角在绝境中传承山神印。","function":"goal","character_refs":["temporary-protagonist"],"causes":["cliff-danger"]},
+    {"event_id":"mountain-sense","episode":1,"order_in_episode":3,"cue":"我感受到了长白山的呼吸","description":"主角确认自己能够感知山中草木。","function":"turn","character_refs":["temporary-protagonist"],"causes":["seal-awakening"]},
+    {"event_id":"ginseng-found","episode":2,"order_in_episode":1,"cue":"这么大的野山参","description":"兄妹找到至少五十年份的野山参。","function":"escalation","character_refs":["temporary-protagonist","temporary-sister"],"causes":["mountain-sense"]},
+    {"event_id":"wolves-attack","episode":2,"order_in_episode":2,"cue":"哥有狼","description":"狼群逼近兄妹，形成生命威胁。","function":"conflict","character_refs":["temporary-protagonist","temporary-sister"],"causes":["ginseng-found"]},
+    {"event_id":"wolves-retreat","episode":2,"order_in_episode":3,"cue":"都给我滚","description":"主角用山神之力驱退狼群。","function":"turn","character_refs":["temporary-protagonist"],"causes":["wolves-attack"]},
+    {"event_id":"tuition-taken","episode":3,"order_in_episode":1,"cue":"上大学的学费和生活费你都拿走了","description":"妹妹的学费与生活费已被家庭债务侵占。","function":"conflict","character_refs":["temporary-protagonist","temporary-sister"],"causes":["wolves-retreat"]},
+    {"event_id":"support-promise","episode":3,"order_in_episode":2,"cue":"哥一定会供你上完大学","description":"主角承诺靠卖参承担妹妹的大学费用。","function":"goal","character_refs":["temporary-protagonist","temporary-sister"],"causes":["tuition-taken"]},
+    {"event_id":"shop-rejection","episode":3,"order_in_episode":3,"cue":"这不是你能来的地方","description":"主角带参进店后先遭到轻视。","function":"escalation","character_refs":["temporary-protagonist","temporary-shopkeeper"],"causes":["support-promise"]},
+    {"event_id":"lowball-offer","episode":4,"order_in_episode":1,"cue":"我只能给十五万","description":"店方贬低野山参并给出低价。","function":"conflict","character_refs":["temporary-protagonist","temporary-shopkeeper"],"causes":["shop-rejection"]},
+    {"event_id":"fifty-offer","episode":4,"order_in_episode":2,"cue":"这双我要了五十万","description":"识货买家确认年份并给出五十万报价。","function":"climax","character_refs":["temporary-protagonist","temporary-buyer"],"causes":["lowball-offer"]},
+    {"event_id":"payment-delivered","episode":5,"order_in_episode":1,"cue":"这里面是五十万","description":"买家当场把五十万交给主角。","function":"payoff","character_refs":["temporary-protagonist","temporary-buyer"],"causes":["fifty-offer"]},
+    {"event_id":"collectors-threaten","episode":5,"order_in_episode":2,"cue":"你爹欠了我五万块钱","description":"讨债者以父债为由闯入并威胁兄妹。","function":"conflict","character_refs":["temporary-protagonist","temporary-sister","temporary-collector"],"causes":["payment-delivered"]},
+    {"event_id":"protect-sister","episode":5,"order_in_episode":3,"cue":"放开小丫","description":"主角正面阻止讨债者伤害妹妹。","function":"escalation","character_refs":["temporary-protagonist","temporary-sister"],"causes":["collectors-threaten"]},
+    {"event_id":"mountain-pressure","episode":6,"order_in_episode":1,"cue":"感觉像是扛着一座山","description":"讨债者被山神力量压制，无法反抗。","function":"climax","character_refs":["temporary-protagonist","temporary-collector"],"causes":["protect-sister"]},
+    {"event_id":"family-payoff","episode":6,"order_in_episode":2,"cue":"你的学费和生活费有了","description":"主角向妹妹展示收入，兑现此前承诺。","function":"payoff","character_refs":["temporary-protagonist","temporary-sister"],"causes":["mountain-pressure"]}
+  ]
+}

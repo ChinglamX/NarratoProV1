@@ -1,0 +1,20 @@
+{
+  "reviewer": "codex-ai-review-director",
+  "review_scope": "start/middle/end frames for each coarse Whisper dialogue window",
+  "decisions": [
+    {"event_id":"debt-desperation","status":"verified_window","statement":"主角在风浪中的破船上冒险出海，支持被现实困境逼入险境。","strongest_sample":"middle"},
+    {"event_id":"save-dragon","status":"verified_window","statement":"水下主角伸手接近发光生灵，支持其主动施救。","strongest_sample":"middle"},
+    {"event_id":"dragon-soul","status":"verified_window","statement":"水下龙魂形象与契约规则字幕同时出现，能力来源明确。","strongest_sample":"middle"},
+    {"event_id":"first-contract","status":"verified_window","statement":"男主掌心出现发光契约印记，字幕明确契约成功。","strongest_sample":"middle"},
+    {"event_id":"lobster-catch","status":"verified_window","statement":"男主在水下举起巨型波龙，首次能力收益可视化。","strongest_sample":"middle"},
+    {"event_id":"market-contempt","status":"verified_window","statement":"码头海鲜市场交易场景中男主被商贩围观，支持先受轻视的冲突。","strongest_sample":"middle"},
+    {"event_id":"lobster-bid","status":"verified_window","statement":"现金递出并出现四千元报价字幕，竞价回报明确。","strongest_sample":"middle"},
+    {"event_id":"collectors-demand","status":"verified_window","statement":"多名讨债者闯入院落，字幕显示欠款八千元。","strongest_sample":"middle"},
+    {"event_id":"debt-paid","status":"verified_window","statement":"男主手持现金面对讨债者，清债行动清楚。","strongest_sample":"middle"},
+    {"event_id":"large-order","status":"verified_window","statement":"男主与女买家查看订单并出现预计两万元字幕。","strongest_sample":"middle"},
+    {"event_id":"sea-snake-threat","status":"verified_window","statement":"巨型海蛇缠绕男主并发生水下搏斗，危险直观。","strongest_sample":"middle"},
+    {"event_id":"rare-fish","status":"verified_window","statement":"稀有红色石斑鱼在水下近景展示，视觉卖点明确。","strongest_sample":"middle"},
+    {"event_id":"cargo-payoff","status":"verified_window","statement":"女买家现场称重验货并展示结算金额，订单兑现。","strongest_sample":"middle"},
+    {"event_id":"auction-plan","status":"verified_window","statement":"女买家带人评估稀有海货，画面支持价值升级与拍卖计划。","strongest_sample":"middle"}
+  ]
+}

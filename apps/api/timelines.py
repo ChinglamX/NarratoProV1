@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 from typing import Annotated
 from uuid import UUID
@@ -288,10 +287,6 @@ def render_timeline_partial_preview(
     additional segments.
     """
     _require_editor(actor_roles)
-    if shutil.which("ffmpeg") is None or shutil.which("ffprobe") is None:
-        raise HTTPException(
-            status.HTTP_503_SERVICE_UNAVAILABLE, detail={"code": "ffmpeg_unavailable"}
-        )
     service = _editing_service(request)
     try:
         from_timeline = service.get_version(timeline_id=timeline_id, version=body.from_version)

@@ -85,6 +85,9 @@ Media → Observation → Fact → Story → Strategy → Timeline
 ### 项目与治理
 
 - 项目使命：`PROJECT_CHARTER.md`
+- 当前产品方向：`PRODUCT_REDIRECTION.md`
+- 当前阶段执行计划：`NEXT_PHASE_EXECUTION_PLAN.md`
+- 多集长成片里程碑：`product/LONGFORM_PRODUCTION_MILESTONE.md`
 - 产品能力：`PRODUCT_CAPABILITY.md`
 - 产品控制看板：`PRODUCT_CONTROL_BOARD.md`
 - 产品控制与模块成熟度：`product/PRODUCT_CONTROL_SYSTEM.md`
@@ -151,7 +154,7 @@ Media → Observation → Fact → Story → Strategy → Timeline
 
 ### 产品进度、范围或工具效果审查
 
-必读：`PRODUCT_CONTROL_BOARD.md`、`product/PRODUCT_CONTROL_SYSTEM.md`、`product/MODULE_VALIDATION_CARDS.md`；先回答 First Usable Cut 的可见产物和 blocker，再查看 Epic 工程状态。
+必读：`PRODUCT_REDIRECTION.md`、`NEXT_PHASE_EXECUTION_PLAN.md`、`PRODUCT_CONTROL_BOARD.md`、`product/PRODUCT_CONTROL_SYSTEM.md`、`product/MODULE_VALIDATION_CARDS.md`；先回答 3–5 分钟多集成片的可见产物和 blocker，再查看旧 First Usable Cut 与 Epic 工程证据。
 
 ### 修改核心契约或架构
 

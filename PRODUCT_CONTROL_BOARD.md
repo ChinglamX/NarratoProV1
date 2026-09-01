@@ -1,10 +1,12 @@
 # Product Control Board
 
 Board Version: 1.0
-Updated: 2026-08-19（Director-assisted 能力审计）
-Product Goal: Repeatable Series-to-Cut
+Updated: 2026-09-02（3–5 分钟多集长成片里程碑）
+Product Goal: Repeatable Multi-episode 3–5 Minute Marketing Cut
 
 ## 1. 当前产品结论
+
+2026-09-02 更新：产品方向已按 `PRODUCT_REDIRECTION.md` 转为多集 3–5 分钟解说营销成片。两部真实剧集完成纵向 internal-preview；《海渊契约》最终修复候选获项目负责人 `useful`，A/V Sync 与 Narration Mix 已成为阻断级 QC。权威流程和剩余边界见 `product/LONGFORM_PRODUCTION_MILESTONE.md`。旧 First Usable Cut 结论继续作为底层能力证据，不再代表当前唯一主目标。
 
 项目不是“整体完成百分之多少”的问题，而是前半段工程较强、后半段个人成片链未闭合。
 

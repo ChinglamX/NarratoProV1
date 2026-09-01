@@ -1,0 +1,22 @@
+{
+  "reviewer": "codex-ai-review-director",
+  "review_scope": "start/middle/end frames for each coarse dialogue window",
+  "decisions": [
+    {"event_id":"cliff-danger","status":"verified_window","statement":"山林险路中兄妹停步，画面字幕提示无法继续前进。","strongest_sample":"middle"},
+    {"event_id":"seal-awakening","status":"verified_window","statement":"男主掌心出现发光视觉效果，支持能力觉醒。","strongest_sample":"middle"},
+    {"event_id":"mountain-sense","status":"verified_window","statement":"高速穿行山林的主观异象与感知长白山对白一致。","strongest_sample":"middle"},
+    {"event_id":"ginseng-found","status":"verified_window","statement":"男主手持完整野山参向妹妹展示。","strongest_sample":"middle"},
+    {"event_id":"wolves-attack","status":"verified_window","statement":"近景狼露齿逼近，生命威胁明确。","strongest_sample":"middle"},
+    {"event_id":"wolves-retreat","status":"verified_window","statement":"妹妹望向男主并询问狼是否害怕，窗口处于驱狼结果段。","strongest_sample":"middle"},
+    {"event_id":"tuition-taken","status":"verified_window","statement":"兄妹共同出镜并处理来电，支持家庭经济冲突场景。","strongest_sample":"middle"},
+    {"event_id":"support-promise","status":"verified_window","statement":"男主从山林转入卖参行动，窗口承接供妹妹上学的承诺。","strongest_sample":"start"},
+    {"event_id":"shop-rejection","status":"verified_window","statement":"男主带野参进入药店，人物与场景连续。","strongest_sample":"middle"},
+    {"event_id":"lowball-offer","status":"verified_window","statement":"药店内男主反驳压价，字幕显示被当傻子欺骗。","strongest_sample":"middle"},
+    {"event_id":"fifty-offer","status":"verified_window","statement":"女买家查看野参，字幕明确至少五十年。","strongest_sample":"middle"},
+    {"event_id":"payment-delivered","status":"verified_window","statement":"交易后男主提着装钱箱离开药店，支持付款完成。","strongest_sample":"end"},
+    {"event_id":"collectors-threaten","status":"verified_window","statement":"多名讨债者闯入，字幕明确父债五万元。","strongest_sample":"end"},
+    {"event_id":"protect-sister","status":"verified_window","statement":"男主正面对峙并攥拳要求放开妹妹。","strongest_sample":"middle"},
+    {"event_id":"mountain-pressure","status":"verified_window","statement":"男主掌心能力效果出现，讨债冲突进入反制。","strongest_sample":"end"},
+    {"event_id":"family-payoff","status":"verified_window","statement":"现金箱与妹妹落泪的反应共同形成学费承诺回报。","strongest_sample":"middle"}
+  ]
+}
