@@ -83,3 +83,28 @@ def test_render_atomically_commits_checksum_and_heartbeats(
     assert output.read_bytes() == b"final-media"
     assert report.succeeded and report.output_checksum == render.sha256_file(output)
     assert events[-1]["complete"] is True
+
+
+def test_render_replaces_planned_output_with_atomic_temporary_path(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    observed = []
+
+    def fake_run(command, **_kwargs):
+        observed.append(command)
+        Path(command[-1]).write_bytes(b"rendered")
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(render.subprocess, "run", fake_run)
+    output = tmp_path / "final.mp4"
+    render.execute_ffmpeg_plan(
+        plan=plan(),
+        plan_ref=ref("RenderPlan"),
+        command=("ffmpeg", "-y", str(output)),
+        output_path=output,
+        ffmpeg_version="8.1.2",
+        attempt=1,
+        heartbeat=lambda _event: None,
+    )
+    assert observed[0].count(str(output)) == 0
+    assert observed[0][-1].endswith(".attempt-1.tmp.mp4")

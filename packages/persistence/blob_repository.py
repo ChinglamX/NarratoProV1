@@ -87,6 +87,14 @@ class BlobRepository:
         object_store: ObjectStore,
         registered: RegisteredBlob,
     ) -> RegisteredBlob:
+        if registered.state == "committed":
+            current = object_store.head(registered.metadata.uri)
+            if (
+                current.checksum != registered.metadata.checksum
+                or current.size_bytes != registered.metadata.size_bytes
+            ):
+                raise BlobCommitConflict("committed blob metadata no longer matches object store")
+            return registered
         committed = object_store.commit(
             registered.metadata.uri,
             registered.metadata.checksum,

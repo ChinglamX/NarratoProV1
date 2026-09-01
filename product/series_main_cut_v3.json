@@ -1,0 +1,63 @@
+{
+  "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/1.mp4",
+  "reference_audio": "/Users/chinglam/Desktop/ref_7_clean.wav",
+  "candidate_manifest": "../outputs/series_main_cut/candidate_v3/manifest.json",
+  "candidate_filename": "candidate_v3.mp4",
+  "rights": "internal-only; no-public-release",
+  "gate_1": "approved",
+  "gate_2": "approved",
+  "segments": [
+    {"source_path": "../data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03", "source_start_seconds": 20.0, "duration_seconds": 4.0},
+    {"source_path": "../data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03", "source_start_seconds": 44.0, "duration_seconds": 4.5},
+    {"source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d", "source_start_seconds": 24.0, "duration_seconds": 4.5},
+    {"source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d", "source_start_seconds": 44.0, "duration_seconds": 4.0},
+    {"source_path": "../data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d", "source_start_seconds": 60.0, "duration_seconds": 5.0},
+    {"source_path": "../data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f", "source_start_seconds": 12.0, "duration_seconds": 4.5},
+    {"source_path": "../data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f", "source_start_seconds": 36.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/4.mp4", "source_start_seconds": 12.0, "duration_seconds": 4.5},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4", "source_start_seconds": 12.0, "duration_seconds": 5.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4", "source_start_seconds": 32.0, "duration_seconds": 4.5},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4", "source_start_seconds": 0.0, "duration_seconds": 5.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4", "source_start_seconds": 56.0, "duration_seconds": 4.5}
+  ],
+  "visual_events": [
+    {"event_id": "cliff-awakening", "timeline_start_seconds": 0.0, "duration_seconds": 4.0},
+    {"event_id": "mountain-response", "timeline_start_seconds": 4.0, "duration_seconds": 4.5},
+    {"event_id": "ginseng-visible", "timeline_start_seconds": 8.5, "duration_seconds": 4.5},
+    {"event_id": "wolves-surround", "timeline_start_seconds": 13.0, "duration_seconds": 4.0},
+    {"event_id": "wolves-retreat", "timeline_start_seconds": 17.0, "duration_seconds": 5.0},
+    {"event_id": "debt-pressure", "timeline_start_seconds": 22.0, "duration_seconds": 4.5},
+    {"event_id": "promise-to-sister", "timeline_start_seconds": 26.5, "duration_seconds": 4.0},
+    {"event_id": "enter-pharmacy", "timeline_start_seconds": 30.5, "duration_seconds": 4.5},
+    {"event_id": "lowball-offer", "timeline_start_seconds": 35.0, "duration_seconds": 5.0},
+    {"event_id": "cash-offer", "timeline_start_seconds": 40.0, "duration_seconds": 4.5},
+    {"event_id": "sister-seized", "timeline_start_seconds": 44.5, "duration_seconds": 5.0},
+    {"event_id": "sister-protected", "timeline_start_seconds": 49.5, "duration_seconds": 4.5}
+  ],
+  "narration_anchors": [
+    {"narration": "林大壮跌下山崖，醒来时，掌心竟多了一道山神印。", "required_event_ids": ["cliff-awakening"], "preferred_delay_seconds": 0.0, "post_roll_seconds": 1.0},
+    {"narration": "随着金光涌入身体，他听见了整座山的回应。", "required_event_ids": ["mountain-response"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "循着感应挖下去，土里竟是一株五十年份的野山参。", "required_event_ids": ["ginseng-visible"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "兄妹俩还没缓过神，狼群已经围了上来。", "required_event_ids": ["wolves-surround"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "他下意识抬起手，刚才还逼近的野狼，竟齐齐低头退去。", "required_event_ids": ["wolves-retreat"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "可狼群刚退，家里的赌债又压到了妹妹身上。", "required_event_ids": ["debt-pressure"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "看着妹妹，他只说了一句：你的大学，我来供。", "required_event_ids": ["promise-to-sister"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "为了兑现承诺，他带着人参进城，却先被当成了穷鬼。", "required_event_ids": ["enter-pharmacy"], "preferred_delay_seconds": 0.3, "post_roll_seconds": 1.0},
+    {"narration": "店家明明认出了极品，嘴上却只肯出二十万。", "required_event_ids": ["lowball-offer"], "preferred_delay_seconds": 0.3, "post_roll_seconds": 1.0},
+    {"narration": "直到真正识货的买家赶到，五十万现金当场摆在眼前。", "required_event_ids": ["cash-offer"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "可钱刚到手，讨债的人就抓住妹妹，逼他把钱全部交出来。", "required_event_ids": ["sister-seized"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "山神印再次亮起。这一次，他兑现了承诺，也护住了妹妹。", "required_event_ids": ["sister-protected"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 0.5}
+  ],
+  "run_provenance": {
+    "task_type": "TYPE_B",
+    "active_role": "AI Drama Producer",
+    "auxiliary_roles": ["AI System Engineer"],
+    "director_decisions": [
+      {"decision_id": "cross-episode-selection", "description": "选择十二个跨集视觉事件构成觉醒、兑现与护妹闭环", "actor_role": "AI Drama Producer", "rationale": "使用已经批准的整剧主路线和可见回报镜头", "manual_override": false},
+      {"decision_id": "narration-copy", "description": "为十二个事件编写证据约束的桥接解说", "actor_role": "AI Drama Producer", "rationale": "保持跨集因果，同时不提前讲出下一视觉结果", "manual_override": false},
+      {"decision_id": "closed-payoff-ending", "description": "结尾使用兑现承诺与护妹闭环", "actor_role": "AI Drama Producer", "rationale": "素材没有支持原悬念句的下一事件画面", "manual_override": false}
+    ],
+    "human_corrections": ["解说衔接自然但曾提前剧透", "删除缺少画面支撑的强行悬念", "Candidate v3 声画基本匹配"],
+    "release_gate_status": "not_requested"
+  }
+}

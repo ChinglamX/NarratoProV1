@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "project_name": "山神印觉醒后满山风月皆归我-第7至8集声画锚定验证",
+  "usage_scope": "internal-preview",
+  "rights_confirmed": true,
+  "gate_1_story_approved": true,
+  "gate_2_strategy_approved": true,
+  "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4",
+  "reference_audio": "/Users/chinglam/Desktop/ref_7_clean.wav",
+  "candidate_manifest": "../outputs/heldout_episode_7_8/candidate_v1/manifest.json",
+  "candidate_filename": "candidate_v1.mp4",
+  "canonical_output": "../outputs/heldout_episode_7_8/candidate_v1/canonical_e11.mp4",
+  "acceptance_manifest": "../outputs/heldout_episode_7_8/candidate_v1/canonical_acceptance.json",
+  "ingest_manifests": [
+    "../outputs/heldout_episode_7_8/ingest_episode_07.json",
+    "../outputs/heldout_episode_7_8/ingest_episode_08.json"
+  ],
+  "rights": "internal-only; no-public-release",
+  "gate_1": "approved-series-story",
+  "gate_2": "approved-direction-continuation",
+  "segments": [
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4", "source_start_seconds": 20.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4", "source_start_seconds": 28.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4", "source_start_seconds": 52.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4", "source_start_seconds": 64.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4", "source_start_seconds": 0.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4", "source_start_seconds": 16.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4", "source_start_seconds": 24.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4", "source_start_seconds": 28.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4", "source_start_seconds": 40.0, "duration_seconds": 4.0},
+    {"source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4", "source_start_seconds": 48.0, "duration_seconds": 4.0}
+  ],
+  "visual_events": [
+    {"event_id": "rare-poria-found", "timeline_start_seconds": 0.0, "duration_seconds": 4.0},
+    {"event_id": "sister-sees-poria", "timeline_start_seconds": 4.0, "duration_seconds": 4.0},
+    {"event_id": "appraiser-confirms", "timeline_start_seconds": 8.0, "duration_seconds": 4.0},
+    {"event_id": "crowd-bids", "timeline_start_seconds": 12.0, "duration_seconds": 4.0},
+    {"event_id": "buyer-arrives", "timeline_start_seconds": 16.0, "duration_seconds": 4.0},
+    {"event_id": "buyer-wants-both", "timeline_start_seconds": 20.0, "duration_seconds": 4.0},
+    {"event_id": "thirty-wan-offer", "timeline_start_seconds": 24.0, "duration_seconds": 4.0, "protects_original_sound": true},
+    {"event_id": "deal-completes", "timeline_start_seconds": 28.0, "duration_seconds": 4.0},
+    {"event_id": "enemy-learns-income", "timeline_start_seconds": 32.0, "duration_seconds": 4.0},
+    {"event_id": "enemy-orders-attack", "timeline_start_seconds": 36.0, "duration_seconds": 4.0}
+  ],
+  "narration_anchors": [
+    {"narration": "凭着山神印的感应，林大壮又在山里找到一块罕见的云纹茯苓。", "required_event_ids": ["rare-poria-found"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "连识货的老人都没见过这么完整的品相。", "required_event_ids": ["appraiser-confirms"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "消息一传开，市场上的人立刻抢着出价。", "required_event_ids": ["crowd-bids"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "争得最凶的时候，之前买参的女人再次赶到。", "required_event_ids": ["buyer-arrives"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "等三十万的报价说完，两样药材当场成交。", "required_event_ids": ["thirty-wan-offer", "deal-completes"], "preferred_delay_seconds": 0.0, "post_roll_seconds": 4.0},
+    {"narration": "可这笔钱刚到账，就被一直盯着他的仇家知道了。", "required_event_ids": ["enemy-learns-income"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 1.0},
+    {"narration": "上一次没能除掉他，这一次，对方直接下了死手。", "required_event_ids": ["enemy-orders-attack"], "preferred_delay_seconds": 0.2, "post_roll_seconds": 0.0}
+  ],
+  "run_provenance": {
+    "task_type": "TYPE_B",
+    "active_role": "AI Drama Producer",
+    "auxiliary_roles": ["AI System Engineer"],
+    "director_decisions": [
+      {"decision_id": "heldout-story-direction", "description": "使用第7至8集的极品药材、三十万成交和仇家追杀构成独立验证闭环", "actor_role": "AI Drama Producer", "rationale": "延续已批准的能力变现与冲突升级方向，所有主张均有原片画面或对白支持", "manual_override": false},
+      {"decision_id": "heldout-clip-selection", "description": "选择十个四秒镜头并标注视觉事件，不填写任何解说绝对开始时间", "actor_role": "AI Drama Producer", "rationale": "隔离导演选题职责与工具声画排程职责", "manual_override": false}
+    ],
+    "human_corrections": [],
+    "release_gate_status": "not_requested"
+  }
+}

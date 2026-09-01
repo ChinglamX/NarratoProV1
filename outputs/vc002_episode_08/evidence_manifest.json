@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0.0",
+  "source_media": {
+    "path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4",
+    "source_artifact_id": "f98ca32a-a855-441b-b73e-fec9f324d1a8",
+    "source_artifact_version": 1,
+    "source_checksum": "sha256:bb45cd4221f9310c4a4bfd6ed29e92883a351b8596b05bebef5f839bc3e3c3f2",
+    "duration_seconds": 53.056
+  },
+  "range_method": {
+    "method": "output-side accurate seek plus one-second burned-in-subtitle and original-audio review",
+    "precision_seconds": 1.0,
+    "status": "review_window_not_word_alignment",
+    "limitation": "These are independent claim review windows, not calibrated word-level ASR alignment."
+  },
+  "claims": [
+    {
+      "claim_id": "sale",
+      "source_start_seconds": 15.0,
+      "source_end_seconds": 28.0,
+      "clip": "claim_01_sale_15s_28s.mp4",
+      "clip_checksum": "sha256:dd90382c9aa1b1c556ff4ae056e5244222a2ca0daa75f66f7eabdd243cf0f7f1",
+      "key_frames": [
+        {"time_seconds": 16.0, "path": "evidence_frames/16s.jpg", "subtitle": "三十万"},
+        {"time_seconds": 17.0, "path": "evidence_frames/17s.jpg", "subtitle": "这两样我都要了"}
+      ],
+      "speaker_evidence": "黑衣女性面向摊主/男主报价并确认购买两样货物；这里只记录画面角色，不创建 CharacterIdentity。"
+    },
+    {
+      "claim_id": "payment",
+      "source_start_seconds": 28.0,
+      "source_end_seconds": 33.0,
+      "clip": "claim_02_payment_28s_33s.mp4",
+      "clip_checksum": "sha256:0a73815274dfb7b1ae3aa6490c6a00a2f0f1c2dcd67506d50d554b132fdc4ded",
+      "key_frames": [
+        {"time_seconds": 29.0, "path": "evidence_frames/29s.jpg", "subtitle": "这张卡里有三十万"},
+        {"time_seconds": 30.0, "path": "evidence_frames/30s.jpg", "subtitle": "密码六个八"}
+      ],
+      "speaker_evidence": "黑衣女性持卡说明金额和密码，随后把卡递给浅色外套男性；身份名称仍需 IdentityGraph 或人工确认。"
+    },
+    {
+      "claim_id": "threat",
+      "source_start_seconds": 39.0,
+      "source_end_seconds": 53.056,
+      "clip": "claim_03_threat_39s_53s056.mp4",
+      "clip_checksum": "sha256:49fa7fa7515c01250ef281553a89fdc910477c1db0aaf6467bef96489359f746",
+      "key_frames": [
+        {"time_seconds": 40.0, "path": "evidence_frames/40s.jpg", "subtitle": "虎哥"},
+        {"time_seconds": 42.0, "path": "evidence_frames/42s.jpg", "subtitle": "那小子一天就弄到了三十万"},
+        {"time_seconds": 45.0, "path": "evidence_frames/45s.jpg", "subtitle": "却藏着掖着不还"},
+        {"time_seconds": 48.0, "path": "evidence_frames/48s.jpg", "subtitle": "给我盯住那小子"},
+        {"time_seconds": 50.0, "path": "evidence_frames/50s.jpg", "subtitle": "这次我就不信弄不死他"}
+      ],
+      "speaker_evidence": "光头男性进入房间并称呼“虎哥”；皮衣男性随后谈及三十万、不还钱、此前动手并下令盯住。画面支持说话人角色关系，但不自动建立实名身份。"
+    }
+  ],
+  "correction": {
+    "reported_by": "project-owner",
+    "finding": "Original Claim 2 clip showed the tip-off scene instead of card amount/password.",
+    "root_cause": "Initial media extraction used input-side fast seek and landed on a later GOP/keyframe while filenames retained requested times.",
+    "required_fix": "Regenerate all claim clips and frames with output-side accurate seek; remove incorrect artifacts and replace checksums.",
+    "status": "corrected_pending_human_review"
+  },
+  "review_status": "awaiting_human_review_after_seek_correction"
+}

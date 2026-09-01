@@ -19,6 +19,7 @@ class VisualWorkflowInput:
     raw_artifact_id: str
     observation_artifact_id: str
     allow_research: bool = False
+    capability: str = "detection"
 
 
 @dataclass(frozen=True)

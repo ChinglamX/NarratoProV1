@@ -1,0 +1,19 @@
+{
+  "narration_lines": [
+    {
+      "text": "有人得三十万后藏钱不还，还敢动手，因此被锁定威胁。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/vc003_episode_08/audio/narration_1_64d98f0a.wav",
+      "timeline_start_seconds": 0.0
+    },
+    {
+      "text": "三十万买下两样东西，交易当场达成。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/vc003_episode_08/audio/narration_2_e00c0a85.wav",
+      "timeline_start_seconds": 8.5
+    },
+    {
+      "text": "交出一张内有三十万的卡，密码是六个八。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/vc003_episode_08/audio/narration_3_b8a9b416.wav",
+      "timeline_start_seconds": 16.0
+    }
+  ]
+}

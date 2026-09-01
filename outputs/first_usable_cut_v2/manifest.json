@@ -1,0 +1,78 @@
+{
+  "status": "product_proof_pending_human_review",
+  "source_preview": "/Users/chinglam/workspace/NarratoProV1/tmp/e09-cert-d8eb4cd5-11eb-4c13-82d9-9bfe2f0b74af-preview.mp4",
+  "source_preview_ass": "/Users/chinglam/workspace/NarratoProV1/tmp/e09-cert-d8eb4cd5-11eb-4c13-82d9-9bfe2f0b74af-preview.ass",
+  "subtitle_source": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/first_usable_cut.ass",
+  "subtitle_note": "narration ASS regenerated from the current lines; captions rendered as deterministic PNG overlays; source subtitles remain inherited from E09 preview",
+  "narration_lines": [
+    {
+      "line": 1,
+      "text": "少年被困山林，却在绝境中唤醒了山神印。",
+      "timeline_start_seconds": 0.0,
+      "actual_duration_seconds": 2.901,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/narration_01.wav",
+      "checksum": "sha256:7ff2177e731bf7fdefab43c0218cceb4113b0c72645e331a54607ca079bd7a32"
+    },
+    {
+      "line": 2,
+      "text": "所有人只看见他的狼狈，没人知道群山正在回应他。",
+      "timeline_start_seconds": 3.5,
+      "actual_duration_seconds": 3.2,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/narration_02.wav",
+      "checksum": "sha256:b3c9e35613898d0a0776c18ba743441376a6e3a6d59e036ceaf7e394f9e75449"
+    },
+    {
+      "line": 3,
+      "text": "初入宗门，他因这股陌生力量被视作异类。",
+      "timeline_start_seconds": 8.0,
+      "actual_duration_seconds": 2.688,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/narration_03.wav",
+      "checksum": "sha256:fb74d405a93376c31298f21c835df02e6902257ceaaae61d133022e7da328b35"
+    },
+    {
+      "line": 4,
+      "text": "直到血脉显现，望守山人的传承终于重见天日。",
+      "timeline_start_seconds": 13.583333,
+      "actual_duration_seconds": 3.2,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/narration_04.wav",
+      "checksum": "sha256:04334f7c21b5bc7ca3e1fe4a6f3895e4531d00180c4f182297352834dfbbb48a"
+    },
+    {
+      "line": 5,
+      "text": "宗门大比将至，这份力量也引来了觊觎。",
+      "timeline_start_seconds": 18.2,
+      "actual_duration_seconds": 2.645,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/narration_05.wav",
+      "checksum": "sha256:9040fc3b43f3cade7e94f046b8c2e6b328f746ec55a69c5379ab40e40a423cb6"
+    },
+    {
+      "line": 6,
+      "text": "他越接近真相，暗处的杀机就逼得越紧。",
+      "timeline_start_seconds": 22.3,
+      "actual_duration_seconds": 2.731,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/narration_06.wav",
+      "checksum": "sha256:64d27ca5a28e97f4ba86a2c78544ad64bd309b6f091372472aaa6363fc5fec45"
+    },
+    {
+      "line": 7,
+      "text": "而爷爷留下的笔记，将指向他必须面对的宿命。",
+      "timeline_start_seconds": 26.208333,
+      "actual_duration_seconds": 2.645,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/narration_07.wav",
+      "checksum": "sha256:a0c304f63edd6b2b2bcf16d41496d63a2c8bff2ce3382f4454bc7bd08b7ef8fb"
+    }
+  ],
+  "mix": {
+    "original_gain": 0.32,
+    "narration_gain": 1.0,
+    "limiter": 0.95
+  },
+  "output": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut_v2/first_usable_cut.mp4",
+  "duration_seconds": 30.28,
+  "checksum": "sha256:8334500d3c56d627848e7a6b968ac5544d57748c34e6184d3066c262274adf13",
+  "limitations": [
+    "product proof uses the E09 preview's already-rendered subtitles",
+    "no BGM or SFX",
+    "not an E11 production qualification artifact"
+  ]
+}

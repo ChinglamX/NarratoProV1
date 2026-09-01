@@ -1,0 +1,79 @@
+{
+  "run_id": "fa3a29bb-11c0-437d-abb2-6addc4083e64",
+  "workflow_id": "vc003-e08-timeline/fa3a29bb-11c0-437d-abb2-6addc4083e64",
+  "state": "awaiting_review",
+  "preview_path": "tmp/vc003-e08-fa3a29bb-11c0-437d-abb2-6addc4083e64-preview.mp4",
+  "approved_creative_brief": {
+    "artifact_id": "bc2c693e-8768-40fc-84d5-fcc00946f80a",
+    "version": 1,
+    "artifact_type": "CreativeBrief",
+    "checksum": "sha256:a20c2f1639d5ceb3ce2772dbc3b98d97e14830400b9b0e48d3de73ee8f38e0e8"
+  },
+  "approved_story": {
+    "artifact_id": "c378ba51-da33-4049-baf0-538ca637e9a5",
+    "version": 1,
+    "artifact_type": "StoryGraph",
+    "checksum": "sha256:8b34ae0d15d81126a1907366e27efcb4ce113e5bea0e1d2fae0ec146d0c7aad2"
+  },
+  "source_media": {
+    "artifact_id": "f98ca32a-a855-441b-b73e-fec9f324d1a8",
+    "version": 1,
+    "artifact_type": "SourceMedia",
+    "checksum": "sha256:bb45cd4221f9310c4a4bfd6ed29e92883a351b8596b05bebef5f839bc3e3c3f2"
+  },
+  "timeline_seconds": 24.0,
+  "beats": [
+    {
+      "beat_id": "0a9133db-b77a-4ba5-a95f-08168497bf2e",
+      "function": "hook",
+      "source_window_seconds": [
+        42.0,
+        50.0
+      ],
+      "candidate_id": "490c5222-c5c2-4fb0-97a1-8b686785d17d",
+      "story_ref": "87f8ff89-54ec-42b1-8e46-c12cefba6e47",
+      "evidence_ref": "1267ab6e-3cc8-4a10-8ef5-5764077f0616",
+      "narration": "有人得知对方一天到手三十万，嫌他有钱不还又敢动手，下令盯住，扬言要他的命。"
+    },
+    {
+      "beat_id": "52005150-cba4-4287-8b60-00a5e8cf9700",
+      "function": "context",
+      "source_window_seconds": [
+        15.5,
+        23.5
+      ],
+      "candidate_id": "78e78e28-3423-467d-84e6-c128aa446f14",
+      "story_ref": "1df88e31-efac-44ac-8e73-8bcb5c8269ec",
+      "evidence_ref": "172bf99b-af5d-4070-b836-ec6d50eedf58",
+      "narration": "这三十万，是有人当场买下两样货物的成交价。"
+    },
+    {
+      "beat_id": "0e95fab1-62e7-49bf-963d-ca30a0a261b5",
+      "function": "payoff",
+      "source_window_seconds": [
+        28.0,
+        36.0
+      ],
+      "candidate_id": "9bea0d1a-fa2d-43db-b650-2dc6fae71578",
+      "story_ref": "1c583c8c-7291-4f8f-91e9-b02181958c26",
+      "evidence_ref": "d008fa4a-3bd6-40c0-83f3-79885d89b34d",
+      "narration": "一张卡、三十万、密码六个八，就这样交到买主手里。"
+    }
+  ],
+  "artifacts": {
+    "assembly_report": "b39d7db4-8076-4103-b08d-952696206de7 v1",
+    "candidate_set": "e721dc65-74cb-4192-b74e-e9e131df1156 v1",
+    "continuity_report": "4d8e10e5-2bb3-405e-9878-d2066df6f400 v1",
+    "master_timeline": "9569a801-effe-444d-b07f-de4dc206fba8 v1",
+    "narration_report": "e68c7bd0-12f3-46d2-bb5f-70dd93b8754d v1",
+    "preview": "2cb819ae-34a6-4853-b6bd-b171ca6abb76 v1",
+    "rhythm_plan": "30a66da7-b2d4-4d60-b836-dde94c4344fe v1",
+    "selection_plan": "90cda6ea-0eed-4da9-bfda-70f796d8e248 v1",
+    "visual_report": "235c3fe4-e54c-4a29-90c7-334160056e82 v1"
+  },
+  "boundary_notes": [
+    "人物身份未证明：解说与字幕未给任何角色命名。",
+    "倒叙时间顺序来自 approved Gate 2 CreativeBrief（威胁倒叙）。",
+    "预览为 E09 草稿：原声保留、解说以字幕占位，TTS/混音/字幕烧录属 E10。"
+  ]
+}

@@ -1,0 +1,440 @@
+{
+  "artifact_types": [
+    {
+      "domain": "Subtitle",
+      "name": "ASSArtifact",
+      "owner": "production"
+    },
+    {
+      "domain": "Voice",
+      "name": "AlignmentArtifact",
+      "owner": "production"
+    },
+    {
+      "domain": "Experiment",
+      "name": "ApplicableScope",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Audio",
+      "name": "AudioAssetSelection",
+      "owner": "production"
+    },
+    {
+      "domain": "Media",
+      "name": "AudioStem",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Foundation",
+      "name": "AutomationPolicy",
+      "owner": "control"
+    },
+    {
+      "domain": "Feedback",
+      "name": "BenchmarkPredictionSet",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Automation",
+      "name": "CalibrationArtifact",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Story",
+      "name": "CausalGraph",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Story",
+      "name": "CharacterStateGraph",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Production",
+      "name": "ClipCandidateSet",
+      "owner": "production"
+    },
+    {
+      "domain": "Production",
+      "name": "ClipSelectionPlan",
+      "owner": "production"
+    },
+    {
+      "domain": "Foundation",
+      "name": "ConfigArtifact",
+      "owner": "control"
+    },
+    {
+      "domain": "Timeline",
+      "name": "ConflictSet",
+      "owner": "timeline"
+    },
+    {
+      "domain": "Production",
+      "name": "ContinuityReport",
+      "owner": "production"
+    },
+    {
+      "domain": "Feedback",
+      "name": "CorrectionDataset",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Strategy",
+      "name": "CreativeBrief",
+      "owner": "strategy"
+    },
+    {
+      "domain": "Production",
+      "name": "CropPath",
+      "owner": "production"
+    },
+    {
+      "domain": "Feedback",
+      "name": "DatasetManifest",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Observation",
+      "name": "DetectionObservation",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Automation",
+      "name": "DriftReport",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Foundation",
+      "name": "EffectiveConfigSnapshot",
+      "owner": "control"
+    },
+    {
+      "domain": "Media",
+      "name": "EpisodeCatalog",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Feedback",
+      "name": "EvaluationRun",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Story",
+      "name": "EventSet",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Fact",
+      "name": "EvidenceBundle",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Experiment",
+      "name": "ExperimentPlan",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Experiment",
+      "name": "ExperimentResult",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Observation",
+      "name": "FaceObservation",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Fact",
+      "name": "FactSet",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Render",
+      "name": "FinalCandidate",
+      "owner": "production"
+    },
+    {
+      "domain": "Media",
+      "name": "FrameSamplePlan",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Subtitle",
+      "name": "GraphicsCueSet",
+      "owner": "production"
+    },
+    {
+      "domain": "Strategy",
+      "name": "HookCandidateSet",
+      "owner": "strategy"
+    },
+    {
+      "domain": "Identity",
+      "name": "IdentityConflict",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Identity",
+      "name": "IdentityGraph",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Timeline",
+      "name": "MasterTimeline",
+      "owner": "timeline"
+    },
+    {
+      "domain": "Media",
+      "name": "MediaProbe",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Audio",
+      "name": "MixPlan",
+      "owner": "production"
+    },
+    {
+      "domain": "Audio",
+      "name": "MixedAudio",
+      "owner": "production"
+    },
+    {
+      "domain": "Production",
+      "name": "NarrationLineSet",
+      "owner": "production"
+    },
+    {
+      "domain": "Production",
+      "name": "NarrationPlanningReport",
+      "owner": "production"
+    },
+    {
+      "domain": "Timeline",
+      "name": "NarrativeBeatGraph",
+      "owner": "timeline"
+    },
+    {
+      "domain": "Observation",
+      "name": "OCRObservation",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Timeline",
+      "name": "OTIOExport",
+      "owner": "timeline"
+    },
+    {
+      "domain": "Timeline",
+      "name": "PatchProposal",
+      "owner": "timeline"
+    },
+    {
+      "domain": "Release",
+      "name": "PerformanceWindow",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Timeline",
+      "name": "PreviewManifest",
+      "owner": "timeline"
+    },
+    {
+      "domain": "Quality",
+      "name": "ProductionQualificationReport",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Feedback",
+      "name": "ProviderBenchmarkReport",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Media",
+      "name": "ProxyMedia",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Render",
+      "name": "ProxyRender",
+      "owner": "production"
+    },
+    {
+      "domain": "Quality",
+      "name": "QualityEventSet",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Quality",
+      "name": "QualityReview",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Observation",
+      "name": "RawProviderResponse",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Release",
+      "name": "ReleaseRecord",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Release",
+      "name": "ReleaseReviewPackage",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Render",
+      "name": "RenderExecutionReport",
+      "owner": "production"
+    },
+    {
+      "domain": "Render",
+      "name": "RenderPlan",
+      "owner": "production"
+    },
+    {
+      "domain": "Foundation",
+      "name": "ResourceProfile",
+      "owner": "control"
+    },
+    {
+      "domain": "Production",
+      "name": "RhythmPlan",
+      "owner": "production"
+    },
+    {
+      "domain": "Foundation",
+      "name": "RightsGrant",
+      "owner": "control"
+    },
+    {
+      "domain": "Foundation",
+      "name": "RightsManifest",
+      "owner": "control"
+    },
+    {
+      "domain": "Automation",
+      "name": "RoutingDecision",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Media",
+      "name": "SceneShotCatalog",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Strategy",
+      "name": "SellingPointSet",
+      "owner": "strategy"
+    },
+    {
+      "domain": "Media",
+      "name": "SourceMedia",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Fact",
+      "name": "SourceQualityFeatureSet",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Production",
+      "name": "SourceSubtitleHandlingPlan",
+      "owner": "production"
+    },
+    {
+      "domain": "Observation",
+      "name": "SpeechObservation",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Story",
+      "name": "StoryGraph",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Strategy",
+      "name": "StrategyCandidateSet",
+      "owner": "strategy"
+    },
+    {
+      "domain": "Strategy",
+      "name": "StrategyComparisonPackage",
+      "owner": "strategy"
+    },
+    {
+      "domain": "Subtitle",
+      "name": "SubtitleCueSet",
+      "owner": "production"
+    },
+    {
+      "domain": "Observation",
+      "name": "SupplementarySampleRequest",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Quality",
+      "name": "TechnicalQCReport",
+      "owner": "evaluation"
+    },
+    {
+      "domain": "Observation",
+      "name": "TextTrack",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Production",
+      "name": "TimelineAssemblyReport",
+      "owner": "production"
+    },
+    {
+      "domain": "Observation",
+      "name": "Tracklet",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Observation",
+      "name": "VLMObservation",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Strategy",
+      "name": "VariantPlan",
+      "owner": "strategy"
+    },
+    {
+      "domain": "Observation",
+      "name": "VisualEmbedding",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Observation",
+      "name": "VisualObservation",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Production",
+      "name": "VisualPlanningReport",
+      "owner": "production"
+    },
+    {
+      "domain": "Observation",
+      "name": "VisualQualityReport",
+      "owner": "intelligence"
+    },
+    {
+      "domain": "Voice",
+      "name": "VoiceAsset",
+      "owner": "production"
+    },
+    {
+      "domain": "Voice",
+      "name": "VoiceTakeSet",
+      "owner": "production"
+    }
+  ],
+  "registry_version": "2.20.0"
+}

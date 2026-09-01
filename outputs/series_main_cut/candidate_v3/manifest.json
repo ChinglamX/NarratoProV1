@@ -1,0 +1,499 @@
+{
+  "source": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/1.mp4",
+  "sources": [
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/4.mp4",
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+    "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+    "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+    "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d"
+  ],
+  "rights": "internal-only; no-public-release",
+  "gate_1": "approved",
+  "gate_2": "approved",
+  "segments": [
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+      "source_start_seconds": 20.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/80/80297b7362be3528584adebb0d1ae1d5a5504ded8b55743a949e8a578ee3bf03",
+      "source_start_seconds": 44.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 24.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 44.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+      "source_start_seconds": 60.0,
+      "duration_seconds": 5.0
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/0e/0ecd0cd8405009d166d77266c1293a4b16d9c0b59f0d90eb623668b4954c0a4f",
+      "source_start_seconds": 36.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/4.mp4",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+      "source_start_seconds": 12.0,
+      "duration_seconds": 5.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/5.mp4",
+      "source_start_seconds": 32.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+      "source_start_seconds": 0.0,
+      "duration_seconds": 5.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/6.mp4",
+      "source_start_seconds": 56.0,
+      "duration_seconds": 4.5
+    }
+  ],
+  "narration_lines": [
+    {
+      "index": 1,
+      "text": "林大壮跌下山崖，醒来时，掌心竟多了一道山神印。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_01.wav",
+      "timeline_start_seconds": 0.1,
+      "duration_seconds": 3.669,
+      "slot_duration_seconds": 4.9,
+      "checksum": "sha256:90e12149a1244b6db6935bbfea5066928a93f9536481985b97577bde1fc32108",
+      "cache_key": "sha256:c0d1184ddd35101e88c787a8c6c76b518ad0fb415c026995a71f517995c32f19",
+      "cache_hit": true,
+      "line_id": "58678f95-5c9f-5b7f-b596-b8f86739880c",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "cliff-awakening"
+      ]
+    },
+    {
+      "index": 2,
+      "text": "随着金光涌入身体，他听见了整座山的回应。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_02.wav",
+      "timeline_start_seconds": 4.2,
+      "duration_seconds": 2.859,
+      "slot_duration_seconds": 5.3,
+      "checksum": "sha256:dfd2be351e74e03ee3789a68e412cabe61e3e25a603219f1265f32ea94092a36",
+      "cache_key": "sha256:4588d60a85401972a2ce0460358cdd98fb14bb098ec9c22a28f92c1c1f8a018d",
+      "cache_hit": true,
+      "line_id": "54cb1261-fc18-5272-a7f4-9d7a7bddfc0c",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "mountain-response"
+      ]
+    },
+    {
+      "index": 3,
+      "text": "循着感应挖下去，土里竟是一株五十年份的野山参。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_03.wav",
+      "timeline_start_seconds": 8.7,
+      "duration_seconds": 3.157,
+      "slot_duration_seconds": 5.3,
+      "checksum": "sha256:5d4661aabe62ddfc26f5ea4f634e0ddefe26b2384197cd9660358e2b01d33213",
+      "cache_key": "sha256:78de6ca7499033ef7f815f0b295c05518a335186e8ebaf450361007df237b7f7",
+      "cache_hit": true,
+      "line_id": "74867174-0474-58e1-8a04-82ef8080d259",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "ginseng-visible"
+      ]
+    },
+    {
+      "index": 4,
+      "text": "兄妹俩还没缓过神，狼群已经围了上来。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_04.wav",
+      "timeline_start_seconds": 13.2,
+      "duration_seconds": 2.688,
+      "slot_duration_seconds": 4.8,
+      "checksum": "sha256:394f3ff198f026c99569668edc28bcc5d0ae3eea430b4ed7703406d565762512",
+      "cache_key": "sha256:60dd90bb7255283c2875fe8e777f09326d4467ce7053f7a80536e6b6b6f2785c",
+      "cache_hit": true,
+      "line_id": "01260667-7887-5d41-8b96-80f06ff56f43",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "wolves-surround"
+      ]
+    },
+    {
+      "index": 5,
+      "text": "他下意识抬起手，刚才还逼近的野狼，竟齐齐低头退去。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_05.wav",
+      "timeline_start_seconds": 17.2,
+      "duration_seconds": 3.371,
+      "slot_duration_seconds": 5.8,
+      "checksum": "sha256:e6f61037110f8f13f9d3da5a28320236497f149f49b002ebda8d7a3314106bb1",
+      "cache_key": "sha256:07c293d47526f3d9fd26bc8511a2aec228c97bfbe66df0afd591e1ce92025f92",
+      "cache_hit": true,
+      "line_id": "7dca2db4-0187-542b-ab46-d30247b7d37d",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "wolves-retreat"
+      ]
+    },
+    {
+      "index": 6,
+      "text": "可狼群刚退，家里的赌债又压到了妹妹身上。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_06.wav",
+      "timeline_start_seconds": 22.2,
+      "duration_seconds": 2.901,
+      "slot_duration_seconds": 5.3,
+      "checksum": "sha256:fcbc761f11cd86d6e87169a1d9931ebc534e0f45192e8f704921697397f45333",
+      "cache_key": "sha256:b76b753df62686dcddc3d2e98223b2ebdccb86172e34d6ca41ea5c0892ad189a",
+      "cache_hit": true,
+      "line_id": "19e5b554-6090-543b-ba75-4b2776f58a03",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "debt-pressure"
+      ]
+    },
+    {
+      "index": 7,
+      "text": "看着妹妹，他只说了一句：你的大学，我来供。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_07.wav",
+      "timeline_start_seconds": 26.7,
+      "duration_seconds": 3.029,
+      "slot_duration_seconds": 4.8,
+      "checksum": "sha256:876ebc6ca88bb6a6d67d3abf93bb72049caa0da81ec5fe09f40f573a677808f4",
+      "cache_key": "sha256:fd16ff7fa44300cc4a25610cba9209fe4b325341fccff7701d37015aa47fee3f",
+      "cache_hit": true,
+      "line_id": "5af6a2e6-b24b-5bb8-b419-a8045b65d623",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "promise-to-sister"
+      ]
+    },
+    {
+      "index": 8,
+      "text": "为了兑现承诺，他带着人参进城，却先被当成了穷鬼。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_08.wav",
+      "timeline_start_seconds": 30.8,
+      "duration_seconds": 3.584,
+      "slot_duration_seconds": 5.2,
+      "checksum": "sha256:521ef34ec293967eec069acfdd7339dc1f5ce457d414d5530ed30e40d067da14",
+      "cache_key": "sha256:0fadc4383153bd3cd10a01481db68234ae47b65b6e50f2132f18884f8fd91553",
+      "cache_hit": true,
+      "line_id": "6122b94d-357e-5f3d-8773-c5b101f7b35c",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "enter-pharmacy"
+      ]
+    },
+    {
+      "index": 9,
+      "text": "店家明明认出了极品，嘴上却只肯出二十万。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_09.wav",
+      "timeline_start_seconds": 35.3,
+      "duration_seconds": 2.816,
+      "slot_duration_seconds": 5.7,
+      "checksum": "sha256:a823f3b246d3f905317c51f4897de8bd0f51728be5ab6093585e414023bb7225",
+      "cache_key": "sha256:00ab1cbd0ee4db8da053ec604c9834b6f91139ce4c02506ac8c84f3d4a6bdf2f",
+      "cache_hit": true,
+      "line_id": "fda41547-0141-56c0-9ed6-fd31da1cec18",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "lowball-offer"
+      ]
+    },
+    {
+      "index": 10,
+      "text": "直到真正识货的买家赶到，五十万现金当场摆在眼前。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_10.wav",
+      "timeline_start_seconds": 40.2,
+      "duration_seconds": 3.413,
+      "slot_duration_seconds": 5.3,
+      "checksum": "sha256:f9c16038d4599d48d9bf151e5bda8cb90064f46bd9b3dd7d09cb592092b58761",
+      "cache_key": "sha256:01f0b603b67c9529f3328f1a0c2b816be4573bebdaf73df54551bcc889f9952d",
+      "cache_hit": true,
+      "line_id": "53b4b9f3-d8fd-5587-a6e8-eb83b482e765",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "cash-offer"
+      ]
+    },
+    {
+      "index": 11,
+      "text": "可钱刚到手，讨债的人就抓住妹妹，逼他把钱全部交出来。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_11.wav",
+      "timeline_start_seconds": 44.7,
+      "duration_seconds": 3.755,
+      "slot_duration_seconds": 5.8,
+      "checksum": "sha256:3785848d3918059abcb518e347e033ebca1e2d96956a973d9710fc9f485d544d",
+      "cache_key": "sha256:b19da394f411b69291cf7c370d34b9c3167d33062e1dbb233e511051127a11ca",
+      "cache_hit": true,
+      "line_id": "f44bed74-7575-5227-b613-e3972abb5b70",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "sister-seized"
+      ]
+    },
+    {
+      "index": 12,
+      "text": "山神印再次亮起。这一次，他兑现了承诺，也护住了妹妹。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/narration_12.wav",
+      "timeline_start_seconds": 49.7,
+      "duration_seconds": 3.84,
+      "slot_duration_seconds": 4.3,
+      "checksum": "sha256:3536c6311119827ee8ba12dcf8b11e425fa0583323795c53ca5626570323e7b3",
+      "cache_key": "sha256:860f6022b0162405af38e8361b2683fb16153450e893024fbd9f5f3b71dccf76",
+      "cache_hit": true,
+      "line_id": "29c3a427-2a62-5158-bf00-84168f0905e1",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "sister-protected"
+      ]
+    }
+  ],
+  "narration_anchor_plan": {
+    "decisions": [
+      {
+        "line_id": "58678f95-5c9f-5b7f-b596-b8f86739880c",
+        "timeline_start_seconds": 0.1,
+        "duration_seconds": 3.669,
+        "earliest_allowed_start_seconds": 0.0,
+        "preferred_start_seconds": 0.0,
+        "latest_end_seconds": 5.0,
+        "required_event_ids": [
+          "cliff-awakening"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "54cb1261-fc18-5272-a7f4-9d7a7bddfc0c",
+        "timeline_start_seconds": 4.2,
+        "duration_seconds": 2.859,
+        "earliest_allowed_start_seconds": 4.0,
+        "preferred_start_seconds": 4.2,
+        "latest_end_seconds": 9.5,
+        "required_event_ids": [
+          "mountain-response"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "74867174-0474-58e1-8a04-82ef8080d259",
+        "timeline_start_seconds": 8.7,
+        "duration_seconds": 3.157,
+        "earliest_allowed_start_seconds": 8.5,
+        "preferred_start_seconds": 8.7,
+        "latest_end_seconds": 14.0,
+        "required_event_ids": [
+          "ginseng-visible"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "01260667-7887-5d41-8b96-80f06ff56f43",
+        "timeline_start_seconds": 13.2,
+        "duration_seconds": 2.688,
+        "earliest_allowed_start_seconds": 13.0,
+        "preferred_start_seconds": 13.2,
+        "latest_end_seconds": 18.0,
+        "required_event_ids": [
+          "wolves-surround"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "7dca2db4-0187-542b-ab46-d30247b7d37d",
+        "timeline_start_seconds": 17.2,
+        "duration_seconds": 3.371,
+        "earliest_allowed_start_seconds": 17.0,
+        "preferred_start_seconds": 17.2,
+        "latest_end_seconds": 23.0,
+        "required_event_ids": [
+          "wolves-retreat"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "19e5b554-6090-543b-ba75-4b2776f58a03",
+        "timeline_start_seconds": 22.2,
+        "duration_seconds": 2.901,
+        "earliest_allowed_start_seconds": 22.0,
+        "preferred_start_seconds": 22.2,
+        "latest_end_seconds": 27.5,
+        "required_event_ids": [
+          "debt-pressure"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "5af6a2e6-b24b-5bb8-b419-a8045b65d623",
+        "timeline_start_seconds": 26.7,
+        "duration_seconds": 3.029,
+        "earliest_allowed_start_seconds": 26.5,
+        "preferred_start_seconds": 26.7,
+        "latest_end_seconds": 31.5,
+        "required_event_ids": [
+          "promise-to-sister"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "6122b94d-357e-5f3d-8773-c5b101f7b35c",
+        "timeline_start_seconds": 30.8,
+        "duration_seconds": 3.584,
+        "earliest_allowed_start_seconds": 30.5,
+        "preferred_start_seconds": 30.8,
+        "latest_end_seconds": 36.0,
+        "required_event_ids": [
+          "enter-pharmacy"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "fda41547-0141-56c0-9ed6-fd31da1cec18",
+        "timeline_start_seconds": 35.3,
+        "duration_seconds": 2.816,
+        "earliest_allowed_start_seconds": 35.0,
+        "preferred_start_seconds": 35.3,
+        "latest_end_seconds": 41.0,
+        "required_event_ids": [
+          "lowball-offer"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "53b4b9f3-d8fd-5587-a6e8-eb83b482e765",
+        "timeline_start_seconds": 40.2,
+        "duration_seconds": 3.413,
+        "earliest_allowed_start_seconds": 40.0,
+        "preferred_start_seconds": 40.2,
+        "latest_end_seconds": 45.5,
+        "required_event_ids": [
+          "cash-offer"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "f44bed74-7575-5227-b613-e3972abb5b70",
+        "timeline_start_seconds": 44.7,
+        "duration_seconds": 3.755,
+        "earliest_allowed_start_seconds": 44.5,
+        "preferred_start_seconds": 44.7,
+        "latest_end_seconds": 50.5,
+        "required_event_ids": [
+          "sister-seized"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "29c3a427-2a62-5158-bf00-84168f0905e1",
+        "timeline_start_seconds": 49.7,
+        "duration_seconds": 3.84,
+        "earliest_allowed_start_seconds": 49.5,
+        "preferred_start_seconds": 49.7,
+        "latest_end_seconds": 54.0,
+        "required_event_ids": [
+          "sister-protected"
+        ],
+        "source": "tool",
+        "override_reason": null
+      }
+    ],
+    "findings": [
+      {
+        "line_id": "74867174-0474-58e1-8a04-82ef8080d259",
+        "code": "excessive-narration-gap",
+        "explanation": "gap exceeds the configured rhythm maximum",
+        "blocker": false
+      },
+      {
+        "line_id": "19e5b554-6090-543b-ba75-4b2776f58a03",
+        "code": "excessive-narration-gap",
+        "explanation": "gap exceeds the configured rhythm maximum",
+        "blocker": false
+      },
+      {
+        "line_id": "5af6a2e6-b24b-5bb8-b419-a8045b65d623",
+        "code": "excessive-narration-gap",
+        "explanation": "gap exceeds the configured rhythm maximum",
+        "blocker": false
+      },
+      {
+        "line_id": "53b4b9f3-d8fd-5587-a6e8-eb83b482e765",
+        "code": "excessive-narration-gap",
+        "explanation": "gap exceeds the configured rhythm maximum",
+        "blocker": false
+      }
+    ]
+  },
+  "run_provenance": {
+    "task_type": "TYPE_B",
+    "active_role": "AI Drama Producer",
+    "auxiliary_roles": [
+      "AI System Engineer"
+    ],
+    "director_decisions": [
+      {
+        "decision_id": "cross-episode-selection",
+        "description": "选择十二个跨集视觉事件构成觉醒、兑现与护妹闭环",
+        "actor_role": "AI Drama Producer",
+        "rationale": "使用已经批准的整剧主路线和可见回报镜头",
+        "manual_override": false
+      },
+      {
+        "decision_id": "narration-copy",
+        "description": "为十二个事件编写证据约束的桥接解说",
+        "actor_role": "AI Drama Producer",
+        "rationale": "保持跨集因果，同时不提前讲出下一视觉结果",
+        "manual_override": false
+      },
+      {
+        "decision_id": "closed-payoff-ending",
+        "description": "结尾使用兑现承诺与护妹闭环",
+        "actor_role": "AI Drama Producer",
+        "rationale": "素材没有支持原悬念句的下一事件画面",
+        "manual_override": false
+      }
+    ],
+    "tool_generated_outputs": [
+      "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/candidate_v3.mp4",
+      "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/candidate.ass"
+    ],
+    "human_corrections": [
+      "解说衔接自然但曾提前剧透",
+      "删除缺少画面支撑的强行悬念",
+      "Candidate v3 声画基本匹配"
+    ],
+    "release_gate_status": "not_requested"
+  },
+  "ass": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/candidate.ass",
+  "output": "/Users/chinglam/workspace/NarratoProV1/outputs/series_main_cut/candidate_v3/candidate_v3.mp4",
+  "output_checksum": "sha256:4d48b4fdfa54c1870b61bbbdb05f52b5452af8540d56da11ddecd92a22075e22"
+}

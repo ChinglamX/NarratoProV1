@@ -11,10 +11,23 @@ from packages.artifacts import LocalObjectStore
 from packages.contracts import ArtifactRef, ProviderInvocationRequest
 from packages.foundation.settings import get_settings
 from packages.persistence.database import create_database_engine
-from packages.providers import InvocationPolicy
-from packages.providers.visual import OpenCVContourProvider
+from packages.providers import InvocationPolicy, ProviderPort
+from packages.providers.visual.paddle_detection import PaddleDetectionProvider
+from packages.providers.visual.paddle_ocr import PaddleOCRProvider
+from packages.providers.visual.volcengine_ark_vlm import VolcengineArkVLMProvider
 from workflows.project.models import ArtifactPointer
 from workflows.visual.models import VisualActivityResult, VisualWorkflowInput
+
+
+def _provider_for(capability: str) -> ProviderPort:
+    """Select the visual provider adapter for the requested capability."""
+    if capability == "ocr":
+        return PaddleOCRProvider()
+    if capability == "detection":
+        return PaddleDetectionProvider()
+    if capability == "vlm":
+        return VolcengineArkVLMProvider()
+    raise ValueError(f"unsupported visual capability: {capability}")
 
 
 def _ref(pointer: ArtifactPointer) -> ArtifactRef:
@@ -42,10 +55,10 @@ def _process(request: VisualWorkflowInput) -> VisualActivityResult:
     engine = create_database_engine(settings.database_url)
     store = LocalObjectStore(settings.object_store_root)
     try:
-        provider = OpenCVContourProvider()
+        provider = _provider_for(request.capability)
         invocation = ProviderInvocationRequest.model_validate(
             {
-                "capability": "detection",
+                "capability": request.capability,
                 "inputs": [_ref(request.frame)],
                 "config_ref": _ref(request.config),
                 "resource_profile_ref": _ref(request.resource_profile),

@@ -581,6 +581,38 @@ demo 机器 benchmark 只固定技术和镜头结构特征；Hook、节奏张弛
 后果：J06 资格文件和 runbook 可以作为恢复点，但下一项仍是补齐 E09 四个 blocker，
 而不是 E10/K01。
 
+## ADR-049 — E09 Planning Products Are Persisted Artifacts Behind a Fail-closed Production Chain
+
+问题：J02–J04 只有 contract + 纯函数 domain，ClipCandidateSet/ClipSelectionPlan/RhythmPlan
+/MasterTimeline 等从未落库，`plan_clip_sequence` 等函数无生产调用方；Timeline-to-Preview
+只有 fake lavfi 合成；无 Temporal 编排链；这使四个 blocker 的工程前提不成立。
+
+决策：
+1. J02–J04 规划产物全部通过 E02 ArtifactRepository 持久化为不可变 Artifact（新增
+   ClipSelectionPlan/ContinuityReport/VisualPlanningReport/NarrationPlanningReport/
+   TimelineAssemblyReport/SourceSubtitleHandlingPlan 类型），校验与依赖边不变；
+   `packages/persistence/artifact_writer.py` 提供确定性 checksum 提交。
+2. ClipIndexPort 的生产适配器是持久化读取器（`apps/services/clip_index.py`），只读
+   已提交的 ClipCandidateSet，路由分数 + top-k 确定性排序，source_range 超出探测
+   时长即排除；HUMAN_PIN 无候选即空；语义 Provider 准入后替换边界，不改选择策略。
+3. 解说采用 L1 人工路径：NarrationSourcePort 只加载人工批准的 NarrationLineSet，
+   无生产准入前禁止任何生成适配器。DurationConflict 处置保留人工（三选一）。
+4. 装配、原声音频与字幕 intent 是确定性投影（sha256 派生 v4 形状 intent_id，重试收敛），
+   BGM/SFX 无 rights 准入前不出现；装配冲突（video-duration-mismatch）只提交报告，
+   fail closed。
+5. 新增 `CreativeTimelineWorkflow`（visual→rhythm→narration→assembly→media preview→人工
+   checkpoint），任何 stage blocker 即停；所有 Artifact 身份在请求中预分配。
+6. 真实媒体 Preview 管线（`packages/production/real_preview.py`）消费真实源文件：按
+   source_range 精确 trim、缩放/pad 到目标帧、按时间线顺序 concat、配 ASS 安全区字幕；
+   lavfi 合成仅用于测试。
+7. Registry 升 2.18.0（新增 Artifact 类型 + VisualPlanningReport schema）。
+
+后果：J02–J04 的 adapter/application/persistence/编排/预览缺口已关，测试 80%+；但
+E09 四个退出 blocker（语义视觉 Provider 准入、真实 Approved 项目全片 Preview、带时间码
+的 demo craft 对比、Worker restart/replay + 人工 checkpoint）仍待真实数据验证，
+`engineering_complete` 维持 false。包管理维持 PEP 621/setuptools + pyenv 3.11.8（ADR-003），
+Python resolution lock 仍为首个 Release Slice 退出前的 bounded debt。
+
 ## 2. ADR 变更流程
 
 变更必须提交：问题证据、替代方案、影响范围、Contract/Schema/Workflow migration、benchmark、安全/rights、部署和 rollback。批准后更新本文件、受影响设计与测试。
@@ -596,3 +628,86 @@ demo 机器 benchmark 只固定技术和镜头结构特征；Hook、节奏张弛
 - Schema/Workflow breaking change 关联 migration/replay ADR。
 - Review Director 可从 Audit 重建一次例外和回滚决定。
 - ADR Index 与实际代码/部署不存在已知偏离。
+
+---
+
+## ADR-050 — J05 Editing Is Append-only, Approved-intent-locked and Sandbox-consistent
+
+问题：提交 `367066b` 引入的精确多轨编辑存在五类工程缺口：(1) 编辑通道不检查 L1 已批准
+状态，可改写已批准 timeline intent；(2) undo 后新编辑按 current+1 分配版本，与既有版本
+PK（artifact_id+version）冲突而失败；(3) 局部预览渲染器用 `.mp4.part` 后缀，ffmpeg 无法
+推断容器格式，渲染必然失败；(4) Worker 用全局 `with_passthrough_all_modules()` 绕开沙箱
+（media/visual 活动链的 scenedetect→cv2→numpy C 扩展在沙箱内重复加载崩溃）；(5) 未提交
+改动就地改写已应用迁移 0001/0002（违反 ADR-024 不可变迁移），根因是 media_schema 把表
+注册到不可变 baseline snapshot。
+
+决策：
+1. 已批准 intent 锁定：`TimelineRepository.approved_intent_version` 读取
+   `approved_timeline_intent` publication pointer；`apply_patch`（服务与 `/patches` 端点
+   两条路径一致）在 active version == 批准版本时 409 fail-closed。undo/redo/jump 只移动
+   pointer，不改内容，不触发锁定；新 review cycle 批准后继版本后锁定前移。
+2. Timeline 版本 append-only：`commit` 在 active_pointer 行锁内取 max(version)+1；
+   undo→新编辑追加新版本（旧版本保留为孤儿审计行），redo 语义为“未到最新时前进”，
+   不再截断。
+3. 局部预览 `POST /v1/timelines/{id}/preview-partial`：服务器端从 Object Store 解析真实
+   源媒体、compute_changed_ranges 计算变更区间、渲染首段；`.mp4.part` 改为 `.tmp.mp4`
+   （ffmpeg 按扩展名推断容器）。
+4. Worker 沙箱保持默认保护：全局 passthrough 拒绝；`workflows/media/__init__.py` 与
+   `workflows/visual/__init__.py` 用细粒度 `imports_passed_through` 加载含 C 扩展的活动链。
+5. 迁移不可变：0001/0002 保持原样；`media_schema.py` 使用独立 `MetaData`，不再污染
+   `baseline_v0001.metadata`；全新库 `alembic upgrade head` 与 downgrade/upgrade 往返在
+   真实 Postgres 验证通过。
+6. 已知 bounded debt：`/patches` 与 TimelineEditingService 双实现（行为一致，待合并）；
+   CI 无 Postgres service，DB 回归测试在 CI 跳过。`revisions.py`（RevisionHistory 纯内存
+   截断语义）已于 2026-08-15 经项目负责人授权删除（无生产引用，与 append-only 持久化语义冲突）。
+
+后果：J05 编辑链在 fail-closed 下可用；352 tests、80.61% coverage、全部质量门禁通过；
+Worker 7 个 workflow 全部通过沙箱验证并真实运行。E09 四个真实退出 blocker 不变，
+`engineering_complete` 维持 false。
+
+## ADR-051 — Creative Timeline Ranges Use One Microsecond Time Base
+
+问题：E09 真实数据认证（run `c8dbb0bb`，State v49）的 preview 实际只有 4.08s（首段），
+ASS 副标题轨时间码为荒谬值（`1134:15:33` 等）。审核证据链（`tmp/E09_REVIEW_DRAFT_FINDINGS.md`）
+定位到双根因：(1) `workflows/timeline/creative_activities.py` `_assemble_sync` 兜底 duration
+用 `RationalTime(value=sum(...), rate_num=1)`，把 30,250,000 微秒当 30,250,000 秒，
+污染 multitrack 各轨 timeline_range；(2) `packages/timeline/intent_projection.py` 两处游标
+`RationalTime(value=0, rate_num=1)` 累加微秒基 duration，使第 2 个 intent 起 start 变成
+4,083,333 秒。连锁后果：`multitrack.py` 把 timeline 位置复制为 ORIGINAL_AUDIO source_range →
+渲染器 `-ss 4083333` 超出源时长 → 空音频容器 → mux `-shortest` 截断 preview 到 4.08s；
+SUBTITLE 轨时间码写错。v48/v49 测试未发现：fixture 用 rate=1 duration 且只测单元素，
+掩盖跨 time base 累加。
+
+决策：
+1. 所有 Creative Timeline 时间量统一微秒 time base（rate 1_000_000）：`_assemble_sync`
+   兜底 duration 与 `intent_projection.py` 两处游标均改 `rate_num=1_000_000`。
+2. `AudioIntent` 契约新增可选 `source_range`（ORIGINAL 角色带 source_ref 时 fail-closed
+   必填），`project_original_audio_intents` 填充真实源范围（selection.selected_range），
+   `multitrack.py` 使用 `intent.source_range`；禁止再把 timeline 位置当作源时间。
+3. Registry 兼容升级 2.19.0（新增可选字段 = minor，历史版本不变）。
+4. 测试补强：intent_projection 多元素微秒基游标累积断言、multitrack 微秒基 timeline/source
+   范围断言（ORIGINAL_AUDIO source_range = 真实源时间，非 timeline 位置）。
+5. 人工审核流程后签署 approve（run `d8eb4cd5`，State v51）。
+
+后果：真实数据重跑 `accept_e09.py`（run `d8eb4cd5`）产出 30.27s 全片 preview（修复前仅
+4.08s）、audio 4 段全部非空、ASS 字幕时间轴正确、DB MasterTimeline 各轨 timeline_range 与
+ORIGINAL_AUDIO source_range（0/21.5/52.0417/99.625s）正确；355 tests、80.61% coverage 全绿。
+E09 "真实完整 Preview" 与 "人工 checkpoint 签署" blocker 关闭；语义视觉 Provider 准入、
+多 Variant replay、demo craft 对比表归档仍为剩余 blocker。
+
+## ADR-052 — E10 Binary Artifacts Use Measured Media and Committed Object URIs
+
+问题：E10/K01 把 NarrationLine 的目标时长写入 VoiceTake，selected_take_ids 实际保存 line_id，
+VoiceAsset 使用不可解析的占位 audio ref；ASS/MixedAudio 只调用 ObjectStore commit，未把 Blob
+数据库状态从 staging 转为 committed，且 payload 仍指向已移动的 staging URI。ConformReport
+虽然已有 Contract 和 Registry schema，却遗漏 Artifact Type，无法形成 canonical ArtifactRef。
+
+决策：VoiceTake 时长必须从真实 WAV header 测量，selected_take_ids 必须引用 take_id；选中
+WAV 以格式一致性校验后聚合为真实 VoiceAsset blob。所有二进制生产产物统一执行
+BlobRepository register→commit，并把 committed content-addressed URI 写入 payload、blob_id
+写入 ArtifactVersion。ConformReport 加入 Artifact Type Catalog；Registry 以兼容 minor 升级
+2.21.0，历史版本不变。
+
+后果：E10 可以生成可解析、可追踪和可供 E11 消费的 Voice/ASS/MixedAudio 引用；旧的占位或
+staging 引用不自动迁移，必须重新运行产生后继 Artifact。该修复不等于 E10/E11 qualification，
+仍需真实 PostgreSQL/Temporal 与 libass-enabled FFmpeg 成功证据。

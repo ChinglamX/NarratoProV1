@@ -1,0 +1,46 @@
+{
+  "scope": "D5 trial metrics (owner-annotated worksheet); label-level DET proxy, not IoU mAP; CER and claim compliance as defined in visual_metrics.py",
+  "frames_total": 24,
+  "frames_with_any_annotation": 24,
+  "frames_skipped": 0,
+  "notes": [
+    "OCR CER is punctuation/space-insensitive (CJK punctuation and whitespace normalized).",
+    "Empty-reference frames where the machine emitted text count as false positives and contribute 1.0 to mean CER.",
+    "DET is label-level proxy (presence), not IoU mAP."
+  ],
+  "episodes": [
+    {
+      "episode": "e06-1982/e01",
+      "ocr_frames_annotated": 6,
+      "ocr_false_positive_frames": 1,
+      "dialogue_only_cer": 0.0,
+      "ocr_mean_cer": 0.1667,
+      "det_label_precision": 0.8,
+      "det_label_recall": 1.0,
+      "vlm_frames_checked": 8,
+      "vlm_compliance": 1.0
+    },
+    {
+      "episode": "e06-series-07/hot",
+      "ocr_frames_annotated": 8,
+      "ocr_false_positive_frames": 0,
+      "dialogue_only_cer": 0.0,
+      "ocr_mean_cer": 0.1932,
+      "det_label_precision": 0.8889,
+      "det_label_recall": 1.0,
+      "vlm_frames_checked": 8,
+      "vlm_compliance": 1.0
+    },
+    {
+      "episode": "e06-series-12/e01",
+      "ocr_frames_annotated": 6,
+      "ocr_false_positive_frames": 0,
+      "dialogue_only_cer": 0.1667,
+      "ocr_mean_cer": 0.1667,
+      "det_label_precision": 0.6154,
+      "det_label_recall": 1.0,
+      "vlm_frames_checked": 8,
+      "vlm_compliance": 1.0
+    }
+  ]
+}

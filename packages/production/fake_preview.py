@@ -61,7 +61,7 @@ def _probe(ffprobe: str, output_path: Path) -> dict[str, Any]:
             "-v",
             "error",
             "-show_entries",
-            "stream=codec_type,codec_name,width,height:format=duration",
+            "stream=codec_type,codec_name,width,height,start_time,duration:format=duration",
             "-of",
             "json",
             str(output_path),

@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "series_id": "shanshen-yin",
+  "arc_id": "arc-1-conflict",
+  "status": "draft_before_tts",
+  "release_boundary": "internal-preview-only",
+  "lines": [
+    {
+      "line_id": "narration-01",
+      "chapter_id": "chapter-2",
+      "text": "林野和妹妹被逼到悬崖边。就在无路可退时，他的掌心突然浮出一道印记。",
+      "function": "setup-and-turn",
+      "event_refs": ["cliff-danger", "seal-awakening"]
+    },
+    {
+      "line_id": "narration-02",
+      "chapter_id": "chapter-2",
+      "text": "这枚山神印，让他第一次感知到整座长白山的草木。",
+      "function": "explain-ability",
+      "event_refs": ["seal-awakening", "mountain-sense"]
+    },
+    {
+      "line_id": "narration-03",
+      "chapter_id": "chapter-3",
+      "text": "顺着那股感应，他真的找到了能换回妹妹学费的老山参。",
+      "function": "connect-goal-to-reward",
+      "event_refs": ["mountain-sense", "ginseng-found"]
+    },
+    {
+      "line_id": "narration-04",
+      "chapter_id": "chapter-3",
+      "text": "可宝物刚到手，狼群就围了上来。新得到的力量，也迎来第一次考验。",
+      "function": "raise-danger",
+      "event_refs": ["ginseng-found", "wolves-attack"]
+    },
+    {
+      "line_id": "narration-05",
+      "chapter_id": "chapter-4",
+      "text": "兄妹刚逃过狼口，家里的烂账又追了上来：妹妹的学费早已被拿走。",
+      "function": "bridge-conflict",
+      "event_refs": ["wolves-retreat", "tuition-taken"]
+    },
+    {
+      "line_id": "narration-06",
+      "chapter_id": "chapter-4",
+      "text": "林野只能把希望押在那株山参上。他答应妹妹，一定供她读完大学。",
+      "function": "state-goal",
+      "event_refs": ["tuition-taken", "support-promise"]
+    },
+    {
+      "line_id": "narration-07",
+      "chapter_id": "chapter-4",
+      "text": "可他带着山参进城，等来的却不是识货，而是轻视。",
+      "function": "enter-market-conflict",
+      "event_refs": ["support-promise", "shop-rejection"]
+    },
+    {
+      "line_id": "narration-08",
+      "chapter_id": "chapter-5",
+      "text": "直到真正识货的人出现，这株被压价的山参，身价当场翻了几倍。",
+      "function": "explain-reversal",
+      "event_refs": ["lowball-offer", "fifty-offer"]
+    },
+    {
+      "line_id": "narration-09",
+      "chapter_id": "chapter-5",
+      "text": "这笔钱，本该让兄妹的日子重新开始。",
+      "function": "payoff-to-new-threat",
+      "event_refs": ["payment-delivered"]
+    },
+    {
+      "line_id": "narration-10",
+      "chapter_id": "chapter-6",
+      "text": "林野提钱回家，撞见的却是替父亲讨债的人。",
+      "function": "introduce-home-threat",
+      "event_refs": ["payment-delivered", "collectors-threaten"]
+    },
+    {
+      "line_id": "narration-11",
+      "chapter_id": "chapter-6",
+      "text": "对方拿妹妹逼他还债，他第一次把山神的力量用在了人身上。",
+      "function": "climax-explanation",
+      "event_refs": ["protect-sister", "mountain-pressure"]
+    },
+    {
+      "line_id": "narration-12",
+      "chapter_id": "chapter-7",
+      "text": "危机暂时压下后，他终于把卖参的钱摆到妹妹面前。",
+      "function": "resolve-promise",
+      "event_refs": ["mountain-pressure", "family-payoff"]
+    },
+    {
+      "line_id": "narration-13",
+      "chapter_id": "chapter-7",
+      "text": "从悬崖绝境到兑现学费承诺，山神印改变的，已经不只是他的力量。",
+      "function": "close-and-continue",
+      "event_refs": ["cliff-danger", "family-payoff"],
+      "rhetorical": true
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "comparison_card": "/Users/chinglam/workspace/NarratoProV1/outputs/vc002_episode_08/comparison_card.json",
+  "comparison_card_markdown": "/Users/chinglam/workspace/NarratoProV1/outputs/vc002_episode_08/comparison_card.md",
+  "comparison_card_checksum": "sha256:c38eefe68a23f4bd80024f799f474c90799aa5fcbe21573a72e1c44dec86e20d",
+  "evidence_manifest": "/Users/chinglam/workspace/NarratoProV1/outputs/vc002_episode_08/evidence_manifest.json",
+  "evidence_manifest_checksum": "sha256:aed6e6a8546b38586dc624f0f09de3730d3ae3d9b2c7be2f190a46b7e3d733e6",
+  "gate1": {
+    "review_id": "46165292-cb25-4f2e-a756-06196607ac50",
+    "decision_id": "aa6170c3-b0f0-4e98-ba3f-054afc4834d1",
+    "decision": "approve",
+    "approval_record": "/Users/chinglam/workspace/NarratoProV1/outputs/vc002_episode_08/gate1_approval.json",
+    "scope": "Episode 8 transcript-grounded factual summary only"
+  },
+  "artifact_chain": [
+    {
+      "artifact_id": "b54e8ece-951b-4021-b853-ed1bb848aa40",
+      "version": 1,
+      "artifact_type": "RawProviderResponse",
+      "checksum": "sha256:3c0a530fef8afc88808a9de558c1c78e25d5cccab021674793444f60eeecc714"
+    },
+    {
+      "artifact_id": "d54f3bb7-ff62-4ee0-824c-f0126328ba24",
+      "version": 1,
+      "artifact_type": "SpeechObservation",
+      "checksum": "sha256:a989cfb5304a8dde24c8a75622eeed18c8c67d1f195ecda17b4e80cf11cce0a6"
+    },
+    {
+      "artifact_id": "17140235-dc00-4851-b3c1-5d819290fe9f",
+      "version": 1,
+      "artifact_type": "FactSet",
+      "checksum": "sha256:220ed1b89a7d6e6032c0a989b57b8990871ddb85e6c25a09349897a060eed776"
+    },
+    {
+      "artifact_id": "c378ba51-da33-4049-baf0-538ca637e9a5",
+      "version": 1,
+      "artifact_type": "StoryGraph",
+      "checksum": "sha256:8b34ae0d15d81126a1907366e27efcb4ce113e5bea0e1d2fae0ec146d0c7aad2"
+    }
+  ]
+}

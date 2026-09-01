@@ -1,0 +1,18 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 720
+PlayResY: 1280
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Default,Arial,40,&H00B9F2FF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,3,2,0,2,40,40,102,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.00,0:00:03.50,Default,,0,0,0,,少年被困山林，却在绝境中唤醒了山神印。
+Dialogue: 0,0:00:03.50,0:00:08.00,Default,,0,0,0,,所有人只看见他的狼狈，没人知道群山正在回应他。
+Dialogue: 0,0:00:08.00,0:00:13.58,Default,,0,0,0,,初入宗门，他因这股陌生力量被视作异类。
+Dialogue: 0,0:00:13.58,0:00:18.20,Default,,0,0,0,,直到血脉显现，望守山人的传承终于重见天日。
+Dialogue: 0,0:00:18.20,0:00:22.30,Default,,0,0,0,,宗门大比将至，这份力量也引来了觊觎。
+Dialogue: 0,0:00:22.30,0:00:26.21,Default,,0,0,0,,他越接近真相，暗处的杀机就逼得越紧。
+Dialogue: 0,0:00:26.21,0:00:30.27,Default,,0,0,0,,而爷爷留下的笔记，将指向他必须面对的宿命。

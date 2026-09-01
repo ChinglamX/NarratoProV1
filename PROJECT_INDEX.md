@@ -85,7 +85,13 @@ Media → Observation → Fact → Story → Strategy → Timeline
 ### 项目与治理
 
 - 项目使命：`PROJECT_CHARTER.md`
+- 当前产品方向：`PRODUCT_REDIRECTION.md`
+- 当前阶段执行计划：`NEXT_PHASE_EXECUTION_PLAN.md`
+- 多集长成片里程碑：`product/LONGFORM_PRODUCTION_MILESTONE.md`
 - 产品能力：`PRODUCT_CAPABILITY.md`
+- 产品控制看板：`PRODUCT_CONTROL_BOARD.md`
+- 产品控制与模块成熟度：`product/PRODUCT_CONTROL_SYSTEM.md`
+- 模块验证卡：`product/MODULE_VALIDATION_CARDS.md`
 - 总体架构：`SYSTEM_ARCHITECTURE.md`
 - 全局规则：`PROJECT_RULES.md`
 - 路线图：`DEVELOPMENT_ROADMAP.md`
@@ -118,6 +124,18 @@ Media → Observation → Fact → Story → Strategy → Timeline
 - 上下文恢复工程规范：`design/implementation/10_CONTEXT_AND_RECOVERY.md`
 - 校准计划：`design/calibration/README.md`
 
+### 证据与验证（2026-08-16 起）
+
+- 差距评估：`evaluation/reports/PROJECT_GAP_ASSESSMENT.md`
+- E06 视觉 benchmark v1/enriched：`evaluation/benchmarks/e06_visual_v1(_enriched).json`
+- E06 容量并发 probe：`scripts/probe_e06_capacity.py` → `evaluation/reports/E06_CAPACITY_RESULTS.md`
+- E06 容量验收计划：`evaluation/reports/E06_CAPACITY_ACCEPTANCE_PLAN.md`
+- E06 admission 升级评估：`evaluation/reports/E06_ADMISSION_UPGRADE_ASSESSMENT.md`
+- E07 Story 推理真实数据验收：`scripts/accept_e07_story_real_data.py`
+- E10/K02 take selection：`packages/production/take_selection.py`
+- E10/K05 字幕碰撞：`packages/production/subtitle_collision.py`
+- E10 TTS adapter：`packages/providers/speech/indextts.py`（IndexTTS 运维见 `PROJECT_STATE.md` §7 恢复信息）
+
 ---
 
 ## 7. 按任务加载
@@ -133,6 +151,10 @@ Media → Observation → Fact → Story → Strategy → Timeline
 ### TYPE C — Quality Review
 
 必读：Quality Standard、Review Protocol、Producer Workflow、目标 Artifact lineage、Benchmark/Profile 和对应 Stage Acceptance。
+
+### 产品进度、范围或工具效果审查
+
+必读：`PRODUCT_REDIRECTION.md`、`NEXT_PHASE_EXECUTION_PLAN.md`、`PRODUCT_CONTROL_BOARD.md`、`product/PRODUCT_CONTROL_SYSTEM.md`、`product/MODULE_VALIDATION_CARDS.md`；先回答 3–5 分钟多集成片的可见产物和 blocker，再查看旧 First Usable Cut 与 Epic 工程证据。
 
 ### 修改核心契约或架构
 
@@ -171,4 +193,3 @@ Media → Observation → Fact → Story → Strategy → Timeline
 - Canonical Contract/ADR 无未登记替代名。
 - 完成状态有测试/评测/审核证据。
 - 核心文档变更要求同步状态或明确 `state_impact: none`。
-

@@ -1,0 +1,221 @@
+{
+  "scope": "research multi-episode ASR baseline (FunASR paraformer-large, diarization); no human reference; CER pending",
+  "model": "speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch",
+  "episodes": [
+    {
+      "project_id": "2052f76b-0709-4d29-a858-20916779096f",
+      "audio_stem_id": "5cd0e574-2adb-45a2-b0cf-56f379dd27ca",
+      "segment_count": 30,
+      "speech_seconds": 55.15,
+      "speaker_clusters": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "sample_segments": [
+        {
+          "t": [
+            0.11,
+            0.35
+          ],
+          "text": "哥，"
+        },
+        {
+          "t": [
+            0.93,
+            1.81
+          ],
+          "text": "前面是悬崖，"
+        },
+        {
+          "t": [
+            2.15,
+            3.56
+          ],
+          "text": "我们不能再往前了。"
+        },
+        {
+          "t": [
+            5.65,
+            6.83
+          ],
+          "text": "爷爷的笔记里说过，"
+        }
+      ]
+    },
+    {
+      "project_id": "74458fd0-935f-4b51-918b-e9840bcf9d04",
+      "audio_stem_id": "eb46bb3a-201d-459d-b976-ace7d3c278ab",
+      "segment_count": 20,
+      "speech_seconds": 58.77,
+      "speaker_clusters": [
+        "10",
+        "2",
+        "3",
+        "5",
+        "6",
+        "7",
+        "9"
+      ],
+      "sample_segments": [
+        {
+          "t": [
+            7.89,
+            8.23
+          ],
+          "text": "嗯，"
+        },
+        {
+          "t": [
+            10.91,
+            14.17
+          ],
+          "text": "哥小鸭小鸭，"
+        },
+        {
+          "t": [
+            14.17,
+            19.88
+          ],
+          "text": "我在这儿吓死我了，"
+        },
+        {
+          "t": [
+            20.22,
+            20.76
+          ],
+          "text": "还好哥，"
+        }
+      ]
+    },
+    {
+      "project_id": "d86964cd-6cf1-4e31-b9c1-3e5bc8a864a1",
+      "audio_stem_id": "aaee6dae-8df5-44ab-b5d8-be647e6fc12a",
+      "segment_count": 27,
+      "speech_seconds": 40.53,
+      "speaker_clusters": [
+        "1",
+        "10",
+        "11",
+        "3",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "sample_segments": [
+        {
+          "t": [
+            1.31,
+            1.55
+          ],
+          "text": "哥，"
+        },
+        {
+          "t": [
+            1.75,
+            2.69
+          ],
+          "text": "我们出来了，"
+        },
+        {
+          "t": [
+            9.42,
+            13.26
+          ],
+          "text": "别借林大壮，"
+        },
+        {
+          "t": [
+            13.26,
+            14.62
+          ],
+          "text": "你他妈一直给小丫打电话干啥？"
+        }
+      ]
+    },
+    {
+      "project_id": "68ca9c82-1fc0-4f7d-bf94-bc84a84b1bea",
+      "audio_stem_id": "9519fd49-673e-44a8-8095-354bc75c14fc",
+      "segment_count": 19,
+      "speech_seconds": 37.26,
+      "speaker_clusters": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "sample_segments": [
+        {
+          "t": [
+            2.91,
+            3.28
+          ],
+          "text": "谢谢，"
+        },
+        {
+          "t": [
+            5.63,
+            6.16
+          ],
+          "text": "跟我走，"
+        },
+        {
+          "t": [
+            11.87,
+            12.66
+          ],
+          "text": "就是这儿了。"
+        },
+        {
+          "t": [
+            22.94,
+            24.32
+          ],
+          "text": "这是云纹。"
+        }
+      ]
+    },
+    {
+      "audio_stem": "episodes_e01",
+      "segment_count": 42,
+      "speech_seconds": 68.74,
+      "speaker_clusters": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "audio_stem": "episodes_e02",
+      "segment_count": 19,
+      "speech_seconds": 58.2,
+      "speaker_clusters": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "audio_stem": "episodes_e03",
+      "segment_count": 19,
+      "speech_seconds": 40.27,
+      "speaker_clusters": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    }
+  ]
+}

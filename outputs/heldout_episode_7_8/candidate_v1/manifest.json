@@ -1,0 +1,325 @@
+{
+  "source": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4",
+  "sources": [
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4",
+    "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4"
+  ],
+  "rights": "internal-only; no-public-release",
+  "gate_1": "approved",
+  "gate_2": "approved",
+  "segments": [
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4",
+      "source_start_seconds": 20.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4",
+      "source_start_seconds": 28.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4",
+      "source_start_seconds": 52.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/7.mp4",
+      "source_start_seconds": 64.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4",
+      "source_start_seconds": 0.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4",
+      "source_start_seconds": 16.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4",
+      "source_start_seconds": 24.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4",
+      "source_start_seconds": 28.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4",
+      "source_start_seconds": 40.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/8.mp4",
+      "source_start_seconds": 48.0,
+      "duration_seconds": 4.0
+    }
+  ],
+  "narration_lines": [
+    {
+      "index": 1,
+      "text": "凭着山神印的感应，林大壮又在山里找到一块罕见的云纹茯苓。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/narration_01.wav",
+      "timeline_start_seconds": 0.2,
+      "duration_seconds": 3.925,
+      "slot_duration_seconds": 4.8,
+      "checksum": "sha256:da93a5c381db1acda8e63c793436a57a5695a78544561efc90022881463a7c23",
+      "cache_key": "sha256:0de4d6077f47bdf4bf1dd8098c09bd533fbd4eb1667a9de6679bbd1a013599f2",
+      "cache_hit": false,
+      "line_id": "da29dc78-f5fc-519c-892e-10189f8f68a8",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "rare-poria-found"
+      ]
+    },
+    {
+      "index": 2,
+      "text": "连识货的老人都没见过这么完整的品相。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/narration_02.wav",
+      "timeline_start_seconds": 8.2,
+      "duration_seconds": 2.347,
+      "slot_duration_seconds": 4.8,
+      "checksum": "sha256:64bd74b77e13b192189d01bd0768e49c760ea4c9e294d15e3513b0e1e5b30f87",
+      "cache_key": "sha256:5c218104ba2841141f64cca4e927461394959b78db7ac12d79c40bcd322516d0",
+      "cache_hit": false,
+      "line_id": "e42e5af0-9138-5f75-8f1d-35bd29fa6449",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "appraiser-confirms"
+      ]
+    },
+    {
+      "index": 3,
+      "text": "消息一传开，市场上的人立刻抢着出价。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/narration_03.wav",
+      "timeline_start_seconds": 12.2,
+      "duration_seconds": 2.688,
+      "slot_duration_seconds": 4.8,
+      "checksum": "sha256:bdc3233c8bc3f526aa769728ce64b6f37841b0501bfdca52df784bd603a732b8",
+      "cache_key": "sha256:3036d1108377c6f27a9198e4b29e911ddc9c9f0409404a16e9ce6f352bd40486",
+      "cache_hit": false,
+      "line_id": "f2dbd0c2-5b2f-58a8-942e-8bd1b9faf266",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "crowd-bids"
+      ]
+    },
+    {
+      "index": 4,
+      "text": "争得最凶的时候，之前买参的女人再次赶到。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/narration_04.wav",
+      "timeline_start_seconds": 16.2,
+      "duration_seconds": 2.859,
+      "slot_duration_seconds": 4.8,
+      "checksum": "sha256:7598a03e17ce140c01628607994bfa3f0bc2663e3470950a478956c8fcc5f09d",
+      "cache_key": "sha256:19f640cdaa80d7cd80c84d983d6a9e5f5a6f3a84eda69f3dac72bf764ca23da1",
+      "cache_hit": false,
+      "line_id": "8b57fbb0-92b3-5ec2-908d-474ef57aad38",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "buyer-arrives"
+      ]
+    },
+    {
+      "index": 5,
+      "text": "等三十万的报价说完，两样药材当场成交。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/narration_05.wav",
+      "timeline_start_seconds": 28.0,
+      "duration_seconds": 2.859,
+      "slot_duration_seconds": 8.0,
+      "checksum": "sha256:1a58d41fd1ad55e3188e3ec5603144360778800d5727de03faae1d4ab4011de6",
+      "cache_key": "sha256:0c578910aad93f9a0917501fcad00ce1f0c4fcbb6d5258693d7e738dc2394f28",
+      "cache_hit": false,
+      "line_id": "1a8f043f-fc2e-5a2e-9ed3-830d5b83a87f",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "thirty-wan-offer",
+        "deal-completes"
+      ]
+    },
+    {
+      "index": 6,
+      "text": "可这笔钱刚到账，就被一直盯着他的仇家知道了。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/narration_06.wav",
+      "timeline_start_seconds": 32.2,
+      "duration_seconds": 2.944,
+      "slot_duration_seconds": 4.8,
+      "checksum": "sha256:2defa1e2d449e0f94c95a5de34c164066d46ca103ff9fc154f4e341280bddc48",
+      "cache_key": "sha256:0480dedecb6bade4ceecc5a36402606061537d5d4321f0c26a22ea2dff303bae",
+      "cache_hit": false,
+      "line_id": "c4374645-9d77-505a-9d52-1a0cc6de3d9c",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "enemy-learns-income"
+      ]
+    },
+    {
+      "index": 7,
+      "text": "上一次没能除掉他，这一次，对方直接下了死手。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/narration_07.wav",
+      "timeline_start_seconds": 36.2,
+      "duration_seconds": 3.328,
+      "slot_duration_seconds": 3.8,
+      "checksum": "sha256:381f019660f3faf34716b3d479b26b0d9fb07471c474b4640b193fc5f9d10499",
+      "cache_key": "sha256:526fc8a2ff012612cee627f19b745e10549e0122e0f04fa75aaaaf4da6e1a080",
+      "cache_hit": false,
+      "line_id": "ef649afa-54a5-5772-b1df-cb82cc1e606f",
+      "anchor_source": "tool",
+      "required_event_ids": [
+        "enemy-orders-attack"
+      ]
+    }
+  ],
+  "narration_anchor_plan": {
+    "decisions": [
+      {
+        "line_id": "da29dc78-f5fc-519c-892e-10189f8f68a8",
+        "timeline_start_seconds": 0.2,
+        "duration_seconds": 3.925,
+        "earliest_allowed_start_seconds": 0.0,
+        "preferred_start_seconds": 0.2,
+        "latest_end_seconds": 5.0,
+        "required_event_ids": [
+          "rare-poria-found"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "e42e5af0-9138-5f75-8f1d-35bd29fa6449",
+        "timeline_start_seconds": 8.2,
+        "duration_seconds": 2.347,
+        "earliest_allowed_start_seconds": 8.0,
+        "preferred_start_seconds": 8.2,
+        "latest_end_seconds": 13.0,
+        "required_event_ids": [
+          "appraiser-confirms"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "f2dbd0c2-5b2f-58a8-942e-8bd1b9faf266",
+        "timeline_start_seconds": 12.2,
+        "duration_seconds": 2.688,
+        "earliest_allowed_start_seconds": 12.0,
+        "preferred_start_seconds": 12.2,
+        "latest_end_seconds": 17.0,
+        "required_event_ids": [
+          "crowd-bids"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "8b57fbb0-92b3-5ec2-908d-474ef57aad38",
+        "timeline_start_seconds": 16.2,
+        "duration_seconds": 2.859,
+        "earliest_allowed_start_seconds": 16.0,
+        "preferred_start_seconds": 16.2,
+        "latest_end_seconds": 21.0,
+        "required_event_ids": [
+          "buyer-arrives"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "1a8f043f-fc2e-5a2e-9ed3-830d5b83a87f",
+        "timeline_start_seconds": 28.0,
+        "duration_seconds": 2.859,
+        "earliest_allowed_start_seconds": 28.0,
+        "preferred_start_seconds": 28.0,
+        "latest_end_seconds": 36.0,
+        "required_event_ids": [
+          "thirty-wan-offer",
+          "deal-completes"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "c4374645-9d77-505a-9d52-1a0cc6de3d9c",
+        "timeline_start_seconds": 32.2,
+        "duration_seconds": 2.944,
+        "earliest_allowed_start_seconds": 32.0,
+        "preferred_start_seconds": 32.2,
+        "latest_end_seconds": 37.0,
+        "required_event_ids": [
+          "enemy-learns-income"
+        ],
+        "source": "tool",
+        "override_reason": null
+      },
+      {
+        "line_id": "ef649afa-54a5-5772-b1df-cb82cc1e606f",
+        "timeline_start_seconds": 36.2,
+        "duration_seconds": 3.328,
+        "earliest_allowed_start_seconds": 36.0,
+        "preferred_start_seconds": 36.2,
+        "latest_end_seconds": 40.0,
+        "required_event_ids": [
+          "enemy-orders-attack"
+        ],
+        "source": "tool",
+        "override_reason": null
+      }
+    ],
+    "findings": [
+      {
+        "line_id": "e42e5af0-9138-5f75-8f1d-35bd29fa6449",
+        "code": "excessive-narration-gap",
+        "explanation": "gap exceeds the configured rhythm maximum",
+        "blocker": false
+      },
+      {
+        "line_id": "f2dbd0c2-5b2f-58a8-942e-8bd1b9faf266",
+        "code": "excessive-narration-gap",
+        "explanation": "gap exceeds the configured rhythm maximum",
+        "blocker": false
+      },
+      {
+        "line_id": "1a8f043f-fc2e-5a2e-9ed3-830d5b83a87f",
+        "code": "excessive-narration-gap",
+        "explanation": "gap exceeds the configured rhythm maximum",
+        "blocker": false
+      }
+    ]
+  },
+  "run_provenance": {
+    "task_type": "TYPE_B",
+    "active_role": "AI Drama Producer",
+    "auxiliary_roles": [
+      "AI System Engineer"
+    ],
+    "director_decisions": [
+      {
+        "decision_id": "heldout-story-direction",
+        "description": "使用第7至8集的极品药材、三十万成交和仇家追杀构成独立验证闭环",
+        "actor_role": "AI Drama Producer",
+        "rationale": "延续已批准的能力变现与冲突升级方向，所有主张均有原片画面或对白支持",
+        "manual_override": false
+      },
+      {
+        "decision_id": "heldout-clip-selection",
+        "description": "选择十个四秒镜头并标注视觉事件，不填写任何解说绝对开始时间",
+        "actor_role": "AI Drama Producer",
+        "rationale": "隔离导演选题职责与工具声画排程职责",
+        "manual_override": false
+      }
+    ],
+    "tool_generated_outputs": [
+      "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4",
+      "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/candidate.ass"
+    ],
+    "human_corrections": [],
+    "release_gate_status": "not_requested"
+  },
+  "ass": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/candidate.ass",
+  "output": "/Users/chinglam/workspace/NarratoProV1/outputs/heldout_episode_7_8/candidate_v1/candidate_v1.mp4",
+  "output_checksum": "sha256:77b5d770d6f2123f5fbb7e35f4ed6850dee7923ce4f84fa54d572c39340cf2c2"
+}

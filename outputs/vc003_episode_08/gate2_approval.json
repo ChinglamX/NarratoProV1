@@ -1,0 +1,48 @@
+{
+  "review_id": "7734969e-1caa-4a3c-9831-a43c66798cd3",
+  "decision_id": "972be1c1-d867-48bf-b0b2-77f368547ed5",
+  "decision": "approve",
+  "selected_option": 1,
+  "selected_label": "威胁倒叙",
+  "selected_strategy_id": "82f2cdc4-bdf6-4e91-915c-c3e04fd95a3b",
+  "selected_hook_id": "9cddcf54-e497-4db0-b516-b59eb6e25786",
+  "approved_creative_brief_ref": {
+    "artifact_id": "bc2c693e-8768-40fc-84d5-fcc00946f80a",
+    "version": 1,
+    "artifact_type": "CreativeBrief",
+    "checksum": "sha256:a20c2f1639d5ceb3ce2772dbc3b98d97e14830400b9b0e48d3de73ee8f38e0e8"
+  },
+  "approved_variant_plan_ref": {
+    "artifact_id": "58a7c392-64f3-4d81-b1df-fbcfedb10c1b",
+    "version": 1,
+    "artifact_type": "VariantPlan",
+    "checksum": "sha256:c337552207507ddd7f49a0c413b25c5ef45e3699868c48a0acdf8e5991d968bd"
+  },
+  "approved_creative_brief_pointer": {
+    "artifact_id": "bc2c693e-8768-40fc-84d5-fcc00946f80a",
+    "version": 1,
+    "artifact_type": "CreativeBrief"
+  },
+  "approved_variant_plan_pointer": {
+    "artifact_id": "58a7c392-64f3-4d81-b1df-fbcfedb10c1b",
+    "version": 1,
+    "artifact_type": "VariantPlan"
+  },
+  "comparison_ref": {
+    "artifact_id": "164a0d02-c265-4c3d-bbed-5af2ef52fc9e",
+    "version": 1,
+    "artifact_type": "StrategyComparisonPackage",
+    "checksum": "sha256:480e62304271057e0184c0eb972d6a3a95abe99fc7a13fae222757285dc0671a"
+  },
+  "approved_story_ref": {
+    "artifact_id": "c378ba51-da33-4049-baf0-538ca637e9a5",
+    "version": 1,
+    "artifact_type": "StoryGraph",
+    "checksum": "sha256:8b34ae0d15d81126a1907366e27efcb4ce113e5bea0e1d2fae0ec146d0c7aad2"
+  },
+  "scope": "Episode 8 strategy direction only; Clip/Narration/Timeline require approved brief boundary.",
+  "shared_risks": [
+    "人物身份未证明，Brief/解说不得给角色命名。",
+    "无真实发布效果数据，Hook 吸引力保持 unavailable，不以分数自动选择。"
+  ]
+}

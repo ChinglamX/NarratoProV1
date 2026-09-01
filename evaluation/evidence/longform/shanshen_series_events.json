@@ -1,0 +1,137 @@
+{
+  "series_id": "shanshen-existing-regression",
+  "evidence_scope": "Existing project evidence only; interface regression, not new generalization proof",
+  "unresolved": [
+    "Cross-episode automatic identity resolution is not production-qualified",
+    "Episode 1-6 event time ranges retain director-assisted baseline provenance"
+  ],
+  "events": [
+    {
+      "event_id": "fall-and-awaken",
+      "episode": 1,
+      "order_in_episode": 1,
+      "description": "主角坠落绝境后觉醒山神印，获得改变处境的能力。",
+      "function": "goal",
+      "character_refs": ["temporary-protagonist"],
+      "evidence": [
+        {"evidence_id": "v-e01-fall", "episode": 1, "start_seconds": 20.0, "end_seconds": 24.0, "kind": "visual"},
+        {"evidence_id": "v-e01-awaken", "episode": 1, "start_seconds": 44.0, "end_seconds": 48.5, "kind": "visual"}
+      ],
+      "importance": 5,
+      "visual_payoff": 5,
+      "original_audio_value": 2
+    },
+    {
+      "event_id": "wolf-threat",
+      "episode": 2,
+      "order_in_episode": 1,
+      "description": "狼群构成直接生命威胁，迫使主角第一次公开使用新能力。",
+      "function": "conflict",
+      "character_refs": ["temporary-protagonist"],
+      "evidence": [
+        {"evidence_id": "v-e02-wolves", "episode": 2, "start_seconds": 44.0, "end_seconds": 48.0, "kind": "visual"},
+        {"evidence_id": "d-e02-threat", "episode": 2, "start_seconds": 43.3, "end_seconds": 48.0, "kind": "dialogue", "excerpt": "狼群威胁相关对白证据"}
+      ],
+      "causes": ["fall-and-awaken"],
+      "importance": 5,
+      "visual_payoff": 5,
+      "original_audio_value": 4
+    },
+    {
+      "event_id": "drive-wolves",
+      "episode": 2,
+      "order_in_episode": 2,
+      "description": "主角驱退狼群，证明山神之力能够解决现实危机。",
+      "function": "turn",
+      "character_refs": ["temporary-protagonist"],
+      "evidence": [
+        {"evidence_id": "v-e02-drive", "episode": 2, "start_seconds": 53.9, "end_seconds": 61.5, "kind": "visual"},
+        {"evidence_id": "d-e02-drive", "episode": 2, "start_seconds": 53.9, "end_seconds": 61.5, "kind": "dialogue", "excerpt": "驱兽与狼群退去相关对白"}
+      ],
+      "causes": ["wolf-threat"],
+      "importance": 5,
+      "visual_payoff": 5,
+      "original_audio_value": 3
+    },
+    {
+      "event_id": "family-debt",
+      "episode": 3,
+      "order_in_episode": 1,
+      "description": "家庭债务与妹妹处境把能力考验升级为必须解决的现实目标。",
+      "function": "escalation",
+      "character_refs": ["temporary-protagonist", "temporary-sister"],
+      "evidence": [
+        {"evidence_id": "v-e03-debt", "episode": 3, "start_seconds": 12.0, "end_seconds": 16.5, "kind": "visual"},
+        {"evidence_id": "d-e03-debt", "episode": 3, "start_seconds": 12.0, "end_seconds": 16.5, "kind": "dialogue", "excerpt": "家庭经济压力相关对白"}
+      ],
+      "causes": ["drive-wolves"],
+      "importance": 4,
+      "visual_payoff": 3,
+      "original_audio_value": 3
+    },
+    {
+      "event_id": "valuable-ginseng",
+      "episode": 4,
+      "order_in_episode": 1,
+      "description": "主角找到至少五十年份的野山参，第一次拥有解决困境的实际筹码。",
+      "function": "escalation",
+      "character_refs": ["temporary-protagonist"],
+      "evidence": [
+        {"evidence_id": "v-e04-ginseng", "episode": 4, "start_seconds": 12.0, "end_seconds": 16.5, "kind": "visual"},
+        {"evidence_id": "d-e04-ginseng", "episode": 4, "start_seconds": 12.0, "end_seconds": 16.5, "kind": "dialogue", "excerpt": "野山参与年份相关对白"}
+      ],
+      "causes": ["family-debt"],
+      "importance": 5,
+      "visual_payoff": 4,
+      "original_audio_value": 3
+    },
+    {
+      "event_id": "shop-lowball",
+      "episode": 5,
+      "order_in_episode": 1,
+      "description": "药店试图压低野山参价值，主角的变现计划遭遇新的利益冲突。",
+      "function": "conflict",
+      "character_refs": ["temporary-protagonist", "temporary-shopkeeper"],
+      "evidence": [
+        {"evidence_id": "v-e05-lowball", "episode": 5, "start_seconds": 12.0, "end_seconds": 17.0, "kind": "visual"},
+        {"evidence_id": "d-e05-lowball", "episode": 5, "start_seconds": 12.0, "end_seconds": 17.0, "kind": "dialogue", "excerpt": "药店压价相关对白"}
+      ],
+      "causes": ["valuable-ginseng"],
+      "importance": 4,
+      "visual_payoff": 3,
+      "original_audio_value": 4
+    },
+    {
+      "event_id": "cash-offer",
+      "episode": 5,
+      "order_in_episode": 2,
+      "description": "新的买方拿出现金并给出五十万报价，野山参价值获得公开兑现。",
+      "function": "climax",
+      "character_refs": ["temporary-protagonist", "temporary-buyer"],
+      "evidence": [
+        {"evidence_id": "v-e05-cash", "episode": 5, "start_seconds": 32.0, "end_seconds": 36.5, "kind": "visual"},
+        {"evidence_id": "d-e05-offer", "episode": 5, "start_seconds": 32.0, "end_seconds": 36.5, "kind": "dialogue", "excerpt": "这里面是五十万"}
+      ],
+      "causes": ["shop-lowball"],
+      "importance": 5,
+      "visual_payoff": 5,
+      "original_audio_value": 5
+    },
+    {
+      "event_id": "protect-sister",
+      "episode": 6,
+      "order_in_episode": 2,
+      "description": "主角兑现承诺并保护妹妹，让能力和财富最终回到人物关系的回报。",
+      "function": "payoff",
+      "character_refs": ["temporary-protagonist", "temporary-sister"],
+      "evidence": [
+        {"evidence_id": "v-e06-protect", "episode": 6, "start_seconds": 56.0, "end_seconds": 60.5, "kind": "visual"},
+        {"evidence_id": "d-e06-protect", "episode": 6, "start_seconds": 56.0, "end_seconds": 60.5, "kind": "dialogue", "excerpt": "保护妹妹与结果相关对白"}
+      ],
+      "causes": ["cash-offer"],
+      "importance": 5,
+      "visual_payoff": 5,
+      "original_audio_value": 4
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "status": "product_proof_pending_human_review",
+  "source_preview": "/Users/chinglam/workspace/NarratoProV1/tmp/e09-cert-d8eb4cd5-11eb-4c13-82d9-9bfe2f0b74af-preview.mp4",
+  "subtitle_source": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut/first_usable_cut.ass",
+  "subtitle_note": "narration captions rendered as deterministic PNG overlays; source subtitles remain inherited from E09 preview",
+  "narration_lines": [
+    {
+      "line": 1,
+      "text": "山神印觉醒，满山风月尽归一人。",
+      "timeline_start_seconds": 0.0,
+      "actual_duration_seconds": 2.347,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut/narration_01.wav",
+      "checksum": "sha256:dc9bca434776c43a9a89deb41dd4345951464533b36eb505195816ed83893083"
+    },
+    {
+      "line": 2,
+      "text": "身怀山神印的少年初入宗门，被视作异类。",
+      "timeline_start_seconds": 4.083333,
+      "actual_duration_seconds": 2.816,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut/narration_02.wav",
+      "checksum": "sha256:2fb352a5bdcbf195fd213b79386df5109a28a2873472b0aa849806bc01bb18ee"
+    },
+    {
+      "line": 3,
+      "text": "宗门大比将至，山神印之力引来觊觎与杀机。",
+      "timeline_start_seconds": 13.583333,
+      "actual_duration_seconds": 2.987,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut/narration_03.wav",
+      "checksum": "sha256:af5ab99482f8fdda47a454349a2361c014ff0c2e71daa81ad2309bcd09c5c341"
+    },
+    {
+      "line": 4,
+      "text": "山门之上，少年直面宿命一战，风月相随。",
+      "timeline_start_seconds": 26.208333,
+      "actual_duration_seconds": 3.243,
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut/narration_04.wav",
+      "checksum": "sha256:ab7c6d174d2ab669ff6a0e63e5b6bd575011fc35c71040535c98e4aed454cd71"
+    }
+  ],
+  "mix": {
+    "original_gain": 0.32,
+    "narration_gain": 1.0,
+    "limiter": 0.95
+  },
+  "output": "/Users/chinglam/workspace/NarratoProV1/outputs/first_usable_cut/first_usable_cut.mp4",
+  "duration_seconds": 30.28,
+  "checksum": "sha256:b9ed120d8ac5d8e21f762a7c7bd9404e153dc29f6346ae77ef1142df7b6863db",
+  "limitations": [
+    "product proof uses the E09 preview's already-rendered subtitles",
+    "no BGM or SFX",
+    "not an E11 production qualification artifact"
+  ]
+}

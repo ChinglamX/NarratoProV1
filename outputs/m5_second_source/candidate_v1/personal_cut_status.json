@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "project_name": "山神印觉醒后满山风月皆归我-第二素材验证",
+  "updated_at": "2026-08-17T18:27:06.314293+00:00",
+  "config": "/Users/chinglam/workspace/NarratoProV1/product/personal_cut.example.json",
+  "overall_status": "passed",
+  "stages": [
+    {
+      "stage": "01-rights-and-human-gates",
+      "status": "passed",
+      "explanation": "仅限内部预览；Gate 1 剧情与 Gate 2 策略均已人工批准。",
+      "inspectable_output": null
+    },
+    {
+      "stage": "02-media-ingest",
+      "status": "passed",
+      "explanation": "素材和权利快照可追踪。",
+      "inspectable_output": "/Users/chinglam/workspace/NarratoProV1/product/../outputs/m5_second_source/ingest_manifest.json"
+    },
+    {
+      "stage": "03-approved-cut-parts",
+      "status": "passed",
+      "explanation": "7 段解说、镜头表、WAV 和 ASS 均可单独查看。",
+      "inspectable_output": "/Users/chinglam/workspace/NarratoProV1/product/../outputs/m5_second_source/candidate_v1/manifest.json"
+    },
+    {
+      "stage": "04-runtime",
+      "status": "skipped",
+      "explanation": "canonical 已完成，本次检查无需连接 Temporal。",
+      "inspectable_output": null
+    },
+    {
+      "stage": "05-canonical-render-and-qc",
+      "status": "passed",
+      "explanation": "canonical 成片存在，Temporal Render 与 Technical QC 已通过。",
+      "inspectable_output": "/Users/chinglam/workspace/NarratoProV1/product/../outputs/m5_second_source/candidate_v1/canonical_e11.mp4"
+    },
+    {
+      "stage": "06-human-release",
+      "status": "skipped",
+      "explanation": "Gate 3 未执行；本入口不会公开发布。",
+      "inspectable_output": null
+    }
+  ],
+  "canonical_checksum": "sha256:8a8621676e5a1ae79d7403c4fe534dcb5c40cb6dfbcd90cc2bf5c26661f28145",
+  "release_gate_3": "not-executed"
+}

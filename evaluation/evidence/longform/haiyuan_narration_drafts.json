@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "series_id": "haiyuan-generalization-20260901",
+  "arc_id": "arc-1-conflict",
+  "status": "draft_before_tts",
+  "release_boundary": "internal-preview-only",
+  "lines": [
+    {"line_id":"narration-01","chapter_id":"chapter-2","text":"为了三千块债务和病床上的母亲，陆涛只能驾着破船冒险出海。","function":"setup","event_refs":["debt-desperation"]},
+    {"line_id":"narration-02","chapter_id":"chapter-2","text":"命悬一线时，他仍救下海中生灵，也因此得到能与海兽契约的龙魂。","function":"ability-origin","event_refs":["save-dragon","dragon-soul"]},
+    {"line_id":"narration-03","chapter_id":"chapter-3","text":"第一次契约成功，他不但恢复伤势，还能感知附近所有鱼群。","function":"explain-ability","event_refs":["first-contract"]},
+    {"line_id":"narration-04","chapter_id":"chapter-3","text":"刚获得的力量，转眼就变成一只价值上千元的巨型波龙。","function":"first-payoff","event_refs":["first-contract","lobster-catch"]},
+    {"line_id":"narration-05","chapter_id":"chapter-4","text":"可他把波龙带到市场，等来的第一句话却是嘲笑。","function":"market-conflict","event_refs":["market-contempt"]},
+    {"line_id":"narration-06","chapter_id":"chapter-4","text":"直到识货的人争相出价，这只被轻视的海货最终卖到四千元。","function":"market-turn","event_refs":["market-contempt","lobster-bid"]},
+    {"line_id":"narration-07","chapter_id":"chapter-5","text":"钱刚到手，讨债者已上门威胁病中的母亲。","function":"family-conflict","event_refs":["collectors-demand"]},
+    {"line_id":"narration-08","chapter_id":"chapter-5","text":"陆涛不再退让，当场还清八千欠款，护住母亲。","function":"family-payoff","event_refs":["collectors-demand","debt-paid"]},
+    {"line_id":"narration-09","chapter_id":"chapter-6","text":"债务解决后，一张近两万元的海鲜订单，把他重新推向深海。","function":"new-goal","event_refs":["large-order"]},
+    {"line_id":"narration-10","chapter_id":"chapter-6","text":"海蛇挡路，他就正面对抗；更危险的海兽，也成了他力量升级的机会。","function":"escalate-danger","event_refs":["sea-snake-threat"]},
+    {"line_id":"narration-11","chapter_id":"chapter-6","text":"穿过这场危机，他终于捕获连老水产商都没见过的顶级石斑鱼。","function":"rare-reward","event_refs":["sea-snake-threat","rare-fish"]},
+    {"line_id":"narration-12","chapter_id":"chapter-7","text":"普通订单已经能结算近两万元，而真正的稀有货还没有定价。","function":"scale-payoff","event_refs":["cargo-payoff"]},
+    {"line_id":"narration-13","chapter_id":"chapter-8","text":"直接出售太亏，宋总决定为它办一场拍卖会，把省城的大买家全部请来。","function":"climax-plan","event_refs":["auction-plan"]},
+    {"line_id":"narration-14","chapter_id":"chapter-8","text":"从为三千块拼命，到让顶级海货进入拍卖场，陆涛的海渊契约才刚刚开始。","function":"continuation","event_refs":["debt-desperation","auction-plan"],"rhetorical":true}
+  ]
+}

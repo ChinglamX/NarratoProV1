@@ -2,7 +2,7 @@ PYTHON ?= .venv/bin/python
 PIP ?= .venv/bin/pip
 PYTHON_BOOTSTRAP ?= pyenv exec python
 
-.PHONY: setup format lint type test security check schemas schema-check api worker context-check infra-up infra-down infra-accept
+.PHONY: setup format lint type test security check schemas schema-check api worker context-check infra-up infra-down infra-accept personal-cut-check personal-cut
 
 setup:
 	$(PYTHON_BOOTSTRAP) -m venv .venv
@@ -51,3 +51,9 @@ infra-down:
 
 infra-accept:
 	$(PYTHON) scripts/accept_local_infra.py
+
+personal-cut-check:
+	$(PYTHON) scripts/personal_cut.py --config product/personal_cut.example.json
+
+personal-cut:
+	$(PYTHON) scripts/personal_cut.py --config product/personal_cut.example.json --run

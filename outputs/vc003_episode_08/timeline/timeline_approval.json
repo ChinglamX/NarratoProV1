@@ -1,0 +1,17 @@
+{
+  "review_id": "1625a9be-5260-4bc7-a179-c8e9b56c13fc",
+  "decision_id": "46eb3f06-fcee-4d59-ba2a-8e0c81a9675e",
+  "decision": "approve",
+  "run_id": "d3690d71-444a-43d9-bbd0-52bd1c91d371",
+  "approved_timeline_intent": {
+    "artifact_id": "c537a05d-4c0c-4b69-9f57-83c7abe9c42a",
+    "version": 1,
+    "artifact_type": "MasterTimeline",
+    "checksum": "sha256:69115476c7eee1dd0f9e78912282c9346164f1ce7ff9a68e474a8d4bb6693c0d"
+  },
+  "publication_pointer": {
+    "artifact_id": "c537a05d-4c0c-4b69-9f57-83c7abe9c42a",
+    "version": 1,
+    "artifact_type": "MasterTimeline"
+  }
+}

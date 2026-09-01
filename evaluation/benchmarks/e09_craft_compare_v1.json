@@ -1,0 +1,56 @@
+{
+  "benchmark_version": "e09-craft-compare-v1",
+  "status": "ai_draft_pending_human_signoff",
+  "human_decision": {
+    "approver": "project-owner",
+    "decision": "approve",
+    "date": "2026-08-15",
+    "reviewed_artifact": "run d8eb4cd5 preview (30.27s full cut, WebVTT subtitled player)",
+    "signature_path": "scripts/sign_e09_review.py --run-id d8eb4cd5-11eb-4c13-82d9-9bfe2f0b74af --decision approve"
+  },
+  "candidate": {
+    "run_id": "d8eb4cd5-11eb-4c13-82d9-9bfe2f0b74af",
+    "preview": "tmp/e09-cert-d8eb4cd5-11eb-4c13-82d9-9bfe2f0b74af-preview.mp4",
+    "duration_seconds": 30.271,
+    "resolution": "720x1280",
+    "beats": [
+      {"function": "hook", "preview_range": [0.0, 4.08], "source_shot": 0, "source_range": [0.0, 4.08], "narration": "山神印觉醒，满山风月尽归一人。"},
+      {"function": "context", "preview_range": [4.08, 13.58], "source_shot": 5, "source_range": [21.5, 31.0], "narration": "身怀山神印的少年初入宗门，被视作异类。"},
+      {"function": "escalation", "preview_range": [13.58, 26.21], "source_shot": 11, "source_range": [52.04, 64.67], "narration": "宗门大比将至，山神印之力引来觊觎与杀机。"},
+      {"function": "payoff", "preview_range": [26.21, 30.25], "source_shot": 15, "source_range": [99.63, 103.67], "narration": "山门之上，少年直面宿命一战，风月相随。"}
+    ]
+  },
+  "demo_reference": {
+    "benchmark": "e09-demo-v1",
+    "duration_seconds": 260.7,
+    "shots": 189,
+    "median_shot_seconds": 1.2
+  },
+  "ai_suggested_scores": {
+    "disclaimer": "AI Review Director suggestion only; human craft signoff on final scores still pending",
+    "dimensions": [
+      {"dimension": "story_correctness", "weight": 0.25, "score": 4, "note": "Beat-to-shot mapping is deterministic and grounded; narration matches beat intent (engineering-level story grounding; real StoryGraph pending)"},
+      {"dimension": "marketing_hook", "weight": 0.15, "score": 4, "note": "HOOK 0-4.08s opens with awakening premise; short first beat holds attention"},
+      {"dimension": "rhythm", "weight": 0.15, "score": 4, "note": "Escalation 12.6s longest beat builds tension; payoff 4.04s resolves; breathing points present"},
+      {"dimension": "narration", "weight": 0.15, "score": 4, "note": "Four lines add context without repeating dialogue; E09 text-plan only, TTS is E10"},
+      {"dimension": "visual_editing", "weight": 0.1, "score": 3, "note": "Continuity by shot index; single representative shot per beat (engineering cert, not full craft)"},
+      {"dimension": "audio", "weight": 0.1, "score": 3, "note": "Original audio track aligned to source ranges; no BGM/SFX (rights-gated, absent by design)"},
+      {"dimension": "subtitle", "weight": 0.05, "score": 4, "note": "Safe-area placement (y 0.78-0.92); timing aligned to beats; single-track display recommended (narration mirror duplicates)"},
+      {"dimension": "technical_rights", "weight": 0.05, "score": 5, "note": "720x1280 h264/aac, 30.27s, checksum committed; internal rights only"}
+    ]
+  },
+  "known_gaps_vs_demo": [
+    "demo is 260.7s/189 shots (median 1.2s) vs candidate 30.27s/4 beats — different cut density by design",
+    "candidate uses single representative shot per beat; demo uses dense multi-shot cutting",
+    "candidate has no TTS narration voice, BGM or SFX (E10/E11 scope)",
+    "composition/performance-hold judgment still requires full human timecoded annotation"
+  ],
+  "open_human_annotations": [
+    "hook-context-payoff",
+    "performance-hold",
+    "rhythm-tension-release",
+    "narration-function-style",
+    "composition-subtitle-packaging"
+  ],
+  "usage": "reference comparison only; never a universal creative template"
+}

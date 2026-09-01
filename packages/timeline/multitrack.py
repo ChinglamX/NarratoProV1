@@ -54,10 +54,10 @@ def assemble_multitrack_timeline(
     dependencies: tuple[ArtifactRef, ...],
     track_ids: dict[TimelineTrackKind, UUID],
     item_ids: Sequence[UUID],
-    duration: object,
+    duration: RationalTime,
     revision_budget: int = 3,
 ) -> tuple[MasterTimeline | None, TimelineAssemblyReport]:
-    timeline_duration = RationalTime.model_validate(duration)
+    timeline_duration = duration
     candidate_by_id = {item.candidate_id: item for item in candidates}
     conflicts: list[AssemblyConflict] = []
     cursor = timeline_duration.model_copy(update={"value": 0})
@@ -108,7 +108,7 @@ def assemble_multitrack_timeline(
             AudioIntentRole.BGM: TimelineTrackKind.BGM,
             AudioIntentRole.SFX: TimelineTrackKind.SFX,
         }[intent.role]
-        source_range = intent.timeline_range if intent.source_ref is not None else None
+        source_range = intent.source_range if intent.source_ref is not None else None
         grouped[kind].append(
             TimelineItem(
                 item_id=item_ids[id_cursor],

@@ -1,0 +1,40 @@
+{
+  "scope": "Episode 8 research LLM narration drafts; confidence unavailable; L1 human review required",
+  "line_set_ref": {
+    "artifact_id": "380d4861-b4d8-46fc-bd45-3f27a1f52b88",
+    "version": 1,
+    "artifact_type": "NarrationLineSet",
+    "checksum": "sha256:0d264a70c60a0197ec53c02cbb1730d5744a96f20c8cf44b27463e9e88343e53"
+  },
+  "lines": [
+    {
+      "line_index": 1,
+      "function": "danger-hook",
+      "draft": "有人得三十万后藏钱不还，曾动手伤人，遭锁定致命威胁",
+      "violations": [],
+      "ok": true,
+      "evidence_ref": "1267ab6e-3cc8-4a10-8ef5-5764077f0616"
+    },
+    {
+      "line_index": 2,
+      "function": "transaction-context",
+      "draft": "三十万敲定两样交易，暗线交易悄然落定。",
+      "violations": [],
+      "ok": true,
+      "evidence_ref": "172bf99b-af5d-4070-b836-ec6d50eedf58"
+    },
+    {
+      "line_index": 3,
+      "function": "value-proof",
+      "draft": "藏有三十万的卡，密码六个八，是交易里致命的后手。",
+      "violations": [],
+      "ok": true,
+      "evidence_ref": "d008fa4a-3bd6-40c0-83f3-79885d89b34d"
+    }
+  ],
+  "boundary_notes": [
+    "Drafts are candidates only; final narration stays at the L1 human boundary.",
+    "Rules enforced: no identity names, no verbatim dialogue repetition, no unsupported psychology.",
+    "No production admission implied; research provider."
+  ]
+}

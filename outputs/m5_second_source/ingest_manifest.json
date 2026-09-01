@@ -1,0 +1,79 @@
+{
+  "project_id": "74458fd0-935f-4b51-918b-e9840bcf9d04",
+  "run_id": "952fc7c6-38d6-46a6-a616-29fe0d2ac6ce",
+  "source_path": "/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/2.mp4",
+  "rights": {
+    "status": "restricted",
+    "source": "project-owner-provided-local-file:/Users/chinglam/Desktop/短剧素材/又子剧场热款视频-男频/5.山神印觉醒后满山风月皆归我/2.mp4",
+    "license": "internal-processing-confirmation-2026-08-18",
+    "grant_ref": {
+      "artifact_id": "62a8a4ee-bd6c-4249-afdc-26a00050ab42",
+      "version": 1,
+      "artifact_type": "RightsGrant",
+      "checksum": "sha256:ae658703766d1355005ec08c198435563c55ad9f3160eff55dc853fa247501de"
+    },
+    "evidence_refs": [],
+    "territories": [],
+    "platforms": [
+      "internal-preview"
+    ],
+    "commercial_use": false,
+    "modification": true,
+    "synchronization": true,
+    "attribution_required": false,
+    "attribution_text": null,
+    "restrictions": [
+      "no-public-release",
+      "no-commercial-publication"
+    ],
+    "valid_from": null,
+    "valid_until": null,
+    "checked_at": "2026-08-17T17:11:21.949930Z"
+  },
+  "rights_grant": {
+    "artifact_id": "62a8a4ee-bd6c-4249-afdc-26a00050ab42",
+    "version": 1,
+    "artifact_type": "RightsGrant",
+    "checksum": "sha256:ae658703766d1355005ec08c198435563c55ad9f3160eff55dc853fa247501de"
+  },
+  "artifacts": {
+    "source": {
+      "artifact_id": "0358c8de-1982-4c3b-92ed-94360f5ced88",
+      "version": 1,
+      "artifact_type": "SourceMedia",
+      "checksum": "sha256:dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d"
+    },
+    "probe": {
+      "artifact_id": "e507f17b-e09b-4cd5-b19a-34c6df7a7176",
+      "version": 1,
+      "artifact_type": "MediaProbe",
+      "checksum": "sha256:59621668b57f5f6de6c837790cba0d213a7cf8a307e4da40fef5e95f96fdec9b"
+    },
+    "proxy": {
+      "artifact_id": "dfccd97e-1944-425b-8186-75daa9d72ef6",
+      "version": 1,
+      "artifact_type": "ProxyMedia",
+      "checksum": "sha256:c3df4ff4d10188837aa314178f59419d8c85651297277db818bb1f551e8d2654"
+    },
+    "audio": {
+      "artifact_id": "eb46bb3a-201d-459d-b976-ace7d3c278ab",
+      "version": 1,
+      "artifact_type": "AudioStem",
+      "checksum": "sha256:6902e7dcb77d97c9b43b3ecf1fbd4767eea283586fee496201d9de5406342cf6"
+    },
+    "frame_plan": {
+      "artifact_id": "b8082b47-2a64-4960-86c5-896e8eb6caba",
+      "version": 1,
+      "artifact_type": "FrameSamplePlan",
+      "checksum": "sha256:550ff443ba575c534f88eaefaffe54fb46976015b071b2f5ff27b3668b7c95b9"
+    },
+    "scene_shot_catalog": {
+      "artifact_id": "ccc29865-d576-4b42-84a5-10607cee5852",
+      "version": 1,
+      "artifact_type": "SceneShotCatalog",
+      "checksum": "sha256:75bb43a1ae8d8598d438bf1ffe0a9f08c20b374e2091045e94c2f5fd3e4b160a"
+    }
+  },
+  "reused_source": false,
+  "derivative_count": 5
+}

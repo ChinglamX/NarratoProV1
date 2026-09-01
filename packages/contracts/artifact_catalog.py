@@ -53,9 +53,11 @@ ARTIFACT_TYPE_SPECS = (
     *_specs(
         "Production",
         "production",
-        "ClipCandidateSet CropPath RhythmPlan NarrationLineSet",
+        "ClipCandidateSet ClipSelectionPlan ContinuityReport VisualPlanningReport "
+        "NarrationPlanningReport TimelineAssemblyReport SourceSubtitleHandlingPlan "
+        "CropPath RhythmPlan NarrationLineSet",
     ),
-    *_specs("Voice", "production", "VoiceTakeSet VoiceAsset AlignmentArtifact"),
+    *_specs("Voice", "production", "VoiceTakeSet VoiceAsset AlignmentArtifact ConformReport"),
     *_specs("Audio", "production", "AudioAssetSelection MixPlan MixedAudio"),
     *_specs("Subtitle", "production", "SubtitleCueSet GraphicsCueSet ASSArtifact"),
     *_specs(

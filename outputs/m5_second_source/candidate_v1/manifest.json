@@ -1,0 +1,104 @@
+{
+  "source": "/Users/chinglam/workspace/NarratoProV1/data/local/object_store/objects/sha256/dc/dc1b3d78bf10230f7e26606f2744d985d84e59a0635ec936f7b7af9d0b82a99d",
+  "rights": "internal-only; no-public-release",
+  "gate_1": "approved",
+  "gate_2": "approved",
+  "segments": [
+    {
+      "source_start_seconds": 56.5,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_start_seconds": 0.0,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_start_seconds": 22.0,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_start_seconds": 29.54,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_start_seconds": 43.33,
+      "duration_seconds": 4.0
+    },
+    {
+      "source_start_seconds": 61.79,
+      "duration_seconds": 4.5
+    },
+    {
+      "source_start_seconds": 74.96,
+      "duration_seconds": 4.5
+    }
+  ],
+  "narration_lines": [
+    {
+      "index": 1,
+      "text": "狼群封死退路，妹妹已无处可逃。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/narration_01.wav",
+      "timeline_start_seconds": 0,
+      "duration_seconds": 2.389,
+      "slot_duration_seconds": 4.0,
+      "checksum": "sha256:5a50b0e3e9b5ddd8f5d32a6aabf24e37b01d18fd71d4a51bdb0e02dcf8962f39"
+    },
+    {
+      "index": 2,
+      "text": "几分钟前，她还被困在悬崖边。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/narration_02.wav",
+      "timeline_start_seconds": 4.0,
+      "duration_seconds": 2.304,
+      "slot_duration_seconds": 4.0,
+      "checksum": "sha256:785f8ae2bbe147d21b8be4f3a28838b3787518a7bc68a3caefb1d4a8e192c439"
+    },
+    {
+      "index": 3,
+      "text": "兄妹刚脱险，就挖到五十年份的野山参。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/narration_03.wav",
+      "timeline_start_seconds": 8.0,
+      "duration_seconds": 2.731,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:e41ee0289e958c3ae632335d164dd76b6aacc5b5123c1a03a4a06f26e3f98d4c"
+    },
+    {
+      "index": 4,
+      "text": "卖掉它，妹妹的大学学费就有了。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/narration_04.wav",
+      "timeline_start_seconds": 12.5,
+      "duration_seconds": 2.176,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:2a0ffadd6c5e7b740fb37cbd8baff076be39b2fb5b71ecfdfe0bb6bcb5dcdf92"
+    },
+    {
+      "index": 5,
+      "text": "可狼群突然出现，再次把他们逼入绝境。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/narration_05.wav",
+      "timeline_start_seconds": 17.0,
+      "duration_seconds": 2.56,
+      "slot_duration_seconds": 4.0,
+      "checksum": "sha256:206882c36d96c05642ca3825e137e121a35d61fbd83b660b1bd99c04beeed506"
+    },
+    {
+      "index": 6,
+      "text": "为护住妹妹，他第一次用山神之力驱兽。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/narration_06.wav",
+      "timeline_start_seconds": 21.0,
+      "duration_seconds": 2.603,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:b8da69b1c04b8dc65863288dcb11e3c55b554e4b688935537b329c2393211011"
+    },
+    {
+      "index": 7,
+      "text": "群狼低头退去，他才明白，整座山都在回应自己。",
+      "path": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/narration_07.wav",
+      "timeline_start_seconds": 25.5,
+      "duration_seconds": 2.987,
+      "slot_duration_seconds": 4.5,
+      "checksum": "sha256:c4a3b590288dd9c16af5fed919856a9e07e226979d9c9274532a635c42a052b5"
+    }
+  ],
+  "ass": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/candidate.ass",
+  "output": "/Users/chinglam/workspace/NarratoProV1/outputs/m5_second_source/candidate_v1/candidate_v1.mp4",
+  "output_checksum": "sha256:13e4de68aaad7e8dccf95cd56b2a93a6ac08a6bf9dfc6f8b42de1cd10a36def0"
+}

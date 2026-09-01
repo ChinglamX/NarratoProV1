@@ -36,6 +36,14 @@ dev = [
   "ruff>=0.8,<1",
 ]
 
+# Research/admission providers (E06): heavy local ML runtimes, kept out of the
+# core install. PaddleX cache must be redirected into the workspace, e.g.
+# PADDLE_PDX_CACHE_HOME=$PWD/.paddlex-cache.
+research = [
+  "paddlepaddle>=3.3,<4",
+  "paddleocr>=3.7,<4",
+]
+
 [project.scripts]
 narratopro = "apps.cli.main:main"
 narratopro-api = "apps.api.main:run"
@@ -49,7 +57,7 @@ exclude = ["tests*"]
 [tool.ruff]
 target-version = "py311"
 line-length = 100
-extend-exclude = ["demo_frames", "data/local", "artifacts"]
+extend-exclude = ["demo_frames", "data/local", "artifacts", ".paddlex-cache"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "C4", "SIM", "RUF"]

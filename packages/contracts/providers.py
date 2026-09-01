@@ -23,6 +23,7 @@ class ProviderCapability(StrEnum):
     FACE_EMBEDDING = "face_embedding"
     VISUAL_EMBEDDING = "visual_embedding"
     VLM = "vlm"
+    TTS = "tts"
 
 
 class ProviderAdmission(StrEnum):

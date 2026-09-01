@@ -42,3 +42,7 @@ apps/review_web/dist/
 # Local benchmark media; register through benchmark manifests/Object Store
 /youzijuchang_demo.mp4
 /demo_frames/
+/.paddlex-cache/
+/data/corpus/
+/evaluation/corpus/e06_visual/frames/*.jpg
+/evaluation/corpus/e06_visual/annotation/frames/*.jpg

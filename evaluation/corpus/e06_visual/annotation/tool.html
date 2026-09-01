@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>E06 视觉标注工具（frozen_test 24 样本）</title>
+<style>
+  body{font-family:system-ui,sans-serif;margin:0;background:#12151a;color:#e8edf2}
+  header{padding:14px 20px;display:flex;align-items:center;gap:16px;background:#1a2027;border-bottom:1px solid #2a333d}
+  .nav{display:flex;align-items:center;gap:10px}
+  button{padding:8px 14px;border-radius:7px;border:1px solid #3a4653;background:#20272f;color:#e8edf2;cursor:pointer}
+  button.primary{background:#2ea36c;border-color:#2ea36c;color:#04120b}
+  .layout{display:grid;grid-template-columns:1fr 360px;gap:0;min-height:calc(100vh - 57px)}
+  .canvas-wrap{padding:16px;background:#0c0f12;display:grid;place-content:center}
+  canvas{max-width:100%;max-height:calc(100vh - 90px);background:#000;border-radius:8px;cursor:crosshair}
+  aside{padding:16px;border-left:1px solid #2a333d;overflow-y:auto}
+  h3{margin:0 0 8px;font-size:13px;color:#9fb2c4;text-transform:uppercase;letter-spacing:.1em}
+  .item{border:1px solid #2a333d;border-radius:8px;padding:10px;margin-bottom:8px;background:#171c22}
+  .item label{font-size:11px;color:#7f91a4;display:block;margin-bottom:4px}
+  input[type=text]{width:100%;box-sizing:border-box;padding:7px;border-radius:6px;border:1px solid #34404b;background:#0d1116;color:#e8edf2}
+  .row{display:flex;gap:6px;align-items:center}
+  .del{color:#f39b9b;background:none;border:none;cursor:pointer;font-size:16px}
+  .tag{font-size:11px;padding:2px 8px;border-radius:99px;background:#20272f;color:#9fb2c4}
+  .tag.pred{color:#76e6ba}
+  .hint{font-size:12px;color:#7f91a4;line-height:1.6;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <button onclick="prev()">← 上一帧</button>
+    <span id="counter">0/0</span>
+    <button onclick="next()">下一帧 →</button>
+  </div>
+  <div style="flex:1"></div>
+  <span class="tag" id="srcFile">samples.json</span>
+  <span class="tag">点击框选中 → 编辑标签/删除</span>
+  <span class="tag">拖动画新框</span>
+  <button class="primary" onclick="save()">保存本帧</button>
+  <button class="primary" onclick="exportAll()">导出全部</button>
+</header>
+<div class="layout">
+  <div class="canvas-wrap"><canvas id="cv" width="360" height="640"></canvas></div>
+  <aside>
+    <h3>OCR 文本（GT 编辑）</h3>
+    <div id="ocrList"></div>
+    <h3 style="margin-top:16px">检测框（GT 标签）</h3>
+    <div id="detList"></div>
+    <p class="hint">操作：① 在图上点击已有框选中；② 右侧编辑 label 或点 ✕ 删除；
+      ③ 在图上按住拖动画新框；④ "保存本帧"写入内存，"导出全部"下载 samples_annotated.json。
+      OCR：直接编辑文本框为画面中真实文字（保留/删除/新增），删除即视为无该文本。</p>
+  </aside>
+</div>
+<script>
+const CV = document.getElementById('cv'), ctx = CV.getContext('2d');
+let samples = [], idx = 0, selected = -1, drawing = null, scale = 1, offsetX = 0, offsetY = 0;
+
+async function init(){
+  const params = new URLSearchParams(location.search);
+  const file = params.get('file') || 'samples.json';
+  samples = await (await fetch(file)).json();
+  document.getElementById('counter').textContent = '1/' + samples.length;
+  document.getElementById('srcFile').textContent = file;
+  render();
+}
+function current(){ return samples[idx]; }
+function render(){
+  const s = current();
+  const img = new Image();
+  img.onload = () => {
+    const maxW = 360, maxH = 640;
+    scale = Math.min(maxW / img.width, maxH / img.height, 1);
+    const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+    CV.width = w; CV.height = h;
+    offsetX = (w - img.width * scale) / 2; offsetY = (h - img.height * scale) / 2;
+    ctx.drawImage(img, 0, 0, w, h);
+    // draw detections (predicted + gt merged view: show predicted for reference)
+    s.detections.forEach((d, i) => drawBox(d.region, '#f0b429', d.label || 'unknown', i === selected));
+    s.ground_truth.detections.forEach((d) => drawBox(d.region, '#2ea36c', 'GT:' + (d.label||'?'), false));
+    renderOcr(); renderDets();
+  };
+  img.src = 'frames/' + s.frame.split('/').pop();
+}
+function drawBox(r, color, label, sel){
+  const x = r.x_min * CV.width, y = r.y_min * CV.height;
+  const w = (r.x_max - r.x_min) * CV.width, h = (r.y_max - r.y_min) * CV.height;
+  ctx.strokeStyle = sel ? '#fff' : color;
+  ctx.lineWidth = sel ? 3 : 2;
+  ctx.strokeRect(x, y, w, h);
+  ctx.fillStyle = color; ctx.font = '11px sans-serif';
+  ctx.fillText(label, x + 2, y - 4 > 10 ? y - 4 : 12);
+}
+function renderOcr(){
+  const s = current(), el = document.getElementById('ocrList');
+  el.innerHTML = '';
+  if (!s.ocr.length){
+    const d = document.createElement('div'); d.className = 'item';
+    d.innerHTML = `<label>GT 文本（未检测到，请手动填写）</label><input type="text" value="" onchange="editOcr(0, this.value)" placeholder="输入画面中的文字">`;
+    el.appendChild(d);
+    s.ocr = [{text:'', region:{x_min:0.1,y_min:0.85,x_max:0.9,y_max:0.95}}];
+    return;
+  }
+  s.ocr.forEach((o, i) => {
+    const d = document.createElement('div'); d.className = 'item';
+    d.innerHTML = `<label>GT 文本 #${i+1}</label><input type="text" value="${esc(o.text)}" onchange="editOcr(${i}, this.value)" placeholder="画面中的真实文字">`;
+    el.appendChild(d);
+  });
+  const add = document.createElement('button');
+  add.textContent = '+ 新增 OCR 文本'; add.style.marginTop = '4px';
+  add.onclick = () => { s.ocr.push({text:'', region:{x_min:0.1,y_min:0.85,x_max:0.9,y_max:0.95}}); renderOcr(); };
+  el.appendChild(add);
+}
+function renderDets(){
+  const s = current(), el = document.getElementById('detList');
+  el.innerHTML = '';
+  s.detections.forEach((d, i) => {
+    const row = document.createElement('div'); row.className = 'item';
+    row.innerHTML = `<div class="row"><input type="text" value="${esc(d.label||'')}" onchange="editDetLabel(${i}, this.value)"><button class="del" onclick="deleteDet(${i})">✕</button></div>`;
+    el.appendChild(row);
+  });
+}
+function editOcr(i, v){ current().ocr[i].text = v; }
+function editDetLabel(i, v){ current().detections[i].label = v; }
+function deleteDet(i){ current().detections.splice(i,1); selected=-1; render(); }
+function addGtDet(region, label){
+  const s = current();
+  s.ground_truth.detections = s.ground_truth.detections || [];
+  s.ground_truth.detections.push({label: label||'person', region});
+  render();
+}
+function save(){
+  const s = current();
+  s.reviewed = true; s.reviewer = s.reviewer || 'owner';
+  s.ground_truth.ocr = s.ocr.filter(o => o.text.trim()).map(o => ({text:o.text.trim(), region:o.region}));
+  // kept predicted boxes (labels edited, deletions removed) become GT, plus any drawn GT boxes
+  const kept = s.detections.map(d => ({label: (d.label||'unknown').trim() || 'unknown', region: d.region}));
+  const drawn = s.ground_truth.detections || [];
+  s.ground_truth.detections = kept.concat(drawn.filter(d => !kept.some(k => sameBox(k.region, d.region))));
+  document.getElementById('counter').textContent = (idx+1) + '/' + samples.length + ' ✓';
+}
+function sameBox(a, b){
+  const eps = 0.01;
+  return Math.abs(a.x_min-b.x_min)<eps && Math.abs(a.y_min-b.y_min)<eps
+      && Math.abs(a.x_max-b.x_max)<eps && Math.abs(a.y_max-b.y_max)<eps;
+}
+function exportAll(){
+  const blob = new Blob([JSON.stringify(samples, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'samples_annotated.json'; a.click();
+}
+function prev(){ if(idx>0){idx--; selected=-1; render();} updateCounter(); }
+function next(){ if(idx<samples.length-1){idx++; selected=-1; render();} updateCounter(); }
+function updateCounter(){ document.getElementById('counter').textContent = (idx+1) + '/' + samples.length; }
+function esc(v){ return (v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// canvas interaction
+CV.addEventListener('mousedown', e => {
+  const pos = toNorm(e);
+  // hit test predicted boxes
+  selected = current().detections.findIndex(d => inBox(pos, d.region));
+  if (selected >= 0){ render(); return; }
+  drawing = {x1:pos.x, y1:pos.y, x2:pos.x, y2:pos.y};
+});
+CV.addEventListener('mousemove', e => {
+  if (!drawing) return;
+  const pos = toNorm(e);
+  drawing.x2 = pos.x; drawing.y2 = pos.y;
+  redrawPreview();
+});
+CV.addEventListener('mouseup', e => {
+  if (!drawing) return;
+  const pos = toNorm(e);
+  drawing.x2 = pos.x; drawing.y2 = pos.y;
+  const r = {x_min:Math.min(drawing.x1,drawing.x2), y_min:Math.min(drawing.y1,drawing.y2),
+             x_max:Math.max(drawing.x1,drawing.x2), y_max:Math.max(drawing.y1,drawing.y2)};
+  if ((r.x_max-r.x_min) > 0.02 && (r.y_max-r.y_min) > 0.02){
+    const label = prompt('新框标签（person/animal/vehicle/…）:', 'person');
+    if (label) addGtDet(r, label);
+  }
+  drawing = null;
+});
+function toNorm(e){
+  const rect = CV.getBoundingClientRect();
+  return {x:(e.clientX-rect.left)/CV.width, y:(e.clientY-rect.top)/CV.height};
+}
+function inBox(p, r){ return p.x>=r.x_min && p.x<=r.x_max && p.y>=r.y_min && p.y<=r.y_max; }
+function redrawPreview(){
+  const s = current();
+  const img = new Image();
+  img.onload = () => {
+    ctx.drawImage(img, 0, 0, CV.width, CV.height);
+    s.detections.forEach((d,i)=>drawBox(d.region,'#f0b429',d.label||'', i===selected));
+    s.ground_truth.detections.forEach((d)=>drawBox(d.region,'#2ea36c','GT:'+(d.label||'?'),false));
+    if(drawing){ drawBox({x_min:Math.min(drawing.x1,drawing.x2),y_min:Math.min(drawing.y1,drawing.y2),
+      x_max:Math.max(drawing.x1,drawing.x2),y_max:Math.max(drawing.y1,drawing.y2)}, '#76e6ba', 'new', false); }
+  };
+  img.src = 'frames/' + s.frame.split('/').pop();
+}
+init();
+</script>
+</body>
+</html>

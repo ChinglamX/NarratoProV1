@@ -1,0 +1,19 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 720
+PlayResY: 1280
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Default,Arial,44,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,3,1,2,40,40,120,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.00,0:00:04.08,Default,,0,0,102,,山神印觉醒，满山风月尽归一人。
+Dialogue: 0,0:00:04.08,0:00:13.58,Default,,0,0,102,,身怀山神印的少年初入宗门，被视作异类。
+Dialogue: 0,0:00:13.58,0:00:26.21,Default,,0,0,102,,宗门大比将至，山神印之力引来觊觎与杀机。
+Dialogue: 0,0:00:26.21,0:00:30.25,Default,,0,0,102,,山门之上，少年直面宿命一战，风月相随。
+Dialogue: 0,0:00:00.00,0:00:04.08,Default,,0,0,120,,山神印觉醒，满山风月尽归一人。
+Dialogue: 0,0:00:04.08,0:00:13.58,Default,,0,0,120,,身怀山神印的少年初入宗门，被视作异类。
+Dialogue: 0,0:00:13.58,0:00:26.21,Default,,0,0,120,,宗门大比将至，山神印之力引来觊觎与杀机。
+Dialogue: 0,0:00:26.21,0:00:30.25,Default,,0,0,120,,山门之上，少年直面宿命一战，风月相随。

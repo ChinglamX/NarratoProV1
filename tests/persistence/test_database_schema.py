@@ -39,3 +39,17 @@ def test_dependency_ddl_has_exact_version_fks_and_self_guard() -> None:
 def test_outbox_and_artifact_share_one_metadata_transaction_boundary() -> None:
     assert schema.outbox_event.metadata is schema.artifact_version.metadata
     assert schema.audit_event.metadata is schema.artifact_version.metadata
+
+
+def test_baseline_snapshot_is_not_polluted_by_media_tables() -> None:
+    """Regression: E05 media tables must not be registered onto the immutable
+    baseline v0001 snapshot, or fresh ``alembic upgrade head`` fails at
+    revision 0001 (schema ``media`` does not exist yet).
+    """
+    names = {(table.schema, table.name) for table in metadata.tables.values()}
+    assert ("media", "ingest_identity") not in names
+    assert schema.media_ingest_identity.metadata is not metadata
+    assert (
+        schema.media_ingest_identity.schema,
+        schema.media_ingest_identity.name,
+    ) == ("media", "ingest_identity")
